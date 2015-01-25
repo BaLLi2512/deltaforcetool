@@ -1,7 +1,7 @@
 Instructions on how to use:
  
 1) Start WoW.exe in 32bit-Mode, log in your Account and enter world with character
-2) run HonorBuddy_start.cmd   
+2) run DeltaForceTool_start.exe   
    		
 	ATTENTION: This NOT a virus/trojaner!
 
@@ -9,7 +9,7 @@ Instructions on how to use:
 4) Load Profile or something else
 5) Enjoy!
 
-	ATTENTION: If you are using HBRelog to start WoW and HB you have to configure it first!
+	ATTENTION: If you are using HBRelog to start WoW and DFT you have to configure it first!
 
  
 NOTES: Do not save CDPatcher in the Honorbuddy folder
