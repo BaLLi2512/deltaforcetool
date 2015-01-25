@@ -1,0 +1,210 @@
+<HBProfile xsi:noNamespaceSchemaLocation="Schemas/QuestProfileSchema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <!-- Developed by Kickazz006, extended by Gniller - edited by caeles -->
+    <Name>[H+A - Quest] Auto-Loader 1-100 [Kick] ($Rev: 2966 $)</Name>
+
+    <QuestOrder>
+		<!-- Initialization stuff -->
+        <CustomBehavior File="Misc\RunLua" Lua="SetCVar('AutoLootDefault', 1)" />
+        <CustomBehavior File="EnablePlugin" Names="Anti Drown" />
+        <CustomBehavior File="EnablePlugin" Names="Questhelper - ItemForAura" />
+        <CustomBehavior File="EnablePlugin" Names="Refreshment Detection" />
+        <CustomBehavior File="Misc\ProfileCompatibilityInfo" AllowBrokenAddOns="True" AllowBrokenPlugIns="True" />
+
+        <LootMobs Value="True" />
+        <TargetingDistance Value="null" />    <!-- Use LevelBot default -->
+        <UseMount Value="True" />
+		
+		<!-- Low level profiles, including the preparation message -->
+		<If Condition="Me.Level &lt; 20">
+			<If Condition="Me.Level == 1">
+				<CustomBehavior File="UserDialog" AllowBotStop="False" SoundCue="Exclamation" SoundCueInterval="15"
+							ExpiryTime="30" ExpiryAction="InputEnabled_Continue"
+							Text="For new toons, be certain to configure your toon spec, auto-equip, and talent choices in Honorbuddy.\n\nIf you have money - set food and drinks as well\n\nYou may also want to set a mail recipient! (Settings and Tools Button)" />
+			</If>
+			<If Condition="Me.IsHorde">
+				<If Condition="Me.Race == WoWRace.BloodElf" >
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[H - Quest] 1-58 [Kick]\[H - Quest] 1-12 [Kick]\[H - Quest] Blood Elf 1-5 [Kick]" RememberProfile="true" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Goblin" >
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[H - Quest] 1-58 [Kick]\[H - Quest] 1-12 [Kick]\[H - Quest] Goblin 1-12 [Kick]" RememberProfile="true" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Orc" >
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[H - Quest] 1-58 [Kick]\[H - Quest] 1-12 [Kick]\[H - Quest] Orc 1-5 [Kick]" RememberProfile="true" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Pandaren">
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[H - Quest] 1-58 [Kick]\[H - Quest] 1-12 [Kick]\[H - Quest] Panda 1-12 [Kick]" RememberProfile="true" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Troll">
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[H - Quest] 1-58 [Kick]\[H - Quest] 1-12 [Kick]\[H - Quest] Troll 1-5 [Kick]" RememberProfile="true" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Tauren" >
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[H - Quest] 1-58 [Kick]\[H - Quest] 1-12 [Kick]\[H - Quest] Tauren 1-5 [Kick]" RememberProfile="true" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Undead" >
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[H - Quest] 1-58 [Kick]\[H - Quest] 1-12 [Kick]\[H - Quest] Undead 1-5 [Kick]" RememberProfile="true" />
+				</If>
+			</If>
+			<If Condition="Me.IsAlliance">
+				<If Condition="Me.Race == WoWRace.Draenei">
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[A - Quest] 1-58 [Kick]\[A - Quest] 1-12 [Kick]\[A - Quest] Draenei 1-5 [Kick]" RememberProfile="True" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Dwarf">
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[A - Quest] 1-58 [Kick]\[A - Quest] 1-12 [Kick]\[A - Quest] Dwarf 1-5 [Kick]" RememberProfile="True" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Gnome">
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[A - Quest] 1-58 [Kick]\[A - Quest] 1-12 [Kick]\[A - Quest] Gnome 1-5 [Kick]" RememberProfile="True" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Human">
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[A - Quest] 1-58 [Kick]\[A - Quest] 1-12 [Kick]\[A - Quest] Human 1-5 [Kick]" RememberProfile="True" />
+				</If>
+				<If Condition="Me.Race == WoWRace.NightElf">
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[A - Quest] 1-58 [Kick]\[A - Quest] 1-12 [Kick]\[A - Quest] Night Elf 1-5 [Kick]" RememberProfile="True" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Pandaren">
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[A - Quest] 1-58 [Kick]\[A - Quest] 1-12 [Kick]\[A - Quest] Panda 1-12 [Kick]" RememberProfile="True" />
+				</If>
+				<If Condition="Me.Race == WoWRace.Worgen" >
+					<CustomBehavior File="LoadProfile" ProfileName="Classic\[A - Quest] 1-58 [Kick]\[A - Quest] 1-12 [Kick]\[A - Quest] Worgen 1-12 [Kick]" RememberProfile="True" />
+				</If>
+			</If>
+		</If>
+		
+		<!-- 12-80 profiles -->
+		<If Condition="Me.IsHorde">
+			<If Condition="Me.Level &lt; 58">
+				<CustomBehavior File="LoadProfile" ProfileName="Classic\[H - Quest] 1-58 [Kick]\[H - Quest] 12-58 K-EK [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &lt; 68">
+				<CustomBehavior File="LoadProfile" ProfileName="BC\[Fly][H - Quest] BC 58-70 [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &lt; 80">
+				<CustomBehavior File="LoadProfile" ProfileName="LK\[Fly][H - Quest] LK 68-80 [Kick]" RememberProfile="True" />
+			</If>
+		</If>
+		<If Condition="Me.IsAlliance">
+			<If Condition="Me.Level &lt; 58">
+				<CustomBehavior File="LoadProfile" ProfileName="Classic\[A - Quest] 1-58 [Kick]\[A - Quest] EK 12-58 [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &lt; 68">
+				<CustomBehavior File="LoadProfile" ProfileName="BC\[Fly][A - Quest] BC 58-70 [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &lt; 80">
+				<CustomBehavior File="LoadProfile" ProfileName="LK\[Fly][A - Quest] LK 68-80 [Kick]" RememberProfile="True" />
+			</If>
+		</If>
+		
+		<!-- Cataclysm profiles -->
+		<If Condition="Me.Level &lt; 85">
+			<If Condition="Me.ZoneId == 616">
+				<CustomBehavior File="LoadProfile" ProfileName="Cata\[Fly][N - Quest] Hyjal 80-82 [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.ZoneId == 5042 &amp;&amp; Me.Level &gt;= 82">
+				<CustomBehavior File="LoadProfile" ProfileName="Cata\[Fly][N - Quest] Deepholm 82-84 [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.ZoneId == 5034 &amp;&amp; Me.Level &gt;= 83">
+				<CustomBehavior File="LoadProfile" ProfileName="Cata\[Fly][N - Quest] Uldum 83-85 [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.ZoneId == 4922 &amp;&amp; Me.Level &gt;= 84">
+				<If Condition="Me.IsHorde">
+					<CustomBehavior File="LoadProfile" ProfileName="Cata\[Fly][H - Quest] Twilight Highlands 84-85 [Kick]" RememberProfile="True" />
+				</If>
+				<If Condition="Me.IsAlliance">
+					<CustomBehavior File="LoadProfile" ProfileName="Cata\[Fly][A - Quest] Twilight Highlands 84-85 [Kick]" RememberProfile="True" />
+				</If>
+			</If>
+			<If Condition="Me.Level &gt;= 84">
+				<If Condition="Me.IsHorde">
+					<CustomBehavior File="LoadProfile" ProfileName="Cata\[Fly][H - Quest] Twilight Highlands 84-85 [Kick]" RememberProfile="True" />
+				</If>
+				<If Condition="Me.IsAlliance">
+					<CustomBehavior File="LoadProfile" ProfileName="Cata\[Fly][A - Quest] Twilight Highlands 84-85 [Kick]" RememberProfile="True" />
+				</If>
+			</If>
+			<If Condition="Me.Level &gt;= 83">
+				<CustomBehavior File="LoadProfile" ProfileName="Cata\[Fly][N - Quest] Uldum 83-85 [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 82">
+				<CustomBehavior File="LoadProfile" ProfileName="Cata\[Fly][N - Quest] Deepholm 82-84 [Kick]" RememberProfile="True" />
+			</If>
+			<CustomBehavior File="LoadProfile" ProfileName="Cata\[Fly][N - Quest] Hyjal 80-82 [Kick]" RememberProfile="True" />
+		</If>
+		
+		<!-- Pandaria profiles -->
+		<If Condition="Me.Level &lt; 90">
+			<If Condition="Me.ZoneId == 5785">
+				<If Condition="Me.IsHorde">
+					<CustomBehavior File="LoadProfile" ProfileName="MoP\[H - Quest] 85-86 The Jade Forest [Kick]" RememberProfile="True" />
+				</If>
+				<If Condition="Me.IsAlliance">
+					<CustomBehavior File="LoadProfile" ProfileName="MoP\[A - Quest] 85-86 The Jade Forest [Kick]" RememberProfile="True" />
+				</If>
+			</If>
+			<If Condition="Me.ZoneId == 5805 &amp;&amp; Me.Level &gt;= 86">
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[[N - Quest] 86-87 Valley of the Four Winds [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.ZoneId == 6134 &amp;&amp; Me.Level &gt;= 87">
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[N - Quest] 87-88 Krasarang Wilds [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.ZoneId == 5841 &amp;&amp; Me.Level &gt;= 88">
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[N - Quest] 88-89 Kun-Lai Summit [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.ZoneId == 5842 &amp;&amp; Me.Level &gt;= 89">
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[N - Quest] 89-90 Townlong Steppes [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 89">
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[N - Quest] 89-90 Townlong Steppes [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 88">
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[N - Quest] 88-89 Kun-Lai Summit [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 87">
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[N - Quest] 87-88 Krasarang Wilds [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 86">
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[[N - Quest] 86-87 Valley of the Four Winds [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.IsHorde">
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[H - Quest] 85-86 The Jade Forest [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.IsAlliance">
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[A - Quest] 85-86 The Jade Forest [Kick]" RememberProfile="True" />
+			</If>
+		</If>
+		
+				<!-- Level 90-100 profiles -->
+		<If Condition="Me.IsHorde">
+			<If Condition="Me.Level &gt;= 90">
+				<CustomBehavior File="LoadProfile" ProfileName="WoD\[H - Quest] 90-92 Frostfire Ridge [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 92">
+				<CustomBehavior File="LoadProfile" ProfileName="WoD\[H - Quest] 92-94 Gorgrond [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 94">
+				<CustomBehavior File="LoadProfile" ProfileName="WoD\[H - Quest] 94-96 Talador [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 96">
+				<CustomBehavior File="LoadProfile" ProfileName="WoD\[H - Quest] 96-98 Arak [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 98">
+				<CustomBehavior File="LoadProfile" ProfileName="WoD\[H - Quest] 98-100 Nagrand [Kick]" RememberProfile="True" />
+			</If>
+		</If>
+		<If Condition="Me.IsAlliance">
+			<If Condition="Me.Level &gt;= 90">
+				<CustomBehavior File="LoadProfile" ProfileName="WoD\[A - Quest] 90-92 SMV [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 92">
+				<CustomBehavior File="LoadProfile" ProfileName="WoD\[A - Quest] 92-94 Gorgrond [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 94">
+				<CustomBehavior File="LoadProfile" ProfileName="WoD\[A - Quest] 94-96 Talador [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 96">
+				<CustomBehavior File="LoadProfile" ProfileName="WoD\[A - Quest] 96-98 Arak [Kick]" RememberProfile="True" />
+			</If>
+			<If Condition="Me.Level &gt;= 98">
+				<CustomBehavior File="LoadProfile" ProfileName="WoD\[A - Quest] 98-100 Nagrand [Kick]" RememberProfile="True" />
+			</If>
+		</If>	
+    </QuestOrder>
+</HBProfile>

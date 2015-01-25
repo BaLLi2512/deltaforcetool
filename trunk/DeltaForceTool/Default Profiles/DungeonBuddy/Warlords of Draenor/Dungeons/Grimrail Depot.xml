@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>Grimrail Depot</Name>
+  <DungeonId>822</DungeonId>
+  <BossEncounters>
+    <Boss isFinal="false" entry="77803" name="Railmaster Rocketspark" 
+          killOrder="1" stage="1" step="1" optional="false" X="1684.349" Y="1547.563" Z="7.714124"/>
+    
+    <Boss isFinal="false" entry="77816" name="Borka the Brute"
+          killOrder="1" stage="1" step="1" optional="false" X="1684.349" Y="1547.563" Z="7.714124"/>
+    
+    <Boss isFinal="false" entry="79545" name="Nitrogg Thundertower" 
+          killOrder="2" stage="2" step="2" optional="false" X="1647.069" Y="1779.278" Z="107.6347"/>
+
+    <Boss isFinal="false" entry="80005" name="Skylord Tovra" 
+          killOrder="3" stage="2" step="3" optional="false" X="1648.766" Y="2000.554" Z="107.7181"/>
+    
+  </BossEncounters>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

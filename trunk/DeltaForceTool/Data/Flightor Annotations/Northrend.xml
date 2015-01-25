@@ -1,0 +1,77 @@
+<FlightorAnnotations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="FlightorAnnotations.xsd">
+  <IndoorAreas>
+    <PolygonIndoorArea MinZ="645" MaxZ="670" Name="The Violet Hold">
+      <Entrance Dismount="True" Radius="3" X="5691.816" Y="501.1288" Z="652.6663" />
+      <Points>
+        <Point X="5677.298" Y="477.4375" />
+        <Point X="5672.103" Y="481.6425" />
+        <Point X="5688.322" Y="503.1978" />
+        <Point X="5694.691" Y="498.0159" />
+      </Points>
+    </PolygonIndoorArea>
+    <PolygonIndoorArea MinZ="-27" MaxZ="60" Name="Aziol Nerub">
+      <Entrance Dismount="True" Radius="3"  X="3712.845" Y="2152.734" Z="52.597" />
+      <Points>
+        <Point X="3608.017" Y="2034.498" />
+        <Point X="3667.318" Y="2016.641" />
+        <Point X="3813.745" Y="2005.552" />
+        <Point X="3823.357" Y="2032.111" />
+        <Point X="3783.699" Y="2207.714" />
+        <Point X="3498.789" Y="2244.07" />
+      </Points>
+    </PolygonIndoorArea>
+    <TubularIndoorArea Radius="35" Name="DrakTharon Keep" >
+      <Entrance Dismount="True" Radius="2" X="4885.717" Y="-2047.122" Z="250.8749" />
+      <Points>
+        <Point X="4864.613" Y="-2046.573" Z="249.2894" />
+        <Point X="4822.966" Y="-2046.559" Z="250.9451" />
+        <Point X="4790.091" Y="-2046.187" Z="230.7682" />
+        <Point X="4757.865" Y="-2045.46" Z="230.2451" />
+        <Point X="4662.255" Y="-2045.064" Z="185.0201" />
+        <Point X="4647.735" Y="-2030.072" Z="184.8436" />
+        <Point X="4585.941" Y="-2033.311" Z="185.2451" />
+        <Point X="4592.789" Y="-2056.092" Z="185.1835" />
+        <Point X="4644.17" Y="-2049.223" Z="184.8107" />
+      </Points>
+    </TubularIndoorArea>
+    <TubularIndoorArea Radius="25" Name="DrakTharon Keep" >
+      <Entrance Dismount="True" Radius="2" X="4885.717" Y="-2047.122" Z="250.8749" />
+      <EntrancePath>
+        <Waypoint Radius="3" X="1075.672" Y="-4915.579" Z="51.76102" Dismount="False" />
+        <Waypoint Radius="3" X="1101.731" Y="-4903.69" Z="41.24874" Dismount="True" />
+      </EntrancePath>
+      <Points>
+        <Point X="1112.145" Y="-4900.608" Z="41.24969" />
+        <Point X="1212.232" Y="-4868.12" Z="41.24969" />
+        <Point X="1249.625" Y="-4953.336" Z="35.89624" />
+        <Point X="1233.912" Y="-4961.122" Z="35.89624" />
+        <Point X="1233.912" Y="-4961.122" Z="35.89624" />
+        <Point X="1220.818" Y="-4937.317" Z="35.89696" />
+        <Point X="1183.76" Y="-4949.489" Z="35.89593" />
+        <Point X="1218.231" Y="-5011.364" Z="37.6679" />
+        <Point X="1221.401" Y="-4928.722" Z="35.89574" />
+        <Point X="1203.738" Y="-4879.35" Z="41.24824" />
+      </Points>
+    </TubularIndoorArea>
+    <CylinderIndoorArea Height="55" Name="The Nexus - Lower portion" Radius="60" X="3869.761" Y="6984.188" Z="67">
+      <Entrance Dismount="True" Radius="2" X="3794.518" Y="6965.827" Z="103.9051" />
+    </CylinderIndoorArea>
+    
+    <CylinderIndoorArea Height="74" Name="The Nexus - Upper portion" Radius="60" X="3869.761" Y="6984.188" Z="121">
+      <Entrance Dismount="True" Radius="3" X="3873.137" Y="6926.384" Z="161.3269" />
+    </CylinderIndoorArea>
+    
+    <PolygonIndoorArea MinZ="-78" MaxZ="-72" Name="Tent at Nesingwary Base Camp">
+      <Entrance Dismount="True" Radius="2" X="5551.562" Y="5740.471" Z="-75.65353" />
+      <Points>
+        <Point X="5552.442" Y="5735.756" />
+        <Point X="5546.108" Y="5739.568" />
+        <Point X="5541.821" Y="5733.014" />
+        <Point X="5548.236" Y="5729.116" />
+      </Points>
+    </PolygonIndoorArea>
+  </IndoorAreas>
+  
+</FlightorAnnotations>
+

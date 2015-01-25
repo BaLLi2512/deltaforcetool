@@ -1,0 +1,18 @@
+Instructions on how to use:
+ 
+1) Start WoW.exe in 32bit-Modus, log in your Account and enter world with character
+2) run HonorBuddy_start.cmd, 
+   wait a few seconds till CDPatcher start, pick 'Use Public Auth' and MINIMIZE it
+   DONT CLOSE IT! 
+   		
+	ATTENTION: This NOT a virus/trojaner!
+
+3) If needed enter this Login Code: 1FWFZ6JTUNS33QOA79XZ
+4) Load Profile or something else
+5) Enjoy!
+
+	ATTENTION: If you are using HBRelog to start WoW and HB you have to configure it first!
+
+ 
+NOTES: Do not save CDPatcher in the Honorbuddy folder
+NOTES: Don't move/rename/delete the *.cmd-files!!!

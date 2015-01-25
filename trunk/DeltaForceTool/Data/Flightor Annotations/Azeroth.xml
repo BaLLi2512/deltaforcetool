@@ -1,0 +1,225 @@
+<FlightorAnnotations  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FlightorAnnotations.xsd" >
+  <IndoorAreas>
+    <SphericalIndoorArea Name="Ironforge" Radius="320" X="-4817.484" Y="-1080.553" Z="500.1564">
+      <EntrancePath>
+        <Waypoint Radius="6" Dismount="False" X="-5044.77" Y="-803.3735" Z="540.7193" />
+        <Waypoint Radius="6" Dismount="True" X="-5027.577" Y="-825.3568" Z="495.2648" />
+      </EntrancePath>
+    </SphericalIndoorArea>
+
+    <SphericalIndoorArea Name="Maw of Madness" Radius="145" X="-2661.556" Y="-4974.207" Z="-107.6536">
+      <EntrancePath>
+        <Waypoint Radius="10" Dismount="False" X="-2660.1" Y="-4973.951" Z="218.3982" />
+        <Waypoint Radius="10" Dismount="False" X="-2672.908" Y="-4991.931" Z="-80.08304" />
+      </EntrancePath>
+    </SphericalIndoorArea>
+
+    <BoundingBoxIndoorArea Name="Undercity">
+      <Entrance Radius="4" Dismount="True" X="1677.719" Y="237.1559" Z="62.59557" />
+      <Min X="1238" Y="17" Z="-100"/>
+      <Max X="1825" Y="491" Z="50"/>
+    </BoundingBoxIndoorArea>
+
+    <TubularIndoorArea Name="Wizard's Sanctum - Mage Room, Stormwind" Radius="20">
+      <Entrance Dismount="True" Radius="1" X="-8999.305" Y="862.1638" Z="129.3067" />
+      <Points>
+        <Point X="-8990.807" Y="851.8694" Z="29.6206" />
+        <Point X="-9016.097" Y="884.3123" Z="29.6206" />
+      </Points>
+    </TubularIndoorArea>
+
+    <CylinderIndoorArea Name="Wizard's Sanctum - Tower, Stormwind" Height="35" Radius="10" X="-9007.58" Y="871.8698" Z="125" >
+      <Entrance Dismount="True" Radius="1" X="-8999.305" Y="862.1638" Z="129.3067" />
+    </CylinderIndoorArea>
+
+    <PolygonIndoorArea Name="Stockades Entrance, Stormwind" MinZ="80" MaxZ="115">
+      <Entrance Dismount="True" Radius="3" X="-8807.978" Y="871.1384" Z="99.15288" />
+      <Points>
+        <Point X="-8806.098" Y="814.2101" />
+        <Point X="-8801.433" Y="864.9894" />
+        <Point X="-8747.987" Y="857.7549" />
+        <Point X="-8754.398" Y="802.3257" />   
+      </Points>
+    </PolygonIndoorArea>
+
+    <CompositeIndoorArea Name="Blackrock Mountain, Searing Gorge">
+      <Entrance Dismount="True" Radius="3" X="-7363.649" Y="-1105.169" Z="277.8395" />
+      <IndoorAreas>
+        <CylinderIndoorArea Name="Blackrock Mountain, Searing Gorge" Height="200" Radius="206" X="-7581.888" Y="-1113.42" Z="140" />
+        <BoundingBoxIndoorArea Name="Tunnel leading to Blackrock Depths">
+          <Min X="-7488" Y="-1054" Z="150"/>
+          <Max X="-7172" Y="-862" Z="215"/>
+        </BoundingBoxIndoorArea>
+        <BoundingBoxIndoorArea Name="Rooms leading to Blackrock Spire">
+          <Min  X="-7530" Y="-1420" Z="250"/>
+          <Max X="-7475" Y="-1240" Z="330" />
+        </BoundingBoxIndoorArea>
+      </IndoorAreas>
+    </CompositeIndoorArea>
+
+	<CompositeIndoorArea Name="Gnomeregan, Dun Morogh">
+		<Entrance Dismount="True" Radius="3" X="-5183.323" Y="598.8295" Z="408.6216" />
+		<IndoorAreas>
+			<BoundingBoxIndoorArea Name="Gnomeregan, Dun Morogh">
+				<Min X="-5210" Y="622" Z="260"/>
+				<Max X="-4830" Y="925" Z="385"/>
+			</BoundingBoxIndoorArea>
+			<BoundingBoxIndoorArea Name="Gnomeregan, Dun Morogh, Elevator shaft">
+				<Min X="-5210" Y="622" Z="260"/>
+				<Max X="-5130" Y="700" Z="415"/>
+			</BoundingBoxIndoorArea>
+		</IndoorAreas>
+	</CompositeIndoorArea>
+
+    <BoundingBoxIndoorArea Name="Shadowfang Keep, Silverpine Forest">
+      <Entrance Dismount="False" Radius="2" X="-234.6091" Y="1563.727" Z="79.13452" />
+      <Min X="-236" Y="1567" Z="75"/>
+      <Max X="-228" Y="1573" Z="83"/>
+    </BoundingBoxIndoorArea>
+
+    <PolygonIndoorArea Name="Stratholme - Main Gate, Eastern Plaguelands" MinZ="135" MaxZ="160">
+      <Entrance Dismount="False" Radius="3" X="3389.76" Y="-3343.351" Z="150.7698" />
+      <Points>
+        <Point X="3400.575" Y="-3354.479" />
+        <Point X="3383.573" Y="-3354.552" />
+        <Point X="3383.369" Y="-3404.844" />
+        <Point X="3400.599" Y="-3403.639" />
+      </Points>
+    </PolygonIndoorArea>
+
+    <TubularIndoorArea Name="Stratholme - Services Entrance, Eastern Plaguelands" Radius="12">
+      <Entrance Dismount="True" Radius="4" X="3175.246" Y="-4039.454" Z="105.5037" />
+      <Points>
+        <Point X="3191.129" Y="-4039.367" Z="107.9913" />
+        <Point X="3227.693" Y="-4036.908" Z="108.4224" />
+        <Point X="3234.947" Y="-4051.437" Z="108.4508" />
+      </Points>
+    </TubularIndoorArea>
+
+    <CompositeIndoorArea Name="Scarlet Monastery, Tirisfal Glades">
+      <Entrance Dismount="True" Radius="1" X="2830.349" Y="-697.6581" Z="139.3304" />
+      <IndoorAreas>
+        <PolygonIndoorArea Name="Main Building" MinZ="150" MaxZ="175">
+          <Points>
+            <Point X="2831.875" Y="-742.3807" />
+            <Point X="2856.728" Y="-800.0356" />
+            <Point X="2843.927" Y="-807.696" />
+            <Point X="2871.244" Y="-861.6374" />
+            <Point X="2814.59" Y="-889.8236" />
+            <Point X="2830.019" Y="-933.2349" />
+            <Point X="3013.909" Y="-856.7709" />
+            <Point X="2994.734" Y="-811.2543" />
+            <Point X="2983.042" Y="-810.5707" />
+            <Point X="2963.199" Y="-768.8443" />
+            <Point X="2912.033" Y="-782.6949" />
+            <Point X="2886.348" Y="-721.2866" />
+          </Points>
+        </PolygonIndoorArea>
+        <TubularIndoorArea Name="Narrow entrance passage" Radius="10">
+          <Points>
+            <Point X="2842.915" Y="-691.6458" Z="139.3305" />
+            <Point X="2863.248" Y="-740.9236" Z="160.3312" />
+            <Point X="2871.039" Y="-759.4175" Z="160.3312" />
+          </Points>
+        </TubularIndoorArea>
+      </IndoorAreas>
+    </CompositeIndoorArea>
+
+    <PolygonIndoorArea Name="Scholomance, Western Plaguelands" MinZ="80" MaxZ="115">
+      <Entrance Dismount="True" Radius="3" X="1256.606" Y="-2585.296" Z="92.88664" />
+      <Points>
+        <Point X="1274.75" Y="-2603.768" />
+        <Point X="1313.88" Y="-2582.409" />
+        <Point X="1289.795" Y="-2534.357" />
+        <Point X="1253.334" Y="-2561.314" />
+      </Points>
+    </PolygonIndoorArea>
+
+    <CompositeIndoorArea Name="Deadmines, Westfall">
+      <Entrance Dismount="True" Radius="2" X="-11069.2" Y="1528.49" Z="43.23787" />
+      <IndoorAreas>
+        <PolygonIndoorArea Name="Main Tunnel Network" MinZ="0" MaxZ="30">
+          <Points>
+            <Point X="-11065.82" Y="1491.778" />
+            <Point X="-11216.74" Y="1449.994" />
+            <Point X="-11216.74" Y="1449.994" />
+            <Point X="-11270.34" Y="1701.299" />
+            <Point X="-11153.76" Y="1706.71" />
+            <Point X="-11064.3" Y="1538.748" />
+          </Points>
+        </PolygonIndoorArea>
+        <PolygonIndoorArea Name="Building at entrance" MinZ="30" MaxZ="55">
+          <Points>
+            <Point X="-11064.32" Y="1523.151" />
+            <Point X="-11074.38" Y="1523.255" />
+            <Point X="-11075.73" Y="1537.389" />
+            <Point X="-11092.91" Y="1537.514" />
+            <Point X="-11094.68" Y="1523.397" />
+            <Point X="-11104.6" Y="1523.677" />
+            <Point X="-11104.38" Y="1510.195" />
+            <Point X="-11116.92" Y="1502.188" />
+            <Point X="-11118.34" Y="1491.019" />
+            <Point X="-11103.41" Y="1478.7" />
+            <Point X="-11092.07" Y="1483.405" />
+            <Point X="-11087.38" Y="1493.203" />
+            <Point X="-11066.38" Y="1493.35" />
+          </Points>
+        </PolygonIndoorArea>
+        <TubularIndoorArea Name="Passage leading from building down to main tunnel network" Radius="12">
+          <Points>
+            <Point X="-11108.65" Y="1485.362" Z="32.2705" />
+            <Point X="-11127.64" Y="1479.874" Z="34.29446" />
+            <Point X="-11134.05" Y="1491.724" Z="34.96641" />
+            <Point X="-11125.51" Y="1507.042" Z="35.94508" />
+            <Point X="-11104.53" Y="1522.545" Z="30.39407" />
+            <Point X="-11093.57" Y="1513.702" Z="29.289" />
+            <Point X="-11110.93" Y="1499.146" Z="24.11321" />
+          </Points>
+        </TubularIndoorArea>
+      </IndoorAreas>
+    </CompositeIndoorArea>
+
+    <PolygonIndoorArea Name="Uldaman, Badlands" MinZ="190" MaxZ="267">
+      <Entrance Dismount="True" Radius="3" X="-6093.957" Y="-3191.817" Z="255.5117" />
+      <Points>
+        <Point X="-6083.613" Y="-3189.855" />
+        <Point X="-6030.554" Y="-3140.627" />
+        <Point X="-6056.689" Y="-2928.644" />
+        <Point X="-6140.15" Y="-2848.786"  />
+        <Point X="-6328.339" Y="-2926.468" />
+        <Point X="-6107.842" Y="-3185.216" />
+      </Points>
+    </PolygonIndoorArea>
+
+    <CompositeIndoorArea Name="Sunken Temple, Swamp of Sorrows">
+      <EntrancePath>
+        <Waypoint Dismount="False" Radius="3" X="-10475.95" Y="-3818.201" Z="44.11561" />
+        <Waypoint  Dismount="True" Radius="4" X="-10441.04" Y="-3826.067" Z="17.86992" />
+      </EntrancePath>
+      <IndoorAreas>
+        <PolygonIndoorArea Name="Main Tunnel Network" MinZ="-120" MaxZ="-30">
+          <Points>
+            <Point X="-10556.62" Y="-3895.668" />
+            <Point X="-10415.92" Y="-4105.243" />
+            <Point X="-10083.21" Y="-4116.22"  />
+            <Point X="-10061.84" Y="-3938.989" />
+            <Point X="-10322.79" Y="-3752.615" />
+            <Point X="-10508.25" Y="-3705.065" />
+          </Points>
+        </PolygonIndoorArea>
+        <TubularIndoorArea Name="Passage to main tunnel network" Radius="12">
+          <Points>
+            <Point X="-10429.58" Y="-3828.859" Z="17.84485" />
+            <Point X="-10404.44" Y="-3833.494" Z="-3.299154" />
+            <Point X="-10405.46" Y="-3819.285" Z="-3.310726" />
+            <Point X="-10433.66" Y="-3814.887" Z="-24.45448" />
+            <Point X="-10435.13" Y="-3826.835" Z="-24.45447" />
+            <Point X="-10397.97" Y="-3836.927" Z="-53.64489" />
+          </Points>
+        </TubularIndoorArea>
+      </IndoorAreas>
+    </CompositeIndoorArea>
+   
+  </IndoorAreas>
+</FlightorAnnotations>
+

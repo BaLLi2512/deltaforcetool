@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>Coren Direbrew</Name>
+  <DungeonId>287</DungeonId>
+  <BossEncounters>
+    <Boss isFinal="true" entry="23872" name="Coren Direbrew" killOrder="1" optional="false" X="891.4894" Y="-129.186" Z="-49.74266"/>
+  </BossEncounters>
+  <Blackspots>
+    <!-- Temp Blackspot for when I come acrossed them
+    <Blackspot X="-101.3791" Y="-703.8368" Z="9.095623" Radius="3.363508" />-->
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

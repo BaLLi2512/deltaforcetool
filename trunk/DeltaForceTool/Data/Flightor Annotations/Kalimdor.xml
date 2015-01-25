@@ -1,0 +1,203 @@
+<FlightorAnnotations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="FlightorAnnotations.xsd">
+  <IndoorAreas>
+    <BoundingBoxIndoorArea Name="Chamber of the Stars, Uldum">
+      <EntrancePath>
+        <Waypoint Radius="5" Dismount="False" X="-9407.834" Y="-1549.954" Z="85.606" />
+        <Waypoint Radius="5" Dismount="False" X="-9386.364" Y="-1551.622" Z="35.66992" />
+        <Waypoint Radius="5" Dismount="False" X="-9298.51" Y="-1552.682" Z="-8.437338" />
+      </EntrancePath>
+      <Min X="-9464" Y="-1743" Z="-185" />
+      <Max X="-9060" Y="-1362" Z="30" />
+    </BoundingBoxIndoorArea>
+
+    <PolygonIndoorArea Name="Cleft of Shadow, Orgrimmar" MinZ="-20" MaxZ="58">
+      <EntrancePath>
+        <Waypoint Radius="4" Dismount="False" X="1894.44" Y="-4486.905" Z="37.27156" />
+        <Waypoint Radius="4" Dismount="False" X="1895.788" Y="-4422.331" Z="23.89666" />
+        <Waypoint Radius="4" Dismount="False" X="1837.659" Y="-4405.713" Z="13.2142" />
+      </EntrancePath>
+      <Points>
+        <Point X="1795.697" Y="-4244.464" />
+        <Point X="1741.503" Y="-4270.304" />
+        <Point X="1805.469" Y="-4259.38" />
+        <Point X="1848.773" Y="-4304.157" />
+        <Point X="1861.415" Y="-4378.092" />
+        <Point X="1904.033" Y="-4422.139" />
+        <Point X="1900.007" Y="-4465.043" />
+        <Point X="1880.793" Y="-4461.333" />
+        <Point X="1784.186" Y="-4407.028" />
+        <Point X="1750.849" Y="-4358.539" />
+        <Point X="1714.536" Y="-4302.675" />
+      </Points>
+    </PolygonIndoorArea>
+
+    <BoundingBoxIndoorArea Name="The Pools of Vision, Thunder Bluff">
+      <Entrance Radius="3" Dismount="True" X="-1057.867" Y="201.7361" Z="109.0547" />
+      <Min X="-1058" Y="212" Z="80" />
+      <Max X="-933" Y="302" Z="130" />
+    </BoundingBoxIndoorArea>
+
+    <CompositeIndoorArea Name="Caverns of Time, Tanaris">
+      <Entrance Radius="4" Dismount="True" X="-8172.384" Y="-4739.936" Z="33.73746" />
+      <IndoorAreas>
+        <CylinderIndoorArea Name="Huge circular room" Radius="360" Height="160" X="-8478.542" Y="-4312.682" Z="-250.4405" />
+        <TubularIndoorArea Name="Tunnel leading down to the bottom" Radius="30">
+          <Points>
+            <Point X="-8169.844" Y="-4772.761" Z="48.51723" />
+            <Point X="-8175.798" Y="-4878.218" Z="40.51352" />
+            <Point X="-8105.956" Y="-4890.706" Z="28.76185" />
+            <Point X="-8086.805" Y="-4849.157" Z="3.689996" />
+            <Point X="-8117.825" Y="-4837.189" Z="-9.2309" />
+            <Point X="-8151.89" Y="-4878.44" Z="-18.84945" />
+            <Point X="-8119.603" Y="-4914.738" Z="-31.95043" />
+            <Point X="-8084.69" Y="-4903.573" Z="-40.83004" />
+            <Point X="-8070.534" Y="-4847.563" Z="-60.33325" />
+            <Point X="-8103.928" Y="-4709.794" Z="-89.46132" />
+            <Point X="-8298.865" Y="-4591.618" Z="-149.4713" />
+            <Point X="-8451.765" Y="-4658.482" Z="-183.9278" />
+            <Point X="-8514.208" Y="-4612.325" Z="-188.8601" />
+            <Point X="-8506.207" Y="-4505.397" Z="-187.246" />
+          </Points>
+        </TubularIndoorArea>
+      </IndoorAreas>
+    </CompositeIndoorArea>
+
+    <PolygonIndoorArea Name="Blackfathom Depts, Kalimdor" MinZ="-100" MaxZ="0">
+      <Entrance Radius="4" Dismount="True" X="4107.5" Y="892.4908" Z="9.812252" />
+      <Points>
+        <Point X="4115.662" Y="861.1396" />
+        <Point X="4259.892" Y="648.1589" />
+        <Point X="4360.732" Y="810.7197" />
+        <Point X="4358.352" Y="847.7819" />
+        <Point X="4354.56" Y="892.0189" />
+        <Point X="4329.21" Y="955.3192" />
+        <Point X="4294.348" Y="995.2427" />
+        <Point X="4168.433" Y="965.034" />
+        <Point X="4149.836" Y="948.6846" />
+        <Point X="4111.583" Y="911.8986" />
+      </Points>
+    </PolygonIndoorArea>
+
+    <BoundingBoxIndoorArea Name="West Dire Maul Entrance, Feralas">
+      <EntrancePath>
+        <Waypoint  Radius="5" Dismount="False" X="-3785.502" Y="1209.607" Z="183.7707" />
+        <Waypoint  Radius="5" Dismount="False" X="-3791.217" Y="1239.443" Z="182.2193" />
+      </EntrancePath>
+      <Min X="-3843" Y="1234" Z="155" />
+      <Max X="-3736" Y="1261" Z="207" />
+    </BoundingBoxIndoorArea>
+
+    <BoundingBoxIndoorArea Name="North Dire Maul Entrance, Feralas">
+      <EntrancePath>
+        <Waypoint  Radius="5" Dismount="False" X="-3564.505" Y="1121.708" Z="191.5933" />
+        <Waypoint  Radius="5" Dismount="False" X="-3528.342" Y="1126.208" Z="171.88" />
+      </EntrancePath>
+      <Min X="-3539" Y="1070" Z="154" />
+      <Max X="-3510" Y="1180" Z="207" />
+    </BoundingBoxIndoorArea>
+    
+    <BoundingBoxIndoorArea Name="East Dire Maul Entrance, Feralas">
+      <EntrancePath>
+        <Waypoint  Radius="5" Dismount="False" X="-3794.748" Y="982.1337" Z="181.3861" />
+        <Waypoint  Radius="5" Dismount="False" X="-3791.266" Y="941.7027" Z="169.8502" />
+      </EntrancePath>
+      <Min X="-3847" Y="924" Z="153" />
+      <Max X="-3741" Y="952" Z="207" />
+    </BoundingBoxIndoorArea>
+    
+    <CompositeIndoorArea Name="Maraudon, Desolace">
+      <Entrance Radius="3" Dismount="True" X="-1421.999" Y="2908.935" Z="137.4045" />
+      <IndoorAreas>
+        <TubularIndoorArea Name="Entrance Tunnel" Radius="20">
+          <Points>
+            <Point X="-1426.834" Y="2985.81" Z="133.1582" />
+            <Point X="-1405.41" Y="2982.253" Z="130.0025" />
+            <Point X="-1401.114" Y="2960.604" Z="126.7396" />
+            <Point X="-1444.448" Y="2963.521" Z="123.8944" />
+            <Point X="-1471.425" Y="2953.344" Z="121.5908" />
+            <Point X="-1490.689" Y="2962.447" Z="120.6525" />
+            <Point X="-1468.467" Y="2977.906" Z="116.2723" />
+            <Point X="-1437.672" Y="3001.547" Z="115.2907" />
+            <Point X="-1426.929" Y="2987.793" Z="115.1989" />
+            <Point X="-1398.511" Y="2984.867" Z="106.2906" />
+            <Point X="-1430.505" Y="2976.378" Z="100.3676" />
+            <Point X="-1434.953" Y="2936.56" Z="94.4358" />
+          </Points>
+        </TubularIndoorArea>
+        <PolygonIndoorArea Name="Main underground tunnel network" MinZ="50" MaxZ="105" >
+          <Points>
+            <Point X="-1426.132" Y="2966.018" />
+            <Point X="-1438.79" Y="2967.16" />
+            <Point X="-1540.111" Y="2894.554" />
+            <Point X="-1658.801" Y="2710.367" />
+            <Point X="-1453.639" Y="2563.931" />
+            <Point X="-1351.193" Y="2566.014" />
+            <Point X="-1292.629" Y="2633.951" />
+            <Point X="-1106.413" Y="2935.11" />
+            <Point X="-1141.001" Y="3065.338" />
+            <Point X="-1259.561" Y="3059.815" />
+          </Points>
+        </PolygonIndoorArea>
+      </IndoorAreas>
+    </CompositeIndoorArea>
+  
+    <TubularIndoorArea Name="Razorfen Downs Entrance, Thousand Needles" Radius="15">
+      <EntrancePath>
+        <Waypoint Dismount="False" Radius="3" X="-4643.045" Y="-2483.287" Z="93.3627" />
+        <Waypoint Dismount="False" Radius="3" X="-4648.64" Y="-2501.735" Z="85.3876" />
+      </EntrancePath>
+      <Points>
+        <Point X="-4658.44" Y="-2496.566" Z="89.82938" />
+        <Point X="-4665.682" Y="-2520.024" Z="82.93507" />
+      </Points>
+    </TubularIndoorArea>
+       
+    <TubularIndoorArea Name="Razorfen Krail Entrance, Thousand Needles" Radius="15">
+      <EntrancePath>
+        <Waypoint Dismount="False" Radius="3" X="-4473.923" Y="-1693.145" Z="89.05875" />
+        <Waypoint Dismount="False" Radius="3" X="-4470.164" Y="-1679.504" Z="84.21727" />
+      </EntrancePath>
+      <Points>
+        <Point X="-4464.004" Y="-1665.057" Z="82.07106" />
+        <Point X="-4467.566" Y="-1670.065" Z="84.5459" />
+      </Points>
+    </TubularIndoorArea>
+  
+    <CompositeIndoorArea Name="The Wailing Caverns, Desolace">
+      <Entrance Radius="3" Dismount="True" X="-846.1706" Y="-2031.29" Z="81.03545" />
+      <IndoorAreas>
+        <CylinderIndoorArea Name="Main underground tunnel network" Height="80" Radius="250" X="-654.4436" Y="-2184.673" Z="0" />
+        <TubularIndoorArea Name="Entrance path" Radius="20">
+          <Points>
+            <Point X="-829.0225" Y="-2032.537" Z="80.34334" />
+            <Point X="-795.6339" Y="-2026.27" Z="80.29439" />
+            <Point X="-785.0044" Y="-2032.503" Z="78.67467" />
+            <Point X="-760.4744" Y="-2073.48" Z="71.85881" />
+          </Points>
+        </TubularIndoorArea>
+      </IndoorAreas>
+    </CompositeIndoorArea>
+  
+    <TubularIndoorArea Name="Halls of Origination, Uldum" Radius="20">
+      <EntrancePath>
+        <Waypoint Dismount="False" Radius="6" X="-10181.61" Y="-2033.02" Z="76.22995" />
+        <Waypoint Dismount="True" Radius="4" X="-10183.22" Y="-2006.717" Z="54.84068" />
+      </EntrancePath>
+      <Points>
+        <Point X="-10209.59" Y="-1838.012" Z="20.12688" />
+        <Point X="-10185.42" Y="-1842.234" Z="20.12107" />
+        <Point X="-10184.82" Y="-1899.626" Z="21.06133" />
+        <Point X="-10184.12" Y="-1986.383" Z="54.51173" />
+      </Points>
+    </TubularIndoorArea>
+    
+    <BoundingBoxIndoorArea Name="Lost City of the Tol'vir, Uldum">
+      <Entrance Dismount="False" Radius="5" X="-10672.53" Y="-1304.998" Z="24.04159" />
+      <Min X="-10695" Y="-1313" Z="10" />
+      <Max X="-10685" Y="-1304" Z="28" />
+    </BoundingBoxIndoorArea>
+
+  </IndoorAreas>
+</FlightorAnnotations>
+

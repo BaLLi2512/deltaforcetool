@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassProfile Class="Priest" Specialization="3" Name="Priest - Shadow">
+	<TalentTree>
+		<Talent Tier="1" Index="3" Name="Angelic Bulwark" />
+		<Talent Tier="2" Index="1" Name="Body and Soul" />
+		<Talent Tier="3" Index="2" Name="Mindbender" />
+		<Talent Tier="4" Index="2" Name="Psychic Scream" />
+		<Talent Tier="5" Index="3" Name="Shadowy Insight" />
+		<Talent Tier="6" Index="1" Name="Cascade" />
+		<Talent Tier="7" Index="2" Name="Void Entropy" />
+	</TalentTree>
+	<WeightSet>
+		<DamagePerSecond>0.01</DamagePerSecond>
+		
+		<Intellect>20</Intellect>
+		<Stamina>5</Stamina>
+
+		<Mastery>16</Mastery>
+		<Multistrike>15</Multistrike>
+		<CriticalStrike>13</CriticalStrike>
+		<Haste>12</Haste>
+		<Versatility>11</Versatility>
+		<SpellPower>9</SpellPower>
+
+		<Armor>0.01</Armor>
+	</WeightSet>
+</ClassProfile>

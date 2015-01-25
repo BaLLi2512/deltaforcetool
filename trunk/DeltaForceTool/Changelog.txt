@@ -1,0 +1,29 @@
+New features:
+--------------
+  * QuestBehaviour
+    - DoWhen: Added two tuneables, 'AllowExecutionWhileNotAlive' which will allow activity to execute while not alive if set to 'true' and 'TreeHookName' which specifies which hook DoWhen should attach toEmpty (HB-1770)
+
+Api Changes:
+--------------
+    - Added a game client overlay that is accessible from StyxWoW.Overlay (HB-1500)
+
+Bug fixes:
+--------------
+  * Core
+    - Fixed an issue where Honorbuddy would use more CPU the longer it ran for some bot bases (this affected Dungeonbuddy and BGBuddy) (HB-1829)
+
+  * DungeonBuddy
+    - Dungeonbuddy's Combat Movement behavior will now properly handle the Combat Routine Capability states. (HB-1811)
+
+    - Auchindoun, Vigilant Kaathar. The behavior that uses the Holy Shield to hide from boss has been fixed. (HB-1812)
+
+    - Auchindon, Teron'gor: Tank no-longer waits for followers while moving to boss from entrance (HB-1690)
+
+  * QuestBehaviour
+    - MerchantFrame.MerchantNumItems will now return the correct number of items  (HB-1698)
+
+  * Singular
+    - Seal of Command is now passive and has no expiration time.  Seal logic for Paladins updated to handle this change. Fixed in Singular 4.0.0.4208 (HB-1622)
+
+    - Combat Log Event was logging unwanted event messages for subsequent optimization, but message had player name present.  Resolved in Singular 4.0.0.4267 (HB-1842)
+

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>Auchindoun</Name>
+  <DungeonId>820</DungeonId>
+  <BossEncounters>
+    <Boss isFinal="false" entry="75839" name="Vigilant Kaathar" 
+          killOrder="1" stage="1" step="1" optional="false" X="1911.6" Y="3172.247" Z="30.80045"/>
+
+    <Boss isFinal="false" entry="76177" name="Soulbinder Nyami"
+          killOrder="2" stage="1" step="2" optional="false" X="1649.75" Y="2964.558" Z="35.32"/>
+
+    <Boss isFinal="false" entry="75927" name="Azzakel" 
+          killOrder="3" stage="1" step="3" optional="false" X="1949.14" Y="2720.59" Z="31.4179"/>
+
+    <Boss isFinal="true" entry="77734" name="Teron'gor" 
+          killOrder="4" stage="1" step="4" optional="false" X="1932.995" Y="2972.222" Z="16.84528"/>
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

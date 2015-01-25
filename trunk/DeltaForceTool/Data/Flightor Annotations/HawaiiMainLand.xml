@@ -1,0 +1,62 @@
+<FlightorAnnotations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="FlightorAnnotations.xsd">
+  <IndoorAreas>
+    <PolygonIndoorArea Name="Shrine of Seven Stars, Vale of Eternal Blossoms" MinZ="500" MaxZ="595">
+      <Entrance Radius="5" Dismount="True" X="867.1647" Y="286.5497" Z="503.6779" />
+      <MapIds>
+        <MapId>870</MapId>
+      </MapIds>
+      <Points>
+        <Point X="883.3508" Y="210.22" />
+        <Point X="866.058" Y="239.7144" />
+        <Point X="882.8547" Y="248.932" />
+        <Point X="836.5763" Y="313.1067" />
+        <Point X="817.5612" Y="300.0581" />
+        <Point X="801.1948" Y="329.7116" />
+        <Point X="719.9643" Y="277.6383" />
+        <Point X="709.3317" Y="247.5068" />
+        <Point X="709.6591" Y="236.8182" />
+        <Point X="757.3691" Y="182.5125" />
+        <Point X="813.4033" Y="148.7639" />
+        <Point X="849.3107" Y="175.7495" />
+      </Points>
+    </PolygonIndoorArea>
+    <PolygonIndoorArea Name="Shrine of Two Moons, Vale of Eternal Blossoms" MinZ="460" MaxZ="562">
+      <Entrance Radius="5" Dismount="True" X="1621.832" Y="922.9205" Z="471.1834" />
+      <Points>
+        <Point X="1645.179" Y="985.1611" />
+        <Point X="1655.729" Y="993.8781" />
+        <Point X="1690.494" Y="1013.447" />
+        <Point X="1734.778" Y="1019.935" />
+        <Point X="1763.454" Y="1004.531" />
+        <Point X="1785.095" Y="894.5165" />
+        <Point X="1780.345" Y="884.3621" />
+        <Point X="1756.859" Y="862.8405" />
+        <Point X="1713.498" Y="856.0358" />
+        <Point X="1673.846" Y="865.1812" />
+        <Point X="1661.648" Y="871.6381" />
+        <Point X="1655.426" Y="892.6498" />
+        <Point X="1639.272" Y="893.1205" />
+        <Point X="1626.98" Y="963.5204"  />
+        <Point X="1645.643" Y="963.9862" />
+      </Points>
+    </PolygonIndoorArea>
+    <TubularIndoorArea Radius="15" Name="Hollowed out Tree">
+      <Entrance Dismount="True" Radius="2" X="1412.852" Y="5080.681" Z="121.6373" />
+      <Points>
+        <Point X="1427.34" Y="5084.046" Z="130.8519" />
+        <Point X="1438.915" Y="5087.62" Z="137.524" />
+      </Points>
+    </TubularIndoorArea>
+    <PolygonIndoorArea MinZ="130" MaxZ="155" Name="Stormstout Brewery">
+      <Entrance Dismount="True" Radius="3" X="-688.7615" Y="1268.508" Z="136.111" />
+      <Points>
+        <Point X="-745.9666" Y="1265.137" />
+        <Point X="-696.608" Y="1278.364"  />
+        <Point X="-691.3152" Y="1256.862" />
+        <Point X="-741.1295" Y="1240.979" />
+      </Points>
+    </PolygonIndoorArea>
+    
+  </IndoorAreas>
+</FlightorAnnotations>

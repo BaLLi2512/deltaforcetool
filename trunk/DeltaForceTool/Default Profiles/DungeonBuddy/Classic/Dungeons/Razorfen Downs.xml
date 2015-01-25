@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DungeonBuddyProfile>
+  <Name>Razorfen Downs</Name>
+  <DungeonId>20</DungeonId>
+  <BossEncounters>
+    <!-- Use the Gong at X="2550.492" Y="856.8027" Z="51.24283" /> 3 times (2 waves, 1 boss)   -->
+	<Boss isFinal="false" entry="74412" name="Aarux" 
+		  killOrder="1" step="1" optional="false" X="2541.839" Y="858.3946" Z="50.76319"/>
+
+	<Boss isFinal="false" entry="74347" name="Mordresh Fire Eye"
+		killOrder="2" step="2" optional="false" X="2463.957" Y="676.2083" Z="63.75203"/>
+	  
+	<Boss isFinal="false" entry="74435" name="Mushlump"
+		killOrder="3" step="3" optional="false" X="2437.021" Y="1037.589" Z="24.77994"/>
+
+	<Boss isFinal="false" entry="74875" name="Death Speaker Blackthorn"
+		killOrder="4" stage="2" step="1" optional="false" X="2410.792" Y="968.5886" Z="55.47743"/>
+
+	<Boss isFinal="true" entry="74434" name="Amnennar the Coldbringer" 
+		killOrder="5" stage="3" step="1" optional="false" X="2400.725" Y="962.6646" Z="55.34601"/>
+	  
+  </BossEncounters>
+  <Blackspots>
+    <!--<Blackspot X="-101.3791" Y="-703.8368" Z="9.095623" Radius="3.363508" />-->
+  </Blackspots>
+</DungeonBuddyProfile>
