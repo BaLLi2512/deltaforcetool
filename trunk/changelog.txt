@@ -1,7 +1,0 @@
-2014-01-16
-CDPatcher Update to 2.2.5493.32241
-
-2014-01-25
-HonorBuddy Update to 2.5.12646 Build 765
-CDPatcher Update to 2.2.5497.28211
-Structure update for better update routine (renaming etc)
