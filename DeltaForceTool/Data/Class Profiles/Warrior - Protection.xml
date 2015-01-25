@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassProfile Class="Warrior" Specialization="3" Name="Warrior - Protection">
+	<TalentTree>
+		<Talent Tier="1" Index="1" Name="Juggernaut" />
+		<Talent Tier="2" Index="1" Name="Enraged Regeneration" />
+		<Talent Tier="3" Index="3" Name="Disrupting Shout" />
+		<Talent Tier="4" Index="2" Name="Shockwave" />
+		<Talent Tier="5" Index="3" Name="Vigilance" />
+		<Talent Tier="6" Index="1" Name="Avatar" />
+	</TalentTree>
+	<WeightSet>
+		<DamagePerSecond>22</DamagePerSecond>
+
+		<Strength>20</Strength>
+		<Stamina>20</Stamina>
+
+		<Mastery>16</Mastery>
+		<CriticalStrike>15</CriticalStrike>
+		<Versatility>13</Versatility>
+		<Haste>12</Haste>
+		<Multistrike>11</Multistrike>
+		<AttackPower>2.5</AttackPower>
+		
+		<Armor>10</Armor>
+	</WeightSet>
+</ClassProfile>

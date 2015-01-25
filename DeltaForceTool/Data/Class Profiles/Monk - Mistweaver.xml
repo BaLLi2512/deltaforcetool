@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassProfile Class="Monk" Specialization="2" Name="Monk - Mistweaver">
+	<TalentTree>
+		<Talent Tier="1" Index="1" Name="Celerity" />
+		<Talent Tier="2" Index="1" Name="Chi Wave" />
+		<Talent Tier="3" Index="3" Name="Chi Brew" />
+		<Talent Tier="4" Index="1" Name="Ring of Peace" />
+		<Talent Tier="5" Index="2" Name="Dampen Harm" />
+		<Talent Tier="6" Index="3" Name="Chi Torpedo" />
+	</TalentTree>
+	<WeightSet>
+		<DamagePerSecond>0.01</DamagePerSecond>
+		
+		<Intellect>18</Intellect>
+		<Stamina>5</Stamina>
+
+		<Multistrike>16</Multistrike>
+		<CriticalStrike>15</CriticalStrike>
+		<Versatility>13</Versatility>
+		<Haste>12</Haste>
+		<Mastery>11</Mastery>
+		<Spirit>10</Spirit>
+		<SpellPower>9</SpellPower>
+
+		<Armor>0.01</Armor>
+	</WeightSet>
+</ClassProfile>

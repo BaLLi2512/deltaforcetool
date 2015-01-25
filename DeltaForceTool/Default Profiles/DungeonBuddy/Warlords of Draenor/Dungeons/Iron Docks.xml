@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>Iron Docks</Name>
+  <DungeonId>821</DungeonId>
+  <BossEncounters>
+    <Boss isFinal="false" entry="81297" name="Dreadfang" 
+          killOrder="1" stage="1" step="1" optional="false" X="6822.085" Y="-713.9408" Z="4.742862"/>
+    
+    <Boss isFinal="false" entry="81305" name="Fleshrender Nok'gar" 
+          killOrder="1" stage="1" step="1" optional="false" X="6822.085" Y="-713.9408" Z="4.742862"/>
+    
+    <Boss isFinal="false" entry="80805" name="Makogg Emberblade" 
+          killOrder="2" stage="1" step="2" optional="false" X="6508.09" Y="-1128.319" Z="4.959027"/>
+    
+    <Boss isFinal="false" entry="80808" name="Neesa Nox" 
+          killOrder="2" stage="1" step="2" optional="false" X="6502.828" Y="-1133.913" Z="4.958661"/>
+    
+    <Boss isFinal="false" entry="80816" name="Ahri'ok Dugru"
+          killOrder="2" stage="1" step="2" optional="false" X="6514.702" Y="-1134.09" Z="4.959322"/>
+
+    <Boss isFinal="false" entry="79852" name="Oshir" 
+          killOrder="3" stage="1" step="3" optional="false" X="6951.136" Y="-1100.264" Z="4.603958"/>
+
+    <Boss isFinal="true" entry="83612" name="Skulloc" 
+          killOrder="4" stage="1" step="4" optional="false" X="6729.28" Y="-977.9531" Z="23.04636"/>
+
+    <Boss isFinal="true" entry="83613" name="Koramar" 
+          killOrder="4" stage="1" step="4" optional="false" X="6734.059" Y="-991.184" Z="23.04634"/>
+    
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

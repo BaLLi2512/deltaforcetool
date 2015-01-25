@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DungeonBuddyProfile>
+  <Name>The Vortex Pinnacle</Name>
+  <DungeonId>311</DungeonId>
+  <BossEncounters>
+    <Boss isFinal="false" entry="43878" name="Grand Vizier Ertan" killOrder="1"
+          stage="1" step="1" optional="false" X="-719.587" Y="4.32986" Z="635.6728" />
+    
+    <Boss isFinal="false" entry="43873" name="Altairus" killOrder="2"
+          stage="1" step="2" optional="false" X="-1202.4" Y="56.79494" Z="734.174" />
+    
+    <Boss isFinal="true" entry="43875" name="Asaad" killOrder="3"
+          stage="1" step="3" optional="false" X="-622.729" Y="503.509" Z="646.6309" />
+  </BossEncounters>
+  <Blackspots>
+    <!--<Blackspot X="-101.3791" Y="-703.8368" Z="9.095623" Radius="3.363508" />-->
+  </Blackspots>
+</DungeonBuddyProfile>

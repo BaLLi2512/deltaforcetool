@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PBProfile>
+  <Custom Code="LevelbotSettings.Instance.GroundMountFarmingMode = true;" />
+  <Custom Code="CharacterSettings.Instance.LootChests = false;" />
+  <Custom Code="CharacterSettings.Instance.LootMobs = false;" />
+  <If Condition="Me.IsAlliance &amp;&amp; Me.MapId != 0" IgnoreCanRun="True">
+    <Custom Code="MessageBox.Show(&quot;You need to move to Eastern Kingdom&quot;);" />
+    <Custom Code="TreeRoot.Stop();" />
+  </If>
+  <If Condition="Me.IsHorde &amp;&amp; Me.MapId != 1" IgnoreCanRun="True">
+    <Custom Code="MessageBox.Show(&quot;You need to move to Kalimdor&quot;);" />
+    <Custom Code="TreeRoot.Stop();" />
+  </If>
+  <While PulseSecondaryBot="True" Condition="true" IgnoreCanRun="True">
+    <If Condition="SecondaryBot.Name != &quot;Questing&quot;" IgnoreCanRun="True">
+      <ChangeBot BotName="Questing" />
+    </If>
+    <If Condition="Mining.Level != Mining.MaxLevel &amp;&amp; Mining.MaxLevel == Herbalism.MaxLevel" IgnoreCanRun="True">
+      <Custom Code="CharacterSettings.Instance.HarvestMinerals = true;" />
+    </If>
+    <If Condition="Mining.Level == Mining.MaxLevel  || Mining.MaxLevel &gt; Herbalism.MaxLevel" IgnoreCanRun="True">
+      <Custom Code="CharacterSettings.Instance.HarvestMinerals = false;" />
+    </If>
+    <If Condition="Herbalism.Level != Herbalism.MaxLevel &amp;&amp; Mining.MaxLevel == Herbalism.MaxLevel" IgnoreCanRun="True">
+      <Custom Code="CharacterSettings.Instance.HarvestHerbs = true;" />
+    </If>
+    <If Condition="Herbalism.Level == Herbalism.MaxLevel || Mining.MaxLevel &lt; Herbalism.MaxLevel" IgnoreCanRun="True">
+      <Custom Code="CharacterSettings.Instance.HarvestHerbs = false;" />
+    </If>
+    <While PulseSecondaryBot="True" Condition="Me.FreeNormalBagSlots &lt;=2" IgnoreCanRun="True">
+      <If Condition="Me.IsHorde" IgnoreCanRun="True">
+        <MoveTo Location="2010.681, -4692.224, 28.69317" MoveType="Location" Pathing="Navigator" Entry="0" />
+      </If>
+      <If Condition="Me.IsAlliance" IgnoreCanRun="True">
+        <MoveTo Location="-8392.317, 626.57, 95.29549" MoveType="Location" Pathing="Navigator" Entry="0" />
+      </If>
+      <SellItemOnAH Category="Gem" SubCategoryType="WoWItemGemClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="80g0s0c" StackSize="1" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+      <SellItemOnAH Category="TradeGoods" SubCategoryType="WoWItemTradeGoodsClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="4g0s0c" StackSize="20" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+    </While>
+    <If Condition="Me.IsAlliance" IgnoreCanRun="True">
+      <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\(ground 1-300)Herb&amp;Mining\(ground 1-300)(Eastern Kindom.Alliance)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
+      <While PulseSecondaryBot="True" Condition="InbagCount (2901) == 0" IgnoreCanRun="True">
+        <MoveTo Location="-8430.177, 695.1375, 96.31892" MoveType="Location" Pathing="Navigator" Entry="0" />
+        <Interact InteractType="NPC" Entry="5514" InteractDelay="0" GameObjectType="Mailbox" SpellFocus="Anvil" />
+        <BuyItem NpcEntry="0" Location="0, 0, 0" ItemID="2901" BuyItemType="SpecificItem" Count="1" BuyAdditively="True" />
+      </While>
+      <If Condition="Mining.MaxLevel == 0" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="5513" Location="-8433.48, 688.922, 96.31891" />
+      </If>
+      <If Condition="Herbalism.MaxLevel == 0" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="5566" Location="-8969.993, 779.6597, 96.25022" />
+      </If>
+      <If Condition="(Mining.Level == 75 &amp;&amp; Mining.MaxLevel == 75) &amp;&amp; (Herbalism.Level == 75 &amp;&amp; Herbalism.MaxLevel == 75)" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="5566" Location="-8969.993, 779.6597, 96.25022" />
+        <TrainSkill NpcEntry="5513" Location="-8433.48, 688.922, 96.31891" />
+        <GetMail GetMailType="AllItems" ItemID="0" MaxCODAmount="0g0s0c" MinFreeBagSlots="2" AutoFindMailBox="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="Gem" SubCategoryType="WoWItemGemClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="80g0s0c" StackSize="1" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="TradeGoods" SubCategoryType="WoWItemTradeGoodsClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="4g0s0c" StackSize="20" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+      </If>
+      <If Condition="(Mining.Level &gt;= 125 &amp;&amp; Mining.MaxLevel == 150) &amp;&amp; (Herbalism.Level &gt;= 125 &amp;&amp; Herbalism.MaxLevel == 150)" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="5566" Location="-8969.993, 779.6597, 96.25022" />
+        <TrainSkill NpcEntry="5513" Location="-8433.48, 688.922, 96.31891" />
+        <GetMail GetMailType="AllItems" ItemID="0" MaxCODAmount="0g0s0c" MinFreeBagSlots="2" AutoFindMailBox="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="Gem" SubCategoryType="WoWItemGemClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="80g0s0c" StackSize="1" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="TradeGoods" SubCategoryType="WoWItemTradeGoodsClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="4g0s0c" StackSize="20" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+      </If>
+      <If Condition="(Mining.Level &gt;= 200 &amp;&amp; Mining.MaxLevel == 225) &amp;&amp; (Herbalism.Level &gt;= 200 &amp;&amp; Herbalism.MaxLevel == 225)" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="5566" Location="-8969.993, 779.6597, 96.25022" />
+        <TrainSkill NpcEntry="5513" Location="-8433.48, 688.922, 96.31891" />
+        <GetMail GetMailType="AllItems" ItemID="0" MaxCODAmount="0g0s0c" MinFreeBagSlots="2" AutoFindMailBox="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="Gem" SubCategoryType="WoWItemGemClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="80g0s0c" StackSize="1" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="TradeGoods" SubCategoryType="WoWItemTradeGoodsClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="4g0s0c" StackSize="20" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+      </If>
+      <If Condition="(Mining.Level &gt;= 300 &amp;&amp; Mining.MaxLevel == 300) &amp;&amp; (Herbalism.Level &gt;= 300 &amp;&amp; Herbalism.MaxLevel == 300)" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="5566" Location="-8969.993, 779.6597, 96.25022" />
+        <TrainSkill NpcEntry="5513" Location="-8433.48, 688.922, 96.31891" />
+        <GetMail GetMailType="AllItems" ItemID="0" MaxCODAmount="0g0s0c" MinFreeBagSlots="2" AutoFindMailBox="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="Gem" SubCategoryType="WoWItemGemClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="80g0s0c" StackSize="1" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="TradeGoods" SubCategoryType="WoWItemTradeGoodsClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="4g0s0c" StackSize="20" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+        <Custom Code="Log(&quot;Stopping HB since We are 300 herb/mining&quot;);" />
+        <Custom Code=" Lua.DoString(&quot;Logout()&quot;);TreeRoot.Stop();" />
+      </If>
+    </If>
+    <If Condition="Me.IsHorde" IgnoreCanRun="True">
+      <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\(ground 1-300)Herb&amp;Mining\(ground 1-300)(Kalimdor.Horde)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
+      <If Condition="Herbalism.MaxLevel == 0" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="46741" Location="1902.69, -4450.71, 53.4155" />
+      </If>
+      <If Condition="InbagCount (2901) == 0" IgnoreCanRun="True">
+        <MoveTo Location="2087.52, -4769.45, 27.92924" MoveType="Location" Pathing="Navigator" Entry="0" />
+        <Interact InteractType="NPC" Entry="3358" InteractDelay="0" GameObjectType="Mailbox" SpellFocus="Anvil" />
+        <BuyItem NpcEntry="0" Location="0, 0, 0" ItemID="2901" BuyItemType="SpecificItem" Count="1" BuyAdditively="True" />
+      </If>
+      <If Condition="Mining.MaxLevel == 0" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="3357" Location="2081.978, -4764.085, 27.92557" />
+      </If>
+      <If Condition="(Mining.Level &gt;= 50 &amp;&amp; Mining.MaxLevel == 75) &amp;&amp; (Herbalism.Level &gt;=50 &amp;&amp; Herbalism.MaxLevel == 75)" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="46741" Location="1902.69, -4450.71, 53.4155" />
+        <TrainSkill NpcEntry="3357" Location="2081.978, -4764.085, 27.92557" />
+        <GetMail GetMailType="AllItems" ItemID="0" MaxCODAmount="0g0s0c" MinFreeBagSlots="2" AutoFindMailBox="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="Gem" SubCategoryType="WoWItemGemClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="80g0s0c" StackSize="1" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="TradeGoods" SubCategoryType="WoWItemTradeGoodsClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="4g0s0c" StackSize="20" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+      </If>
+      <If Condition="(Mining.Level &gt;= 125 &amp;&amp; Mining.MaxLevel == 150) &amp;&amp; (Herbalism.Level &gt;= 125 &amp;&amp; Herbalism.MaxLevel == 150)" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="46741" Location="1902.69, -4450.71, 53.4155" />
+        <TrainSkill NpcEntry="3357" Location="2081.978, -4764.085, 27.92557" />
+        <GetMail GetMailType="AllItems" ItemID="0" MaxCODAmount="0g0s0c" MinFreeBagSlots="2" AutoFindMailBox="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="Gem" SubCategoryType="WoWItemGemClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="80g0s0c" StackSize="1" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="TradeGoods" SubCategoryType="WoWItemTradeGoodsClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="4g0s0c" StackSize="20" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+      </If>
+      <If Condition="(Mining.Level &gt;= 200 &amp;&amp; Mining.MaxLevel == 225) &amp;&amp; (Herbalism.Level &gt;= 200 &amp;&amp; Herbalism.MaxLevel == 225)" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="46741" Location="1902.69, -4450.71, 53.4155" />
+        <TrainSkill NpcEntry="3357" Location="2081.978, -4764.085, 27.92557" />
+        <GetMail GetMailType="AllItems" ItemID="0" MaxCODAmount="0g0s0c" MinFreeBagSlots="2" AutoFindMailBox="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="Gem" SubCategoryType="WoWItemGemClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="80g0s0c" StackSize="1" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="TradeGoods" SubCategoryType="WoWItemTradeGoodsClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="4g0s0c" StackSize="20" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+      </If>
+      <If Condition="(Mining.Level &gt;= 300 &amp;&amp; Mining.MaxLevel == 300) &amp;&amp; (Herbalism.Level &gt;= 300 &amp;&amp; Herbalism.MaxLevel == 300)" IgnoreCanRun="True">
+        <TrainSkill NpcEntry="46741" Location="1902.69, -4450.71, 53.4155" />
+        <TrainSkill NpcEntry="3357" Location="2081.978, -4764.085, 27.92557" />
+        <GetMail GetMailType="AllItems" ItemID="0" MaxCODAmount="0g0s0c" MinFreeBagSlots="2" AutoFindMailBox="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="Gem" SubCategoryType="WoWItemGemClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="80g0s0c" StackSize="1" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+        <SellItemOnAH Category="TradeGoods" SubCategoryType="WoWItemTradeGoodsClass" SubCategory="None" UseCategory="True" RunTime="_24_Hours" AmountType="Everything" ItemID="13463" MinBuyout="0g10s0c" MaxBuyout="4g0s0c" StackSize="20" IgnoreStackSizeBelow="1" Amount="10" BidPrecent="95" UndercutPrecent="0.0001" AutoFindAh="True" PostPartialStacks="True" PostIfBelowMinBuyout="True" Location="0, 0, 0" />
+        <Custom Code="Log(&quot;Stopping HB since We are 300 herb/mining&quot;);" />
+        <Custom Code=" Lua.DoString(&quot;Logout()&quot;);TreeRoot.Stop();" />
+      </If>
+    </If>
+  </While>
+</PBProfile>

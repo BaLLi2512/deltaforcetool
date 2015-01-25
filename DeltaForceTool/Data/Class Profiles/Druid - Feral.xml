@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassProfile Class="Druid" Specialization="2" Name="Druid - Feral">
+	<TalentTree>
+		<Talent Tier="1" Index="1" Name="Feline Swiftness" />
+		<Talent Tier="2" Index="1" Name="Ysera's Gift" />
+		<Talent Tier="3" Index="1" Name="Faerie Swarm" />
+		<Talent Tier="4" Index="3" Name="Force of Nature" />
+		<Talent Tier="5" Index="3" Name="Mighty Bash" />
+		<Talent Tier="6" Index="3" Name="Nature's Vigil" />
+	</TalentTree>
+	<WeightSet>
+		<DamagePerSecond>22</DamagePerSecond>
+		
+		<Agility>20</Agility>
+		<Stamina>5</Stamina>
+
+		<CriticalStrike>16</CriticalStrike>
+		<Multistrike>16</Multistrike>
+		<Mastery>16</Mastery>
+		<Haste>12</Haste>
+		<Versatility>11</Versatility>
+		<AttackPower>2.5</AttackPower>
+		
+		<Armor>0.01</Armor>
+	</WeightSet>
+</ClassProfile>

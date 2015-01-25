@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassProfile Class="Priest" Specialization="2" Name="Priest - Holy">
+	<TalentTree>
+		<Talent Tier="1" Index="3" Name="Angelic Bulwark" />
+		<Talent Tier="2" Index="2" Name="Angelic Feather" />
+		<Talent Tier="3" Index="2" Name="Mindbender" />
+		<Talent Tier="4" Index="1" Name="Desperate Prayer" />
+		<Talent Tier="5" Index="2" Name="Power Infusion" />
+		<Talent Tier="6" Index="2" Name="Divine Star" />
+	</TalentTree>
+	<WeightSet>
+		<DamagePerSecond>0.01</DamagePerSecond>
+
+		<Intellect>18</Intellect>
+		<Stamina>5</Stamina>
+
+		<Multistrike>16</Multistrike>
+		<Haste>15</Haste>
+		<Mastery>13</Mastery>
+		<Versatility>12</Versatility>
+		<CriticalStrike>11</CriticalStrike>
+		<Spirit>10</Spirit>
+		<SpellPower>9</SpellPower>
+
+		<Armor>0.01</Armor>
+	</WeightSet>
+</ClassProfile>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassProfile Class="Warlock" Specialization="1" Name="Warlock - Affliction">
+	<TalentTree>
+		<Talent Tier="1" Index="2" Name="Soul Leech" />
+		<Talent Tier="2" Index="2" Name="Mortal Coil" />
+		<Talent Tier="3" Index="1" Name="Soul Link" />
+		<Talent Tier="4" Index="1" Name="Blood Horror" />
+		<Talent Tier="5" Index="1" Name="Grimoire of Supremacy" />
+		<Talent Tier="6" Index="2" Name="Kil'jaeden's Cunning" />
+	</TalentTree>
+	<WeightSet>
+		<DamagePerSecond>0.01</DamagePerSecond>
+		
+		<Intellect>20</Intellect>
+		<Stamina>5</Stamina>
+
+		<Haste>16</Haste>
+		<Mastery>16</Mastery>
+		<Multistrike>13</Multistrike>
+		<CriticalStrike>12</CriticalStrike>
+		<Versatility>11</Versatility>
+		<SpellPower>9</SpellPower>
+
+		<Armor>0.01</Armor>
+	</WeightSet>
+</ClassProfile>

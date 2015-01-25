@@ -1,0 +1,8 @@
+<FlightorAnnotations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="FlightorAnnotations.xsd">
+  <IndoorAreas>
+    <SphericalIndoorArea Name="Temple of Earth" Radius="125" X="1009.124" Y="523.5815" Z="-46.7803">
+      <Entrance Radius="6" Dismount="True" X="911.983" Y="503.696" Z="-49.21758" />
+    </SphericalIndoorArea>
+  </IndoorAreas>
+</FlightorAnnotations>

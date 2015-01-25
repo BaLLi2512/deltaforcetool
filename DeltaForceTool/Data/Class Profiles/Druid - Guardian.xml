@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassProfile Class="Druid" Specialization="3" Name="Druid - Guardian">
+	<TalentTree>
+		<Talent Tier="1" Index="1" Name="Feline Swiftness" />
+		<Talent Tier="2" Index="2" Name="Renewal" />
+		<Talent Tier="3" Index="1" Name="Faerie Swarm" />
+		<Talent Tier="4" Index="3" Name="Force of Nature" />
+		<Talent Tier="5" Index="3" Name="Mighty Bash" />
+		<Talent Tier="6" Index="1" Name="Heart of the Wild" />
+	</TalentTree>
+	<WeightSet>
+		<DamagePerSecond>22</DamagePerSecond>
+		
+		<Stamina>20</Stamina>
+		<Agility>20</Agility>
+
+		<Mastery>16</Mastery>
+		<Versatility>15</Versatility>
+		<Multistrike>13</Multistrike>
+		<Haste>12</Haste>
+		<CriticalStrike>11</CriticalStrike>
+		<AttackPower>2.5</AttackPower>
+		
+		<Armor>10</Armor>
+	</WeightSet>
+</ClassProfile>

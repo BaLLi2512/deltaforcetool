@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassProfile Class="Hunter" Specialization="1" Name="Hunter - Beast Mastery">
+	<TalentTree>
+		<Talent Tier="1" Index="1" Name="Posthaste" />
+		<Talent Tier="2" Index="3" Name="Intimidation" />
+		<Talent Tier="3" Index="3" Name="Spirit Bond" />
+		<Talent Tier="4" Index="3" Name="Thrill of the Hunt" />
+		<Talent Tier="5" Index="2" Name="Blink Strikes" />
+		<Talent Tier="6" Index="1" Name="Glaive Toss" />
+	</TalentTree>
+	<WeightSet>
+		<DamagePerSecond>22</DamagePerSecond>
+		
+		<Agility>20</Agility>
+		<Stamina>5</Stamina>
+
+		<Multistrike>16</Multistrike>
+		<CriticalStrike>15</CriticalStrike>
+		<Mastery>13</Mastery>
+		<Haste>12</Haste>
+		<Versatility>11</Versatility>
+		<AttackPower>2.5</AttackPower>
+		
+		<Armor>0.01</Armor>
+	</WeightSet>
+</ClassProfile>

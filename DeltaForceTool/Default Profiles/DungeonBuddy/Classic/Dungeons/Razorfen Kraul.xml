@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DungeonBuddyProfile>
+  <Name>Razorfen Kraul</Name>
+  <DungeonId>16</DungeonId>
+  <BossEncounters>
+    <Boss isFinal="false" entry="75001" name="Hunter Bonetusk" 
+          killOrder="1" stage="1" step="1" optional="false" X="2101.115" Y="1454.754" Z="73.63624"/>
+
+    <Boss isFinal="false" entry="74948" name="Roogug" 
+          killOrder="2" stage="1" step="2" optional="false" X="2145.642" Y="1416.01" Z="73.96487"/>
+
+    <Boss isFinal="false" entry="74462" name="Warlord Ramtusk" 
+          killOrder="3" stage="1" step="3" optional="false" X="2201.639" Y="1639.557" Z="85.83571"/>
+
+    <Boss isFinal="false" entry="75247" name="Groyat, the Blind Hunter" 
+          killOrder="4" stage="1" step="4" optional="false" X="2085.836" Y="2000.215" Z="63.51593" />
+    
+    <Boss isFinal="true" entry="4421" name="Charlga Razorflank" 
+          killOrder="5" stage="1" step="5" optional="false" X="2195.781" Y="1884.111" Z="72.67416"/>
+    
+  </BossEncounters>
+  <Blackspots>
+    <!--<Blackspot X="-101.3791" Y="-703.8368" Z="9.095623" Radius="3.363508" />-->
+  </Blackspots>
+</DungeonBuddyProfile>
