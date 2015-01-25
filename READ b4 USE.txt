@@ -1,9 +1,7 @@
 Instructions on how to use:
  
-1) Start WoW.exe in 32bit-Modus, log in your Account and enter world with character
-2) run HonorBuddy_start.cmd, 
-   wait a few seconds till CDPatcher start, pick 'Use Public Auth' and MINIMIZE it
-   DONT CLOSE IT! 
+1) Start WoW.exe in 32bit-Mode, log in your Account and enter world with character
+2) run HonorBuddy_start.cmd   
    		
 	ATTENTION: This NOT a virus/trojaner!
 
