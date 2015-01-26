@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="HighVoltz.HBRelog.Controls.OptionsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="291" d:DesignWidth="590" HorizontalAlignment="Stretch">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" >
+        <Grid HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="TextBlock.Margin" Value="5,2" />
+                    <Setter Property="Grid.Column" Value="0" />
+                </Style>
+            </Grid.Resources>
+            <GroupBox Header="General" HorizontalAlignment="Stretch">
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="*"  />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"  />
+                        <RowDefinition Height="Auto"  />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Use Dark UI style" />
+                    <CheckBox x:Name="DarkStyleCheck" Grid.Column="1"
+                              ToolTip="Switches to a darker UI style. Try it!. Might need to restart HBRelog"
+                              IsChecked="{Binding UseDarkStyle}" 
+                              HorizontalAlignment="Right"
+                              Checked="DarkStyleCheckCheckedChanged" 
+                              Unchecked="DarkStyleCheckCheckedChanged"/>
+                    <TextBlock Text="Minimize HB on Start" Grid.Row="1"/>
+                    <CheckBox x:Name="AutoMinimzeHbCheck" Grid.Column="1" Grid.Row="1"
+                              ToolTip="Automatically minimizes HB to system tray on start"
+                              IsChecked="{Binding MinimizeHbOnStart}" HorizontalAlignment="Right"/>
+                    <TextBlock Text="Set Game Window Title" Grid.Row="2"/>
+                    <CheckBox x:Name="SetGameWindowTitleCheck" Grid.Column="1" Grid.Row="2"
+                              ToolTip="Changes the game's window title"
+                              IsChecked="{Binding SetGameWindowTitle}" HorizontalAlignment="Right"/>
+                    <TextBlock Text="Game Window Title" Grid.Row="3"/>
+                    <TextBox x:Name="GameWindowTitleFormatText" Grid.Column="1" Grid.Row="3"
+                             ToolTip="Changes the game's window title. {name} is a placeholder for profile name and {pid} is a placeholder for game process ID" 
+                             Width="100" IsEnabled="{Binding SetGameWindowTitle}"
+                              Text="{Binding GameWindowTitle}"/>
+                    <Button x:Name="ImportSettingsButton" Content="Import Settings" Grid.Row="4" Click="ImportSettingsButton_Click"
+                            ToolTip="Import settings" Height="21" VerticalAlignment="Bottom"/>
+                    <Button x:Name="ExportSettingsButton" Content="Export Settings" Grid.Row="5" Click="ExportSettingsButton_Click"
+                            ToolTip="Export settings. Useful when copying settings to another computer"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Relogger" Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <!-- AutoStart -->
+                    <TextBlock Text="AutoStart"  />
+                    <CheckBox x:Name="AutostartCheck" Grid.Column="1"
+                              ToolTip="Automatically start all enabled profiles on start"
+                              IsChecked="{Binding AutoStart}" HorizontalAlignment="Right"/>
+                    <!-- WowDelay -->
+                    <TextBlock Text="Wow Start Delay" Grid.Row="1" />
+                    <TextBox x:Name="WowDelayText" Width="40" Height="18" FontSize="10"
+                            ToolTip="Delay in seconds between starting multiple Wow instance" Grid.Column="1"
+                             Text="{Binding WowDelay}" Grid.Row="1"/>
+                    <!-- HBDelay -->
+                    <TextBlock Text="Honorbuddy Start Delay" Grid.Row="2" />
+                    <TextBox x:Name="HBDelayText" Width="40" Height="18" FontSize="10"
+                             ToolTip="Delay in seconds between starting multiple Honorbuddy instances"
+                             Grid.Row="2" Grid.Column="1"  Text="{Binding HBDelay}"/>
+                    <!-- LoginDelay -->
+                    <TextBlock Text="Login Delay" Grid.Row="3" />
+                    <TextBox x:Name="LoginDelayText" Width="40" Height="18" FontSize="10"
+                             ToolTip="Delay in seconds between executing login actions. Increasing this will cause login to take longer"
+                             Grid.Row="3" Grid.Column="1" Text="{Binding LoginDelay}"/>
+                    <!-- Auto-update HB -->
+                    <TextBlock Text="Auto-update HB" Grid.Row="4" />
+                    <CheckBox x:Name="AutoUpdateHBCheck" Grid.Column="1" Grid.Row="4"
+                              ToolTip="Automatically install latest HB if there is a new version before running it"
+                              IsChecked="{Binding AutoUpdateHB}" HorizontalAlignment="Right"/>
+                    <!-- Auto-accept ToS/Eula -->
+                    <TextBlock Text="Auto-accept ToS and Eula" Grid.Row="5" />
+                    <CheckBox x:Name="AutoAcceptToSAndEulaCheck" Grid.Column="1" Grid.Row="5"
+                              ToolTip="Automatically accepts the Tos and Eula aggreement."
+                              IsChecked="{Binding AutoAcceptTosEula}" HorizontalAlignment="Right"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Monitor" Grid.Column="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock  Text="Check Realm Status" />
+                    <CheckBox Grid.Column="1" IsChecked="{Binding CheckRealmStatus}" Name="checkBox2" ToolTip="Check if Wow servers are up" />
+                    <TextBlock Grid.Row="1" Text="Check HB's Responsiveness" />
+                    <CheckBox Grid.Column="1" Grid.Row="1" IsChecked="{Binding CheckHbResponsiveness}" Name="hbResponsivenessCheck" ToolTip="Disable this if you are a developer and like to attach a debugger to HB" />
+                    <TextBlock Grid.Row="2" Text="Check Wow's Responsiveness" />
+                    <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="{Binding CheckWowResponsiveness}" Name="wowResponsivenessCheck" ToolTip="Disable this if you are having problems with Wow being restarted when it's not frozen." />
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
