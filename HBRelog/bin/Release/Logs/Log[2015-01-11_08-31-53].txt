@@ -1,0 +1,12 @@
+[01/11/2015 08:31:53] HBRelog Version 1.0.0.219
+[01/11/2015 08:31:53] ******* Settings ******** 
+[01/11/2015 08:31:53] 	Auto AcceptTosEula:            False
+[01/11/2015 08:31:53] 	Auto Start:                    False
+[01/11/2015 08:31:53] 	Auto Update HB:                True
+[01/11/2015 08:31:53] 	Check Hb's Responsiveness:     True
+[01/11/2015 08:31:53] 	Check Realm Status:            False
+[01/11/2015 08:31:53] 	HB Delay:                      3
+[01/11/2015 08:31:53] 	Login Delay:                   0
+[01/11/2015 08:31:53] 	Minimize Hb On Startup:        False
+[01/11/2015 08:31:53] 	Set GameWindow Title:          False
+[01/11/2015 08:31:53] 	Wow Start Delay:               0
