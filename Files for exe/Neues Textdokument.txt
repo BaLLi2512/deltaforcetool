@@ -1,3 +1,0 @@
-%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
-
-ProgramW6432
