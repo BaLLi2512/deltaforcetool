@@ -63,6 +63,9 @@
 		<Blackspot Name="Telredor 3" X="219.77" Y="6030.817" Z="21.87851" Radius="50" />
 	</Blackspots>
 
+	<ProtectedItems>
+		<Item Name="Unidentified Plant Parts" Id="24401" />
+	</ProtectedItems>
 
 	<Mailboxes>
 		<Mailbox Name="Hellfire Peninsula" Nav="Fly" X="172.0354" Y="2624.331" Z="87.13256" />
@@ -1700,6 +1703,20 @@
 			</Hotspots>
 		</Objective>
 	</Quest>
+	<Quest Id="10318" Name="Dealing with the Overmaster">
+		<Objective Type="KillMob" MobId="20803" KillCount="1">
+			<Hotspots>
+				<Hotspot X="4124.069" Y="3988.341" Z="118.539" />
+			</Hotspots>
+		</Objective>
+	</Quest>	
+	<Quest Id="10422" Name="Captain Tyralius">
+		<Objective Type="CollectItem" ItemId="29742" CollectCount="1">
+			<Hotspots>
+				<Hotspot X="3957.041" Y="2446.879" Z="114.2778" />
+			</Hotspots>
+		</Objective>
+	</Quest>
 	<!-- END: Quest Overrides -->
 
 
@@ -2278,13 +2295,13 @@
 			</If>
 			<If Condition="HasQuest(10258) &amp;&amp; IsQuestCompleted(10258)" >
 				<If Condition="CanFly()" >
-					<CustomBehavior File="FlyTo" DestName="Turnin: Honor the Fallen"
-                                    X="-1210.468" Y="2640.476" Z="12.74828" />
+					<CustomBehavior File="FlyTo" DestName="Turnin: Honor the Fallen" X="-1210.468" Y="2640.476" Z="12.74828" />
 				</If>
-				<TurnIn QuestName="Honor the Fallen" QuestId="10258" TurnInName="Commander Hogarth"
-                        TurnInId="19937" />
+				<TurnIn QuestName="Honor the Fallen" QuestId="10258" TurnInName="Commander Hogarth" TurnInId="19937" />
 				<MoveTo X="-1210.468" Y="2640.476" Z="12.74828" />
 			</If>
+
+			<!--
 
 			<PickUp QuestName="The Eyes of Grillok" QuestId="10813" GiverName="Zezzak" GiverId="22231" X="-1337.773" Y="2355.056" Z="88.9553" />
 
@@ -2294,20 +2311,19 @@
 						<CustomBehavior File="FlyTo" DestName="Zeth'Gor" Land="true" X="-1078.607" Y="2078.789" Z="64.86427" />
 					</If>
 					<MoveTo X="-1078.607" Y="2078.789" Z="64.86427" />
+					<CustomBehavior File="RunMacro" Macro="/petpassive" />
 
-					<CustomBehavior File="InteractWith" QuestId="10813" InteractByUsingItemId="31463"
-                                    MobId="19440" ProactiveCombatStrategy="ClearMobsTargetingUs"
-                                    NumOfTimes="100" Range="20" WaitTime="6000" IgnoreLoSToTarget="false"
-                                    CollectionDistance="500" MobState="Alive" PreInteractMountStrategy="Dismount"
-                                    TerminateWhen="Me.HasAura(38495)" >
+					<CustomBehavior File="CombatUseItemOnV2" QuestId="10813" ItemId="31463" MobId="19440"
+                                UseWhenMobHasHealthPercent="100" MaxRangeToUseItem="20" UseItemStrategy="UseItemContinuouslyOnTargetDontDefend" 
+                                RecallPetAtMobPercentHealth="100" WaitTimeAfterItemUse="5000" CollectionDistance="500">
 						<HuntingGrounds WaypointVisitStrategy="InOrder">
 							<Hotspot X="-1078.607" Y="2078.789" Z="64.86427" />
-							<!--
-                                <Hotspot X="-1030.565" Y="2099.597" Z="64.16138" />
-                                <Hotspot X="-991.0689" Y="2054.733" Z="66.94635" />
-                                <Hotspot X="-959.8377" Y="2016.03" Z="66.93962" />
-                                <Hotspot X="-1035.413" Y="2105.369" Z="60.97837" />
-                                <Hotspot X="-1100.848" Y="2039.785" Z="66.95479" /> -->
+							<Hotspot X="-1119.15" Y="2104.548" Z="68.39547" />
+							<Hotspot X="-1116.466" Y="2047.142" Z="67.28675" />
+							<Hotspot X="-1076.574" Y="2024.648" Z="67.59293" />
+							<Hotspot X="-1002.639" Y="2011.658" Z="66.93987" />
+							<Hotspot X="-927.7786" Y="1965.145" Z="68.24343" />
+							<Hotspot X="-1086.603" Y="2110.563" Z="62.47606" />
 						</HuntingGrounds>
 					</CustomBehavior>
 				</While>
@@ -2322,12 +2338,11 @@
                                     GoalText="Waiting for Zezzak to notice: {TimeRemaining}" />
 				</While>
 			</While>
-
+			
 			<TurnIn QuestName="The Eyes of Grillok" QuestId="10813" TurnInName="Zezzak" TurnInId="22231" />
 			<PickUp QuestName="Grillok Darkeye" QuestId="10834" GiverName="Zezzak" GiverId="22231" />
-			<Objective QuestName="Grillok Darkeye" QuestId="10834" Type="CollectItem" ItemId="31529"
-                       CollectCount="1" />
-
+			<Objective QuestName="Grillok Darkeye" QuestId="10834" Type="CollectItem" ItemId="31529" CollectCount="1" /> 
+			-->
 
 			<While Condition="HasQuest(10792) &amp;&amp; !IsQuestCompleted(10792)">
 				<!-- Bleeding Hollow Torch 31347-->
@@ -2460,7 +2475,7 @@
 				<CustomBehavior File="FlyTo" X="-1335.99" Y="2357.728" Z="88.95512" DestName="Zezzak's Pot" />
 				<CustomBehavior File="ForcedDismount" />
 			</If>
-			<TurnIn QuestName="Grillok Darkeye" QuestId="10834" TurnInName="Zezzak" TurnInId="22231" />
+			<!--<TurnIn QuestName="Grillok Darkeye" QuestId="10834" TurnInName="Zezzak" TurnInId="22231" />-->
 			<TurnIn QuestName="Zeth'Gor Must Burn!" QuestId="10792" TurnInName="Captain Darkhowl" TurnInId="22107" />
 
 			<If Condition="HasQuest(10213) &amp;&amp; IsQuestCompleted(10213)" >
@@ -3021,12 +3036,12 @@
                     GiverId="16791" />
 			<PickUp QuestName="Magic of the Arakkoa" QuestId="9396" GiverName="Arcanist Calesthris Dawnstar"
                     GiverId="16792" />
-			<PickUp QuestName="trueflight Arrows" QuestId="9381" GiverName="Falconer Drenna Riverwind"
-                    GiverId="16790" />
+			<!--<PickUp QuestName="trueflight Arrows" QuestId="9381" GiverName="Falconer Drenna Riverwind"
+                    GiverId="16790" /> -->
 			<!-- <PickUp QuestName="Birds of a Feather" QuestId="9397" GiverName="Falconer Drenna Riverwind"
                  GiverId="16790" /> -->
-			<PickUp QuestName="Helping the Cenarion Post" QuestId="10442" GiverName="Falconer Drenna Riverwind"
-                    GiverId="16790" />
+			<!--<PickUp QuestName="Helping the Cenarion Post" QuestId="10442" GiverName="Falconer Drenna Riverwind"
+                    GiverId="16790" />-->
 			<PickUp QuestName="Wanted: Blacktalon the Savage" QuestId="9466" GiverType="Object"
                     GiverName="Wanted Poster" GiverId="181638" X="-595.6021" Y="4092.214" Z="91.80193" />
 
@@ -3090,17 +3105,17 @@
 
 
 			<PickUp QuestName="The Foot of the Citadel" QuestId="10876" GiverName="Nazgrel" GiverId="3230" />
-				<If Condition="HasQuest(10876) &amp;&amp; !IsQuestCompleted(10876)" >
-					<If Condition="CanFly()" >
-						<CustomBehavior File="FlyTo" DestName="The Great Fissure"
+			<If Condition="HasQuest(10876) &amp;&amp; !IsQuestCompleted(10876)" >
+				<If Condition="CanFly()" >
+					<CustomBehavior File="FlyTo" DestName="The Great Fissure"
 										X="-226.4953" Y="3098.184" Z="-61.22203" />
-						<CustomBehavior File="ForcedDismount" />
-					</If>
-					<CustomBehavior File="InteractWith" NonCompeteDistance="0" QuestId="10876" MobId="19264" WaitTime="5000" NumOfTimes="10" PreInteractMountStrategy="DismountOrCancelShapeshift"
-									ProactiveCombatStrategy="ClearMobsTargetingUs" InteractByUsingItemId="31702" MobState="Dead" X="-226.4953" Y="3098.184" Z="-61.22203" />
-					<CustomBehavior File="WaitTimer" QuestId="10876" WaitTime="20000"
-									GoalText="Waiting for the Hand of Kargath {TimeRemaining}" />
+					<CustomBehavior File="ForcedDismount" />
 				</If>
+				<CustomBehavior File="InteractWith" NonCompeteDistance="0" QuestId="10876" MobId="19264" WaitTime="5000" NumOfTimes="10" PreInteractMountStrategy="DismountOrCancelShapeshift"
+									ProactiveCombatStrategy="ClearMobsTargetingUs" InteractByUsingItemId="31702" MobState="Dead" X="-226.4953" Y="3098.184" Z="-61.22203" />
+				<CustomBehavior File="WaitTimer" QuestId="10876" WaitTime="20000"
+									GoalText="Waiting for the Hand of Kargath {TimeRemaining}" />
+			</If>
 			<TurnIn QuestName="The Foot of the Citadel" QuestId="10876" TurnInName="Nazgrel" TurnInId="3230" />
 
 			<TurnIn QuestName="Arelion's Journal" QuestId="9374" TurnInName="Magistrix Carinda" TurnInId="16793" />
@@ -3148,15 +3163,15 @@
 			<PickUp QuestName="Arelion's Mistress" QuestId="9472" GiverName="Magistrix Carinda" GiverId="16793" />
 
 			<While Condition="HasQuest(9472) &amp;&amp; !IsQuestCompleted(9472)">
-                		<While Condition="!HasItem(29112)" >
-                    		    <CustomBehavior File="FlyTo" DestName="Innkeeper Coryth Stoktron"
+				<While Condition="!HasItem(29112)" >
+					<CustomBehavior File="FlyTo" DestName="Innkeeper Coryth Stoktron"
                                              X="-216.1101" Y="5498.881" Z="21.79396" />
-                                       <CustomBehavior File="ForcedDismount" />
-                                  <CustomBehavior File="InteractWith" QuestId="9472" MobId="18907"
+					<CustomBehavior File="ForcedDismount" />
+					<CustomBehavior File="InteractWith" QuestId="9472" MobId="18907"
                                     InteractByBuyingItemId="29112" WaitTime="3000"
                                     CollectionDistance="20" X="-174.478" Y="5529.211" Z="29.40781" />
-                    		<CustomBehavior File="WaitTimer" WaitTime="2000"/>
-                		</While>
+					<CustomBehavior File="WaitTimer" WaitTime="2000"/>
+				</While>
 
 				<If Condition="HasItem(29112)" >
 					<CustomBehavior File="FlyTo" QuestId="9472" DestName="Viera Sunwhisper"
@@ -3193,8 +3208,8 @@
                     TurnInId="16791" />
 			<PickUp QuestName="The Cleansing Must Be Stopped" QuestId="9370" GiverName="Ryathen the Somber"
                     GiverId="16791" />
-			<TurnIn QuestName="trueflight Arrows" QuestId="9381" TurnInName="Falconer Drenna Riverwind"
-                    TurnInId="16790" />
+			<!--<TurnIn QuestName="trueflight Arrows" QuestId="9381" TurnInName="Falconer Drenna Riverwind"
+                    TurnInId="16790" />-->
 			<If Condition="HasQuest(9340)">
 				<CustomBehavior File="ForcedDismount" />
 				<MoveTo X="-592.7934" Y="4077.965" Z="93.81425" />
@@ -3327,8 +3342,8 @@
 				</If>
 				<TurnIn QuestName="Missing Missive" QuestId="9373" TurnInName="Thiah Redmane" TurnInId="16991" />
 			</If>
-			<TurnIn QuestName="Helping the Cenarion Post" QuestId="10442" TurnInName="Thiah Redmane"
-                    TurnInId="16991" />
+			<!--<TurnIn QuestName="Helping the Cenarion Post" QuestId="10442" TurnInName="Thiah Redmane"
+                    TurnInId="16991" />-->
 			<PickUp QuestName="Demonic Contamination" QuestId="9372" GiverName="Thiah Redmane" GiverId="16991" />
 			<PickUp QuestName="Keep Thornfang Hill Clear!" QuestId="10159" GiverName="Mahuram Stouthoof"
                     GiverId="16888" />
@@ -4815,8 +4830,10 @@
 			<PickUp Nav="Fly" QuestName="Missing Friends" QuestId="10852" GiverName="Ethan" GiverId="22365" />
 			<PickUp Nav="Fly" QuestName="Before Darkness Falls" QuestId="10878"
                     GiverName="Mekeda" GiverId="22370" />
-			<PickUp Nav="Fly" QuestName="The Infested Protectors" QuestId="10896"
+			<If Condition="Me.Class != WoWClass.Warlock" >
+				<PickUp Nav="Fly" QuestName="The Infested Protectors" QuestId="10896"
                     GiverName="Lakotae" GiverId="22420" />
+			</If>
 
 			<If Condition="HasQuest(10896) &amp;&amp; !IsQuestCompleted(10896)" >
 				<CustomBehavior File="FlyTo" DestName="kill Termites" X="-2722.007" Y="5009.472" Z="-6.470714" />
@@ -4856,8 +4873,10 @@
 			</If>
 
 			<PickUp Nav="Fly" QuestName="The Shadow Tomb" QuestId="10881" GiverName="Mekeda" GiverId="22370" />
-			<TurnIn Nav="Fly" QuestName="The Infested Protectors" QuestId="10896"
+			<If Condition="HasQuest(10896) &amp;&amp; IsQuestCompleted(10896)" >
+				<TurnIn Nav="Fly" QuestName="The Infested Protectors" QuestId="10896"
                     TurnInName="Lakotae" TurnInId="22420" X="-2869.206" Y="5016.537" Z="-20.49569" />
+			</If>
 			<TurnIn Nav="Fly" QuestName="Before Darkness Falls" QuestId="10878"
                     TurnInName="Mekeda" TurnInId="22370" />
 			<If Condition="HasQuest(10881) &amp;&amp; !IsQuestCompleted(10881)">
@@ -6633,8 +6652,8 @@
 				<CustomBehavior File="WaitTimer" WaitTime="5000" />
 				<UseItem QuestId="10567" ItemId="30704" X="3211.71" Y="5347.735" Z="144.5373" />
 				<CustomBehavior File="WaitTimer" WaitTime="15000" />
-				<Objective QuestName="Creating the Pendant" QuestId="10567" Type="CollectItem"
-                          CollectCount="1" ItemName="Harbinger's Pendant" ItemId="30706" />
+				<!--<Objective QuestName="Creating the Pendant" QuestId="10567" Type="CollectItem" CollectCount="1" ItemName="Harbinger's Pendant" ItemId="30706" />-->
+				<CustomBehavior File="InteractWith" QuestId="10567" MobId="21767" NonCompeteDistance="0" X="3211.269" Y="5348.147" Z="144.5375" NumOfTimes="2" WaitForNpcs="False" />
 			</While>
 			<Objective Nav="Fly" QuestName="Culling the Wild" QuestId="10753" Type="KillMob"
                       MobId="21123" KillCount="4" />
@@ -7748,11 +7767,11 @@
 			<MoveTo X="4122.681" Y="2980.695" Z="351.271" />
 		</If>
 		<!-- Not getting In Search of Farahlite - 2 person quest -->
-		<If Condition="HasQuest(10424) &amp;&amp; IsQuestCompleted(10424)" >
+		<While Condition="HasQuest(10424) &amp;&amp; !IsQuestCompleted(10424)" >
 			<CustomBehavior File="FlyTo" X="4464.807" Y="2830.35" Z="141.3133" />
 			<CustomBehavior File="ForcedDismount" />
 			<UseItem QuestId="10424" ItemId="29803" X="4464.807" Y="2830.35" Z="141.3133" />
-		</If>
+		</While>
 		<If Condition="HasQuest(10855) &amp;&amp; !IsQuestCompleted(10855)" >
 			<CustomBehavior File="FlyTo" X="4501.383" Y="3367.621" Z="156.7108" />
 			<CustomBehavior File="ForcedDismount" />
@@ -7772,14 +7791,14 @@
                       Type="CollectItem" CollectCount="10" ItemId="29798" />
 		</If>
 		<While Condition="HasQuest(10335) &amp;&amp; !IsQuestCompleted(10335)" >
-			<If Condition="!IsObjectiveComplete(1,10335)">
+			<If Condition="!IsObjectiveComplete(2,10335)">
 				<CustomBehavior File="FlyTo" X="4610.597" Y="2439.972" Z="195.448" />
 				<CustomBehavior File="ForcedDismount" />
 				<CustomBehavior File="WaitTimer" WaitTime="3000" />
 				<UseItem QuestId="10335" ItemId="29445" X="4610.597" Y="2439.972" Z="195.448" />
 			</If>
 
-			<If Condition="!IsObjectiveComplete(2,10335)">
+			<If Condition="!IsObjectiveComplete(1,10335)">
 				<CustomBehavior File="FlyTo" X="4690.092" Y="2602.771" Z="209.7254" />
 				<CustomBehavior File="ForcedDismount" />
 				<CustomBehavior File="WaitTimer" WaitTime="3000" />
@@ -7900,7 +7919,7 @@
                QuestId="10317" TurnInId="20393" X="3884.998" Y="4013.071" Z="122.2807" />
 		<PickUp Nav="Fly" QuestName="Dealing with the Overmaster" GiverName="Foreman Sundown"
                QuestId="10318" GiverId="20393" X="3884.998" Y="4013.071" Z="122.2807" />
-		<Objective Nav="Fly" QuestName="Dealing with the Overmaster" QuestId="10318" Type="KillMob"
+		<Objective QuestName="Dealing with the Overmaster" QuestId="10318" Type="KillMob"
                   KillCount="1" MobId="20803" />
 		<If Condition="HasQuest(10318) &amp;&amp; IsQuestCompleted(10318)" >
 			<MoveTo X="3779.77" Y="4014.586" Z="118.2969" />
@@ -7979,7 +7998,7 @@
 				<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Exclamation" SoundCueInterval="5"
                                Text="You are too high for this Combat UseItemOn quest, please manually do it!" />
 			</If>
-			<CustomBehavior File="InteractWith" QuestId="10271" MobId="18877" MobState="Alive"
+			<CustomBehavior File="InteractWith" QuestId="10271" MobId="18877" MobState="Alive" PreInteractMountStrategy="DismountOrCancelShapeshift" 
                            InteractByUsingItemId="69825" NumOfTimes="50" Range="30" IgnoreLoSToTarget="true"
                            X="4023.415" Y="1475.924" Z="-119.7821" >
 				<HuntingGrounds>
@@ -8099,7 +8118,7 @@
                            CollectionDistance="200" X="3969.117" Y="2370.976" Z="113.0475" />
 		</While>
 		<If Condition="HasQuest(10384) &amp;&amp; IsQuestCompleted(10384)" >
-			<CustomBehavior File="InteractWith" MobId="184383" CollectionDistance="50"
+			<CustomBehavior File="InteractWith" MobId="184383" CollectionDistance="50" NonCompeteDistance="0" PreInteractMountStrategy="DismountOrCancelShapeshift" 
                            X="4017.812" Y="2319.489" Z="114.355" />
 			<TurnIn Nav="Fly" QuestName="Ethereum Data" TurnInName="Image of Commander Ameer"
                    QuestId="10384" TurnInId="20482" />
@@ -8175,7 +8194,7 @@
             QuestId="10924" TurnInId="22479" />
        -->
 
-		<Checkpoint Level="69" />
+		<Checkpoint Level="70" />
 		<!-- CHECKPOINT BLOCK START: This code needs to be replicated after every checkpoint.
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
