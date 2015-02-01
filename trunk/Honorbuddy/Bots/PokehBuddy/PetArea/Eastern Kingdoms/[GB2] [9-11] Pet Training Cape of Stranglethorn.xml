@@ -1,0 +1,25 @@
+<HBProfile>
+  <!--Created By Guadah-->
+  <Name>Pet Training</Name>
+
+    <SubProfile>
+     <Name>The Cape of Stranglethorn</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+      <Hotspot X="-14003.49" Y="213.6332" Z="109.61" />
+	  <Hotspot X="-13668.22" Y="-302.8163" Z="102.8203" />
+	  <Hotspot X="-13228.73" Y="-262.6153" Z="117.8769" />
+	  <Hotspot X="-12981.69" Y="266.2507" Z="100.3167" />
+	  <Hotspot X="-13506.82" Y="246.7049" Z="126.8516" />
+	  <Hotspot X="-13913.53" Y="652.1454" Z="138.9714" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>

@@ -1,0 +1,29 @@
+<HBProfile>
+  <!--Created By Guadah-->
+  <Name>Pet Training</Name>
+
+    <SubProfile>
+     <Name>Loch Modan 3-6</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+		<Hotspot X="-5564.155" Y="-2696.538" Z="502.2946" />
+		<Hotspot X="-5684.31" Y="-3427.211" Z="398.0223" />
+		<Hotspot X="-5923.55" Y="-4008.916" Z="467.7657" />
+		<Hotspot X="-5517.705" Y="-3905.615" Z="480.065" />
+		<Hotspot X="-5488.654" Y="-3633.002" Z="423.8048" />
+		<Hotspot X="-5011.713" Y="-3543.245" Z="383.8994" />
+		<Hotspot X="-4795.407" Y="-3965.794" Z="456.6577" />
+		<Hotspot X="-4908.566" Y="-2934.631" Z="418.4568" />
+		<Hotspot X="-4635.826" Y="-2906.437" Z="463.7543" />
+		<Hotspot X="-4738.111" Y="-2556.969" Z="463.3687" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>

@@ -1,0 +1,25 @@
+<HBProfile>
+  <!--Created By Guadah-->
+  <Name>Pet Training</Name>
+
+    <SubProfile>
+     <Name>Swamp of Sorrows</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+      <Hotspot X="-10432.45" Y="-2810.254" Z="88.73546" />
+	  <Hotspot X="-10332.71" Y="-3392.162" Z="81.57716" />
+	  <Hotspot X="-10951.74" Y="-4137.146" Z="77.07588" />
+	  <Hotspot X="-10131.35" Y="-4257.926" Z="88.66867" />
+	  <Hotspot X="-10015.92" Y="-3940.094" Z="96.40382" />
+	  <Hotspot X="-10181.49" Y="-2810.274" Z="85.14237" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>

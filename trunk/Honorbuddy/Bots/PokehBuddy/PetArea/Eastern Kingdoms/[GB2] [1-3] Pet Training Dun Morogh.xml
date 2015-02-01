@@ -1,0 +1,22 @@
+<HBProfile>
+  <!--Created By Guadah-->
+  <Name>Pet Training</Name>
+
+    <SubProfile>
+     <Name>Dun Morogh 1-3</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+		<Hotspot X="-5740.806" Y="-2138.689" Z="449.3061" />
+		<Hotspot X="-5845.749" Y="-309.4435" Z="495.1557" />
+		<Hotspot X="-5167.772" Y="-566.7586" Z="455.7227" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>

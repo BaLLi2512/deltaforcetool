@@ -1,0 +1,5 @@
+D:\Library\Bots\HonorBuddy\Bots\PokehBuddy\CalcEngine\bin\Debug\CalcEngine.dll
+D:\Library\Bots\HonorBuddy\Bots\PokehBuddy\CalcEngine\bin\Debug\CalcEngine.pdb
+D:\Library\Bots\HonorBuddy\Bots\PokehBuddy\CalcEngine\obj\x86\Debug\CalcEngine.csprojResolveAssemblyReference.cache
+D:\Library\Bots\HonorBuddy\Bots\PokehBuddy\CalcEngine\obj\x86\Debug\CalcEngine.dll
+D:\Library\Bots\HonorBuddy\Bots\PokehBuddy\CalcEngine\obj\x86\Debug\CalcEngine.pdb

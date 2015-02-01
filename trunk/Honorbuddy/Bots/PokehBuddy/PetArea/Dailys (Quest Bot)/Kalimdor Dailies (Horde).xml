@@ -1,0 +1,281 @@
+<HBProfile>
+<Name>BattlePet Dailies Kalimdor - Crowley</Name>
+    <MinLevel>60</MinLevel>
+    <MaxLevel>91</MaxLevel>
+	
+<Blackspots>
+</Blackspots>
+
+
+<Mailboxes>
+</Mailboxes>
+<QuestOrder>
+			
+				<!--Trixxy-->
+			
+			<If Condition="!HasQuest(31909) &amp;&amp; !IsQuestCompleted(31909)">
+			<CustomBehavior File="FlyTo" X="6146.724" Y="-5033.979" Z="788.9244" DestName="Pick up Trixxy Daily" />
+			<PickUp QuestName="Grand Master Trixxy" QuestId="31909" GiverName="Grand Master Trixxy" GiverId="66466" X="6146.724" Y="-5033.979" Z="788.9244" />
+			</If>
+			
+			<If Condition="HasQuest(31909) &amp;&amp; !IsQuestCompleted(31909)">
+				<CustomBehavior File="InteractWith" MobId="66466" GossipOptions="1" X="6148.532" Y="-5028.295" Z="789.2678" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Grand Master Trixxy" QuestId="31909" TurnInName="Grand Master Trixxy" TurnInId="66466" X="6146.724" Y="-5033.979" Z="788.9244"/>
+			</If>
+			
+			<If Condition="HasQuest(31909) &amp;&amp; IsQuestCompleted(31909)">
+			<TurnIn QuestName="Grand Master Trixxy" QuestId="31909" TurnInName="Grand Master Trixxy" TurnInId="66466" X="6146.724" Y="-5033.979" Z="788.9244"/>
+			</If>
+			
+			<If Condition="HasQuest(31909) &amp;&amp; IsQuestCompleted(31909)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31909" />
+			</If>
+			
+			<!--Elena-->
+			
+			<If Condition="!HasQuest(31908) &amp;&amp; !IsQuestCompleted(31908)">
+			<CustomBehavior File="FlyTo" X="7560.335" Y="-2446.375" Z="452.9688" DestName="Pick up Elena Daily" />
+			<PickUp QuestName="Elena Flutterfly" QuestId="31908" GiverName="Elena" GiverId="66412" X="7563.729" Y="-2446.019" Z="453.1013" />
+			</If>
+			
+				<If Condition="HasQuest(31908) &amp;&amp; !IsQuestCompleted(31908)">
+				<CustomBehavior File="InteractWith" MobId="66412" GossipOptions="1" X="7563.729" Y="-2446.019" Z="453.1013" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Elena" QuestId="31908" TurnInName="Elena Flutterfly" TurnInId="66412" X="7563.729" Y="-2446.019" Z="453.1013"/>
+				</If>
+				
+				<If Condition="HasQuest(31908) &amp;&amp; IsQuestCompleted(31908)">
+			<TurnIn QuestName="Elena" QuestId="31908" TurnInName="Elena Flutterfly" TurnInId="66412" X="7563.729" Y="-2446.019" Z="453.1013"/>
+			</If>
+			
+			<If Condition="HasQuest(31908) &amp;&amp; IsQuestCompleted(31908)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31908" />
+			</If>
+			
+				<!--Zoltan-->
+				
+				<If Condition="!HasQuest(31907) &amp;&amp; !IsQuestCompleted(31907)">
+			<CustomBehavior File="FlyTo" X="4949.54" Y="-629.3419" Z="293.8169" DestName="Pick up Zoltan Daily" />
+			<PickUp QuestName="Zoltan" QuestId="31907" GiverName="Zoltan" GiverId="66442" X="4951.149" Y="-624.1458" Z="293.0478" />
+			</If>
+			
+				<If Condition="HasQuest(31907) &amp;&amp; !IsQuestCompleted(31907)">
+				<CustomBehavior File="InteractWith" MobId="66442" GossipOptions="1" X="4951.149" Y="-624.1458" Z="293.0478" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Zoltan" QuestId="31907" TurnInName="Zoltan" TurnInId="66442" X="4951.149" Y="-624.1458" Z="293.0478"/>
+				</If>
+				
+				<If Condition="HasQuest(31907) &amp;&amp; IsQuestCompleted(31907)">
+			<TurnIn QuestName="Zoltan" QuestId="31907" TurnInName="Zoltan" TurnInId="66442" X="4951.149" Y="-624.1458" Z="293.0478"/>
+			</If>
+			
+			<If Condition="HasQuest(31907) &amp;&amp; IsQuestCompleted(31907)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31907" />
+			</If>
+			
+				<!--<Analynn-->
+
+			<If Condition="!HasQuest(31854) &amp;&amp; !IsQuestCompleted(31854)">
+				<CustomBehavior File="FlyTo" X="3540.885" Y="539.5944" Z="5.751722" DestName="Pick up Analynn daily" />
+			<PickUp QuestName="Analynn" QuestId="31854" GiverName="Analynn" GiverId="66136" X="3540.885" Y="539.5944" Z="5.751722" />
+			</If>
+
+				<If Condition="HasQuest(31854) &amp;&amp; !IsQuestCompleted(31854)">
+				<CustomBehavior File="InteractWith" MobId="66136" GossipOptions="1" X="3537.08" Y="535.1684" Z="5.764924" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Analynn" QuestId="31854" TurnInName="Analynn" TurnInId="66136" />
+			</If>
+
+			<If Condition="HasQuest(31854) &amp;&amp; IsQuestCompleted(31854)">
+				<CustomBehavior File="FlyTo" X="3540.885" Y="539.5944" Z="5.751722" DestName="Analynn" />
+			<TurnIn QuestName="Analynn" QuestId="31854" TurnInName="Analynn" TurnInId="66136" />
+			</If>
+			
+			<If Condition="HasQuest(31854) &amp;&amp; IsQuestCompleted(31854)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31854" />
+			</If>
+			
+			<!--<Zunta-->
+
+			<If Condition="!HasQuest(31818) &amp;&amp; !IsQuestCompleted(31818)">
+				<CustomBehavior File="FlyTo" X="788.5518" Y="-4287.869" Z="17.68003" DestName="Pickup Zunta" />
+			<PickUp QuestName="Zunta" QuestId="31818" GiverName="Varzok" GiverId="66126" X="793.7353" Y="-4289.587" Z="17.72644" />
+			</If>
+
+			<If Condition="HasQuest(31818) &amp;&amp; !IsQuestCompleted(31818)">
+				<CustomBehavior File="InteractWith" MobId="66126" GossipOptions="1" X="793.7353" Y="-4289.587" Z="17.72644" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Zunta" QuestId="31818" TurnInName="Zunta" TurnInId="66126" />
+			</If>
+			
+			<If Condition="HasQuest(31818) &amp;&amp; IsQuestCompleted(31818)">
+				<CustomBehavior File="FlyTo" X="793.7353" Y="-4289.587" Z="17.72644" DestName="Zunta" />
+			<TurnIn QuestName="Zunta" QuestId="31818" TurnInName="Zunta" TurnInId="66126" />
+			</If>
+			
+				<If Condition="HasQuest(31818) &amp;&amp; IsQuestCompleted(31818)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31818" />
+			</If>
+			<!--Dagra-->
+
+			<If Condition="!HasQuest(31819) &amp;&amp; !IsQuestCompleted(31819)">
+				<CustomBehavior File="FlyTo" X="-224.4453" Y="-3158.459" Z="181.9572" DestName="Pickup Dagras Daily whooping!" />
+			<PickUp QuestName="Dagra the Fierce" QuestId="31819" GiverName="Dagra the Fierce" GiverId="66135" X="-224.4453" Y="-3158.459" Z="181.9572" />
+			</If>
+
+			<If Condition="HasQuest(31819) &amp;&amp; !IsQuestCompleted(31819)">
+				<CustomBehavior File="InteractWith" MobId="66135" GossipOptions="1" X="-221.8125" Y="-3165.467" Z="181.9325" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+			<TurnIn QuestName="Dagra" QuestId="31819" TurnInName="Dagra" TurnInId="66135" />
+			</If>
+
+			<If Condition="HasQuest(31819) &amp;&amp; IsQuestCompleted(31819)">
+				<CustomBehavior File="FlyTo" X="3540.885" Y="539.5944" Z="5.751722" DestName="Dagra" />
+			<TurnIn QuestName="Dagra" QuestId="31819" TurnInName="Dagra" TurnInId="66135" />
+			</If>
+			
+			<If Condition="HasQuest(31819) &amp;&amp; IsQuestCompleted(31819)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31819" />
+			</If>
+
+	
+	<!--<Zoya>-->
+
+			<If Condition="!HasQuest(31862) &amp;&amp; !IsQuestCompleted(31862)">
+				<CustomBehavior File="FlyTo" X="592.4457" Y="382.0605" Z="56.94112" DestName="Pickup Zoyas daily ass kickin'" />
+			<PickUp QuestName="Zonya the Sadist" QuestId="31862" GiverName="Zonya the Sadist" GiverId="66137" X="592.4457" Y="382.0605" Z="56.94112" />
+			</If>
+
+			<If Condition="HasQuest(31862) &amp;&amp; !IsQuestCompleted(31862)">
+				<CustomBehavior File="InteractWith" MobId="66137" GossipOptions="1" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Zonya the Sadist" QuestId="31862" TurnInName="Zonya the Sadist" TurnInId="66137" />
+			</If>
+			
+			<If Condition="HasQuest(31862) &amp;&amp; IsQuestCompleted(31862)">
+				<CustomBehavior File="FlyTo" X="592.4457" Y="382.0605" Z="56.94112" DestName="kick Zoyas ass" />
+			<TurnIn QuestName="Zonya the Sadist" QuestId="31862" TurnInName="Zonya the Sadist" TurnInId="66137" />
+			</If>
+			
+			<If Condition="HasQuest(31862) &amp;&amp; IsQuestCompleted(31862)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31862" />
+			</If>
+			
+				<!--<Merda>-->
+
+			<If Condition="!HasQuest(31872) &amp;&amp; !IsQuestCompleted(31872)">
+				<CustomBehavior File="FlyTo" X="-916.969" Y="1661.165" Z="59.8653" DestName="Pickup Merda daily." />
+			<PickUp QuestName="Merda Stronghoof" QuestId="31872" GiverName="Merda Stronghoof" GiverId="66372" X="-916.969" Y="1661.165" Z="59.8653" />
+			</If>
+
+					
+					<If Condition="HasQuest(31872) &amp;&amp; !IsQuestCompleted(31872)">
+				<CustomBehavior File="InteractWith" MobId="66372" GossipOptions="1" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Merda Stronghoof" QuestId="31872" TurnInName="Merda Stronghoof" TurnInId="66372" />
+				</If>
+					
+			<If Condition="HasQuest(31872) &amp;&amp; IsQuestCompleted(31872)">
+				<CustomBehavior File="FlyTo" X="-916.969" Y="1661.165" Z="59.8653" DestName="Whooped Merdas ass." />
+				<TurnIn QuestName="Merda Stronghoof" QuestId="31872" TurnInName="Merda Stronghoof" TurnInId="66372" />
+			</If>
+			
+			<If Condition="HasQuest(31872) &amp;&amp; IsQuestCompleted(31872)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31872" />
+			</If>
+			
+			
+			
+				<!--Gluk-->
+				
+				<If Condition="!HasQuest(31871) &amp;&amp; !IsQuestCompleted(31871)">
+			<CustomBehavior File="FlyTo" X="-4669.914" Y="1295.979" Z="95.86526" DestName="Pick up Gluk Daily" />
+			<PickUp QuestName="Gluk" QuestId="31871" GiverName="Gluk" GiverId="66352" X="-4666.738" Y="1288.995" Z="96.1753" />
+			</If>
+			
+			<If Condition="HasQuest(31871) &amp;&amp; !IsQuestCompleted(31871)">
+				<CustomBehavior File="InteractWith" MobId="66352" GossipOptions="1" X="-4666.738" Y="1288.995" Z="96.1753" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Gluk" QuestId="31871" TurnInName="Gluk" TurnInId="66352" X="-4666.738" Y="1288.995" Z="96.1753"/>
+			 </If>
+			
+				<If Condition="HasQuest(31871) &amp;&amp; IsQuestCompleted(31871)">
+			<TurnIn QuestName="Gluk" QuestId="31871" TurnInName="Gluk" TurnInId="66352" X="-4666.738" Y="1288.995" Z="96.1753"/>
+			</If>
+			
+			<If Condition="HasQuest(31871) &amp;&amp; IsQuestCompleted(31871)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31871" />
+			</If>
+			
+			  <!--Kela-->
+			  
+			  <If Condition="!HasQuest(31906) &amp;&amp; !IsQuestCompleted(31906)">
+			<CustomBehavior File="FlyTo" X="-4928.448" Y="-1840.053" Z="80.24546" DestName="Pick up Kela Daily" />
+			<PickUp QuestName="Kela" QuestId="31906" GiverName="Kela" GiverId="66452" X="-4932.897" Y="-1835.984" Z="80.01101" />
+			</If>
+			
+			<If Condition="HasQuest(31906) &amp;&amp; !IsQuestCompleted(31906)">
+				<CustomBehavior File="InteractWith" MobId="66452" GossipOptions="1" X="-4932.897" Y="-1835.984" Z="80.01101" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Kela" QuestId="31906" TurnInName="Kela" TurnInId="66452" X="-4932.897" Y="-1835.984" Z="80.01101"/>
+				 </If>
+			
+				<If Condition="HasQuest(31906) &amp;&amp; IsQuestCompleted(31906)">
+			<TurnIn QuestName="Kela" QuestId="31906" TurnInName="Kela" TurnInId="66452" X="-4932.897" Y="-1835.984" Z="80.01101"/>
+			</If>
+			
+			<If Condition="HasQuest(31906) &amp;&amp; IsQuestCompleted(31906)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31906" />
+			</If>
+			
+			<!--Cassandra-->
+			
+			<If Condition="!HasQuest(31904) &amp;&amp; !IsQuestCompleted(31904)">
+			<CustomBehavior File="FlyTo" X="-3702.493" Y="-1580.265" Z="92.01625" DestName="Pick up Cassandra Daily" />
+			<PickUp QuestName="Cassandra Kaboom" QuestId="331904" GiverName="Cassandra Kaboom" GiverId="66422" X="-3706.715" Y="-1578.641" Z="91.77861" />
+			</If>
+
+			<If Condition="HasQuest(31904) &amp;&amp; !IsQuestCompleted(31904)">
+				<CustomBehavior File="InteractWith" MobId="66422" GossipOptions="1" X="-3706.715" Y="-1578.641" Z="91.77861" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Cassandra Kaboom" QuestId="31904" TurnInName="Cassandra Kaboom" TurnInId="66422" X="-3706.715" Y="-1578.641" Z="91.77861"/>
+			</If>
+
+			<If Condition="HasQuest(31904) &amp;&amp; IsQuestCompleted(31904)">
+			<TurnIn QuestName="Cassandra Kaboom" QuestId="31904" TurnInName="Cassandra Kaboom" TurnInId="66422" X="-3706.715" Y="-1578.641" Z="91.77861"/>
+			</If>
+			
+			<If Condition="HasQuest(31904) &amp;&amp; IsQuestCompleted(31904)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31904" />
+			</If>
+			
+				<!--Grazzle-->
+			
+			<If Condition="!HasQuest(31905) &amp;&amp; !IsQuestCompleted(31905)">
+			<CustomBehavior File="FlyTo" X="-4650.208" Y="-3801.634" Z="43.75515" DestName="Pick up Grazzle Daily" />
+			<PickUp QuestName="Grazzle" QuestId="31905" GiverName="Grazzle" GiverId="66436" X="-4653.963" Y="-3802.347" Z="44.07782" />
+			</If>
+			
+			<If Condition="HasQuest(31905) &amp;&amp; !IsQuestCompleted(31905)">
+				<CustomBehavior File="InteractWith" MobId="66436" GossipOptions="1" X="-4653.963" Y="-3802.347" Z="44.07782" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000"/>
+				<TurnIn QuestName="Grazzle" QuestId="31905" TurnInName="Grazzle" TurnInId="66436" X="-4653.963" Y="-3802.347" Z="44.07782"/>
+		</If>
+			
+				<If Condition="HasQuest(31905) &amp;&amp; IsQuestCompleted(31905)">
+			<TurnIn QuestName="Grazzle" QuestId="31905" TurnInName="Grazzle" TurnInId="66436" X="-4653.963" Y="-3802.347" Z="44.07782"/>
+			</If>
+			
+			<If Condition="HasQuest(31905) &amp;&amp; IsQuestCompleted(31905)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31905" />
+			</If>
+			
+			
+</QuestOrder>
+
+
+
+
+</HBProfile>
+
