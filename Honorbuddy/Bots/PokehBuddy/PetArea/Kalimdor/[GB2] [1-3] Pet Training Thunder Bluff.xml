@@ -1,0 +1,26 @@
+<HBProfile>
+  <!--Created By Guadah-->
+  <Name>Pet Training</Name>
+
+    <SubProfile>
+     <Name>Thunder Bluff 1-3</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+		<Hotspot X="1014.449" Y="-3638.057" Z="144.1756" />
+		<Hotspot X="1086.431" Y="-3338.889" Z="144.3477" />
+		<Hotspot X="749.2568" Y="-2600.992" Z="151.5988" />
+		<Hotspot X="571.7288" Y="-1949.282" Z="159.9606" />
+		<Hotspot X="185.6869" Y="-1883.341" Z="163.7641" />
+		<Hotspot X="-933.4193" Y="-2956.093" Z="158.1158" />
+		<Hotspot X="-584.7744" Y="-3623.493" Z="148.9447" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>

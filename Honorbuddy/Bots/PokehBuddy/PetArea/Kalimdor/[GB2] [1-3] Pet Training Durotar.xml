@@ -1,0 +1,26 @@
+<HBProfile>
+  <!--Created By Guadah-->
+  <Name>Pet Training</Name>
+
+    <SubProfile>
+     <Name>Durotar 1-3</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+      <Hotspot X="1177.859" Y="-4130.735" Z="77.85793" />
+		<Hotspot X="190.7172" Y="-4172.42" Z="105.4077" />
+		<Hotspot X="180.6564" Y="-4659.267" Z="108.9235" />
+		<Hotspot X="-777.3707" Y="-4777.389" Z="110.7164" />
+		<Hotspot X="618.8447" Y="-4863.552" Z="84.74434" />
+		<Hotspot X="905.9182" Y="-5039.662" Z="80.63014" />
+		<Hotspot X="1232.084" Y="-4962.151" Z="78.25233" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>
