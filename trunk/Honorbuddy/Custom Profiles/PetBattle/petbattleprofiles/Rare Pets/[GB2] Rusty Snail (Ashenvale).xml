@@ -1,0 +1,21 @@
+<HBProfile>
+  <Name>Ashenvale rusty snail</Name>
+
+    <SubProfile>
+     <Name>Ashenvale rusty snail</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+		<Hotspot X="3534.276" Y="1007.873" Z="33.05352" />
+		<Hotspot X="4091.965" Y="845.4977" Z="55.23842" />
+		<Hotspot X="4118.002" Y="1101.926" Z="37.94995" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>

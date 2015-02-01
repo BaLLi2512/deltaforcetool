@@ -1,0 +1,67 @@
+<HBProfile>
+///////////////////////////////////////////////////
+//                                               //
+// Profile generated with ZapRecorder2 v1.2.0    //
+// Created by BadWolf                            //
+//                                               //
+///////////////////////////////////////////////////
+<Name>[GB2] Fluxfire Feline (New Tinkertown Toxic Airfield)</Name>
+<MinDurability>0.4</MinDurability>
+<MinFreeBagSlots>1</MinFreeBagSlots>
+
+<MinLevel>1</MinLevel>
+<MaxLevel>91</MaxLevel>
+<Factions>99999</Factions>
+
+<MailGrey>false</MailGrey>
+<MailWhite>false</MailWhite>
+<MailGreen>false</MailGreen>
+<MailBlue>false</MailBlue>
+<MailPurple>false</MailPurple>
+
+<SellGrey>false</SellGrey>
+<SellWhite>false</SellWhite>
+<SellGreen>false</SellGreen>
+<SellBlue>false</SellBlue>
+<SellPurple>false</SellPurple>
+
+<Vendors>
+</Vendors>
+
+<Mailboxes>
+</Mailboxes>
+
+<Blackspots>
+</Blackspots>
+
+<Hotspots>
+<Hotspot X="-5280.761" Y="539.2681" Z="445.602" />
+<Hotspot X="-5320.953" Y="540.3825" Z="444.6722" />
+<Hotspot X="-5383.789" Y="534.5147" Z="443.7785" />
+<Hotspot X="-5446.224" Y="525.0647" Z="442.7449" />
+<Hotspot X="-5505.546" Y="505.1382" Z="440.5551" />
+<Hotspot X="-5541.752" Y="455.7592" Z="439.3861" />
+<Hotspot X="-5543.769" Y="413.7974" Z="439.0909" />
+<Hotspot X="-5501.336" Y="368.8117" Z="442.4381" />
+<Hotspot X="-5439.4" Y="365.3805" Z="443.9419" />
+<Hotspot X="-5386.245" Y="373.8954" Z="444.7177" />
+<Hotspot X="-5344.519" Y="382.8674" Z="445.193" />
+<Hotspot X="-5282.608" Y="396.1794" Z="445.898" />
+<Hotspot X="-5234.431" Y="417.1302" Z="445.3708" />
+<Hotspot X="-5206.591" Y="448.3838" Z="444.7991" />
+<Hotspot X="-5216.724" Y="506.1124" Z="445.2052" />
+<Hotspot X="-5276.947" Y="515.9141" Z="446.7218" />
+<Hotspot X="-5330.535" Y="485.1318" Z="449.6312" />
+<Hotspot X="-5368.226" Y="434.4448" Z="451.8779" />
+<Hotspot X="-5406.299" Y="383.9225" Z="453.8065" />
+<Hotspot X="-5462.57" Y="360.4937" Z="453.3422" />
+<Hotspot X="-5519.311" Y="380.3675" Z="450.5788" />
+<Hotspot X="-5526.594" Y="439.9988" Z="448.2314" />
+<Hotspot X="-5487.479" Y="485.9668" Z="449.6906" />
+<Hotspot X="-5427.818" Y="485.4816" Z="451.6224" />
+<Hotspot X="-5385.718" Y="439.6659" Z="453.5093" />
+<Hotspot X="-5339.978" Y="396.7655" Z="454.5046" />
+<Hotspot X="-5278.084" Y="384.5273" Z="453.5869" />
+<Hotspot X="-5232.579" Y="421.9301" Z="454.3954" />
+</Hotspots>
+</HBProfile>

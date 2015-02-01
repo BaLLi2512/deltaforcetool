@@ -1,0 +1,25 @@
+<HBProfile>
+  <!--Created By Guadah-->
+  <Name>Pet Training</Name>
+
+    <SubProfile>
+     <Name>Burning Steppes 15-17</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+		<Hotspot X="-8258.444" Y="-1937.993" Z="271.7557" />
+		<Hotspot X="-8170.342" Y="-2627.932" Z="194.1187" />
+		<Hotspot X="-7876.345" Y="-2646.398" Z="262.438" />
+		<Hotspot X="-7653.052" Y="-2574.334" Z="200.0514" />
+		<Hotspot X="-7722.59" Y="-1595.409" Z="182.9557" />
+		<Hotspot X="-8184.646" Y="-1322.861" Z="216.9719" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>

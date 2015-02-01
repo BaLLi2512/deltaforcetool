@@ -1,0 +1,25 @@
+<HBProfile>
+  <!--Created By Guadah-->
+  <Name>Pet Training</Name>
+
+    <SubProfile>
+     <Name>Duskwood</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+      <Hotspot X="-10654.42" Y="225.6218" Z="80.63755" />
+	  <Hotspot X="-10755.27" Y="-47.49222" Z="107.0644" />
+	  <Hotspot X="-10799.29" Y="-879.7327" Z="123.3283" />
+	  <Hotspot X="-10400.65" Y="-924.5469" Z="102.072" />
+	  <Hotspot X="-9964.895" Y="-597.2814" Z="117.2775" />
+	  <Hotspot X="-10426.28" Y="311.9405" Z="106.0498" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>
