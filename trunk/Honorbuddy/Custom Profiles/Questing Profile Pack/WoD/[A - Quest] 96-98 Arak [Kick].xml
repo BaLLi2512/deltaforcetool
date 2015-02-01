@@ -252,17 +252,18 @@
 	<Quest Id="36023" Name="Extrinsic Motivation">
 		<Objective Type="KillMob" MobId="83749" KillCount="4">
 			<Hotspots>
-
+				<Hotspot X="237.3528" Y="1388.9" Z="2.415238" />
 			</Hotspots>
 		</Objective>
 		<Objective Type="KillMob" MobId="83706" KillCount="3">
 			<Hotspots>
-
+				<Hotspot X="237.3528" Y="1388.9" Z="2.415238" />
 			</Hotspots>
 		</Objective>
 		<Objective Type="KillMob" MobId="83760" KillCount="1">
 			<Hotspots>
-
+				<Hotspot X="227.3257" Y="1372.305" Z="0.9051911" />
+				<Hotspot X="207.5052" Y="1319.285" Z="0.3694117" />
 			</Hotspots>
 		</Objective>
 	</Quest>
@@ -964,16 +965,16 @@
 
 		<!-- If I'm in Lunarfall -->
 		<If Condition="Me.ZoneId == 7078" >
-			<If Condition="!HasQuest(36951) &amp;&amp; !IsQuestCompleted(36951)" > <!-- Bulletin Board's Arakkoa Exodus -->
+			<If Condition="!HasQuest(36953) &amp;&amp; !IsQuestCompleted(36953) &amp;&amp; !IsQuestCompleted(34655)" > <!-- Bulletin Board's Arakkoa Exodus -->
 				<If Condition="(IsQuestCompleted(34586)) &amp;&amp; (!IsQuestCompleted(36592))" > <!-- If I have a level 1 Garrison -->
 					<!-- Pick up the Bulletin Board's Arakkoa Exodus -->
-					<PickUp QuestName="Arakkoa Exodus" QuestId="36951" GiverName="Bulletin Board" GiverId="232397" X="1889.443" Y="252.7309" Z="76.62231" />
+					<PickUp QuestName="Arakkoa Exodus" QuestId="36953" GiverName="Bulletin Board" GiverId="232397" X="1889.443" Y="252.7309" Z="76.62231" />
 				</If>
 				<If Condition="IsQuestCompleted(36592)" > <!-- If I have a level 2 or 3 Garrison -->
-					<PickUp QuestName="Arakkoa Exodus" QuestId="36951" GiverName="Bulletin Board" GiverId="232400" X="1888.486" Y="254.5486" Z="76.64058" />
+					<PickUp QuestName="Arakkoa Exodus" QuestId="36953" GiverName="Bulletin Board" GiverId="232400" X="1888.486" Y="254.5486" Z="76.64058" />
 				</If>
 				<CustomBehavior File="InteractWith" MobId="81103" GossipOptions="2" WaitForNpcs="False" X="1864.33" Y="217.8108" Z="76.6386" /> <!-- Fly to Spires of Arak -->
-				<TurnIn QuestName="Arakkoa Exodus" QuestId="36951" TurnInName="Azik" TurnInId="79539" X="655.0746" Y="2384.804" Z="203.7571" />
+				<TurnIn QuestName="Arakkoa Exodus" QuestId="36953" TurnInName="Azik" TurnInId="79539" X="655.0746" Y="2384.804" Z="203.7571" />
 				<PickUp QuestName="The Shadows of Skettis" QuestId="34655" GiverName="Azik" GiverId="79539" X="655.0746" Y="2384.804" Z="203.7571" />
 			</If>
 		</If>
@@ -1804,7 +1805,10 @@
 		<TurnIn QuestName="The False Talon King" QuestId="35011" TurnInName="Talon Guard Kurekk" TurnInId="86475" X="-111.0868" Y="796.4149" Z="73.49425" />
 		<PickUp QuestName="Lithic's Gift" QuestId="35013" GiverName="Talon Guard Kurekk" GiverId="86475" X="-111.0868" Y="796.4149" Z="73.49425" />
 		<PickUp QuestName="Sethe, the Dead God" QuestId="35012" GiverName="Anzu" GiverId="86355" X="-114.467" Y="784.0226" Z="73.35169" />
-		<While Condition="HasQuest(35012) &amp;&amp; !IsQuestCompleted(35012)" >
+		<If Condition="HasQuest(35012)">
+			<CustomBehavior File="Hooks\Avoid" AvoidName="Sethe Void Ray" ObjectId="7721" Radius="4" ObjectType="AreaTrigger" />
+		</If>
+		<While Condition="HasQuest(35012) &amp;&amp; !IsQuestCompleted(35012)" >		
 			<While Condition="Unit(80644) == null &amp;&amp; !IsQuestCompleted(35012)">
 				<CustomBehavior File="InteractWith" QuestId="35012" MobId="85614" Range="4" GossipOptions="1" KeepTargetSelected="True" NonCompeteDistance="0" WaitTime="2000" X="-68.40972" Y="891.6563" Z="99.79018" />
 				<CustomBehavior File="Misc\RunLua" Lua="StaticPopup1Button1:Click()" WaitTime="4000" />
@@ -1827,6 +1831,7 @@
 			</CustomBehavior>
 		</While>
 		<TurnIn QuestName="Sethe, the Dead God" QuestId="35012" TurnInName="Anzu" TurnInId="80648" X="-192.026" Y="1016.16" Z="75.67942" />
+		<CustomBehavior File="Hooks\Avoid" AvoidName="Sethe Void Ray" Command="Remove" />
 		<TurnIn QuestName="Lithic's Gift" QuestId="35013" TurnInName="Memory of Lithic" TurnInId="80834" X="-181.6389" Y="1016.467" Z="75.48669" />
 		<PickUp QuestName="A Sentimental Relic" QuestId="35245" GiverName="Memory of Lithic" GiverId="80834" X="-181.6389" Y="1016.467" Z="75.48669" />
 		<!-- End of Talon Watch / Lithic's Rest -->
@@ -2139,8 +2144,12 @@
 
 
 		<!-- GoTo Nagrand -->
-		<PickUp QuestName="News from Nagrand" QuestId="36601" GiverName="Shadow-Sage Iskar" GiverId="80153" X="-496.2379" Y="1857.922" Z="44.78159" />
-		<TurnIn QuestName="News from Nagrand" QuestId="36601" TurnInName="Bodrick Grey" TurnInId="81492" X="1941.726" Y="330.4358" Z="88.96597" />
+		<If Condition="!HasQuest(37184) &amp;&amp; !IsQuestCompleted(37184)" > <!-- News from Nagrand Pickup -->
+			<PickUp QuestName="News from Nagrand" QuestId="36601" GiverName="Shadow-Sage Iskar" GiverId="80153" X="-496.2379" Y="1857.922" Z="44.78159" />
+		</If>
+		<If Condition="HasQuest(36601)" > <!-- News from Nagrand Turnin -->
+			<TurnIn QuestName="News from Nagrand" QuestId="36601" TurnInName="Bodrick Grey" TurnInId="81492" X="1941.726" Y="330.4358" Z="88.96597" />
+		</If>
 		<PickUp QuestName="Taking the Fight to Nagrand" QuestId="37184" GiverName="Bodrick Grey" GiverId="81492" X="1941.726" Y="330.4358" Z="88.96597" />
 		<If Condition="HasQuest(37184) &amp;&amp; Me.ZoneId == 7078"> <!-- Taking the Fight to Nagrand -  SMV -->
 			<CustomBehavior File="InteractWith" MobId="81103" GossipOptions="2" WaitTime="2000" X="1864.33" Y="217.8108" Z="76.63772" />

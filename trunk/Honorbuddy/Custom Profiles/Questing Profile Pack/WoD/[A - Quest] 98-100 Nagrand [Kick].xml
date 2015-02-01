@@ -12,7 +12,7 @@
 	<SellGrey>true</SellGrey>
 	<SellWhite>true</SellWhite>
 	<SellGreen>true</SellGreen>
-	<SellBlue>false</SellBlue>
+	<SellBlue>true</SellBlue>
 	<SellPurple>false</SellPurple>
 
 	<MailGrey>false</MailGrey>
@@ -1238,7 +1238,8 @@
 		<TurnIn QuestName="... and My Hammer" QuestId="34719" TurnInName="Vindicator Momor" TurnInId="79743" X="2325.116" Y="5519.208" Z="166.8117" />
 		<PickUp QuestName="Shields Down!" QuestId="34746" GiverName="Vindicator Momor" GiverId="79743" X="2325.116" Y="5519.208" Z="166.8117" />
 		<While Condition="HasQuest(34746) &amp;&amp; !IsQuestCompleted(34746)" > <!-- Shields Down! -->
-			<CustomBehavior File="InteractWith" QuestId="34746" MobId="79919" Range="6" NonCompeteDistance="0" TerminateWhen="IsObjectiveComplete(1, 34746)" X="2447.384" Y="5517.563" Z="151.172" />
+			<CustomBehavior File="InteractWith" QuestId="34746" MobId="79919" Range="6" NonCompeteDistance="0" WaitTime="2000" TerminateWhen="IsObjectiveComplete(1, 34746)" X="2447.384" Y="5517.563" Z="151.172" />
+			<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for objective to complete {TimeRemaining}" />
 		</While>
 		<Objective QuestName="Shields Down!" QuestId="34746" Type="CollectItem" ItemId="111619" CollectCount="1" />
 		<Objective QuestName="Operation: Just Arrowhead" QuestId="34717" Type="KillMob" MobId="79744" KillCount="15" />
@@ -1249,7 +1250,7 @@
 		<!-- Telaari Station -->
 		<PickUp QuestName="A Choice to Make" QuestId="34769" GiverName="Thaelin Darkanvil" GiverId="79674" X="2579.083" Y="5729.732" Z="103.6086" />
 		<While Condition="HasQuest(34769) &amp;&amp; !IsQuestCompleted(34769)" > <!-- A Choice to Make -->
-			<CustomBehavior File="InteractWith" QuestId="34769" MobId="230741" Range="5" X="2577.867" Y="5730.166" Z="103.6736" /> <!-- Architect Table -->
+			<CustomBehavior File="InteractWith" QuestId="34769" MobId="230741" Range="5" NonCompeteDistance="0" X="2577.867" Y="5730.166" Z="103.6736" /> <!-- Architect Table -->
 			<CustomBehavior File="WaitTimer" WaitTime="4000" GoalText="Waiting for cast {TimeRemaining}" />
 			<CustomBehavior File="UserDialog" QuestId="34769" AllowBotStop="True" SoundCue="Exclamation" SoundCueInterval="2" ExpiryTime="300" ExpiryAction="InputEnabled_Continue" 
 				Text="Choose Corral or Tankworks.  Profile chooses Tankworks after 5 minutes.\n\nYou can choose either, no difference in quests" />
@@ -1529,7 +1530,9 @@
 		<If Condition="!HasQuest(35332) &amp;&amp; !IsQuestCompleted(35332) &amp;&amp; !HasQuest(35331) &amp;&amp; !IsQuestCompleted(35331)" > <!-- Nobundo Sends Word -->
 			<PickUp QuestName="Nobundo Sends Word" QuestId="35332" GiverName="Rangari Dkaan" GiverId="79576" X="2581.239" Y="5703.557" Z="101.3143" />
 		</If>
-		<PickUp QuestName="Along the Riverside" QuestId="35059" GiverName="Rangari Dkaan" GiverId="79576" X="2581.239" Y="5703.557" Z="101.3143" />
+		<If Condition="!HasQuest(35060) &amp;&amp; !IsQuestCompleted(35060)" > <!-- Along the Riverside Pickup -->
+			<PickUp QuestName="Along the Riverside" QuestId="35059" GiverName="Rangari Dkaan" GiverId="79576" X="2581.239" Y="5703.557" Z="101.3143" />
+		</If>
 		<If Condition="!HasQuest(34747) &amp;&amp; !IsQuestCompleted(34747)" > <!-- Lantresor / Follower -->
 			<MoveTo DestName="Lantresor of the Blade" X="2670.017" Y="5662.378" Z="89.51691" />
 			<CustomBehavior File="InteractWith" MobId="81790" WaitForNpcs="False" WaitTime="3000" X="2670.017" Y="5662.378" Z="89.51691" />
@@ -1619,7 +1622,9 @@
 		<!-- End of Ring of Trials -->
 
 		<!-- Yrel's Watch / Lok-rath -->
-		<TurnIn QuestName="Along the Riverside" QuestId="35059" TurnInName="Vindicator Yrel" TurnInId="81039" X="3388.595" Y="5791.837" Z="37.65806" />
+		<If Condition="HasQuest(35059)" > <!-- Along the Riverside Turnin -->
+			<TurnIn QuestName="Along the Riverside" QuestId="35059" TurnInName="Vindicator Yrel" TurnInId="81039" X="3388.595" Y="5791.837" Z="37.65806" />
+		</If>
 		<PickUp QuestName="Terms of Surrender" QuestId="35060" GiverName="Vindicator Yrel" GiverId="81039" X="3388.595" Y="5791.837" Z="37.65806" />
 		<TurnIn QuestName="Terms of Surrender" QuestId="35060" TurnInName="Uruk Foecleaver" TurnInId="81086" X="3330.818" Y="6158.694" Z="19.80286" />
 		<PickUp QuestName="The Pride of Lok-rath" QuestId="35061" GiverName="Uruk Foecleaver" GiverId="81086" X="3330.818" Y="6158.694" Z="19.80286" />
@@ -1689,7 +1694,7 @@
 					</Hotspots>
 				</GrindArea>
 			</SetGrindArea>
-			<GrindUntil Condition="HasItem(113080)" />
+			<GrindUntil Condition="HasItem(113080)" GoalText="Getting drop quest Item for quest A Wrong of Earth and Fire" />
 		</While>
 		<If Condition="HasItem(113080)">
 			<PickUp QuestName="A Wrong of Earth and Fire" QuestId="33928" GiverType="Item" GiverId="113080" />
@@ -1808,6 +1813,34 @@
 			<CustomBehavior File="InteractWith" QuestId="36275" MobId="234176" NonCompeteDistance="0" Range="5" TerminateWhen="IsObjectiveComplete(2, 36275)" X="4147.413" Y="4426.89" Z="1.652055" />
 			<CustomBehavior File="InteractWith" QuestId="36275" MobId="234169" NonCompeteDistance="0" Range="5" TerminateWhen="IsObjectiveComplete(3, 36275)" X="4099.952" Y="4100.003" Z="4.969035" />
 		</While>
+		<While Condition="HasQuest(36284) &amp;&amp; !IsQuestCompleted(36284)" > 
+			<While Condition="!IsObjectiveComplete(1, 36284)" >
+				<MoveTo QuestId="36284" DestName="Spore Sac 0" X="4044.968" Y="4313.137" Z="-1.306793" />
+				<CustomBehavior File="AscendInWater" />	
+				<CustomBehavior File="InteractWith" QuestId="36284" MobId2="234101" MobId="84706" TerminateWhen="IsObjectiveComplete(1, 36284)" />
+				<CustomBehavior File="AscendInWater" />	
+				<MoveTo QuestId="36284" DestName="Spore Sac 1" X="4093.573" Y="4331.769" Z="-3.054907" />
+				<CustomBehavior File="AscendInWater" />	
+				<CustomBehavior File="InteractWith" QuestId="36284" MobId2="234101" MobId="84706" TerminateWhen="IsObjectiveComplete(1, 36284)" />
+				<CustomBehavior File="AscendInWater" />	
+				<MoveTo QuestId="36284" DestName="Spore Sac 2" X="4132.437" Y="4356.298" Z="-1.833508" />
+				<CustomBehavior File="AscendInWater" />	
+				<CustomBehavior File="InteractWith" QuestId="36284" MobId2="234101" MobId="84706" TerminateWhen="IsObjectiveComplete(1, 36284)" />
+				<CustomBehavior File="AscendInWater" />	
+				<MoveTo QuestId="36284" DestName="Spore Sac 3" X="4160.741" Y="4384.007" Z="-0.3572536" />
+				<CustomBehavior File="AscendInWater" />	
+				<CustomBehavior File="InteractWith" QuestId="36284" MobId2="234101" MobId="84706" TerminateWhen="IsObjectiveComplete(1, 36284)" />
+				<CustomBehavior File="AscendInWater" />	
+				<MoveTo QuestId="36284" DestName="Spore Sac 4" X="4258.322" Y="4393.792" Z="-1.845163" />
+				<CustomBehavior File="AscendInWater" />	
+				<CustomBehavior File="InteractWith" QuestId="36284" MobId2="234101" MobId="84706" TerminateWhen="IsObjectiveComplete(1, 36284)" />
+				<CustomBehavior File="AscendInWater" />	
+				<MoveTo QuestId="36284" DestName="Spore Sac 5" X="4269.041" Y="4326.774" Z="-1.83668" />
+				<CustomBehavior File="AscendInWater" />	
+				<CustomBehavior File="InteractWith" QuestId="36284" MobId2="234101" MobId="84706" TerminateWhen="IsObjectiveComplete(1, 36284)" />
+				<CustomBehavior File="AscendInWater" />	
+			</While>
+		</While>
 		<While Condition="HasQuest(36284) &amp;&amp; !IsQuestCompleted(36284)" > <!-- A Fascinating Fungus MobId2="234101"  - add water support 
 				<CustomBehavior File="InteractWith" QuestId="36284" MobId="84726" NumOfTimes="20" Range="5" 
 												TerminateWhen="IsObjectiveComplete(1, 36284)" CollectionDistance="1000" PreInteractMountStrategy="DismountOrCancelShapeshift" >
@@ -1923,6 +1956,7 @@
 		</While>
 		<PickUp QuestName="The Warsong Threat" QuestId="35386" GiverName="Warsong Attack Plans" GiverId="232024" GiverType="GameObject" X="2573.507" Y="6364.681" Z="43.65055" />
 		<Objective QuestName="The Warsong Threat" QuestId="35386" Type="CollectItem" ItemId="113549" CollectCount="1" /> <!-- 2 Mixed Unit Tactics -->
+		<MoveTo DestName="The Warsong Threat - Warsong Command Brief" QuestId="35386" X="2812.979" Y="6341.57" Z="50.88264" />
 		<Objective QuestName="The Warsong Threat" QuestId="35386" Type="CollectItem" ItemId="113550" CollectCount="1" /> <!-- 1 Warsong Command Brief -->
 		<While Condition="HasQuest(35083) &amp;&amp; !IsQuestCompleted(35083)" > <!-- Disrupt the Rituals -->
 			<CustomBehavior File="InteractWith" QuestId="35083" MobId="81190" NumOfTimes="20" Range="4" TerminateWhen="IsObjectiveComplete(1, 35083)" 
@@ -1960,7 +1994,8 @@
 			<!-- <Aura Name="In the Twisting Nether" SpellId="162427" /> -->
 		</While>
 		<If Condition="!IsQuestCompleted(35088)" > <!-- Shamanstone Quest Line Aura -->
-			<CustomBehavior File="Hooks\DoWhen" ActivityName="GetShamanstoneAura" UseWhen="!Me.HasAura(162427) &amp;&amp; Me.IsAlive &amp;&amp; Me.Combat == false &amp;&amp; !IsQuestCompleted(35088)" >
+			<CustomBehavior File="Hooks\DoWhen" ActivityName="GetShamanstoneAura" TreeHookName="Questbot_Profile" AllowExecutionWhileNotAlive="False" 
+				UseWhen="!Me.HasAura(162427) &amp;&amp; Me.Combat == false &amp;&amp; !IsQuestCompleted(35088)" >
 				<MoveTo DestName="Nether Beacon" X="2522.372" Y="6352.835" Z="49.46368" />
 				<CustomBehavior File="InteractWith" MobId="232147" Range="4" NonCompeteDistance="0" PreInteractMountStrategy="DismountOrCancelShapeshift" X="2520.389" Y="6352.978" Z="49.44275" />
 			</CustomBehavior>
@@ -2023,7 +2058,7 @@
 			-->
 
 		<!-- Bonus Objective: Ironfist Harbor -->
-		<While Condition="!IsQuestCompleted(34723)">
+		<While Condition="!IsQuestCompleted(34723) &amp;&amp; Me.Level &lt; 100">
 			<If Condition="!HasQuest(34723)">
 				<MoveTo DestName="Outside of Bonus Area 1" X="2034.087" Y="6678.708" Z="4.044489" /> <!-- Outside of Bonus Area - In case we have issues with it completing -->
 				<MoveTo DestName="Middle of Bonus Area" X="2083.428" Y="6989.918" Z="6.692083" /> <!-- Middle of area -->
@@ -2104,6 +2139,11 @@
 				<MoveTo DestName="And Justice for Thrall" X="2298.406" Y="5071.601" Z="207.7882"  />
 			</If>
 			<UseMount Value="false" />
+			<While Condition="Bots.DungeonBuddy.Helpers.ScriptHelpers.CurrentScenarioInfo.CurrentStage.StageNumber == 0"> <!-- 0 -->
+				<CustomBehavior File="InteractWith" MobId="81404" GossipOptions="1" NonCompeteDistance="0" X="2291.438" Y="5076.994" Z="207.3543" 
+				TerminateWhen="Bots.DungeonBuddy.Helpers.ScriptHelpers.CurrentScenarioInfo.CurrentStage.StageNumber > 1" />
+				<CustomBehavior File="WaitTimer" WaitTime="5000" GoalText="Waiting for Stage 1 to Complete {TimeRemaining}" />
+			</While>
 			<While Condition="Bots.DungeonBuddy.Helpers.ScriptHelpers.CurrentScenarioInfo.CurrentStage.StageNumber == 1"> <!-- 1 -->
 				<CustomBehavior File="InteractWith" MobId="81404" GossipOptions="1" NonCompeteDistance="0" X="2291.438" Y="5076.994" Z="207.3543" 
 				TerminateWhen="Bots.DungeonBuddy.Helpers.ScriptHelpers.CurrentScenarioInfo.CurrentStage.StageNumber > 1" />
@@ -2136,9 +2176,9 @@
 			</While>
 			<While Condition="Bots.DungeonBuddy.Helpers.ScriptHelpers.CurrentScenarioInfo.CurrentStage.StageNumber == 6"> <!-- 6 -->
 				<MoveTo DestName="And Justice for Thrall: Stage 6" X="1826.391" Y="5131.593" Z="207.3466" />
-				<CustomBehavior File="InteractWith" MobId="83407" GossipOptions="1" NonCompeteDistance="0" WaitTime="10000" X="1826.741" Y="5172.718" Z="205.2427" 
+				<CustomBehavior File="InteractWith" MobId="85058" MobId2="83407" GossipOptions="1" NonCompeteDistance="0" WaitTime="10000" X="1826.741" Y="5172.718" Z="205.2427" 
 				TerminateWhen="Bots.DungeonBuddy.Helpers.ScriptHelpers.CurrentScenarioInfo.CurrentStage.StageNumber > 6" />
-				<CustomBehavior File="WaitTimer" WaitTime="5000" GoalText="Waiting for Stage 6 to Complete {TimeRemaining}" />
+				<CustomBehavior File="WaitTimer" WaitTime="15000" GoalText="Waiting for Stage 6 to Complete {TimeRemaining}" />
 			</While>
 			<While Condition="Bots.DungeonBuddy.Helpers.ScriptHelpers.CurrentScenarioInfo.CurrentStage.StageNumber == 7"> <!-- 7 / final -->
 				<!-- grommashar.txt 
@@ -2190,6 +2230,9 @@
 			<CustomBehavior File="Misc\RunLua" Lua="QuestFrameCompleteQuestButton:Click()" WaitTime="500" />	
 		</While>
 
+		<If Condition="Me.MapId == 1116"> <!-- Draenor -->
+			<CustomBehavior File="ForceSetVendor" DoSell="True" DoRepair="True" DoMail="True" />
+		</If>
 
 		<CustomBehavior File="UserDialog" AllowBotStop="True" SoundCue="Exclamation" SoundCueInterval="1" 
 										Text="End of WoD Profiles - There's nothing more!\n\nIf you enjoyed this questing pack, please feel free to donate!
