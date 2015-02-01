@@ -1,0 +1,101 @@
+<HBProfile>
+<Name>Pet Battle Dailies Outlands (Neutral) by Guadah</Name>
+    <MinLevel>60</MinLevel>
+    <MaxLevel>91</MaxLevel>
+<QuestOrder>
+<!--Nicki Tinytech, Hellfire Peninsula (Level 20 Pets)-->
+	<If Condition="!HasQuest(31922) &amp;&amp; !IsQuestCompleted(31922)">
+		<CustomBehavior File="FlyTo" X="-216.6024" Y="2217.997" Z="68.85071" DestName="Nicki Tinytech Daily" />
+		<PickUp QuestName="Nicki Tinytech" QuestId="31922" GiverName="Nicki Tinytech" GiverId="66550" X="-216.6024" Y="2217.997" Z="68.85071" />
+	</If>
+	<If Condition="HasQuest(31922) &amp;&amp; !IsQuestCompleted(31922)">
+		<CustomBehavior File="FlyTo" X="-216.6024" Y="2217.997" Z="68.85071" DestName="Nicki Tinytech Daily" />
+		<CustomBehavior File="InteractWith" MobId="66550" GossipOptions="1" X="-216.6024" Y="2217.997" Z="68.85071" />
+		<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+		<TurnIn QuestName="Nicki Tinytech" QuestId="31922" TurnInName="Nicki Tinytech" TurnInId="66550" X="-216.6024" Y="2217.997" Z="68.85071" />
+	</If>
+	<If Condition="HasQuest(31922) &amp;&amp; IsQuestCompleted(31922)">
+		<CustomBehavior File="FlyTo" X="-216.6024" Y="2217.997" Z="68.85071" DestName="Nicki Tinytech Daily" />
+		<TurnIn QuestName="Nicki Tinytech" QuestId="31922" TurnInName="Nicki Tinytech" TurnInId="66550" X="-216.6024" Y="2217.997" Z="68.85071" />
+	</If>
+	<If Condition="HasQuest(31922) &amp;&amp; IsQuestCompleted(31922)">
+		<CustomBehavior File="CompleteLogQuest" QuestId="31922" />
+	</If>	
+
+<!--Ras'an, Zangermarsh (Level 21 Pets)-->
+	<If Condition="!HasQuest(31923) &amp;&amp; !IsQuestCompleted(31923)">
+		<CustomBehavior File="FlyTo" X="241.9792" Y="8608.058" Z="22.02003" DestName="Ras'an Daily" />
+		<PickUp QuestName="Ras'an" QuestId="31923" GiverName="Ras'an" GiverId="66551" X="241.9792" Y="8608.058" Z="22.02003" />
+	</If>
+	<If Condition="HasQuest(31923) &amp;&amp; !IsQuestCompleted(31923)">
+		<CustomBehavior File="FlyTo" X="241.9792" Y="8608.058" Z="22.02003" DestName="Ras'an Daily" />
+		<CustomBehavior File="InteractWith" MobId="66551" GossipOptions="1" X="241.9792" Y="8608.058" Z="22.02003" />
+		<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+		<TurnIn QuestName="Ras'an" QuestId="31923" TurnInName="Ras'an" TurnInId="66551" X="241.9792" Y="8608.058" Z="22.02003" />
+	</If>
+	<If Condition="HasQuest(31923) &amp;&amp; IsQuestCompleted(31923)">
+		<CustomBehavior File="FlyTo" X="241.9792" Y="8608.058" Z="22.02003" DestName="Ras'an Daily" />
+		<TurnIn QuestName="Ras'an" QuestId="31923" TurnInName="Ras'an" TurnInId="66551" X="241.9792" Y="8608.058" Z="22.02003" />
+	</If>
+	<If Condition="HasQuest(31923) &amp;&amp; IsQuestCompleted(31923)">
+		<CustomBehavior File="CompleteLogQuest" QuestId="31923" />
+	</If>	
+	
+<!--Narrok, Nagrand (Level 22 Pets)-->
+	<If Condition="!HasQuest(31924) &amp;&amp; !IsQuestCompleted(31924)">
+		<CustomBehavior File="FlyTo" X="-1778.903" Y="6927.214" Z="-36.49483" DestName="Narrok Daily" />
+		<PickUp QuestName="Narrok" QuestId="31924" GiverName="Narrok" GiverId="66552" X="-1778.903" Y="6927.214" Z="-36.49483" />
+	</If>
+	<If Condition="HasQuest(31924) &amp;&amp; !IsQuestCompleted(31924)">
+		<CustomBehavior File="FlyTo" X="-1778.903" Y="6927.214" Z="-36.49483" DestName="Narrok Daily" />
+		<CustomBehavior File="InteractWith" MobId="66552" GossipOptions="1" X="-1778.903" Y="6927.214" Z="-36.49483" />
+		<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+		<TurnIn QuestName="Narrok" QuestId="31924" TurnInName="Narrok" TurnInId="66552" X="-1778.903" Y="6927.214" Z="-36.49483" />
+	</If>
+	<If Condition="HasQuest(31924) &amp;&amp; IsQuestCompleted(31924)">
+		<CustomBehavior File="FlyTo" X="-1778.903" Y="6927.214" Z="-36.49483" DestName="Narrok Daily" />
+		<TurnIn QuestName="Narrok" QuestId="31924" TurnInName="Narrok" TurnInId="66552" X="-1778.903" Y="6927.214" Z="-36.49483" />
+	</If>
+	<If Condition="HasQuest(31924) &amp;&amp; IsQuestCompleted(31924)">
+		<CustomBehavior File="CompleteLogQuest" QuestId="31924" />
+	</If>	
+
+<!--Morulu The Elder, Shattrath City (Level 23 Pets)-->
+	<If Condition="!HasQuest(31925) &amp;&amp; !IsQuestCompleted(31925)">
+		<CustomBehavior File="FlyTo" X="-2084.028" Y="5367.799" Z="-32.11625" DestName="Morulu The Elder Daily" />
+		<PickUp QuestName="Morulu The Elder" QuestId="31925" GiverName="Morulu The Elder" GiverId="66553" X="-2084.028" Y="5367.799" Z="-32.11625" />
+	</If>
+	<If Condition="HasQuest(31925) &amp;&amp; !IsQuestCompleted(31925)">
+		<CustomBehavior File="FlyTo" X="-2084.028" Y="5367.799" Z="-32.11625" DestName="Morulu The Elder Daily" />
+		<CustomBehavior File="InteractWith" MobId="66553" GossipOptions="1" X="-2084.028" Y="5367.799" Z="-32.11625" />
+		<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+		<TurnIn QuestName="Morulu The Elder" QuestId="31925" TurnInName="Morulu The Elder" TurnInId="66553" X="-2084.028" Y="5367.799" Z="-32.11625" />
+	</If>
+	<If Condition="!HasQuest(31925) &amp;&amp; !IsQuestCompleted(31925)">
+		<CustomBehavior File="FlyTo" X="-2084.028" Y="5367.799" Z="-32.11625" DestName="Morulu The Elder Daily" />
+		<PickUp QuestName="Morulu The Elder" QuestId="31925" GiverName="Morulu The Elder" GiverId="66553" X="-2084.028" Y="5367.799" Z="-32.11625" />
+	</If>
+	<If Condition="HasQuest(31925) &amp;&amp; IsQuestCompleted(31925)">
+		<CustomBehavior File="CompleteLogQuest" QuestId="31925" />
+	</If>	
+	
+<!--Bloodknight Antari, Nagrand (Level 22 Pets)-->
+	<If Condition="!HasQuest(31926) &amp;&amp; !IsQuestCompleted(31926)">
+		<CustomBehavior File="FlyTo" X="-3479.285" Y="2546.713" Z="60.63129" DestName="Bloodknight Antari Daily" />
+		<PickUp QuestName="Bloodknight Antari" QuestId="31926" GiverName="Bloodknight Antari" GiverId="66557" X="-3479.285" Y="2546.713" Z="60.63129" />
+	</If>
+	<If Condition="HasQuest(31926) &amp;&amp; !IsQuestCompleted(31926)">
+		<CustomBehavior File="FlyTo" X="-3479.285" Y="2546.713" Z="60.63129" DestName="Bloodknight Antari Daily" />
+		<CustomBehavior File="InteractWith" MobId="66557" GossipOptions="1" X="-3479.285" Y="2546.713" Z="60.63129" />
+		<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+		<TurnIn QuestName="Bloodknight Antari" QuestId="31926" TurnInName="Bloodknight Antari" TurnInId="66557" X="-3479.285" Y="2546.713" Z="60.63129" />
+	</If>
+	<If Condition="HasQuest(31926) &amp;&amp; IsQuestCompleted(31926)">
+		<CustomBehavior File="FlyTo" X="-3479.285" Y="2546.713" Z="60.63129" DestName="Bloodknight Antari Daily" />
+		<TurnIn QuestName="Bloodknight Antari" QuestId="31926" TurnInName="Bloodknight Antari" TurnInId="66557" X="-3479.285" Y="2546.713" Z="60.63129" />
+	</If>
+	<If Condition="HasQuest(31926) &amp;&amp; IsQuestCompleted(31926)">
+		<CustomBehavior File="CompleteLogQuest" QuestId="31926" />
+	</If>
+</QuestOrder>
+</HBProfile>

@@ -1,0 +1,143 @@
+///////////////////////
+// CREATED BY GUADAH //
+///////////////////////
+
+<HBProfile>
+<Name>Pet Battle Dailies Eastern Kingdoms (Alliance) by Guadah</Name>
+    <MinLevel>60</MinLevel>
+    <MaxLevel>91</MaxLevel>
+<QuestOrder>
+<!--Julia Stevens, Elwinn Forest (Level 2 Pets)-->
+	<If Condition="!HasQuest(31693) &amp;&amp; !IsQuestCompleted(31693)">
+		<CustomBehavior File="FlyTo" X="-9876.109" Y="89.51563" Z="32.20448" DestName="Julia Stevens Daily" />
+		<PickUp QuestName="Julia Stevens" QuestId="31693" GiverName="Julia Stevens" GiverId="64330" X="-9876.109" Y="89.51563" Z="32.20448" />
+	</If>
+	<If Condition="HasQuest(31693) &amp;&amp; !IsQuestCompleted(31693)">
+		<CustomBehavior File="FlyTo" X="-9876.109" Y="89.51563" Z="32.20448" DestName="Julia Stevens Daily" />
+		<CustomBehavior File="InteractWith" MobId="64330" GossipOptions="1" X="-9876.109" Y="89.51563" Z="32.20448" />
+		<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+		<TurnIn QuestName="Julia Stevens" QuestId="31693" TurnInName="Julia Stevens" TurnInId="64330" X="-9876.109" Y="89.51563" Z="32.20448" />
+	</If>
+	<If Condition="HasQuest(31693) &amp;&amp; IsQuestCompleted(31693)">
+		<CustomBehavior File="FlyTo" X="2295.266" Y="-4986.979" Z="73.80649" DestName="Deiza Plaguehorn Daily" />
+		<TurnIn QuestName="Julia Stevens" QuestId="31693" TurnInName="Julia Stevens" TurnInId="64330" X="-9876.109" Y="89.51563" Z="32.20448" />
+	</If>
+	<If Condition="HasQuest(31693) &amp;&amp; IsQuestCompleted(31693)">
+		<CustomBehavior File="CompleteLogQuest" QuestId="31693" />
+	</If>	
+
+<!--Deiza Plaguehorn-->
+	<If Condition="!HasQuest(31911) &amp;&amp; !IsQuestCompleted(31911)">
+		<CustomBehavior File="FlyTo" X="2295.266" Y="-4986.979" Z="73.80649" DestName="Deiza Plaguehorn Daily" />
+		<PickUp QuestName="Deiza Plaguehorn" QuestId="31911" GiverName="Deiza Plaguehorn" GiverId="66512" X="2295.266" Y="-4986.979" Z="73.80649" />
+	</If>
+	<If Condition="HasQuest(31911) &amp;&amp; !IsQuestCompleted(31911)">
+		<CustomBehavior File="FlyTo" X="2295.266" Y="-4986.979" Z="73.80649" DestName="Deiza Plaguehorn Daily" />
+		<CustomBehavior File="InteractWith" MobId="66512" GossipOptions="1" X="2295.266" Y="-4986.979" Z="73.80649" />
+		<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+		<TurnIn QuestName="Deiza Plaguehorn" QuestId="31911" TurnInName="Deiza Plaguehorn" TurnInId="66512" X="2295.266" Y="-4986.979" Z="73.80649" />
+	</If>
+	<If Condition="HasQuest(31911) &amp;&amp; IsQuestCompleted(31911)">
+		<CustomBehavior File="FlyTo" X="2295.266" Y="-4986.979" Z="73.80649" DestName="Deiza Plaguehorn Daily" />
+		<TurnIn QuestName="Deiza Plaguehorn" QuestId="31911" TurnInName="Deiza Plaguehorn" TurnInId="66512" X="2295.266" Y="-4986.979" Z="73.80649" />
+	</If>
+	<If Condition="HasQuest(31911) &amp;&amp; IsQuestCompleted(31911)">
+		<CustomBehavior File="CompleteLogQuest" QuestId="31911" />
+	</If>	
+
+<!--David Kosse-->
+			<If Condition="!HasQuest(31910) &amp;&amp; !IsQuestCompleted(31910)">
+				<CustomBehavior File="FlyTo" X="65.62" Y="-3999.93" Z="134.52" DestName="David Kosse Daily" />
+				<PickUp QuestName="David Kosse" QuestId="31910" GiverName="David Kosse" GiverId="66478" X="65.62" Y="-3999.93" Z="134.52" />
+			</If>
+			<If Condition="HasQuest(31910) &amp;&amp; !IsQuestCompleted(31910)">
+				<CustomBehavior File="FlyTo" X="65.62" Y="-3999.93" Z="134.52" DestName="David Kosse Daily" />
+				<CustomBehavior File="InteractWith" MobId="66478" GossipOptions="1" X="65.62" Y="-3999.93" Z="134.52" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+				<TurnIn QuestName="David Kosse" QuestId="31910" TurnInName="David Kosse" TurnInId="66478" X="65.62" Y="-3999.93" Z="134.52" />
+			</If>
+			<If Condition="HasQuest(31910) &amp;&amp; IsQuestCompleted(31910)">
+				<CustomBehavior File="FlyTo" X="65.62" Y="-3999.93" Z="134.52" DestName="David Kosse Daily" />
+				<TurnIn QuestName="David Kosse" QuestId="31910" TurnInName="David Kosse" TurnInId="66478" X="65.62" Y="-3999.93" Z="134.52" />
+			</If>
+			<If Condition="HasQuest(31910) &amp;&amp; IsQuestCompleted(31910)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31910" />
+			</If>		
+
+			<!--Kortas Darkhammer-->
+			<If Condition="!HasQuest(31912) &amp;&amp; !IsQuestCompleted(31912)">
+				<CustomBehavior File="FlyTo" X="-6512.868" Y="-1110.559" Z="311.2411" DestName="Kortas Darkhammer Daily" />
+				<PickUp QuestName="Kortas Darkhammer" QuestId="31912" GiverName="Kortas Darkhammer" GiverId="66515" X="-6512.868" Y="-1110.559" Z="311.2411" />
+			</If>
+			<If Condition="HasQuest(31912) &amp;&amp; !IsQuestCompleted(31912)">
+				<CustomBehavior File="FlyTo" X="-6512.868" Y="-1110.559" Z="311.2411" DestName="Kortas Darkhammer Daily" />
+				<CustomBehavior File="InteractWith" MobId="66515" GossipOptions="1" X="-6512.868" Y="-1110.559" Z="311.2411" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+				<TurnIn QuestName="Kortas Darkhammer" QuestId="31912" TurnInName="Kortas Darkhammer" TurnInId="66515" X="-6512.868" Y="-1110.559" Z="311.2411" />
+			</If>
+			<If Condition="HasQuest(31912) &amp;&amp; IsQuestCompleted(31912)">
+				<CustomBehavior File="FlyTo" X="-6512.868" Y="-1110.559" Z="311.2411" DestName="Kortas Darkhammer Daily" />
+				<TurnIn QuestName="Kortas Darkhammer" QuestId="31912" TurnInName="Kortas Darkhammer" TurnInId="66515" X="-6512.868" Y="-1110.559" Z="311.2411" />
+			</If>
+			<If Condition="HasQuest(31912) &amp;&amp; IsQuestCompleted(31912)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31912" />
+			</If>
+
+			<!--Durin Darkhammer-->
+			<If Condition="!HasQuest(31914) &amp;&amp; !IsQuestCompleted(31914)">
+				<CustomBehavior File="FlyTo" X="-7982.925" Y="-1269.635" Z="133.3217" DestName="Durin Darkhammer Daily" />
+				<PickUp QuestName="Durin Darkhammer" QuestId="31914" GiverName="Durin Darkhammer" GiverId="66520" X="-7982.925" Y="-1269.635" Z="133.3217" />
+			</If>
+			<If Condition="HasQuest(31914) &amp;&amp; !IsQuestCompleted(31914)">
+				<CustomBehavior File="FlyTo" X="-7982.925" Y="-1269.635" Z="133.3217" DestName="Durin Darkhammer Daily" />
+				<CustomBehavior File="InteractWith" MobId="66520" GossipOptions="1" X="-7982.925" Y="-1269.635" Z="133.3217" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+				<TurnIn QuestName="Durin Darkhammer" QuestId="31914" TurnInName="Durin Darkhammer" TurnInId="66520" X="-7982.925" Y="-1269.635" Z="133.3217" />
+			</If>
+			<If Condition="HasQuest(31914) &amp;&amp; IsQuestCompleted(31914)">
+				<CustomBehavior File="FlyTo" X="-7982.925" Y="-1269.635" Z="133.3217" DestName="Durin Darkhammer Daily" />
+				<TurnIn QuestName="Durin Darkhammer" QuestId="31914" TurnInName="Durin Darkhammer" TurnInId="66520" X="-7982.925" Y="-1269.635" Z="133.3217" />
+			</If>
+			<If Condition="HasQuest(31914) &amp;&amp; IsQuestCompleted(31914)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31914" />
+			</If>
+
+			<!--Everessa-->
+			<If Condition="!HasQuest(31913) &amp;&amp; !IsQuestCompleted(31913)">
+				<CustomBehavior File="FlyTo" X="-10229.63" Y="-4008.05" Z="23.43162" DestName="Everessa Daily" />
+				<PickUp QuestName="Everessa" QuestId="31913" GiverName="Everessa" GiverId="66518" X="-10229.63" Y="-4008.05" Z="23.43162" />
+			</If>
+			<If Condition="HasQuest(31913) &amp;&amp; !IsQuestCompleted(31913)">
+				<CustomBehavior File="FlyTo" X="-10229.63" Y="-4008.05" Z="23.43162" DestName="Everessa Daily" />
+				<CustomBehavior File="InteractWith" MobId="66518" GossipOptions="1" X="-10229.63" Y="-4008.05" Z="23.43162" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+				<TurnIn QuestName="Everessa" QuestId="31913" TurnInName="Everessa" TurnInId="66518" X="-10229.63" Y="-4008.05" Z="23.43162" />
+			</If>
+			<If Condition="HasQuest(31913) &amp;&amp; IsQuestCompleted(31913)">
+				<CustomBehavior File="FlyTo" X="-10229.63" Y="-4008.05" Z="23.43162" DestName="Everessa Daily" />
+				<TurnIn QuestName="Everessa" QuestId="31913" TurnInName="Everessa" TurnInId="66518" X="-10229.63" Y="-4008.05" Z="23.43162" />
+			</If>
+			<If Condition="HasQuest(31913) &amp;&amp; IsQuestCompleted(31913)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31913" />
+			</If>
+
+			<!--Lydia Accoste (Grand Master Trainer)-->
+			<If Condition="!HasQuest(31916) &amp;&amp; !IsQuestCompleted(31916)">
+				<CustomBehavior File="FlyTo" X="-11141.02" Y="-1834.526" Z="72.27872" DestName="Lydia Accoste (Grand Master) Daily" />
+				<PickUp QuestName="Lydia Accoste" QuestId="31916" GiverName="Lydia Accoste" GiverId="66522" X="-11141.02" Y="-1834.526" Z="72.27872" />
+			</If>
+			<If Condition="HasQuest(31916) &amp;&amp; !IsQuestCompleted(31916)">
+				<CustomBehavior File="FlyTo" X="-11141.02" Y="-1834.526" Z="72.27872" DestName="Lydia Accoste (Grand Master) Daily" />
+				<CustomBehavior File="InteractWith" MobId="66522" GossipOptions="1" X="-11141.02" Y="-1834.526" Z="72.27872" />
+				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" NumOfTimes="1" WaitTime="5000" />
+				<TurnIn QuestName="Lydia Accoste" QuestId="31916" TurnInName="Lydia Accoste" TurnInId="66522" X="-11141.02" Y="-1834.526" Z="72.27872" />
+			</If>
+			<If Condition="HasQuest(31916) &amp;&amp; IsQuestCompleted(31916)">
+				<CustomBehavior File="FlyTo" X="-11141.02" Y="-1834.526" Z="72.27872" DestName="Lydia Accoste (Grand Master) Daily" />
+				<TurnIn QuestName="Lydia Accoste" QuestId="31916" TurnInName="Lydia Accoste" TurnInId="66522" X="-11141.02" Y="-1834.526" Z="72.27872" />
+			</If>
+			<If Condition="HasQuest(31916) &amp;&amp; IsQuestCompleted(31916)">
+				<CustomBehavior File="CompleteLogQuest" QuestId="31916" />
+			</If>
+</QuestOrder>
+</HBProfile>

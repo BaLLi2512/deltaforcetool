@@ -1,0 +1,25 @@
+<HBProfile>
+  <!--Created By Guadah-->
+  <Name>Pet Training</Name>
+
+    <SubProfile>
+     <Name>Northern Stranglethorn</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+      <Hotspot X="-11628.8" Y="717.4481" Z="111.8503" />
+	  <Hotspot X="-12198.37" Y="-125.9053" Z="86.0078" />
+	  <Hotspot X="-12846.07" Y="-459.4062" Z="132.8648" />
+	  <Hotspot X="-12536.15" Y="-887.8829" Z="119.0822" />
+	  <Hotspot X="-12100.51" Y="-467.9538" Z="71.76618" />
+	  <Hotspot X="-11575.32" Y="-633.436" Z="136.2583" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>

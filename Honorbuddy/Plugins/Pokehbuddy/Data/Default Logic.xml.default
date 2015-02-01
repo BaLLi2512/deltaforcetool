@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PetBattleSettings>
+  <Logic>SWAPOUT Health(THISPET) ISLESSTHAN 1@PASSTURN HASBUFF(822) EQUALS true@PASSTURN HASBUFF(498) EQUALS true@PASSTURN HASBUFF(174) EQUALS true@PASSTURN HASBUFF(734) EQUALS true@SWAPOUT EnemyPetLevel ISGREATERTHAN MyPetLevel + 4 $ Health(THISPET) ISLESSTHAN 50 $ MyPetsAlive ISGREATERTHAN 1@SWAPOUT EnemyPetLevel ISGREATERTHAN MyPetLevel + 3 $ Health(THISPET) ISLESSTHAN 70 $ MyPetsAlive ISGREATERTHAN 1</Logic>
+  <SpellLayout></SpellLayout>
+</PetBattleSettings>
