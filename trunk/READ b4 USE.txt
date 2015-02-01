@@ -1,7 +1,7 @@
 Instructions on how to use:
  
 1) Start WoW.exe in 32bit-Mode, log in your Account and enter world with character
-2) run DeltaForceTool_start.exe   
+2) run Honorbuddy.exe   
    		
 	ATTENTION: This NOT a virus/trojaner!
 
