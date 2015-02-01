@@ -16,7 +16,7 @@
 	<SellGrey>true</SellGrey>
 	<SellWhite>true</SellWhite>
 	<SellGreen>true</SellGreen>
-	<SellBlue>false</SellBlue>
+	<SellBlue>true</SellBlue>
 	<SellPurple>false</SellPurple>
 
 	<MailGrey>false</MailGrey>
@@ -4052,20 +4052,29 @@
 			<CustomBehavior File="UserSettings" Preset="UserOriginal" />
 			<PickUp QuestName="All Apologies" QuestId="13841" GiverName="Splintertree Demolisher" GiverId="33726" />
 			<TurnIn QuestName="All Apologies" QuestId="13841" TurnInName="Vol'jin" TurnInId="86832" X="1669.59" Y="-4343.08" Z="28.36332" />
-			<If Condition="!HasQuest(13842) &amp;&amp; !IsQuestCompleted(13842)">
-				<PickUp QuestName="Dread Head Redemption" QuestId="13842" GiverName="Vol'jin" GiverId="86832" X="1669.59" Y="-4343.08" Z="28.36333" />
+			<While Condition="!HasQuest(13842) &amp;&amp; !IsQuestCompleted(13842)">
+			 <While Condition="!HasQuest(13842) &amp;&amp; !IsQuestCompleted(13842)">
+				<!--<PickUp QuestName="Dread Head Redemption" QuestId="13842" GiverName="Vol'jin" GiverId="86832" X="1669.59" Y="-4343.08" Z="28.36332" />-->
+				<MoveTo X="1669.59" Y="-4343.08" Z="28.36332" />
+				<CustomBehavior File="InteractWith" MobId="86832" X="1669.59" Y="-4343.08" Z="28.36332" KeepTargetSelected="True" NonCompeteDistance="0" />
+				<CustomBehavior File="Misc\RunLua" Lua="GossipTitleButton1:Click()" WaitTime="2000" />
+				<CustomBehavior File="Misc\RunLua" Lua="QuestFrameAcceptButton:Click()" WaitTime="2000" />
+				<CustomBehavior File="WaitTimer" WaitTime="3000" GoalText="Waiting for quest to accept {TimeRemaining}" />
+			 </While>
+				
 				<!-- Set Hearth to Orgrimmar -->
+				<MoveTo X="1572.816" Y="-4437.691" Z="16.05642" />
 				<CustomBehavior File="InteractWith" MobId="6929" InteractByGossipOptions="1" X="1572.816" Y="-4437.691" Z="16.05642" />
 				<CustomBehavior File="RunMacro" Macro="/click StaticPopup1Button1" WaitTime="5000" />
 				<CustomBehavior File="Message" Text="Force Sell, Repair, Mail, Train Initiated - Do not interrupt the bot!" LogColor="Orange" />
 				<CustomBehavior File="ForceSetVendor" DoSell="true" DoRepair="true" DoMail="true" />
-			</If>
-			<If Condition="HasQuest(13842) &amp;&amp; !IsQuestCompleted(13842)">
-				<CustomBehavior File="InteractWith" QuestId="13842" MobId="44414" InteractByGossipOptions="1" X="2457.892" Y="-2463.774" Z="109.6444" />
-				<CustomBehavior File="WaitTimer" WaitTime="16000" GoalText="Waiting for speech {TimeRemaining}" />
-				<Objective QuestName="Dread Head Redemption" QuestId="13842" Type="CollectItem" ItemId="60638" CollectCount="1" />
-			</If>
-			<TurnIn QuestName="Dread Head Redemption" QuestId="13842" TurnInName="Garrosh Hellscream" TurnInId="39605" />
+			</While>
+			<While Condition="HasQuest(13842) &amp;&amp; !IsQuestCompleted(13842)">
+				<CustomBehavior File="InteractWith" QuestId="13842" MobId="44414" WaitForNpcs="False" InteractByGossipOptions="1" X="2457.892" Y="-2463.774" Z="109.6444" />
+				<CustomBehavior File="WaitTimer" WaitTime="20000" GoalText="Waiting for speech {TimeRemaining}" />
+				<CustomBehavior File="InteractWith" QuestId="13842" MobId="44414" WaitForNpcs="False" X="2457.892" Y="-2463.774" Z="109.6444" />
+			</While>
+			<TurnIn QuestName="Dread Head Redemption" QuestId="13842" TurnInName="Vol'jin" TurnInId="86832" X="1669.59" Y="-4343.08" Z="28.36332" />
 			<Objective QuestName="Never Again!" QuestId="26449" Type="CollectItem" ItemId="45477" CollectCount="1" />
 			<Objective QuestName="Never Again!" QuestId="26449" Type="CollectItem" ItemId="45476" CollectCount="1" />
 			<TurnIn QuestName="Never Again!" QuestId="26449" TurnInName="Valusha" TurnInId="17355" />
@@ -6266,11 +6275,15 @@
 		<TurnIn QuestName="Ysondre's Call" QuestId="25378" TurnInName="Ysondre" TurnInId="39407" X="-4334.737" Y="-220.2993" Z="125.1731" />
 
 
-		<PickUp QuestName="Taerar's Fall" QuestId="25379" GiverName="Ysondre" GiverId="39407" />
 
-		<While Condition="HasQuest(25379) &amp;&amp; !IsQuestCompleted(25379)">
+		<While Condition="!IsQuestCompleted(25379)">
+			<PickUp QuestName="Taerar's Fall" QuestId="25379" GiverName="Ysondre" GiverId="39407" />
 			<MoveTo QuestId="25379" DestName="Taerar" X="-4337.523" Y="-211.8387" Z="125.1737" />
-			<CustomBehavior File="WaitTimer" WaitTime="30000" GoalText="Waiting for Taerar {TimeRemaining}" />
+			<CustomBehavior File="WaitTimer" WaitTime="20000" GoalText="Waiting for Taerar {TimeRemaining}" />
+			<CustomBehavior File="InteractWith" QuestId="25379" MobId="39853" PreInteractMountStrategy="DismountOrCancelShapeshift" WaitForNpcs="False" X="-4337.523" Y="-211.8387" Z="125.1737" />
+			<CustomBehavior File="WaitTimer" WaitTime="8000" GoalText="Waiting for kill {TimeRemaining}" />
+			<AbandonQuest QuestId="25379" Type="Failed" />
+			<CustomBehavior File="WaitTimer" WaitTime="8000" GoalText="Waiting for cache {TimeRemaining}" />
 		</While>
 
 		<TurnIn QuestName="Taerar's Fall" QuestId="25379" TurnInName="Ysondre" TurnInId="39407" />
@@ -6586,9 +6599,11 @@
 
 		<GrindUntil Level="45" />
 
+		<!--
 		<PickUp QuestName="Returning a Favor" QuestId="24905" GiverName="Zeke Bootscuff" GiverId="38706" />
 		<TurnIn QuestName="Returning a Favor" QuestId="24905" TurnInName="Megs Dreadshredder" TurnInId="38849" />
-
+		-->
+		
 		<!-- Start of old pre45 -->
 		<If Condition="( Me.Level &lt; 50 ) &amp;&amp; ( Me.MapId == 0 )">
 			<!-- fix this condition, i'm sure there's a 'port to somewhere' quest somewhere -->
