@@ -1,0 +1,11 @@
+<HBProfile>
+<!-- This profile was made by Gatherit from gatherithb.com -->
+<Name>Lovely Charm Combiner by Gatherit</Name>
+
+ <QuestOrder>
+ <While Condition="GetItemCount(49655) >= 10">
+  <CustomBehavior File="RunCode" Code="Logging.Write(System.Windows.Media.Colors.DeepSkyBlue, &quot; [Gatherit]: I see you have some Charms that need to be combined.  Let's get started.&quot;);"/>
+ <CustomBehavior File="Misc\RunLua" Lua="UseItemByName(49655)" WaitTime="1000" />  
+ </While>	   
+</QuestOrder>
+</HBProfile>
