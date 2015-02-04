@@ -1,0 +1,85 @@
+<HBProfile>
+<!-- This profile was made by Gatherit from gatherithb.com -->
+<Name>[N][QB] Turbo Skinning Nagrand by Gatherit</Name>
+
+<MinDurability>0.4</MinDurability>
+<MinFreeBagSlots>1</MinFreeBagSlots>
+
+<MinLevel>97</MinLevel>
+<MaxLevel>101</MaxLevel>
+
+<MailGrey>false</MailGrey>
+<MailWhite>false</MailWhite>
+<MailGreen>false</MailGreen>
+<MailBlue>false</MailBlue>
+<MailPurple>false</MailPurple>
+
+<SellGrey>true</SellGrey>
+<SellWhite>false</SellWhite>
+<SellGreen>true</SellGreen>
+<SellBlue>false</SellBlue>
+<SellPurple>false</SellPurple>
+
+<AvoidMobs>
+ <Mob Name="Slithershock Eel" Entry="83742" />
+ <Mob Name="Warsong Wolf Master" Entry="80253" />
+ <Mob Name="Direfang Alpha" Entry="86932" />
+ <Mob Name="Nagrand Warrider" Entry="81331" />
+ <Mob Name="Warleader Tome" Entry="81330" />
+ <Mob Name="Enslaved Earth Spirit" Entry="81409" />
+ <Mob Name="Pale Skulker" Entry="81308" />
+ <Mob Name="Pale Subjugator" Entry="81578" />
+ <Mob Name="Sabermaw Mystic" Entry="80056"  />
+ <Mob Name="Sabermaw Scarfang" Entry="78976" />
+ <Mob Name="Sabermaw Mauler" Entry="78990" />
+ <Mob Name="Highmaul Archaeologian" Entry="82619" />
+ <Mob Name="Raging Crusher" Entry="80144" />
+ <Mob Name="Banthar" Entry="82119" />
+ <Mob Name="Gnarlhoof the Rabid" Entry="82778" />
+ <Mob Name="Flinthide" Entry="83483" />
+ <Mob Name="Sabermaw Mauler" Entry="78990" />
+ <Mob Name="Redclaw the Feral" Entry="82755" />
+</AvoidMobs>
+
+<Vendors>
+<Vendor Name="Pyxni Pennypocket" Entry="79310" Type="Repair" X="3085.323" Y="4849.036" Z="128.3325" />
+</Vendors>
+
+<Mailboxes>
+</Mailboxes>
+
+<Blackspots>
+</Blackspots>
+
+ <QuestOrder>
+ 
+ <CustomBehavior File="UserDialog" AllowBotStop="False" SoundCue="Exclamation" SoundCueInterval="5" ExpiryTime="30" ExpiryAction="InputEnabled_Continue" 
+						Text="This profile should fly to the right zone and then go to the farm locaion.  If not, start it in Nagrand.  Enjoy!" Title="WARNING" />
+ 
+ <While Condition="true">
+ 
+	 <CustomBehavior File="RunCode" Code="Logging.Write(System.Windows.Media.Colors.DeepSkyBlue, &quot; [Gatherit]: Hang on, we are heading to the location to kill things, make sure you're ready to skin.  We will try to avoid combat until we get there.&quot;);"/>
+	 <CustomBehavior File="NoCombatMoveTo" X="2187.97" Y="4843.24" Z="259.4205"  />
+   <CustomBehavior File="RunCode" Code="Logging.Write(System.Windows.Media.Colors.DeepSkyBlue, &quot; [Gatherit]: Here we are!  Good luck!  Make sure skinning and ninja skinning are enabled in settings!&quot;);"/>
+	 
+		   <SetGrindArea>
+			   <GrindArea>
+					<TargetMinLevel>90</TargetMinLevel>
+					<TargetMaxLevel>101</TargetMaxLevel>
+					<LootRadius>80</LootRadius>
+					<TargetElites>false</TargetElites>
+			   					
+					<RandomizeHotspots>false</RandomizeHotspots>
+          <MobIds>79034</MobIds>
+					<Factions></Factions>
+					<Hotspots>
+					<Hotspot X="2187.97" Y="4843.24" Z="259.4205" />
+					</Hotspots>
+			   </GrindArea>    
+			</SetGrindArea>
+			
+			<GrindUntil Nav="Fly" Condition="Me.Level >= 9999" />
+	</While>	
+	   
+</QuestOrder>
+</HBProfile>
