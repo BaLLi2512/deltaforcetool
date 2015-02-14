@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Bots.DungeonBuddy.Avoidance;
 using Bots.DungeonBuddy.Enums;
-using Buddy.Coroutines;
 using Styx;
 using Styx.Common.Helpers;
 using Styx.CommonBot;
@@ -13,6 +13,7 @@ using Styx.CommonBot.POI;
 using Styx.Helpers;
 using Styx.Pathing;
 using Styx.WoWInternals;
+using Styx.WoWInternals.World;
 using Styx.WoWInternals.WoWObjects;
 using Bots.DungeonBuddy.Attributes;
 using Bots.DungeonBuddy.Helpers;
@@ -44,6 +45,11 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					outgoingObjects.Add(unit);
 				}
 				else if (unit.Entry == MobId_SentryCannon && unit.IsHostile)
+				{
+					outgoingObjects.Add(unit);
+				}
+				else if (isleader && MobsIds_hostileNeutralMobs.Contains(unit.Entry) && !Me.Combat && unit.DistanceSqr < 35*35 &&
+						unit.ZDiff < 10)
 				{
 					outgoingObjects.Add(unit);
 				}
@@ -120,14 +126,12 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 				"Commander Tharbek",
 				true);
 			DynamicBlackspotManager.AddBlackspot(_tharbeksDoorBlackspot);
-			Lua.Events.AttachEvent("RAID_BOSS_EMOTE", OnRaidBossEmote);
 		}
 
 		public override void OnExit()
 		{
 			DynamicBlackspotManager.RemoveBlackspot(_tharbeksDoorBlackspot);
 			_tharbeksDoorBlackspot = null;
-			Lua.Events.DetachEvent("RAID_BOSS_EMOTE", OnRaidBossEmote);
 		}
 
 		public override async Task<bool> HandleMovement(WoWPoint location)
@@ -152,9 +156,19 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		private const uint MobId_BlackIronEngineer = 76101;
 		private const uint GameObjectId_TharbeksDoor = 164726;
 
+		// these mobs showup as neutral but are really hostile.
+		private readonly uint[] MobsIds_hostileNeutralMobs =
+		{
+			MobId_DrakonidMonstrosityTrash,
+			MobId_BlackIronAlchemist,
+			MobId_BlackIronVeteran,
+			MobId_BlackIronEngineer
+		};
+
 		private readonly WoWPoint _tharbeksDoorLoc = new WoWPoint(106.7544, -421.1986, 110.9228);
 		private readonly WaitTimer _tharbeksDoorTimer = new WaitTimer(TimeSpan.FromSeconds(2));
 
+		private readonly WaitTimer _updateBossKillStateTimer = WaitTimer.OneSecond;
 		private bool _shouldAvoidTharbeksDoor;
 
 		private LocalPlayer Me { get { return StyxWoW.Me; } }
@@ -210,79 +224,64 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		#region Gor'ashan
 
-		private static readonly WoWPoint[] LightningFieldPath =
-		{
-			new WoWPoint(126.2, -240.748 , 91.83518),
-			new WoWPoint(162.3623, -240.7054, 91.83518),
-			new WoWPoint(162.6004, -276.9333, 91.83518),
-			new WoWPoint(126.2, -276.9395, 91.83518),
-		};
-
-		private readonly WoWPoint _conduitInteractRunbackWaypoint1 = new WoWPoint(138.1485, -250.9003, 92.09177);
-		private readonly WoWPoint _conduitInteractRunbackWaypoint2 = new WoWPoint(151.1691, -251.5334, 92.09177);
-
-		private const float MinSafeLightningFieldToConduitDistance = 67; // the corners are 36 yds apart.
-		private const float MaxSafeLightningFieldToConduitDistance = 72; // the corners are 36 yds apart.
-		private const float LightningFieldPathSegDist = 36;
-		private const float LightningFieldPathTotalDist = LightningFieldPathSegDist * 4;
-
 		private const uint MobId_LightningField = 76464;
 		private const int AuraTriggerId_LodestoneSpike = 6164;
-
 
 		[EncounterHandler(76413, "Gor'ashan", Mode = CallBehaviorMode.Proximity)]
 		public Func<WoWUnit, Task<bool>> GorashanEncounter()
 		{
-			var bottomOfRamp = new WoWPoint(144.004, -274.0825, 91.54816);
-
 			WoWGameObject conduit = null;
 			// avoid these spikes
-			AddAvoidObject(5, o => o.Entry == AuraTriggerId_LodestoneSpike, ignoreIfBlocking: true);
-
-			// Avoid the lightning fields only of on the same level as them and they're not behind player. 
+			AddAvoidObject(ctx => true, 5, o => o.Entry == AuraTriggerId_LodestoneSpike, ignoreIfBlocking: true);
 			AddAvoidObject(
-				ctx => Math.Abs(Me.Z - 91.55) < 1.5,
-				17,
-				o => o.Entry == MobId_LightningField && o.ToUnit().HasAura("Electric Pulse") 
-					&& GetLightningFieldPathDistToLocation(o.Location, Me.Location) > 30);
+				ctx => true,
+				12,
+				o => o.Entry == MobId_LightningField,
+				o => o.Location.RayCast(o.Rotation, 10));
 
 			var bossLoc = new WoWPoint(144.5426, -258.0315, 96.32333);
+			var randomPointAtBoss = WoWMathHelper.GetRandomPointInCircle(bossLoc, 5);
+
 			var rightDoorEdge = new WoWPoint(174.7191, -258.7988, 91.54621);
 			var leftDoorEdge = new WoWPoint(174.8173, -259.9115, 91.54621);
 
 			var pointInsideRoom = new WoWPoint(164.4416, -262.2839, 91.54202);
 			var randomPointInsideRoom = WoWMathHelper.GetRandomPointInCircle(pointInsideRoom, 3);
-			var randomPointAtBoss = WoWMathHelper.GetRandomPointInCircle(bossLoc, 4);
-			
+
 			return async boss =>
 			{
 				if (ScriptHelpers.CurrentScenarioInfo.CurrentStageNumber != 2)
 					return false;
 
-				var isHighestHpDps = ScriptHelpers.GroupMembers
-					.Where(g => g.IsAlive && g.IsDps)
-					.OrderByDescending(g => g.MaxHealth)
-					.Select(g => g.Player)
-					.FirstOrDefault() == Me;
-
-				if ((Me.IsLeader() || isHighestHpDps) &&  (!ScriptHelpers.IsViable(conduit) || !conduit.CanUse()))
-				{
-					var conduits = ObjectManager.GetObjectsOfType<WoWGameObject>()
-						.Where(u => u.Entry == GameObjectId_RuneConduit && u.CanUse() && !AvoidanceManager.Avoids.Any(a => a.IsPointInAvoid(u.Location)))
-						.OrderBy(u => GetLightningFieldPathDistToLocation(u.Location, bottomOfRamp))
-						.ToList();
-
-					if (isHighestHpDps)
-						conduit = conduits.Count > 1 ? conduits.FirstOrDefault() : null;
-					else
-						conduit = conduits.LastOrDefault();
-				}
-
 				if (!boss.Combat && boss.HasAura("Power Conduit"))
 				{
+					if (!ScriptHelpers.IsViable(conduit) || !conduit.CanUse())
+					{
+						var conduits = ObjectManager.GetObjectsOfType<WoWGameObject>()
+							.Where(u => u.Entry == GameObjectId_RuneConduit && u.CanUse())
+							.ToList();
+
+						if (conduits.Any())
+						{
+							if (Me.IsLeader())
+							{
+								conduit = conduits.OrderBy(u => u.Location.DistanceSqr(pointInsideRoom)).FirstOrDefault();
+							}
+							else if (conduits.Count > 1 && !ScriptHelpers.GetUnfriendlyNpsAtLocation(boss.Location, 30, unit => unit != boss).Any())
+							{
+								// Decide which follower helps activate the conduits based on max health.. 
+								// this prevents multiple bots trying to activate same conduit 
+								var highestMaxHpFollower = ScriptHelpers.GroupMembers.Where(g => !g.IsTank)
+									.OrderByDescending(g => g.MaxHealth).FirstOrDefault();
+
+								if (highestMaxHpFollower != null && highestMaxHpFollower.Guid == Me.Guid)
+									conduit = conduits.OrderByDescending(u => u.Location.DistanceSqr(pointInsideRoom)).FirstOrDefault();
+							}
+						}
+					}
+
 					if (ScriptHelpers.IsViable(conduit))
 						ScriptHelpers.SetInteractPoi(conduit);
-
 					return false;
 				}
 
@@ -296,60 +295,36 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					return true;
 				}
 
-				if (!boss.Combat)
-					return false;
-
-				if (boss.HealthPercent <= 97 && boss.HealthPercent > 25 && await ScriptHelpers.CastHeroism())
-					return true;
-
 				TreeRoot.StatusText = "Doing Gor'ashan boss encounter";
+				var leader = ScriptHelpers.Leader;
 				// having tank click the conduits seems to work best since they have larger hp pools thus can survive better
 				// and dps can still continue dpsing.
-				if (ScriptHelpers.IsViable(conduit) && IsSafeToInteractWithConduit(conduit.Location) && Me.HealthPercent > 50)
+				WoWPlayer conduitClicker = null;
+				if (leader != null && leader.IsMe)
 				{
-					// move to conduit..
-					bool ctmFailed = false;
-					Navigator.NavigationProvider.StuckHandler.Reset();
-					while (true)
-					{
-						if (Navigator.NavigationProvider.StuckHandler.IsStuck())
-						{
-							ctmFailed = true;
-							break;
-						}
+					conduitClicker = Me;
+				}
+				else if (leader == null || !leader.IsAlive)
+				{
+					// if tank dies have a dps do the clicking.
+					conduitClicker =
+						ScriptHelpers.GroupMembers.Where(g => g.IsAlive && g.IsDps)
+							.OrderByDescending(g => g.MaxHealth)
+							.Select(g => g.Player)
+							.FirstOrDefault();
+				}
 
-						if (!ScriptHelpers.IsViable(conduit) || conduit.DistanceSqr <= 4*4)
-							break;
+				if (conduitClicker == Me && (!ScriptHelpers.IsViable(conduit) || !conduit.CanUse()))
+				{
+					conduit = ObjectManager.GetObjectsOfType<WoWGameObject>()
+						.Where(u => u.Entry == GameObjectId_RuneConduit && u.CanUse())
+						.OrderBy(u => u.Location.DistanceSqr(bossLoc))
+						.FirstOrDefault();
+				}
 
-						Navigator.PlayerMover.MoveTowards(WoWMathHelper.CalculatePointFrom(Me.Location, conduit.Location, 3));
-						await Coroutine.Yield();
-					}
-
-					if (ctmFailed)
-					{
-						await ScriptHelpers.MoveToContinue(() => WoWMathHelper.CalculatePointFrom(Me.Location, conduit.Location, 3),
-							() => ScriptHelpers.IsViable(conduit) && conduit.DistanceSqr > 4*4, true);
-					}
-
-					if (!ScriptHelpers.IsViable(conduit))
-						return false;
-
-					await CommonCoroutines.StopMoving();
-					conduit.Interact();
-					await Coroutine.Wait(1000, () => Me.IsCasting);
-					await Coroutine.Wait(3000, () => !Me.IsCasting);
-
-					conduit = null;
-
-					// move back to the platform taking the clockwise path.
-					// ToDO: check if a dynamic blackspot can be used to make the navigator to always take a clockwise path 
-					if (Me.X < _conduitInteractRunbackWaypoint1.X)
-						await ScriptHelpers.MoveToContinue(() => _conduitInteractRunbackWaypoint1, ignoreCombat: true);
-
-					if (Me.X < _conduitInteractRunbackWaypoint2.X)
-						await ScriptHelpers.MoveToContinue(() => _conduitInteractRunbackWaypoint2, ignoreCombat: true);
-
-					await ScriptHelpers.MoveToContinue(() => bossLoc, ignoreCombat: true);
+				if (ScriptHelpers.IsViable(conduit) 
+					&& await ScriptHelpers.InteractWithObject(conduit, 3000, true))
+				{
 					return true;
 				}
 
@@ -358,99 +333,14 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					return await ScriptHelpers.StayAtLocationWhile(
 						() => ScriptHelpers.IsViable(boss) && boss.Combat,
 						randomPointAtBoss,
-						"location near Gor'ashan", 2);
+						"location near Gor'ashan");
 				}
 
-				if (await ScriptHelpers.TankUnitAtLocation(bossLoc, 4))
+				if (await ScriptHelpers.TankUnitAtLocation(bossLoc, 8))
 					return true; 
 
 				return false;
 			};
-		}
-
-		private static bool IsSafeToInteractWithConduit(WoWPoint conduitLoc)
-		{
-			var lighningFieldLocs = ObjectManager.GetObjectsOfType<WoWUnit>().Where(u => u.Entry == MobId_LightningField)
-				.Select(u => u.Location).ToList();
-			
-			if (!lighningFieldLocs.Any())
-				return true;
-
-			int conduitIndex = GetSegmentStartIndexInLightningFieldPath(conduitLoc);
-			
-			var nearestLightningFieldDist = lighningFieldLocs
-				.Select(l => GetLightningFieldPathDistToLocation(l, conduitLoc, conduitIndex))
-				.OrderBy(l => l)
-				.First();
-
-			return nearestLightningFieldDist >= MinSafeLightningFieldToConduitDistance
-				&& nearestLightningFieldDist < MaxSafeLightningFieldToConduitDistance;
-		}
-
-		private static float GetLightningFieldPathDistToLocation(WoWPoint start, WoWPoint end)
-		{
-			var endIndex = GetSegmentStartIndexInLightningFieldPath(end);
-			return GetLightningFieldPathDistToLocation(start, end, endIndex);
-		}
-
-		// Calculates how far behind a lightning field is to a conduit.
-		// Lightning fields will travel clockwise around the platform that boss is on
-		private static float GetLightningFieldPathDistToLocation(WoWPoint lightningFieldLoc, WoWPoint conduitLoc, int conduitPathSegIndex)
-		{
-			int lightningFieldIndex = GetSegmentStartIndexInLightningFieldPath(lightningFieldLoc);
-			int index = conduitPathSegIndex;
-			float dist ;
-
-			// if both lighting field and conduit are in same path segment then
-			// return LightningFieldPathTotalDist - [Distance From lightningFieldLoc to conduitLoc]
-			// if lighting field is further away from waypoint then conduit; otherwise just return  [Distance From lightningFieldLoc to conduitLoc]
-			if (lightningFieldIndex == conduitPathSegIndex)
-			{
-				var wayPoint = LightningFieldPath[lightningFieldIndex];
-				dist = lightningFieldLoc.Distance2D(conduitLoc);
-				if (wayPoint.Distance2DSqr(lightningFieldLoc) > wayPoint.Distance2DSqr(conduitLoc))
-					dist = LightningFieldPathTotalDist - dist;
-
-				return dist;
-			}
-
-			dist = LightningFieldPath[conduitPathSegIndex].Distance2D(conduitLoc);
-
-			while (true)
-			{
-				index = index == 0 ? LightningFieldPath.Length -1 : index - 1;
-				if (index == lightningFieldIndex)
-					break;
-				dist += LightningFieldPathSegDist;
-			}
-
-			dist += LightningFieldPath[(lightningFieldIndex + 1) % LightningFieldPath.Length].Distance2D(lightningFieldLoc);
-			return dist;
-		}
-
-
-		private static int GetSegmentStartIndexInLightningFieldPath(WoWPoint point)
-		{
-			int pathIndex = 0;
-			var minDist = float.MaxValue;
-			for (int i = 0, j = LightningFieldPath.Length - 1; i < LightningFieldPath.Length; j = i++)
-			{
-				var start = LightningFieldPath[j];
-				var end = LightningFieldPath[i];
-				if (start == point)
-				{
-					minDist = 0;
-					pathIndex = j;
-					continue;
-				}
-				var distToLineSeg = WoWMathHelper.GetNearestPointOnLineSegment(point, start, end).Distance2D(point);
-				if (distToLineSeg < minDist)
-				{
-					minDist = distToLineSeg;
-					pathIndex = j;
-				}
-			}
-			return pathIndex;
 		}
 
 		#endregion
@@ -467,19 +357,13 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		public Func<WoWUnit, Task<bool>> DrakonidMonstrosityEncounter()
 		{
 			// These NPCs casts a spell that does damage to enemies in a line in front of it.
-			const float eruptionLineWidth = 2;
-			AddAvoidLocation( ctx => true,
-				eruptionLineWidth*1.33f,
-				o => (WoWPoint) o,
-				() => ObjectManager.GetObjectsOfType<WoWUnit>()
-						.Where( u =>
-								(u.Entry == MobId_DrakonidMonstrosity || u.Entry == MobId_DrakonidMonstrosityTrash) &&
-								u.CastingSpellId == SpellId_Eruption)
-						.SelectMany(u =>
-								ScriptHelpers.GetPointsAlongLineSegment(
-									u.Location,
-									u.Location.RayCast(u.Rotation, 30),
-									eruptionLineWidth/2).OfType<object>()));
+			AddAvoidObject(
+				ctx => true,
+				3,
+				o =>
+					(o.Entry == MobId_DrakonidMonstrosity || o.Entry == MobId_DrakonidMonstrosityTrash)
+					&& o.ToUnit().CastingSpellId == SpellId_Eruption,
+				o => WoWMathHelper.GetNearestPointOnLineSegment(Me.Location, o.Location, o.Location.RayCast(o.Rotation, 20)));
 
 			// non-tanks should stay away from the front of these NPCs since they have a cleave.
 			AddAvoidObject(
@@ -489,7 +373,10 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					(o.Entry == MobId_DrakonidMonstrosity || o.Entry == MobId_DrakonidMonstrosityTrash),
 				o => o.Location.RayCast(o.Rotation, 4));
 
-			return async npc => await ScriptHelpers.DispelEnemy("Rejuvenating Serum", ScriptHelpers.EnemyDispelType.Magic, npc);
+			return async npc => await ScriptHelpers.DispelEnemy(
+				"Rejuvenating Serum",
+				ScriptHelpers.EnemyDispelType.Magic,
+				npc);
 		}
 
 		[EncounterHandler(76021, "Kyrak")]
@@ -497,23 +384,14 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		{
 			AddAvoidObject(ctx => true, 2.5f, AreaTriggerId_VilebloodSerum);
 
-			var meIsPoisoned = new PerFrameCachedValue<bool>(() => Me.HasAura("Salve of Toxic Fumes"));
-
-			AddAvoidObject(5f, o => o is WoWPlayer && !o.IsMe && (o.ToPlayer().HasAura("Salve of Toxic Fumes") || meIsPoisoned ) );
-
 			return async boss =>
 						{
 							TreeRoot.StatusText = "Doing Kyrak boss encounter";
 
-							if (boss.HealthPercent > 25 && await ScriptHelpers.CastHeroism())
-								return true; 
 							if (await ScriptHelpers.DispelEnemy("Rejuvenating Serum", ScriptHelpers.EnemyDispelType.Magic, boss))
 								return true;
 
 							if (await ScriptHelpers.InterruptCast(boss, SpellId_DebilitatingFixation))
-								return true;
-
-							if (await ScriptHelpers.DispelGroup("Salve of Toxic Fumes", ScriptHelpers.PartyDispelType.Poison))
 								return true;
 
 							return false;
@@ -523,8 +401,6 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		#endregion
 
 		#region Commander Tharbek
-
-		private const int SpellId_Smash = 155572;
 
 		private const int MissileSpellId_NoxiousSpit = 161824;
 		private const int MissileSpellId_ImbuedIronAxe = 162090;
@@ -548,17 +424,6 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 						(_tharbek = new PerFrameCachedValue<WoWUnit>(
 							() => ObjectManager.GetObjectsOfType<WoWUnit>().FirstOrDefault(u => u.Entry == MobId_CommanderTharbek)));
 			}
-		}
-
-		[EncounterHandler((int)MobId_BlackIronSiegebreaker, "BlackIron Siegebreaker")]
-		public Func<WoWUnit, Task<bool>> BlackIronSiegebreakerEncounter()
-		{
-			AddAvoidObject(
-				8,
-				o => o.Entry == MobId_BlackIronSiegebreaker && o.ToUnit().CastingSpellId == SpellId_Smash,
-				o => o.Location.RayCast(o.Rotation, 7));
-
-			return async npc => false;
 		}
 
 		[LocationHandler(112.2449, -312.1981, 106.4356, radius: 40)]
@@ -723,24 +588,6 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		// http://www.wowhead.com/guide=2670/upper-blackrock-spire-dungeon-strategy-guide#ragewing-the-untamed
 		#region Ragewing the Untamed
 
-		#region Trash
-
-		private const uint MobId_BlackIronGroundshaker = 76599;
-
-		[EncounterHandler((int)MobId_BlackIronGroundshaker, "BlackIron Groundshaker")]
-		public Func<WoWUnit, Task<bool>> BlackIronGroundshakeEncounter()
-		{
-			AddAvoidObject(
-				8,
-				o => o.Entry == MobId_BlackIronGroundshaker && o.ToUnit().HasAura("Earthpounder"),
-				o => o.Location.RayCast(o.Rotation, 7));
-
-			return async npc => false;
-		}
-
-		#endregion
-
-
 		readonly WoWPoint RagewingPhaseOneLoc = new WoWPoint(20.56284,-404.3033,113.1969);
 		readonly WoWPoint RagewingBridgeCenter = new WoWPoint(34.26516, -406.6279, 110.7208);
 
@@ -754,45 +601,26 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		private const uint MobId_EngulfingFireInvisibleStalkerRtoL = 76813;
 		private const uint MobId_EngulfingFireInvisibleStalkerLtoR = 76837;
 
-		
-		WoWUnit _ragewing ;
-		private readonly WaitTimer _engulfingFireTimer = new WaitTimer(TimeSpan.FromSeconds(3));
-		// http://www.wowhead.com/guides/dungeons/upper-blackrock-spire-dungeon-strategy-guide#ragewing-the-untamed
 		[EncounterHandler((int)MobId_RagewingtheUntamed, "Ragewing the Untamed", Mode=CallBehaviorMode.Proximity, BossRange = 100)]
 		public Func<WoWUnit, Task<bool>> RagewingtheUntamedEncounter()
 		{
-			var westBridgeSide = new WoWPoint(29.50844, -382.2311, 110.7248);
-			var eastBridgeSide = new WoWPoint(30.42133, -428.4159, 110.975);
-
-			var avoidLeftToRightRagingFire =
-				new PerFrameCachedValue<bool>(
-					() => ScriptHelpers.IsViable(_ragewing) && ObjectManager.GetObjectsOfType<WoWUnit>()
-						.Any(u => u.Entry == MobId_EngulfingFireInvisibleStalkerLtoR
-							&& (u.HasAura("Engulfing Fire") || (!_engulfingFireTimer.IsFinished && _ragewing.IsSafelyFacing(u, 30)))));
-
-			var avoidRightToLeftRagingFire = new PerFrameCachedValue<bool>(
-				() => ScriptHelpers.IsViable(_ragewing) && ObjectManager.GetObjectsOfType<WoWUnit>()
-						.Any(u => u.Entry == MobId_EngulfingFireInvisibleStalkerRtoL
-							&& (u.HasAura("Engulfing Fire") || (!_engulfingFireTimer.IsFinished && _ragewing.IsSafelyFacing(u, 30)))));
-
 			// avoid the impact of magma spit missiles and the puddles they leave behind
 			AddAvoidLocation(
 				ctx => true,
 				3.5f,
 				o => ((WoWMissile) o).ImpactPosition,
 				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_MagmaSpit));
-
-			AddAvoidObject(
-				3.5f,
-				o => o.Entry == AreaTriggerId_MagmaSpit, ignoreIfBlocking: true);
+			AddAvoidObject(3.5f, AreaTriggerId_MagmaSpit);
 			
-			// Fire storm is the ability used while flying over bridge - Commented out for now since running out of these sometimes causes
-			// toon to run in the Magma pools which hurt more. 
-			//AddAvoidLocation(
-			//	ctx => true,
-			//	8,
-			//	o => ((WoWMissile) o).ImpactPosition,
-			//	() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_FireStorm));
+			// Fire storm is the ability used while flying over bridge.
+			AddAvoidLocation(
+				ctx => true,
+				8,
+				o => ((WoWMissile) o).ImpactPosition,
+				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_FireStorm));
+
+			var westBridgeSide = new WoWPoint(33.79537, -389.6173, 110.7289);
+			var eastBridgeSide = new WoWPoint(34.6082, -422.5337, 110.8128);
 
 			var leftDoorEdge = new WoWPoint(30.96826, -438.6647, 111.1953);
 			var rightDoorEdge = new WoWPoint(37.24679, -438.27, 111.0201);
@@ -800,9 +628,16 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			// pick a random location inside door
 			var randomPointOnBridge = WoWMathHelper.GetRandomPointInCircle(new WoWPoint(34.0181, -431.451, 110.975), 2.5f);
 
+			var avoidLeftToRightRagingFire = new PerFrameCachedValue<bool>( 
+				() => ObjectManager.GetObjectsOfType<WoWUnit>()
+						.Any(u => u.Entry == MobId_EngulfingFireInvisibleStalkerLtoR && u.HasAura("Engulfing Fire")));
+
+			var avoidRightToLeftRagingFire = new PerFrameCachedValue<bool>(
+				() => ObjectManager.GetObjectsOfType<WoWUnit>()
+						.Any(u => u.Entry == MobId_EngulfingFireInvisibleStalkerRtoL && u.HasAura("Engulfing Fire")));
+
 			return async boss =>
 			{
-				_ragewing = boss;
 				// Get onto the bridge before door closes.
 				if (await ScriptHelpers.MoveInsideBossRoom(boss, leftDoorEdge, rightDoorEdge, randomPointOnBridge))
 					return true;
@@ -819,7 +654,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					return await ScriptHelpers.StayAtLocationWhile(
 						() =>  avoidRightToLeftRagingFire,
 						westBridgeSide,
-						"West side of bridge that's safe from Raging Fire", 4);
+						"West side of bridge that's safe from Raging Fire", 6);
 				}
 
 				if (avoidLeftToRightRagingFire)
@@ -827,25 +662,14 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					return await ScriptHelpers.StayAtLocationWhile(
 						() => avoidLeftToRightRagingFire,
 						eastBridgeSide,
-						"East side of bridge that's safe from Raging Fire", 4);
+						"East side of bridge that's safe from Raging Fire", 6);
 				}
 
-				return await ScriptHelpers.StayAtLocationWhile(
+				return  await ScriptHelpers.StayAtLocationWhile(
 					() => !avoidLeftToRightRagingFire && !avoidRightToLeftRagingFire && ScriptHelpers.IsViable(boss) && boss.Combat,
 					RagewingBridgeCenter,
-					"Center of bridge", 10);
+					"Center of bridge", 15);
 			};
-		}
-
-		private void OnRaidBossEmote(object sender, LuaEventArgs args)
-		{
-			if (!ScriptHelpers.IsViable(_ragewing) || !_ragewing.Combat || _ragewing.HasAura("Engulfing Fire"))
-				return;
-
-			if (!_engulfingFireTimer.IsFinished)
-				return;
-
-			_engulfingFireTimer.Reset();
 		}
 
 		#endregion
@@ -988,6 +812,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					"Cancel");
 			}
 		}
+
 		#endregion
 	}
 }

@@ -170,12 +170,12 @@ namespace Singular.Helpers
                         {
                             if (Me.GotAlivePet)
                             {
-                                bool petUse = PetManager.IsPetUseAllowed;
+                                bool petUse = SingularRoutine.IsAllowed(CapabilityFlags.PetUse);
                                 if (!petUse)
                                 {
                                     if (Me.Pet.GotTarget() && Me.Pet.Combat)
                                     {
-                                        PetManager.Passive();   // set to passive
+                                        PetManager.CastAction("Passive");   // set to passive
                                     }
                                 }
                                 else if (petUse)
@@ -336,10 +336,7 @@ namespace Singular.Helpers
                         on => _unitInterrupt, 
                         ret => _unitInterrupt != null 
                             && _unitInterrupt.Distance < 40 
-                            && (
-                                Singular.ClassSpecific.Warlock.Common.GetCurrentPet() == WarlockPet.Felhunter 
-                                || Singular.ClassSpecific.Warlock.Common.GetCurrentPet() == WarlockPet.Doomguard 
-                               )
+                            && Singular.ClassSpecific.Warlock.Common.GetCurrentPet() == WarlockPet.Felhunter 
                         )
                     );
             }
@@ -469,14 +466,12 @@ namespace Singular.Helpers
                 return false;
 
             if (!SingularSettings.Debug)
-                return u.CanInterruptCurrentSpellCast && u.InLineOfSight && StyxWoW.Me.IsSafelyFacing(u, 150f);
+                return u.CanInterruptCurrentSpellCast && u.InLineOfSight;
 
             if (!u.CanInterruptCurrentSpellCast)
                 ;   // Logger.WriteDebug("IsInterruptTarget: {0} casting {1} but CanInterruptCurrentSpellCast == false", u.SafeName(), (u.CastingSpell == null ? "(null)" : u.CastingSpell.Name));
             else if (!u.InLineOfSpellSight)
                 ;   // Logger.WriteDebug("IsInterruptTarget: {0} casting {1} but LoSS == false", u.SafeName(), (u.CastingSpell == null ? "(null)" : u.CastingSpell.Name));
-            else if (!StyxWoW.Me.IsSafelyFacing(u))
-                ;   // Logger.WriteDebug("IsInterruptTarget: {0} casting {1} but Facing == false", u.SafeName(), (u.CastingSpell == null ? "(null)" : u.CastingSpell.Name));
             else if (u.CurrentCastTimeLeft.TotalMilliseconds < 250)
                 ;
             else

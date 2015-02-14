@@ -43,11 +43,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 
 		public override void IncludeTargetsFilter(List<WoWObject> incomingunits, HashSet<WoWObject> outgoingunits)
 		{
-			foreach (var unit in incomingunits.OfType<WoWUnit>())
-			{
-				if (unit.Entry == MobId_RestorativeWaters)
-					outgoingunits.Add(unit);
-			}
+			foreach (var unit in incomingunits.Select(obj => obj.ToUnit())) { }
 		}
 
 		public override void RemoveTargetsFilter(List<WoWObject> units)
@@ -65,18 +61,6 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 					}
 					return false;
 				});
-		}
-
-		public override void WeighHealTargetsFilter(List<Targeting.TargetPriority> objPriorities)
-		{
-			foreach (var priority in objPriorities)
-			{
-				var unit = priority.Object as WoWUnit;
-				if (unit == null)
-					continue;
-				if (unit.Entry == MobId_RestorativeWaters || unit.Entry == MobId_DeepTerror)
-					priority.Score += 4500;
-			}
 		}
 
 		#endregion
@@ -220,90 +204,5 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 		}
 
 		#endregion
-
-		#region Thruk
-
-		private const int SpellId_FilletOfFlesh = 149913;
-
-		private const uint MobId_Thruk = 74505;
-		[EncounterHandler((int)MobId_Thruk, "Thruk")]
-		public Func<WoWUnit, Task<bool>> ThrukEncounter()
-		{
-			AddAvoidObject(10, o => o.Entry == MobId_Thruk && o.ToUnit().CastingSpellId == SpellId_FilletOfFlesh);
-			return async boss => false;
-		}
-
-		#endregion
-
-		#region Executioner Gore
-
-		private const int SpellId_ExecutionersStrike = 149943;
-		private const uint MobId_ExecutionerGore = 74518;
-		private const uint AreaTriggerId_ExecutionersStrike = 5982;
-
-		[EncounterHandler((int)MobId_ExecutionerGore, "Executioner Gore")]
-		public Func<WoWUnit, Task<bool>> ExecutionerGoreEncounter()
-		{
-			AddAvoidObject(5, AreaTriggerId_ExecutionersStrike);
-
-			AddAvoidObject(5, o => o.Entry == MobId_ExecutionerGore && o.ToUnit().CastingSpellId == SpellId_ExecutionersStrike, o => o.Location.RayCast(o.Rotation, 4));
-			AddAvoidObject(6, o => o.Entry == MobId_ExecutionerGore && o.ToUnit().CastingSpellId == SpellId_ExecutionersStrike, o => o.Location.RayCast(o.Rotation, 9));
-			AddAvoidObject(7, o => o.Entry == MobId_ExecutionerGore && o.ToUnit().CastingSpellId == SpellId_ExecutionersStrike, o => o.Location.RayCast(o.Rotation, 15));
-			AddAvoidObject(8, o => o.Entry == MobId_ExecutionerGore && o.ToUnit().CastingSpellId == SpellId_ExecutionersStrike, o => o.Location.RayCast(o.Rotation, 22));
-			AddAvoidObject(9, o => o.Entry == MobId_ExecutionerGore && o.ToUnit().CastingSpellId == SpellId_ExecutionersStrike, o => o.Location.RayCast(o.Rotation, 30));
-
-			// Devouring Blackness is not interruptable like the dungeon journal shows.
-			return async boss => false;
-		}
-
-		#endregion Executioner Gore
-
-
-		#region Twilight Lord Bathiel
-
-		private const uint MobId_RestorativeWaters = 74569;
-		private const uint MobId_TwilightLordBathiel = 74728;
-		private const int MissileSpellId_PiercingRain = 152884;
-
-		[EncounterHandler((int)MobId_TwilightLordBathiel, "Twilight Lord Bathiel")]
-		public Func<WoWUnit, Task<bool>> TwilightLordBathielEncounter()
-		{
-			AddAvoidLocation(
-				ctx => true,
-				4,
-				m => ((WoWMissile) m).ImpactPosition,
-				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_PiercingRain));
-
-			return async boss => false;
-		}
-
-		#endregion
-
-		#region Aku'mai the Devourer
-
-		private const int SpellId_Crush = 150660;
-		private const uint MobId_DeepTerror = 75172;
-		private const uint MobId_AkumaitheDevourer = 75155;
-		private const int MissileSpellId_FallingDebris = 152966;
-
-		[EncounterHandler((int)MobId_AkumaitheDevourer, "Aku'mai the Devourer")]
-		public Func<WoWUnit, Task<bool>> AkumaitheDevourerEncounter()
-		{
-			AddAvoidObject(5, o => o.Entry == MobId_DeepTerror && o.ToUnit().CastingSpellId == SpellId_Crush, o => o.Location.RayCast(o.Rotation, 4));
-			AddAvoidObject(6, o => o.Entry == MobId_DeepTerror && o.ToUnit().CastingSpellId == SpellId_Crush, o => o.Location.RayCast(o.Rotation, 9));
-			AddAvoidObject(7, o => o.Entry == MobId_DeepTerror && o.ToUnit().CastingSpellId == SpellId_Crush, o => o.Location.RayCast(o.Rotation, 15));
-			AddAvoidObject(8, o => o.Entry == MobId_DeepTerror && o.ToUnit().CastingSpellId == SpellId_Crush, o => o.Location.RayCast(o.Rotation, 20));
-
-			AddAvoidLocation(
-				ctx => true,
-				4,
-				m => ((WoWMissile)m).ImpactPosition,
-				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_FallingDebris));
-
-			return async boss => false;
-		}
-
-		#endregion
-
 	}
 }

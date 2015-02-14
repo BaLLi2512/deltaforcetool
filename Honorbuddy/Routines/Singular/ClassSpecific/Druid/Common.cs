@@ -564,17 +564,15 @@ namespace Singular.ClassSpecific.Druid
                                                 }
                                                 return true;
                                             }),
-                                        Common.CastForm( ShapeshiftForm.Cat, 
-                                            req => !Me.IsOutdoors 
-                                                || (Me.Specialization != WoWSpec.DruidBalance && Me.Specialization != WoWSpec.DruidRestoration)
-                                                || SingularRoutine.CurrentWoWContext == WoWContext.Instances
-                                            )
+                                        Common.CastForm( ShapeshiftForm.Cat)
                                         )
                                     )
                                 ),
                             new Decorator( 
                                 req => AllowAquaticForm 
-                                    && BotPoi.Current.Location.Distance(Me.Location) >= 10, 
+                                    && BotPoi.Current.Location.Distance(Me.Location) >= 10
+                                    && Me.Shapeshift != ShapeshiftForm.Aqua
+                                    && Spell.CanCastHack("Aquatic Form", Me, false), 
                                 Common.CastForm( ShapeshiftForm.Aqua)
                                 )
                             ),
@@ -602,9 +600,9 @@ namespace Singular.ClassSpecific.Druid
                 if (Me.Shapeshift != ShapeshiftForm.Aqua)
                 {
                     if (Me.Combat)
-                        return false;
+                    return false;
 
-                    if (!SpellManager.HasSpell("Travel Form"))
+                    if (!SpellManager.HasSpell("Aquatic Form"))
                         return false;
 
                     MirrorTimerInfo breath = StyxWoW.Me.GetMirrorTimerInfo(MirrorTimerType.Breath);
@@ -614,10 +612,7 @@ namespace Singular.ClassSpecific.Druid
                             return false;
                     }
 
-                    if (!Spell.CanCastHack("Travel Form", Me))
-                        return false;
-
-                    Logger.WriteDebug("DruidSwimBuff: breath={0} canmount={1} mounted={2} mountdispid={3}",
+                    Logger.WriteDebug( "DruidSwimBuff: breath={0} canmount={1} mounted={2} mountdispid={3}",
                         breath.IsVisible.ToYN(),
                         Mount.CanMount().ToYN(),
                         Me.Mounted.ToYN(),
@@ -652,7 +647,7 @@ namespace Singular.ClassSpecific.Druid
                     spellName = "Travel Form";
                     break;
                 case ShapeshiftForm.Aqua: //  4,
-                    spellName = "Travel Form";
+                    spellName = "Aquatic Form";
                     break;
                 case ShapeshiftForm.Bear: //  5,
                     spellName = "Bear Form";
@@ -682,7 +677,7 @@ namespace Singular.ClassSpecific.Druid
             }
 
             return new Decorator(
-                req => Me.Shapeshift != shape && !Me.HasShapeshiftAura(spellName) && (requirements == null || requirements(req)),
+                req => Me.Shapeshift != shape && (requirements == null || requirements(req)),
                 new Sequence(
                     new Action(r => Logger.WriteDiagnostic( "CastForm: changing to form='{0}', current='{1}', using spell '{2}'", shape, Me.Shapeshift, spellName)),
                     Spell.BuffSelfAndWait( spellId, requirements)

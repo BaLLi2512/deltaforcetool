@@ -45,8 +45,6 @@
 //          evaluates to 'true', the behavior will be terminated.
 //          NB: the behavior may also terminate due to other reasons.  For instance, a required
 //          item is not in inventory, the quest is already complete, etc.
-//		TerminateAtMaxRunTimeSecs [optional; Default: int.MaxValue]
-//			This option defines how long the Quest behavior should run in Seconds before terminating
 //      TerminationChecksQuestProgress [optional; Default: true]
 //          This option is only considered when the QuestId attribute is also provided.
 //          If true (the default), then this behavior considers itself 'done' when the
@@ -282,8 +280,6 @@ namespace Honorbuddy.QuestBehaviorCore
 				MovementBy = GetAttributeAsNullable<MovementByType>("MovementBy", false, null, null) ?? MovementByType.FlightorPreferred;
 				NonCompeteDistance = GetAttributeAsNullable<double>("NonCompeteDistance", false, new ConstrainTo.Domain<double>(0.0, 50.0), null) ?? 20.0;
 
-				TerminateAtMaxRunTimeSecs = GetAttributeAsNullable<int>("TerminateAtMaxRunTimeSecs", false, new ConstrainTo.Domain<int>(0, int.MaxValue), null) ?? int.MaxValue;
-
 				// Go ahead and compile the "TerminateWhen" expression to look for problems...
                 // Doing this in the constructor allows us to catch 'blind change'problems when ProfileDebuggingMode is turned on.
 				// If there is a problem, an exception will be thrown (and handled here).
@@ -355,15 +351,14 @@ namespace Honorbuddy.QuestBehaviorCore
 		public int QuestObjectiveIndex { get; protected set; }
 		public QuestCompleteRequirement QuestRequirementComplete { get; protected set; }
 		public QuestInLogRequirement QuestRequirementInLog { get; protected set; }
-		private int TerminateAtMaxRunTimeSecs { get; set; }
 		public UserDefinedExpression<bool> TerminateWhen { get; protected set; }
 		public bool TerminationChecksQuestProgress { get; protected set; }
 
 		public readonly Stopwatch _behaviorRunTimer = new Stopwatch();
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: QuestBehaviorBase.cs 1946 2015-02-05 03:53:06Z chinajade $"; } }
-		public override string SubversionRevision { get { return "$Rev: 1946 $"; } }
+		public override string SubversionId { get { return "$Id: QuestBehaviorBase.cs 1906 2014-12-22 21:18:26Z Dogan $"; } }
+		public override string SubversionRevision { get { return "$Rev: 1906 $"; } }
 		#endregion
 
 
@@ -400,12 +395,6 @@ namespace Honorbuddy.QuestBehaviorCore
 
 				if (!UtilIsProgressRequirementsMet(QuestId, QuestRequirementInLog, QuestRequirementComplete))
 					return true;
-			}
-
-			if (_behaviorRunTimer.ElapsedMilliseconds / 1000 >= TerminateAtMaxRunTimeSecs)
-			{
-				QBCLog.Info("Terminating due to 'max run time' expiry.");
-				return true;
 			}
 
 			return false;

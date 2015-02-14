@@ -162,9 +162,6 @@ namespace Honorbuddy.QuestBehaviorCore
 
 		/// <summary>The spell is on cooldown</summary>
 		NotReady,
-
-		/// <summary>No spell cast was started</summary>
-		NoCastStarted,
 	}
 
 	// Delegates
