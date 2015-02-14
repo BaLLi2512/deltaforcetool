@@ -396,10 +396,10 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 				// NB: Core attributes are parsed by QuestBehaviorBase parent (e.g., QuestId, NonCompeteDistance, etc)
 
 				// Primary attributes...
-				MobIds = GetAttributeAsArray<int>("MobIds", false, ConstrainAs.MobId, new[] { "NpcIds" }, null);
+				MobIds = (GetAttributeAsArray<int>("MobIds", false, ConstrainAs.MobId, new[] { "NpcIds" }, null) ?? new int[0])
+					.Concat(GetNumberedAttributesAsArray<int>("MobId", 0, ConstrainAs.MobId, new[] { "NpcId" }) ?? new int[0])
+					.ToArray();
 
-				if (MobIds != null && MobIds.Count() == 0)
-					MobIds = GetNumberedAttributesAsArray<int>("MobId", 0, ConstrainAs.MobId, new[] { "NpcId" });
 				MobIdIncludesSelf = GetAttributeAsNullable<bool>("MobIdIncludesSelf", false, null, null) ?? false;
 				FactionIds = GetNumberedAttributesAsArray<int>("FactionId", 0, ConstrainAs.MobId, null);
 				NumOfTimes = GetAttributeAsNullable<int>("NumOfTimes", false, ConstrainAs.RepeatCount, null) ?? 1;
@@ -438,7 +438,7 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 					false,
 					null,
 					null)
-											?? QuestFrameDisposition.TerminateProfile;
+											?? QuestFrameDisposition.Ignore;
 				InteractByUsingItemId = GetAttributeAsNullable<int>("InteractByUsingItemId", false, ConstrainAs.ItemId, null) ?? 0;
 
 				// Tunables...
@@ -666,12 +666,12 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 
 		public override string SubversionId
 		{
-			get { return ("$Id: InteractWith.cs 1925 2015-01-04 19:53:44Z chinajade $"); }
+			get { return ("$Id: InteractWith.cs 1948 2015-02-06 02:46:04Z chinajade $"); }
 		}
 
 		public override string SubversionRevision
 		{
-			get { return ("$Revision: 1925 $"); }
+			get { return ("$Revision: 1948 $"); }
 		}
 
 		private enum BindingEventStateType
@@ -813,7 +813,7 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 			// return if behavior is considered done or if targeting is not empty meaning we have something to kill and killing takes priority over any interaction
 			bool shouldFight = Targeting.Instance.FirstUnit != null
 				&& LevelBot.BehaviorFlags.HasFlag(BehaviorFlags.Combat)
-				&& (Me.Combat || LevelBot.BehaviorFlags.HasFlag(BehaviorFlags.Pull));
+				&& (Me.IsActuallyInCombat || LevelBot.BehaviorFlags.HasFlag(BehaviorFlags.Pull));
 
 			if (IsDone || shouldFight)
 				return false;

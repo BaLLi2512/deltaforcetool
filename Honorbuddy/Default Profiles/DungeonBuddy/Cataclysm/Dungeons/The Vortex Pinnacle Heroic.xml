@@ -2,6 +2,15 @@
 <DungeonBuddyProfile>
   <Name>The Vortex Pinnacle Heroic</Name>
   <DungeonId>319</DungeonId>
+
+	<Vendors>
+		<Vendor name="Blacksmith Abasi" id="48617" type="Repair" nav="Fly" faction="Both" X="-9404.68" Y="-906.438" Z="112.5408" />
+	</Vendors>
+
+	<MailBoxes>
+		<MailBox faction="Both" nav="Fly" X="-9413.739" Y="-936.2292" Z="113.3585" />
+	</MailBoxes>
+	
   <BossEncounters>
     <Boss isFinal="false" entry="43878" name="Grand Vizier Ertan" killOrder="1"
           stage="1" step="1" optional="false" X="-719.587" Y="4.32986" Z="635.6728" />

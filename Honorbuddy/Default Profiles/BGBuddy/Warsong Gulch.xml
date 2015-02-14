@@ -6,6 +6,22 @@
   <StartLocation X="943.4707" Y="1424.74" Z="345.4574" Side="Horde" />
   <StartLocation X="1511.525" Y="1490.999" Z="352.0117" Side="Alliance" />
 
+  <Boxes Side="Horde">
+    <Box Name="StartLocation">
+      <TopLeft X="948.0928" Y="1428.804" Z="345.3896" />
+      <Center X="944.0736" Y="1423.881" Z="345.4485" />
+      <BottomRight X="941.7331" Y="1419.544" Z="345.4668" />
+    </Box>
+  </Boxes>
+
+  <Boxes Side="Alliance">
+    <Box Name="StartLocation">
+      <TopLeft X="1512.071" Y="1492.438" Z="352.0106" />
+      <Center X="1507.281" Y="1485.816" Z="352.0201" />
+      <BottomRight X="1515.713" Y="1497.612" Z="351.9985" />
+    </Box>
+  </Boxes>
+
   <Blackspots>
     <!-- Lamp post near Silverwing base -->
     <Blackspot X="1401.266" Y="1415.457" Z="344.8266" Radius="2" />

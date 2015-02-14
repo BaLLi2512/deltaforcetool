@@ -5,6 +5,22 @@
 
   <StartLocation X="1780.244" Y="1591.458" Z="32.28436" Side="Horde" />
   <StartLocation X="1784.385" Y="1084.504" Z="27.0073" Side="Alliance" />
+  
+  <Boxes Side="Horde">
+    <Box Name="StartLocation">
+      <TopLeft X="1785.779" Y="1570.506" Z="24.66573" />
+      <Center X="1780.31" Y="1579.445" Z="28.56025" />
+      <BottomRight X="1775.162" Y="1588.878" Z="31.60417" />
+    </Box>
+  </Boxes>
+
+  <Boxes Side="Alliance">
+    <Box Name="StartLocation">
+      <TopLeft X="1779.255" Y="1098.48" Z="21.52607" />
+      <Center X="1784.057" Y="1090.336" Z="25.05905" />
+      <BottomRight X="1789.196" Y="1083.315" Z="27.40746" />
+    </Box>
+  </Boxes>
 
   <Blackspots>
     <!-- Rock -->

@@ -193,6 +193,7 @@
 	<Item Name="Fisherman's Feast" Id="33052" />
 	<Item Name="Fish Feast" Id="43015" />
 	<Item Name="Jillian's Gourmet Fish Feast" Id="45279" />
+	<Item Name="Savage Feast" Id="118576" />
 	<!-- available on PTR only -->
 
 	<!-- Basic Items: Food  (ordered by level) -->
@@ -1276,6 +1277,9 @@
 
 
 	<!-- ========== Trade Tools & Items (alphabetical) ========== -->
+	<!-- Trade: general (alphabetical) -->
+	<Item Name="Savage Blood" Id="118472" />
+	
 	<!-- Trade: Alchemy Tools (alphabetical) -->
 	<Item Name="Philsopher's Stone" Id="9149" />
 	<Item Name="Pyrium-Laced Crystalline Vial" Id="65892" />
@@ -1431,7 +1435,7 @@
 	<Item Name="Witchberries" Id="74846" />	
 
 	<!-- Trade: Enchanting Tools (alphabetical) -->
-	<Item Name="Simple Wood" Id="4470" />
+	<Item Name="Enchanting Vellum" Id="38682" />
 	<Item Name="Runed Copper Rod" Id="6218" />
 
 	<!-- Trade: Enchanting Items (alphabetical) -->
@@ -1937,23 +1941,6 @@
 	<Item Name="Lucky Charm" Id="5373" />
 	
 	<!-- Trade: Lockboxes (orderd by increasing difficulty) -->
-	<Item Name="Ornate Bronze Lockbox" Id="4632" />
-	<Item Name="Heavy Bronze Lockbox" Id="4633" />
-	<Item Name="Iron Lockbox" Id="4634" />
-	<Item Name="Strong Iron Lockbox" Id="4636" />
-	<Item Name="Steel Lockbox" Id="4637" />
-	<Item Name="Reinforced Steel Lockbox" Id="4638" />
-	<Item Name="Mithril Lockbox" Id="5758" />
-	<Item Name="Thorium Lockbox" Id="5759" />
-	<Item Name="Eternium Lockbox" Id="5760" />
-	<Item Name="Khorium Lockbox" Id="31952" />
-	<Item Name="Froststeel Lockbox" Id="43622" />
-	<Item Name="Titanium Lockbox" Id="43624" />
-	<Item Name="Tiny Titanium Lockbox" Id="45986" />
-	<Item Name="Elementium Lockbox" Id="68729" />
-	<Item Name="Ghost Iron Lockbox" Id="88567" />
-	<Item Name="True Steel Lockbox" Id="116920" />
-	<Item Name="Mysterious Shining Lockbox" Id="118193" />
 	<Item Name="Highmaul Lockbox" Id="119000" />
 
 	<!-- Trade: Mining Tools  (also see Trade Tools: Multi-purpose) -->
@@ -2058,9 +2045,11 @@
 	<Item Name="Universal Language Module" Id="118377" />
 	<Item Name="Universal Language Repository" Id="118335" />
 
-	<!-- ========== Valuable drops ========= -->
+	<!-- ========== Valuable drops or crafted items ========= -->
+	<Item Name="Aviana's Feather" Id="119093" />
 	<Item Name="Battered Hilt (Alliance)" Id="50379" />
 	<Item Name="Battered Hilt (Horde)" Id="50380" />
+	<Item Name="Drums of Fury" Id="120257" />
 	<Item Name="Munificent Trinket" Item="114068" />
 	<Item Name="Striking Weapon Enhancement" Item="114129" />
 	

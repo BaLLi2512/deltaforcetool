@@ -7,11 +7,13 @@ using Styx;
 
 using Styx.CommonBot;
 using Styx.TreeSharp;
+using Action = Styx.TreeSharp.Action;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using Rest = Singular.Helpers.Rest;
 using System.Drawing;
 using CommonBehaviors.Actions;
+using System;
 
 namespace Singular.ClassSpecific.Paladin
 {
@@ -316,21 +318,55 @@ namespace Singular.ClassSpecific.Paladin
                         new Decorator(
                             req => true,       // old EJ priority basically unchanged for WoD
                             new PrioritySelector(
-                                // Single Target Priority
-                                // was EJ: Inq > 5HP TV > ES > HoW > Exo > CS > Judge > 3-4HP TV (> SS)
-                                // was EJ: Inq > 5HP TV > ES > HoW > CS > Judge > Exo > 3-4HP TV (> SS)
-                                // now EJ: Inq > ES (> 5HP T16 Free DS) > 5HP TV > HoW (> T16 Free DS) > CS > Judge > Exo > 3-4HP TV (> SS)
+                                // Single Target Priority ==================
+                                //  ES
                                 Spell.Cast("Execution Sentence"),
-                                Spell.Cast("Divine Storm", req => Me.CurrentHolyPower == 5 && Me.HasAura("Divine Crusader")),   // T16 buff
 
+                                //  DS with 5 HP, T16 4proc
+                                Spell.Cast("Divine Storm", req => Me.CurrentHolyPower == 5 && Me.HasAura("Divine Crusader")),
+
+                                //  TV/FV with Divine Purpose wearing off in 4 or less seconds
+                                Spell.Cast("Templar's Verdict", req => Me.GetAuraTimeLeft("Divine Purpose").TotalMilliseconds.Between(200, 4000)),
+
+                                //  DS with 5 HP and FV buff
+                                Spell.Cast("Divine Storm", req => Me.CurrentHolyPower == 5 && Me.HasAura("Final Verdict")),
+
+                                //  TV/FV with 5 HP
                                 Spell.Cast("Templar's Verdict", req => Me.CurrentHolyPower == 5),
+
+                                //  DS with 5 HP, no buff/proc
+                                Spell.Cast("Divine Storm", req => Me.CurrentHolyPower == 5),
+
+                                //  DS with T16 procced and wearing off in 4 or less seconds
+                                Spell.Cast("Divine Storm", req => Me.GetAuraTimeLeft("Divine Crusader").TotalMilliseconds.Between(200,4000)),
+
+                                //  HoW
                                 Spell.Cast("Hammer of Wrath"),
-                                Spell.Cast("Divine Storm", req => Me.HasAura("Divine Crusader")),   // T16 buff
+
+                                //  Exo with T16 4p HoW buff and less than 3HP
+                                Spell.Cast("Exorcism", req => Me.CurrentHolyPower < 3 && Me.HasAura("Divine Crusader")),
+
+                                //  CS
                                 Spell.Cast("Crusader Strike"),
+
+                                //  EmpSeal: Seal Swap if buff < 5 seconds
+
+                                //  Judge
                                 Spell.Cast("Judgment"),
+
+                                //  Exo with no T16 4p HoW buff
                                 Spell.Cast("Exorcism"),
+
+                                //  EmpSeal: SoT if on SoR and have that buff 3-4HP TV/FV
+
+
+                                Spell.Cast("Divine Storm", req => Me.HasAura("Divine Crusader")),   // T16 buff
                                 Spell.Cast("Templar's Verdict", req => Me.CurrentHolyPower >= 3),
+
+                                //  SS
                                 Spell.BuffSelf("Sacred Shield")
+
+
                                 )
                             )
 
@@ -351,13 +387,12 @@ namespace Singular.ClassSpecific.Paladin
                 return new Action( ret => { return RunStatus.Failure; } );
 
             return new Sequence(
-                new Action( r => SingularRoutine.UpdateDiagnosticCastingState() ),
-                new Action(r => TMsg.ShowTraceMessages = false),
-                new ThrottlePasses(1, 1, 
+                new ThrottlePasses(
+                    1, 
+                    TimeSpan.FromMilliseconds(1500), 
+                    RunStatus.Failure,
                     new Action(ret =>
                     {
-                        TMsg.ShowTraceMessages = true;
-
                         string sMsg;
                         sMsg = string.Format(".... h={0:F1}%, m={1:F1}%, moving={2}, mobs={3}",
                             Me.HealthPercent,

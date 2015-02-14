@@ -12,6 +12,13 @@
   </Blackspots>
 
   <Boxes Side="Horde">
+
+    <Box Name="StartLocation">
+      <TopLeft X="1158.072" Y="-775.1274" Z="49.01499" />
+      <Center X="1164.51" Y="-762.514" Z="48.62758" />
+      <BottomRight X="1175.635" Y="-751.64" Z="48.91508" />
+    </Box>
+
     <Box Name="Workshop">
       <TopLeft X="811.5819" Y="-771.2339" Z="3.650886" />
       <BottomRight X="733.6453" Y="-850.7206" Z="12.72862" />
@@ -40,31 +47,41 @@
   </Boxes>
 
   <Boxes Side="Alliance">
+
+    <Box Name="StartLocation">
+      <TopLeft X="398.7792" Y="-816.2992" Z="48.98202" />
+      <Center X="389.7944" Y="-832.7556" Z="48.65889" />
+      <BottomRight X="379.9532" Y="-847.4006" Z="48.91497" />
+    </Box>
+
     <Box Name="Workshop">
       <TopLeft X="811.5819" Y="-771.2339" Z="3.650886" />
       <BottomRight X="733.6453" Y="-850.7206" Z="12.72862" />
       <Center X="778.2644" Y="-804.314" Z="6.402119" />
     </Box>
+    
     <Box Name="Hangar">
       <TopLeft X="735.1211" Y="-1104.929" Z="134.566" />
       <BottomRight X="735.1211" Y="-1104.929" Z="134.566" />
       <Center X="735.1211" Y="-1104.929" Z="134.566" />
     </Box>
+    
 		<Box Name="Docks">
 			<TopLeft X="810.7131" Y="-321.0404" Z="12.63477" />
 			<BottomRight X="669.4536" Y="-442.1585" Z="24.09111" />
 			<Center X="722.837" Y="-365.4458" Z="17.81632" />
 		</Box>
+    
     <Box Name="AllianceKeep">
       <TopLeft X="238.8202" Y="-812.9496" Z="59.5785" />
       <BottomRight X="238.8202" Y="-812.9496" Z="59.5785" />
       <Center X="238.8202" Y="-812.9496" Z="59.5785" />
     </Box>
+    
     <Box Name="HordeKeep">
       <TopLeft X="1339.021" Y="-765.8522" Z="60.81643" />
       <BottomRight X="1339.021" Y="-765.8522" Z="60.81643" />
       <Center X="1339.021" Y="-765.8522" Z="60.81643" />
     </Box>
   </Boxes>
-  
 </PvpProfile>

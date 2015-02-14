@@ -12,6 +12,7 @@ using Styx.CommonBot;
 using Styx.CommonBot.Coroutines;
 using Styx.CommonBot.Frames;
 using Styx.CommonBot.POI;
+using Styx.CommonBot.Routines;
 using Styx.Helpers;
 using Styx.Pathing;
 using Styx.TreeSharp;
@@ -309,62 +310,60 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 		private const uint InstructorChillheartId = 58633;
 		private const uint RisenGuardId = 58822;
 		private WoWUnit _chillheart;
+		private const uint MobId_IceWall = 62731;
+
 
 		[EncounterHandler(58633, "Instructor Chillheart", Mode = CallBehaviorMode.Proximity, BossRange = 80)]
-		public Composite InstructorChillheartEncounter()
+		public Func<WoWUnit, Task<bool>> InstructorChillheartEncounter()
 		{
-			const uint iceWallId = 62731;
+			WoWUnit iceWall = null;
 			const uint arcaneBombId = 58753;
 			const uint antonidasSelfHelpGuideToStandingInFireId = 58635;
 			const uint frigidGraspId = 58640;
+
 			var phase1TankLoc = new WoWPoint(203.2554, 38.66046, 119.2258);
 
 			AddAvoidObject(ctx => true, 5, frigidGraspId);
 			AddAvoidObject(ctx => true, 3, u => u is WoWPlayer && !u.IsMe && ((WoWPlayer)u).HasAura("Ice Wrath"));
 			AddAvoidObject(ctx => true, 4, arcaneBombId, antonidasSelfHelpGuideToStandingInFireId);
-			// avoid the icewall. 
-			AddAvoidObject(
-				ctx => true,
-				8,
-				u => u.Entry == iceWallId,
-				o =>
-				{ // the icewall object is just one NPC so we need to use its y location and use our x location 
-					var loc = o.Location;
-					loc.X = Me.X;
-					return loc;
-				});
+			
+			// avoid the icewall. This is a single NPC and it faces the direction of travel. 
+			const float iseWallWidth = 3f;
+			AddAvoidLocation(
+				ctx => ScriptHelpers.IsViable(iceWall) && ScriptHelpers.IsViable(_chillheart) 
+					&& _chillheart.Combat && !_chillheart.HasAura("Permanent Feign Death"),
+				iseWallWidth * 1.33f,
+				o => (WoWPoint)o,
+				() => ScriptHelpers.GetPointsAlongLineSegment(
+					WoWMathHelper.CalculatePointAtSide(iceWall.Location, iceWall.Rotation, 30, true),
+					WoWMathHelper.CalculatePointAtSide(iceWall.Location, iceWall.Rotation, 30, false),
+				
+					iseWallWidth / 2).OfType<object>());
 
-			// avoid Instructor Chillheart so not to pull before surrounding trash is killed.
-			AddAvoidObject(
-				ctx => !Me.IsTank() || ObjectManager.GetObjectsOfType<WoWUnit>().Any(u => u.Entry == RisenGuardId && u.ZDiff < 10),
-				16,
-				o => o.Entry == InstructorChillheartId && o.ToUnit().IsAlive && !o.ToUnit().Combat);
+			return async boss =>
+			{
+				_chillheart = boss;
 
-			return new PrioritySelector(
-				ctx => _chillheart = ctx as WoWUnit,
-				// OOC behavior
-				new Decorator(
-					ctx => !_chillheart.Combat,
-					new PrioritySelector(
-				// kill all risen guards 
-						ScriptHelpers.CreateClearArea(() => _chillheart.Location, 70, u => u.Entry == RisenGuardId && u.ZDiff < 10))),
+				// OOC behavior - kill all risen guards 
+				if (!boss.Combat)
+					return await ScriptHelpers.ClearArea(boss.Location, 70, u => u.Entry == RisenGuardId && u.ZDiff < 10);
+
 				// Phase 1 combat behavior
-				new Decorator(
-					ctx => _chillheart.Combat && !_chillheart.HasAura("Permanent Feign Death"),
-					new PrioritySelector(
-				// move to the west wall 
-						new Decorator(
-							ctx => StyxWoW.Me.IsRange() && StyxWoW.Me.Y < 30,
-							new Action(
-								ctx =>
-								{
-									var loc = StyxWoW.Me.Location;
-									loc.Y = 35;
-									Navigator.MoveTo(loc);
-								})),
-						ScriptHelpers.CreateTankUnitAtLocation(ctx => phase1TankLoc, 5))),
-				// Phase 2 combat behavior
-				new Decorator(ctx => _chillheart.Combat && _chillheart.HasAura("Permanent Feign Death"), new PrioritySelector()));
+				if (!boss.HasAura("Permanent Feign Death"))
+				{
+					iceWall = ObjectManager.GetObjectsOfTypeFast<WoWUnit>().FirstOrDefault(u => u.Entry == MobId_IceWall);
+					// move to the west wall 
+					if (Me.IsRange() && Me.Y < 30)
+					{
+						var loc = StyxWoW.Me.Location;
+						loc.Y = 35;
+						return (await CommonCoroutines.MoveTo(loc)).IsSuccessful();
+					}
+				}
+
+
+				return false;
+			};
 		}
 
 		#endregion

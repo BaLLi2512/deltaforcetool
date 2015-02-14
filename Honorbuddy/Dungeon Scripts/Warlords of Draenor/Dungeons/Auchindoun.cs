@@ -355,7 +355,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					{
 						var estimateTimeTillCast = 7000 - LosTimer.ElapsedMilliseconds;
 
-						var timeToGetToLoc = ConsecratedLightMoveToLoc.Value.Distance(Me.Location) / Me.MovementInfo.ForwardSpeed * 1000;
+						var timeToGetToLoc = (ConsecratedLightMoveToLoc.Value.Distance(Me.Location) / Me.MovementInfo.ForwardSpeed * 1000) + 1000;
 						return estimateTimeTillCast < timeToGetToLoc;
 					}
 					return false;

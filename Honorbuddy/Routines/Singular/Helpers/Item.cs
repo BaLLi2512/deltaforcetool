@@ -133,7 +133,13 @@ namespace Singular.Helpers
 
         private static void UseItem(WoWItem item)
         {
-            Logger.Write( LogColor.Hilite, "/use {0}", item.Name);
+            Logger.Write(LogColor.Hilite, "/use {0}", item.Name);
+            item.Use();
+        }
+
+        private static void UseItem(WoWItem item, WoWUnit on)
+        {
+            Logger.Write(LogColor.Hilite, "/use {0} on {1} @ {2:F1} yds", item.Name, on.SafeName(), on.SpellDistance());
             item.Use();
         }
 
@@ -222,7 +228,7 @@ namespace Singular.Helpers
                 new Decorator(
                     req => !StyxWoW.Me.Auras
                         .Any(aura => 
-                            !aura.Key.StartsWith("Flask of ")
+                            !aura.Key.Contains("Flask")
                             && !aura.Key.StartsWith("Enhanced ")
                             && !flaskAura.Contains( aura.Value.SpellId )
                             ), 
@@ -246,7 +252,7 @@ namespace Singular.Helpers
                                         ts => TimeSpan.FromMilliseconds(Math.Max(500, SingularRoutine.Latency * 2)),
                                         until => StyxWoW.Me.Auras
                                             .Any(aura => 
-                                                aura.Key.StartsWith("Flask of ")
+                                                aura.Key.Contains("Flask")
                                                 || aura.Key.StartsWith("Enhanced ")
                                                 || flaskAura.Contains( aura.Value.SpellId )
                                                 ),
@@ -501,9 +507,11 @@ namespace Singular.Helpers
             if (Me.Inventory.Equipped.Trinket2 != null)
                 Logger.WriteFile("Trinket2: {0} #{1}", Me.Inventory.Equipped.Trinket2.Name, Me.Inventory.Equipped.Trinket2.Entry);
 
+            WoWItem item;
             if (Me.Inventory.Equipped.Hands != null)
             {
-                WoWItem item = Me.Inventory.Equipped.Hands;
+                /*
+                item = Me.Inventory.Equipped.Hands;
                 if (!item.Usable)
                     Logger.WriteDiagnostic("Hands: {0} #{1} - are not usable and will be ignored", item.Name, item.Entry);
                 else 
@@ -514,6 +522,7 @@ namespace Singular.Helpers
                     else
                         Logger.WriteFile("Hands: {0} #{1} - found [{2}] and will use as per user settings", item.Name, item.Entry, itemSpell);
                 }
+                */
 
                 /*
                 // debug logic:  try another method to check for Engineering Tinkers
@@ -524,16 +533,16 @@ namespace Singular.Helpers
                         Logger.WriteFile("Hands (double check): {0} #{1} - found enchant [{2}] #{3} (debug info only)", item.Name, item.Entry, ench.Name, ench.Id);
                 }
                 */
+            }
 
-                item = Me.Inventory.Equipped.Waist;
-                if (item != null)
+            item = Me.Inventory.Equipped.Waist;
+            if (item != null)
+            {
+                foreach (var enchName in BeltEnchants)
                 {
-                    foreach (var enchName in BeltEnchants)
-                    {
-                        WoWItem.WoWItemEnchantment ench = item.GetEnchantment(enchName);
-                        if (ench != null)
-                            Logger.WriteFile("Belt (double check): {0} #{1} - found enchant [{2}] #{3} (debug info only)", item.Name, item.Entry, ench.Name, ench.Id);
-                    }
+                    WoWItem.WoWItemEnchantment ench = item.GetEnchantment(enchName);
+                    if (ench != null)
+                        Logger.WriteFile("Belt (double check): {0} #{1} - found enchant [{2}] #{3} (debug info only)", item.Name, item.Entry, ench.Name, ench.Id);
                 }
             }
         }
@@ -749,8 +758,8 @@ namespace Singular.Helpers
 
         public static Composite CreateThunderLordGrappleBehavior()
         {
-            const int FROSTFIRE_RIDGE = 6720;
-            const int THUNDERLORD_GRAPPLE = 101677;
+            const int FROSTFIRE_RIDGE_ZONEID = 6720;
+            const int THUNDERLORD_GRAPPLE_ITEM = 101677;
 
             if (!SingularSettings.Instance.ToysAllowUse)
                 return new ActionAlwaysFail();
@@ -764,45 +773,58 @@ namespace Singular.Helpers
             return new Throttle(
                 15,
                 new Decorator(
-                    req => Me.ZoneId == FROSTFIRE_RIDGE,
+                    req => Me.ZoneId == FROSTFIRE_RIDGE_ZONEID,
                     new Decorator(
                         req => MovementManager.IsClassMovementAllowed   // checks Movement and GapCloser capability flags
-                            && CanUseCarriedItem(THUNDERLORD_GRAPPLE)
+                            && CanUseCarriedItem(THUNDERLORD_GRAPPLE_ITEM)
                             && Me.GotTarget()
-                            && Me.CurrentTarget.Distance.Between(25, 40)
+                            && Me.CurrentTarget.SpellDistance() >= 20
                             && Me.CurrentTarget.InLineOfSight
                             && Me.IsSafelyFacing(Me.CurrentTarget)
                             && (DateTime.Now - Utilities.EventHandlers.LastNoPathFailure) > TimeSpan.FromSeconds(15),
                         new Sequence(
-                            new Action( r => StopMoving.Now()),
+                            new Action(r =>
+                            {
+                                const int THUNDERLORD_GRAPPLE_SPELL = 150258;
+                                WoWSpell grapple = WoWSpell.FromId(THUNDERLORD_GRAPPLE_SPELL);
+                                if (grapple != null && Me.CurrentTarget.SpellDistance() < grapple.MaxRange)
+                                    return RunStatus.Success;
+                                return RunStatus.Failure;
+                            }),
+                            new Action(r => StopMoving.Now()),
                             new Wait(
                                 TimeSpan.FromMilliseconds(500),
                                 until => !Me.IsMoving,
                                 new ActionAlwaysSucceed()
                                 ),
-                            new Action(r => 
+                            new Action(r =>
                             {
-                                Logger.Write(LogColor.Hilite, "^Thunderlord Grapple on {0} @ {1:F1} yds", Me.CurrentTarget.SafeName(), Me.CurrentTarget.SpellDistance());
-                                WoWItem item = FindItem(THUNDERLORD_GRAPPLE);
-                                item.Use();
+                                WoWItem item = FindItem(THUNDERLORD_GRAPPLE_ITEM);
+                                UseItem(item, Me.CurrentTarget);
                             }),
                             new Wait(
                                 1,
                                 until => Spell.IsCastingOrChannelling(),
                                 new ActionAlwaysSucceed()
                                 ),
-                            new Action( r => Logger.WriteDebug("ThunderlordGrapple: start @ {0:F1} yds", Me.CurrentTarget.Distance)),
+                            new Action(r => Logger.WriteDebug("ThunderlordGrapple: start @ {0:F1} yds", Me.CurrentTarget.Distance)),
                             new Wait(
                                 3,
                                 until => !Spell.IsCastingOrChannelling(),
                                 new ActionAlwaysSucceed()
                                 ),
-                            new Wait(
-                                1,
-                                until => !Me.IsMoving || Me.CurrentTarget.IsWithinMeleeRange,
-                                new ActionAlwaysSucceed()
-                                ),
-                            new Action( r => Logger.WriteDebug("ThunderlordGrapple: ended @ {0:F1} yds", Me.CurrentTarget.Distance))
+                            new PrioritySelector(
+                                new Sequence(
+                                    new Wait(
+                                        1,
+                                        until => !Me.IsMoving || Me.CurrentTarget.IsWithinMeleeRange,
+                                        new ActionAlwaysSucceed()
+                                        ),
+                                    new Action(r => Logger.WriteDebug("ThunderlordGrapple: ended @ {0:F1} yds", Me.CurrentTarget.Distance))
+                                    ),
+                                // allow following to Succeed so we Throttle the behavior even on failure at this point
+                                new Action(r => Logger.WriteDebug("ThunderlordGrapple: failed unexpectedly @ {0:F1} yds", Me.CurrentTarget.Distance))
+                                )
                             )
                         )
                     )
