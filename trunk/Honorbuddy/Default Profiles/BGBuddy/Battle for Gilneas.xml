@@ -4,7 +4,7 @@
   <Name>Battle for Gilneas</Name>
   
   <StartLocation X="1404.859" Y="980.0989" Z="7.429097" Side="Horde" />
-  <StartLocation X="909.46" Y="1337.36" Z="27.59665" Side="Alliance" />
+  <StartLocation X="914.3354" Y="1338.575" Z="27.64345" Side="Alliance" />
 
   <Blackspots>
     <Blackspot X="1328.841" Y="1032.114" Z="-10" Height="30" Radius="15" />
@@ -13,6 +13,13 @@
   </Blackspots>
 
   <Boxes Side="Horde">
+    
+    <Box Name="StartLocation">
+      <TopLeft X="1397.808" Y="970.1021" Z="7.368223" />
+      <Center X="1404.502" Y="978.0442" Z="7.374782" />
+      <BottomRight X="1409.946" Y="984.5257" Z="7.374782" />
+    </Box>
+    
     <Box Name="Mines">
       <TopLeft X="1278.736" Y="1005.169" Z="5.535599" />
       <BottomRight X="1226.927" Y="917.1533" Z="9.496819" />
@@ -33,6 +40,13 @@
   </Boxes>
 
   <Boxes Side="Alliance">
+
+    <Box Name="StartLocation">
+      <TopLeft X="917.7675" Y="1343.472" Z="27.82945" />
+      <Center X="913.0387" Y="1339.271" Z="27.6374" />
+      <BottomRight X="908.7048" Y="1335.861" Z="27.6098" />
+    </Box>
+
     <Box Name="Mines">
       <TopLeft X="1278.736" Y="1005.169" Z="5.535599" />
       <BottomRight X="1226.927" Y="917.1533" Z="9.496819" />

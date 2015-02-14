@@ -4,6 +4,21 @@
   <Name>Twin Peaks</Name>
   <StartLocation X="1568.713" Y="322.1225" Z="1.545058" Side="Horde" />
   <StartLocation X="2141.95" Y="215.3261" Z="43.65028"  Side="Alliance" />
-  <Blackspots>
-  </Blackspots>
+
+  <Boxes Side="Horde">
+    <Box Name="StartLocation">
+      <TopLeft X="1566.91" Y="318.6471" Z="1.560207" />
+      <Center X="1558.389" Y="326.8445" Z="1.545361" />
+      <BottomRight X="1548.552" Y="336.5377" Z="1.305337" />
+    </Box>
+  </Boxes>
+
+  <Boxes Side="Alliance">
+    <Box Name="StartLocation">
+      <TopLeft X="2144.848" Y="222.1223" Z="43.6518" />
+      <Center X="2151.623" Y="211.9262" Z="43.65122" />
+      <BottomRight X="2154.152" Y="197.0119" Z="43.64951" />
+    </Box>
+  </Boxes>
+  
 </PvpProfile>

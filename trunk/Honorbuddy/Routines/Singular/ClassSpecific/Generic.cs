@@ -21,6 +21,13 @@ namespace Singular.ClassSpecific
 {
     public static class Generic
     {
+        [Behavior(BehaviorType.Initialize, priority: 9000)]
+        public static Composite CreateGenericInitializeBehaviour()
+        {
+            SuppressGenericRacialBehavior = false;
+            return null;
+        }
+
         public static Composite CreateUseHealTrinketsBehaviour()
         {
             if (SingularSettings.IsTrinketUsageWanted(TrinketUsage.LowHealth))
@@ -99,6 +106,8 @@ namespace Singular.ClassSpecific
             return ps;
         }
 
+        public static bool SuppressGenericRacialBehavior { get; set; }
+
         // [Behavior(BehaviorType.Combat, priority: 998)]
         public static Composite CreateRacialBehaviour()
         {
@@ -156,12 +165,17 @@ namespace Singular.ClassSpecific
                 pri.AddChild(combatRacials);
 
             // just fail if no combat racials
-            if (!SingularSettings.Instance.UseRacials || !pri.Children.Any())
+            if (!SingularSettings.Instance.UseRacials || !pri.Children.Any() || SuppressGenericRacialBehavior)
                 return new ActionAlwaysFail();
 
             return new Throttle(
                 TimeSpan.FromMilliseconds(250),
-                new Decorator(req => !Spell.IsGlobalCooldown() && !Spell.IsCastingOrChannelling(), pri)
+                new Decorator(
+                    req => !Spell.IsGlobalCooldown() 
+                        && !Spell.IsCastingOrChannelling() 
+                        && !SuppressGenericRacialBehavior, 
+                        pri
+                    )
                 );
         }
 
@@ -374,9 +388,11 @@ namespace Singular.ClassSpecific
                                     return true;
                                 if (StyxWoW.Me.CurrentTarget.IsPlayer)
                                     return true;
-                                if (StyxWoW.Me.CurrentTarget.MaxHealth > (StyxWoW.Me.MaxHealth * 2))
+                                if (StyxWoW.Me.CurrentTarget.MaxHealth > (StyxWoW.Me.MaxHealth * 2) && StyxWoW.Me.CurrentTarget.CurrentHealth > StyxWoW.Me.CurrentHealth)
                                     return true;
                                 if (StyxWoW.Me.CurrentTarget.TappedByAllThreatLists)
+                                    return true;
+                                if (StyxWoW.Me.HealthPercent < SingularSettings.Instance.GarrisonAbilityHealth / 2)
                                     return true;
                             }
                         }

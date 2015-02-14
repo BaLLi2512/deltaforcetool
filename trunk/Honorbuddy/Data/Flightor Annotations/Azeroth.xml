@@ -14,11 +14,24 @@
       </EntrancePath>
     </SphericalIndoorArea>
 
-    <BoundingBoxIndoorArea Name="Undercity">
-      <Entrance Radius="4" Dismount="True" X="1677.719" Y="237.1559" Z="62.59557" />
-      <Min X="1238" Y="17" Z="-100"/>
-      <Max X="1825" Y="491" Z="50"/>
-    </BoundingBoxIndoorArea>
+	  <CompositeIndoorArea>
+		  <Entrance Radius="4" Dismount="True" X="1677.719" Y="237.1559" Z="62.59557" />
+		  <IndoorAreas>
+			  <CylinderIndoorArea Name="Entrance Building" Radius="30" Height="20" X="1642.163" Y="239.8526" Z="62.59153" />
+			  <TubularIndoorArea Name="Passage leading from entrance building to underground section" Radius="10">
+				  <Points>
+					  <Point X="1625.898" Y="255.7189" Z="62.5947" />
+					  <Point X="1620.727" Y="260.9612" Z="62.5947" />
+					  <Point X="1599.392" Y="241.7152" Z="60.151" />
+				  </Points>
+			  </TubularIndoorArea>
+			  <BoundingBoxIndoorArea Name="Undercity">
+				  <Min X="1238" Y="17" Z="-100" />
+				  <Max X="1825" Y="491" Z="50" />
+			  </BoundingBoxIndoorArea>
+		  </IndoorAreas>
+	  </CompositeIndoorArea>
+
 
     <TubularIndoorArea Name="Wizard's Sanctum - Mage Room, Stormwind" Radius="20">
       <Entrance Dismount="True" Radius="1" X="-8999.305" Y="862.1638" Z="129.3067" />

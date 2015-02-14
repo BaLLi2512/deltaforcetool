@@ -127,7 +127,7 @@
 // At any time, to see the list of current DoWhen activities, use the "ShowActivities" Command:
 //      <CustomBehavior File="Hooks\DoWhen" Command="ShowActivities" />
 // Output will be generated to the log that looks like the following:
-//      [DoWhen-v$Rev: 1931 $(info)] DoWhenActivities in use (count:2):
+//      [DoWhen-v$Rev: 1933 $(info)] DoWhenActivities in use (count:2):
 //          SpellId(159)
 //              Used when: "Me.GotTarget && (Me.CurrentTarget.Entry == 43034)"
 //              Enabled=True
@@ -342,8 +342,8 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 
 		#region Overrides of CustomForcedBehavior
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: DoWhen.cs 1931 2015-01-17 22:51:36Z mainhaxor $"; } }
-		public override string SubversionRevision { get { return "$Rev: 1931 $"; } }
+		public override string SubversionId { get { return "$Id: DoWhen.cs 1933 2015-01-21 21:57:12Z mainhaxor $"; } }
+		public override string SubversionRevision { get { return "$Rev: 1933 $"; } }
 
 
 		// CreateBehavior supplied by QuestBehaviorBase.
@@ -692,6 +692,7 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 		#region Helper Classes - IDoWhenActivity
 		private abstract class IDoWhenActivity
 		{
+
             protected enum ActivityResult
             {
                 Failed,
@@ -709,11 +710,17 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 				ActivityIdentifier = activityIdentifier;
 			    IsMovementStopRequired = isMovementStopRequired;
                 UseWhenPredicate = useWhenPredicate;
+				ShouldBreakWhenIndeterminate = true;
 			}
 
             public string ActivityIdentifier { get; private set; }
             public IUseWhenPredicate UseWhenPredicate { get; private set; }
-            public bool IsMovementStopRequired { get; private set; }
+			public bool IsMovementStopRequired { get; private set; }
+
+			/// <summary>
+			/// Gets or sets a value indicating whether execution should break when activity result is indeterminate
+			/// </summary>
+			protected bool ShouldBreakWhenIndeterminate { get; set; }
 
 
 			// Utility methods...
@@ -746,7 +753,8 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 
                 var activityResult = await ExecuteSpecificActivity();
                 if (activityResult == ActivityResult.Indeterminate)
-                    return true;
+					return ShouldBreakWhenIndeterminate;
+
                 if (activityResult == ActivityResult.Failed)
                     return false;
 
@@ -916,7 +924,7 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 
 				if (BehaviorExecutor.Order.Nodes.Any())
 				{
-					await BehaviorExecutor.ExecuteCoroutine();
+					ShouldBreakWhenIndeterminate = await BehaviorExecutor.ExecuteCoroutine();
 					// return now if we have any nodes left to execute
 					if (BehaviorExecutor.Order.Nodes.Any())
                         return ActivityResult.Indeterminate;

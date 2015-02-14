@@ -10,6 +10,13 @@
   </Blackspots>
 
   <Boxes Side="Horde">
+    
+    <Box Name="StartLocation">
+      <TopLeft X="-111.4938" Y="796.7939" Z="133.4426" />
+      <Center X="-112.5827" Y="803.4072" Z="133.0915" />
+      <BottomRight X="-113.61" Y="811.2697" Z="134.0882" />
+    </Box>
+    
     <Box Name="PandarenMine">
       <TopLeft X="58.46769" Y="367.1084" Z="121.5491" />
       <BottomRight X="62.55763" Y="474.9297" Z="113.5759" />
@@ -30,6 +37,13 @@
   </Boxes>
 
   <Boxes Side="Alliance">
+
+    <Box Name="StartLocation">
+      <TopLeft X="-220.0395" Y="203.0812" Z="133.1888" />
+      <Center X="-216.538" Y="197.7744" Z="132.9531" />
+      <BottomRight X="-216.4003" Y="190.2641" Z="133.6129" />
+    </Box>
+
     <Box Name="PandarenMine">
       <TopLeft X="58.46769" Y="367.1084" Z="121.5491" />
       <BottomRight X="62.55763" Y="474.9297" Z="113.5759" />

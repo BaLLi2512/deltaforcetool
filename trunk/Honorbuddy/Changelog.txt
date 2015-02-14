@@ -1,29 +1,120 @@
 New features:
 --------------
+  * ArchaeologyBuddy
+    - Show digsites option will automatically be turned on when AB is started now (HB-1816)
+
+  * BGBuddy
+    - Brand new logic for Silvershard Mines, now using coroutines. (HB-1875)
+
+  * Core
+    - Protected Items now includes: Savage Feast (HB-1898)
+
+  * DungeonBuddy
+    - Added dungeon scripts and profiles for all of the Highmaul LFR wings (HB-1833)
+
+    - Added a profile and script for the Highmaul LFR wing, Walled City (HB-1847)
+
+    - Added a profile and script for the Highmaul LFR wing, Arcane Sanctum (HB-1848)
+
+    - Added a profile and script for the Highmaul LFR wing, Imperator's Rise (HB-1849)
+
+  * Other
+    - Code run in the console now runs under the invariant culture. (HB-1929)
+
+  * Profile
+    - Conditions will now accept any (differently cased) forms of "true" and "false" (HB-459)
+
   * QuestBehaviour
-    - DoWhen: Added two tuneables, 'AllowExecutionWhileNotAlive' which will allow activity to execute while not alive if set to 'true' and 'TreeHookName' which specifies which hook DoWhen should attach toEmpty (HB-1770)
+    - Added a TerminateAtMaxRunTime attribute to QuestBehaviorBase (HB-1208)
+
+    - KillUntilComplete now allows mob ids to be specified by using a coma delimited lists of mob IDs assigned to the MobIds attribute e.g. MobIds=123,234,566 (HB-1871)
 
 Api Changes:
 --------------
-    - Added a game client overlay that is accessible from StyxWoW.Overlay (HB-1500)
+    - Lua event hooks now support filters per handler instead of globally (HB-1897)
+
+    - The console can now log curly brackets for the 1-arg version of the overload without the need to escape them (HB-1924)
+
+    - ItemInfo now better supports item variants. See ItemInfo.FromLink. This also fixes WoWItem.Quality returning invalid results. (HB-1758)
+
+    - GlobalCooldownLeft should not give wrong results anymore (HB-1930)
+
+    - WoWCurrency.Name should now work again (HB-1932)
+
+    - Updated the WoWCurrencyType enum (HB-1850)
+
+    - LocalPlayer.CanEquipItem should no longer return incorrect results for some ItemInfo instances. This fixes an issue where AutoEquip would not roll on or equip some drops, believing they could not be equipped. (HB-1589)
+
+    - Updated the WoWTotem enum with WoWTotem.Cloudburst and WoWTotem.StormElemental (HB-1681)
 
 Bug fixes:
 --------------
+  * BGBuddy
+    - When doing Silvershard Mines it will now attempt to stay in range of carts and follow them around until they enter a deposit then go for the next one. (HB-1794)
+
+    - Should no longer get stuck on the speed buffs in Twin Peaks. (HB-1906)
+
+    - Partyleader will now wait if any party member has a deserter buff before queueing for a battleground. (HB-1940)
+
   * Core
-    - Fixed an issue where Honorbuddy would use more CPU the longer it ran for some bot bases (this affected Dungeonbuddy and BGBuddy) (HB-1829)
+    - MeshNavigator.MoveTo should no longer sometimes make the bot stop moving when navigating jumplinks. (HB-1886)
+
+    - Fixed a an issue where Honorbuddy would fail to load in rare cases when opening many bots at the same time. (HB-1873)
+
+    - Npc database has been updated with most recent information (HB-1866)
+
+    - The overlay is turned off when Desktop Composition is disabled. (HB-1869)
+
+    - Protected Items: Now covers Enchanting Vellum, Savage Blood, Aviana's Feather, Drums of Fury (HB-1937)
 
   * DungeonBuddy
-    - Dungeonbuddy's Combat Movement behavior will now properly handle the Combat Routine Capability states. (HB-1811)
+    - Scholomance: Fixed a bug that caused tank to not pull first boss. (HB-1651)
 
-    - Auchindoun, Vigilant Kaathar. The behavior that uses the Holy Shield to hide from boss has been fixed. (HB-1812)
+    - Blackfathom Deeps has been updated to include the new bosses added in WoD (HB-1745)
 
-    - Auchindon, Teron'gor: Tank no-longer waits for followers while moving to boss from entrance (HB-1690)
+    - Dungeonbuddy will now repair while farming Vortex Pinnacle (HB-1788)
+
+    - Upper BLackrock Spire: Fixed a navigation issue that caused toons to fall off the final bass platform (HB-1861)
+
+    - Grimrail Depot: The Blackrock Bomb is now avoided.  (HB-1864)
+
+    - Highmaul: Fixed a mesh issue at entrance of room for Twin Ogron encounter (HB-1909)
+
+  * Gatherbuddy
+    - Should no longer zigzag between lootables in Draenor. (HB-1899)
+
+  * Navigation
+    - Bot will no longer travel into the fatigue zone when traveling from Ashran to Draenor or crossing the Zangar Sea (HB-1918)
+
+  * Other
+    - InteractWith: Default value for InteractByQuestFrameDisposition is now Ignore (HB-1857)
+
+  * ProfessionBuddy
+    - ProfessionBuddy's 1-600 mining & herbalism profile will now use the new HellFire Peninsula portals added in WoD and also fixed a stuck issue that occured after training herb in Org (HB-1893)
+
+  * Profile
+    - Honorbuddy Profile pack: Bot should now properly eavesdrop on thugs for "Lou's Parting Thoughts" (http://www.wowhead.com/quest=26232) (HB-1139)
+
+    - Honorbuddy Profile pack: Now assures toon is level 95 before attempting to pick up "The Lady of Light" (http://www.wowhead.com/quest=34696) (HB-1913)
+
+    - Honorbuddy Profile pack: Should no longer be manipulating the user's AutoEquip setting (unless absolutely necessary) (HB-1512)
+
+    - Honorbuddy Profile pack: For "The Mark of Defiance" (http://www.wowhead.com/quest=34102), the profile should now recover when banner use is attempted on valid mobs outside the area where banner use is permitted. (HB-1776)
 
   * QuestBehaviour
-    - MerchantFrame.MerchantNumItems will now return the correct number of items  (HB-1698)
+    - Added documentation to the MrFishIt quest behavior. (HB-1661)
 
-  * Singular
-    - Seal of Command is now passive and has no expiration time.  Seal logic for Paladins updated to handle this change. Fixed in Singular 4.0.0.4208 (HB-1622)
+    - Repaired an issue where MrFishIt was throwing exceptions trying to emit debugging information. (HB-1839)
 
-    - Combat Log Event was logging unwanted event messages for subsequent optimization, but message had player name present.  Resolved in Singular 4.0.0.4267 (HB-1842)
+    - Repaired an issue where MrFishIt didn't terminate correctly, if we had more than the required count of items in our bags.  Also, quest items acquired by MrFishIt will also check for items in the new 'invisible' quest item bag. (HB-1840)
+
+    - Hooks\Avoid QB: Map for original navigator is now updated when hook is removed. This fixes a NullReferenceException (HB-1855)
+
+Other changes:
+--------------
+  * BGBuddy
+    - Dropdown in the gui now displays battlegrounds alphabetically and 'None' only has one entry in the collection. (HB-1907)
+
+  * UI
+    - Minimize to Tray option has been added to Settings and default behavior has been changed to minimizing to taskbar instead of tray. (HB-1903)
 

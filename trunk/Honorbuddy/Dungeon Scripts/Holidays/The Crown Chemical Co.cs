@@ -112,20 +112,6 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 					}));
 		}
 
-		[LocationHandler(-241.613, 2156.265, 90.62401, 10, "Wait for door to open")]
-		public Composite BaronAshburyArea()
-		{
-			const uint courtyardDoorId = 18895;
-
-			WoWGameObject door = null;
-			return new PrioritySelector(
-				ctx => door = ObjectManager.GetObjectsOfType<WoWGameObject>().FirstOrDefault(o => o.Entry == courtyardDoorId),
-				// wait for door to open..
-				new Decorator(
-					ctx => !ScriptHelpers.IsBossAlive("Baron Ashbury") && door != null && door.State == WoWGameObjectState.Ready && Me.IsTank() && !Me.Combat,
-					new ActionAlwaysSucceed()));
-		}
-
 
 		[EncounterHandler(36296, "Apothecary Hummel", Mode = CallBehaviorMode.Proximity, BossRange = 40)]
 		public Composite ApothecaryHummelEncounter()
