@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>Imperator's Rise</Name>
+  <DungeonId>851</DungeonId>
+  <BossEncounters>
+	  <Boss isFinal="true" entry="77428" name="Imperator Mar'gok"
+			killOrder="1" optional="false" X="3922.695" Y="8586.739" Z="565.3701"/>
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

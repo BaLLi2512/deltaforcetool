@@ -25,6 +25,7 @@ namespace Singular.ClassSpecific.DeathKnight
         private static DeathKnightSettings DeathKnightSettings { get { return SingularSettings.Instance.DeathKnight(); } }
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
+
         #region CombatBuffs
 
         [Behavior(BehaviorType.CombatBuffs, WoWClass.DeathKnight, WoWSpec.DeathKnightBlood)]
@@ -141,7 +142,7 @@ namespace Singular.ClassSpecific.DeathKnight
                             new Decorator(
                                 ret => Spell.UseAOE && _nearbyUnfriendlyUnits.Count() >= DeathKnightSettings.DeathAndDecayCount,
                                 new PrioritySelector(
-                                    Spell.CastOnGround("Death and Decay", ret => StyxWoW.Me.CurrentTarget, ret => true, false),
+                                    Spell.CastOnGround("Death and Decay", on => StyxWoW.Me.CurrentTarget, ret => Spell.UseAOE, false),
 
                                     // Spell.Cast("Gorefiend's Grasp", ret => Common.HasTalent( DeathKnightTalents.GorefiendsGrasp)),
                                     Spell.BuffSelf("Remorseless Winter", ret => Me.CurrentTarget.IsWithinMeleeRange && Common.HasTalent( DeathKnightTalents.RemorselessWinter)),
@@ -218,7 +219,7 @@ namespace Singular.ClassSpecific.DeathKnight
                         Common.CreateDarkSimulacrumBehavior(),
 
                         // Start AoE section
-                        Spell.CastOnGround("Death and Decay", ret => StyxWoW.Me.CurrentTarget, ret => true, false),
+                        Spell.CastOnGround("Death and Decay", on => StyxWoW.Me.CurrentTarget, ret => Spell.UseAOE, false),
                         Spell.Cast("Remorseless Winter", ret => Common.HasTalent( DeathKnightTalents.RemorselessWinter)),
 
                         // renew/spread disease if possible
@@ -232,8 +233,7 @@ namespace Singular.ClassSpecific.DeathKnight
                         Spell.Cast("Death Coil", ret => StyxWoW.Me.CurrentRunicPower >= 80),
                         Spell.Cast("Death Strike"),
                         Spell.Cast("Icy Touch"),
-                        Spell.Cast("Death Coil"),
-                        Spell.Cast("Horn of Winter")
+                        Spell.Cast("Death Coil")
                         )
                     ),
 
@@ -260,7 +260,6 @@ namespace Singular.ClassSpecific.DeathKnight
                     new Decorator(
                         ret => !Spell.IsGlobalCooldown(),
                         new PrioritySelector(
-                            Spell.BuffSelf("Horn of Winter"),
                             Spell.Cast("Outbreak"),
                             Spell.Cast("Icy Touch", ret => !StyxWoW.Me.CurrentTarget.IsImmune(WoWSpellSchool.Frost)),
                             Spell.Cast("Plague Strike"),
@@ -341,7 +340,7 @@ namespace Singular.ClassSpecific.DeathKnight
 
                                     Spell.Cast("Death Strike", req => Me.HealthPercent <= DeathKnightSettings.DeathStrikeEmergencyPercent),
 
-                                    Spell.CastOnGround("Death and Decay", ret => StyxWoW.Me.CurrentTarget, ret => true, false),
+                                    Spell.CastOnGround("Death and Decay", on => StyxWoW.Me.CurrentTarget, ret => Spell.UseAOE, false),
 
                                     // Spell.Cast("Gorefiend's Grasp", ret => Common.HasTalent( DeathKnightTalents.GorefiendsGrasp)),
                                     Spell.Cast("Remorseless Winter", ret => Common.HasTalent(DeathKnightTalents.RemorselessWinter)),
@@ -415,7 +414,7 @@ namespace Singular.ClassSpecific.DeathKnight
                 new Decorator(
                     req => Me.HasAura("Crimson Scourge"),
                     new PrioritySelector(
-                        Spell.CastOnGround( "Death and Decay", on => Me.CurrentTarget, req => !Me.CurrentTarget.IsMoving),
+                        Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget, req => Spell.UseAOE && !Me.CurrentTarget.IsMoving),
                         Spell.Cast( "Blood Boil" )
                         )
                     ),
@@ -443,12 +442,11 @@ namespace Singular.ClassSpecific.DeathKnight
                     ),
 
                 Spell.Cast("Death Coil"),
-                Spell.Cast("Horn of Winter", on => Me),
 
                 new Decorator(
                     req => Spell.UseAOE && Me.HasAura("Crimson Scourge"),
                     new PrioritySelector(
-                        Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget, req => !Me.CurrentTarget.IsMoving, waitForSpell: false),
+                        Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget, req => Spell.UseAOE && !Me.CurrentTarget.IsMoving, waitForSpell: false),
                         Spell.Cast("Blood Boil", on => Me.CurrentTarget)
                         )
                     )

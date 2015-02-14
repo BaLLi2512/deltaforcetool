@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>Heroic Skyreach</Name>
+  <DungeonId>780</DungeonId>
+  <BossEncounters>
+    <Boss isFinal="false" entry="75964" name="Ranjit" 
+          killOrder="1" stage="1" step="1" optional="false" X="1160.252" Y="1728.262" Z="191.6727"/>
+    
+    <Boss isFinal="false" entry="76141" name="Araknath" 
+          killOrder="2" stage="1" step="2" optional="false" X="1044.965" Y="1806.284" Z="200.1174"/>
+    
+    <Boss isFinal="false" entry="76143" name="Rukhran" 
+          killOrder="3" stage="1" step="3" optional="false" X="908.1511" Y="1908.491" Z="215.8947"/>
+    
+    <Boss isFinal="false" entry="76266" name="High Sage Viryx"
+          killOrder="4" stage="1" step="4" optional="false" X="1121.832" Y="1758.66" Z="262.1721"/>
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

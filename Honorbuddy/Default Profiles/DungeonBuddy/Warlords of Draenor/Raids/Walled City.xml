@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>Walled City</Name>
+  <DungeonId>849</DungeonId>
+  <BossEncounters>
+	  <Boss isFinal="false" entry="78714" name="Kargath Bladefist" 
+			killOrder="1" optional="false" X="3466.671" Y="7578.53" Z="55.33818"/>
+
+	  <Boss isFinal="false" entry="77404" name="The Butcher" 
+			killOrder="2" optional="false" X="3740.03" Y="7662.21" Z="24.95152"/>
+
+	  <Boss isFinal="true" entry="78491" name="Brackenspore" 
+			killOrder="3" optional="false" X="4113.032" Y="7744.417" Z="0.2547143"/>
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

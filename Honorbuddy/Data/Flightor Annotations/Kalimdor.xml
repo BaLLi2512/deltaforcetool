@@ -11,7 +11,7 @@
       <Max X="-9060" Y="-1362" Z="30" />
     </BoundingBoxIndoorArea>
 
-    <PolygonIndoorArea Name="Cleft of Shadow, Orgrimmar" MinZ="-20" MaxZ="58">
+    <PolygonIndoorArea Name="Cleft of Shadow, Orgrimmar" MinZ="-20" MaxZ="45">
       <EntrancePath>
         <Waypoint Radius="4" Dismount="False" X="1894.44" Y="-4486.905" Z="37.27156" />
         <Waypoint Radius="4" Dismount="False" X="1895.788" Y="-4422.331" Z="23.89666" />
@@ -31,6 +31,13 @@
         <Point X="1714.536" Y="-4302.675" />
       </Points>
     </PolygonIndoorArea>
+
+		<SphericalIndoorArea Name="Herb Trainer Hut, Orgrimmar" Radius="11" X="1902.214" Y="-4457.082" Z="53.79422" >
+		  <EntrancePath>
+				<Waypoint Radius="2" Dismount="True" X="1884.302" Y="-4464.598" Z="51.25801" />
+        <Waypoint Radius="2" Dismount="True" X="1890.061" Y="-4445.496" Z="52.49139" />
+      </EntrancePath>
+		</SphericalIndoorArea>
 
     <BoundingBoxIndoorArea Name="The Pools of Vision, Thunder Bluff">
       <Entrance Radius="3" Dismount="True" X="-1057.867" Y="201.7361" Z="109.0547" />
@@ -63,21 +70,11 @@
       </IndoorAreas>
     </CompositeIndoorArea>
 
-    <PolygonIndoorArea Name="Blackfathom Depts, Kalimdor" MinZ="-100" MaxZ="0">
-      <Entrance Radius="4" Dismount="True" X="4107.5" Y="892.4908" Z="9.812252" />
-      <Points>
-        <Point X="4115.662" Y="861.1396" />
-        <Point X="4259.892" Y="648.1589" />
-        <Point X="4360.732" Y="810.7197" />
-        <Point X="4358.352" Y="847.7819" />
-        <Point X="4354.56" Y="892.0189" />
-        <Point X="4329.21" Y="955.3192" />
-        <Point X="4294.348" Y="995.2427" />
-        <Point X="4168.433" Y="965.034" />
-        <Point X="4149.836" Y="948.6846" />
-        <Point X="4111.583" Y="911.8986" />
-      </Points>
-    </PolygonIndoorArea>
+		<BoundingBoxIndoorArea Name="Blackfathom Depths, Kalimdor">
+			<Entrance Radius="4" Dismount="True" X="4107.5" Y="892.4908" Z="9.812252" />
+			<Min  X="4110" Y="640" Z="-50" />
+			<Max  X="4370" Y="1000" Z="0" />
+		</BoundingBoxIndoorArea>
 
     <BoundingBoxIndoorArea Name="West Dire Maul Entrance, Feralas">
       <EntrancePath>

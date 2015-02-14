@@ -15,7 +15,6 @@
   <Custom Code="Log(Colors.Green,&quot;Mine/Herb 1-600: &quot;,Colors.LightGreen,&quot;Mining.MaxLevel: {0}&quot;,Mining.MaxLevel);" />
   <Custom Code="Log(Colors.Green,&quot;Mine/Herb 1-600: &quot;,Colors.LightGreen,&quot;Herbalism.Level: {0}&quot;,Herbalism.Level);" />
   <Custom Code="Log(Colors.Green,&quot;Mine/Herb 1-600: &quot;,Colors.LightGreen,&quot;Herbalism.MaxLevel: {0}&quot;,Herbalism.MaxLevel);" />
-  <Custom Code="var1 = false;" />
   <!--mining = Gather Mines?-->
   <Custom Code="mining = (bool)Settings[&quot;Mining&quot;];" />
   <!--herb = Gather Herb?-->
@@ -30,6 +29,7 @@
   <Custom Code="HerbMaxLevel = 0;" />
   <!--LowestMinLevel = lowestMaxLevel-->
   <Custom Code="LowestMinLevel = 0;" />
+  <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Alliance\(GB2 1-75)(Elwynn.Alliance)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
   <If Condition="SecondaryBot.GetType().Name != &quot;GatherbuddyBot&quot;" IgnoreCanRun="True">
     <ChangeBot BotName="GatherbuddyBot" />
   </If>
@@ -167,30 +167,27 @@
         </If>
       </If>
       <If Condition="Me.MapId == 1 &amp;&amp; Me.IsHorde " IgnoreCanRun="True">
-        <FlyTo Dismount="True" Location="1756.46, -4211.393, 46.52722" />
-        <MoveTo Location="1790.162, -4331.615, -10.44903" MoveType="Location" Pathing="Navigator" Entry="0" />
-        <Wait Condition="false" Timeout="2000" />
-        <Interact InteractType="GameObject" Entry="195142" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
-        <Wait Condition="Me.MapId == 0" Timeout="20000" />
+        <FlyTo Dismount="True" Location="1791.696, -4273.472, 7.674594" />
+        <Interact InteractType="GameObject" Entry="195142" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
+        <Wait Condition="Me.MapId == 530" Timeout="25000" />
       </If>
       <If Condition="Me.MapId == 0 &amp;&amp; (((bool)Settings[&quot;Mining&quot;] &amp;&amp; MiningLevel &lt; 350 || !(bool)Settings[&quot;Mining&quot;]) || (((bool)Settings[&quot;Herb&quot;] &amp;&amp; HerbLevel &lt; 350)|| !(bool)Settings[&quot;Herb&quot;]))" IgnoreCanRun="True">
         <If Condition="Me.IsAlliance" IgnoreCanRun="True">
-          <FlyTo Dismount="True" Location="-8984.83, 863.0924, 124.4113" />
-          <Interact InteractType="GameObject" Entry="195141" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+          <FlyTo Dismount="True" Location="-9003.66, 855.3229, 29.62067" />
+          <Interact InteractType="GameObject" Entry="195141" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
+          <Wait Condition="Me.MapId == 530" Timeout="25000" />
         </If>
-        <If Condition="Me.IsHorde &amp;&amp; DistanceTo(1770.275, 62.06269, -46.32109) &lt; 2000" IgnoreCanRun="True">
-          <MoveTo Location="1790.162, -4331.615, -10.44903" MoveType="Location" Pathing="Navigator" Entry="0" />
-          <Wait Condition="false" Timeout="2000" />
-          <Interact InteractType="GameObject" Entry="195142" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
-        </If>
-        <FlyTo Dismount="False" Location="-11895.9, -3206.984, -6.04731" />
-        <Custom Code="CTM(-11930.31, -3209.613, -1.836873);" />
-        <Wait Condition="Me.MapId == 530" Timeout="25000" />
       </If>
       <If Condition=" (((bool)Settings[&quot;Mining&quot;] &amp;&amp; MiningLevel &gt;=350 )|| !(bool)Settings[&quot;Mining&quot;]) &amp;&amp; (((bool)Settings[&quot;Herb&quot;] &amp;&amp; HerbLevel &gt;=350)|| !(bool)Settings[&quot;Herb&quot;])" IgnoreCanRun="True">
         <If Condition="Me.MapId == 530" IgnoreCanRun="True">
-          <FlyTo Dismount="False" Location="-252.0331, 965.9687, 90.23502" />
-          <Custom Code="CTM(-247.3961, 890.3077, 96.21683);" />
+          <If Condition="Me.IsAlliance" IgnoreCanRun="True">
+            <FlyTo Dismount="True" Location="-274.9913, 931.8889, 84.37974" />
+            <Interact InteractType="GameObject" Entry="195139" InteractDelay="2000" GameObjectType="Generic" SpellFocus="Anvil" WaitForObject="True" />
+          </If>
+          <If Condition="Me.IsHorde" IgnoreCanRun="True">
+            <FlyTo Dismount="True" Location="-221.974, 931.4427, 84.37974" />
+            <Interact InteractType="GameObject" Entry="195140" InteractDelay="2000" GameObjectType="Generic" SpellFocus="Anvil" WaitForObject="True" />
+          </If>
           <Wait Condition="Me.MapId == 0" Timeout="25000" />
         </If>
         <If Condition="Me.MapId ==0" IgnoreCanRun="True">
@@ -376,7 +373,7 @@
         <If Condition="Me.IsAlliance" IgnoreCanRun="True">
           <If Condition="Me.MapId == 870" IgnoreCanRun="True">
             <FlyTo Dismount="False" Location="-311.6545, -1776.63, 62.67051" />
-            <Interact InteractType="GameObject" Entry="210805" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+            <Interact InteractType="GameObject" Entry="210805" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
             <Wait Condition="Me.MapId == 0" Timeout="20000" />
           </If>
           <If Condition="Me.MapId == 0" IgnoreCanRun="True">
@@ -386,7 +383,7 @@
         <If Condition="Me.IsHorde" IgnoreCanRun="True">
           <If Condition="Me.MapId == 870" IgnoreCanRun="True">
             <FlyTo Dismount="False" Location="2924.921, -510.5903, 268.8555" />
-            <Interact InteractType="GameObject" Entry="210804" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+            <Interact InteractType="GameObject" Entry="210804" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
             <Wait Condition="Me.MapId == 1" Timeout="20000" />
           </If>
           <If Condition="Me.MapId == 1" IgnoreCanRun="True">
@@ -398,7 +395,7 @@
         <If Condition="Me.IsAlliance" IgnoreCanRun="True">
           <If Condition="Me.MapId == 870" IgnoreCanRun="True">
             <FlyTo Dismount="False" Location="-311.6545, -1776.63, 62.67051" />
-            <Interact InteractType="GameObject" Entry="210805" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+            <Interact InteractType="GameObject" Entry="210805" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
             <Wait Condition="Me.MapId == 0" Timeout="20000" />
           </If>
           <If Condition="Me.MapId == 0" IgnoreCanRun="True">
@@ -408,7 +405,7 @@
         <If Condition="Me.IsHorde" IgnoreCanRun="True">
           <If Condition="Me.MapId == 870" IgnoreCanRun="True">
             <FlyTo Dismount="False" Location="2924.921, -510.5903, 268.8555" />
-            <Interact InteractType="GameObject" Entry="210804" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+            <Interact InteractType="GameObject" Entry="210804" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
             <Wait Condition="Me.MapId == 1" Timeout="20000" />
           </If>
           <If Condition="Me.MapId == 1" IgnoreCanRun="True">
@@ -420,14 +417,14 @@
       <If Condition="Me.IsAlliance &amp;&amp; Me.MapId == 0" IgnoreCanRun="True">
         <If Condition="(((bool)Settings[&quot;Mining&quot;] &amp;&amp; MiningLevel &lt; 600)|| !(bool)Settings[&quot;Mining&quot;]) &amp;&amp; (((bool)Settings[&quot;Herb&quot;] &amp;&amp; HerbLevel &lt; 600)|| !(bool)Settings[&quot;Herb&quot;])" IgnoreCanRun="True">
           <FlyTo Dismount="False" Location="-8194.038, 528.3931, 117.3273" />
-          <Interact InteractType="GameObject" Entry="215457" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+          <Interact InteractType="GameObject" Entry="215457" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
           <Wait Condition="Me.MapId == 870" Timeout="20000" />
         </If>
       </If>
       <If Condition="Me.IsHorde &amp;&amp; Me.MapId == 1" IgnoreCanRun="True">
         <If Condition="(((bool)Settings[&quot;Mining&quot;] &amp;&amp; MiningLevel &lt; 600)|| !(bool)Settings[&quot;Mining&quot;]) &amp;&amp; (((bool)Settings[&quot;Herb&quot;] &amp;&amp; HerbLevel &lt; 600)|| !(bool)Settings[&quot;Herb&quot;])" IgnoreCanRun="True">
           <FlyTo Dismount="False" Location="2015.015, -4700.216, 28.6201" />
-          <Interact InteractType="GameObject" Entry="215424" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+          <Interact InteractType="GameObject" Entry="215424" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
           <Wait Condition="Me.MapId == 870" Timeout="20000" />
         </If>
       </If>
@@ -539,7 +536,6 @@
       <FlyTo Dismount="True" Location="1910.606, -4391.944, 43.89495" />
       <TrainSkill NpcEntry="46741" Location="1902.69, -4450.71, 53.4155" />
       <Wait Condition="Herbalism.MaxLevel-Herbalism.Level &gt; 25" Timeout="3000" />
-      <MoveTo Location="1889.895, -4445.791, 52.52325" MoveType="Location" Pathing="Navigator" Entry="0" />
     </If>
   </SubRoutine>
   <SubRoutine SubRoutineName="EmptyBagsInDalaran">
@@ -606,7 +602,7 @@
         <FlyTo Dismount="True" Location="1756.46, -4211.393, 46.52722" />
         <MoveTo Location="1790.162, -4331.615, -10.44903" MoveType="Location" Pathing="Navigator" Entry="0" />
         <Wait Condition="false" Timeout="2000" />
-        <Interact InteractType="GameObject" Entry="195142" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+        <Interact InteractType="GameObject" Entry="195142" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
         <Wait Condition="Me.MapId == 0" Timeout="20000" />
       </If>
     </If>
@@ -630,7 +626,7 @@
       <Custom Code="MyLog(&quot;Heading to Orgrimmar from Deepholm&quot;);" />
       <FlyTo Dismount="False" Location="896.2609, 499.879, -52.38813" />
       <MoveTo Location="990.8522, 455.0518, -44.24983" MoveType="Location" Pathing="Navigator" Entry="0" />
-      <Interact InteractType="GameObject" Entry="205273" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+      <Interact InteractType="GameObject" Entry="205273" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
       <Wait Condition="Me.MapId == 1" Timeout="30000" />
     </If>
   </SubRoutine>
@@ -639,7 +635,7 @@
       <Custom Code="MyLog(&quot;Heading to Deepholm from Orgrimmar&quot;);" />
       <FlyTo Dismount="False" Location="2058.579, -4384.915, 98.90421" />
       <Wait Condition="ObjectManager.GetObjectsOfType&lt;WoWGameObject&gt;().Any(o =&gt; o.Entry == 207689);" Timeout="10000" />
-      <Interact InteractType="GameObject" Entry="207689" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+      <Interact InteractType="GameObject" Entry="207689" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
       <Wait Condition="Me.MapId == 646 &amp;&amp; Me.IsHorde" Timeout="30000" />
       <MoveTo Location="893.0169, 498.9317, -53.9152" MoveType="Location" Pathing="Navigator" Entry="0" />
     </If>
@@ -649,7 +645,7 @@
       <Custom Code="MyLog(&quot;Heading to Stormwind from Deepholm&quot;);" />
       <FlyTo Dismount="False" Location="896.2609, 499.879, -52.38813" />
       <MoveTo Location="965.2048, 577.558, -44.25824" MoveType="Location" Pathing="Navigator" Entry="0" />
-      <Interact InteractType="GameObject" Entry="205272" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+      <Interact InteractType="GameObject" Entry="205272" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
       <Wait Condition="Me.MapId == 0" Timeout="30000" />
     </If>
   </SubRoutine>
@@ -662,7 +658,7 @@
       <Custom Code="MyLog(&quot;Heading to Deepholm from Stormwind&quot;);" />
       <FlyTo Dismount="True" Location="-8218.854, 447.5847, 117.6766" />
       <Wait Condition="ObjectManager.GetObjectsOfType&lt;WoWGameObject&gt;().Any(o =&gt; o.Entry == 207693);" Timeout="10000" />
-      <Interact InteractType="GameObject" Entry="207693" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+      <Interact InteractType="GameObject" Entry="207693" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
       <Wait Condition="Me.MapId == 646" Timeout="30000" />
       <MoveTo Location="893.0169, 498.9317, -53.9152" MoveType="Location" Pathing="Navigator" Entry="0" />
     </If>
@@ -672,7 +668,7 @@
       <If Condition="Me.IsHorde" IgnoreCanRun="True">
         <FlyTo Dismount="False" Location="5534.782, 643.0369, 752.1791" />
         <FlyTo Dismount="True" Location="5897.042, 562.7647, 639.48" />
-        <Interact InteractType="GameObject" Entry="191009" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+        <Interact InteractType="GameObject" Entry="191009" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
       </If>
       <Wait Condition="Me.MapId == 1" Timeout="20000" />
     </If>
@@ -682,7 +678,7 @@
       <If Condition="Me.IsAlliance" IgnoreCanRun="True">
         <FlyTo Dismount="False" Location="5534.782, 643.0369, 752.1791" />
         <FlyTo Dismount="True" Location="5768.25, 707.2867, 641.5833" />
-        <Interact InteractType="GameObject" Entry="190960" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+        <Interact InteractType="GameObject" Entry="190960" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
       </If>
       <Wait Condition="Me.MapId == 0" Timeout="20000" />
     </If>

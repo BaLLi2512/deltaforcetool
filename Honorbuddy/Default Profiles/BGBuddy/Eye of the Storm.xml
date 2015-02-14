@@ -17,6 +17,12 @@
   
   <!-- Each "side" has its own set of boxes. These may be exact duplicates, and may not be. Change them as you see fit, leaving names intact. -->
   <Boxes Side="Horde">
+
+    <Box Name="StartLocation">
+      <TopLeft X="1818.263" Y="1552.838" Z="1243.572" />
+      <Center X="1804.545" Y="1540.939" Z="1248.562" />
+      <BottomRight X="1795.998" Y="1524.63" Z="1251.009" />
+    </Box>
     
     <Box Name="FelReaverRuins">
       <!-- The top-left of a bounding box, to pull friendly player counts from. -->
@@ -53,6 +59,13 @@
   </Boxes>
   
   <Boxes Side="Alliance">
+
+    <Box Name="StartLocation">
+      <TopLeft X="2513.122" Y="1583.455" Z="1243.945" />
+      <Center X="2518.998" Y="1595.308" Z="1245.683" />
+      <BottomRight X="2528.125" Y="1604.318" Z="1248.975" />
+    </Box>
+    
     <Box Name="FelReaverRuins">
       <TopLeft X="2028.01" Y="1705.049" Z="1185.55" />
       <BottomRight X="2070.148" Y="1763.969" Z="1186.176" />
@@ -82,5 +95,6 @@
       <BottomRight X="0" Y="0" Z="0" />
       <Center  X="2174.99" Y="1569.236" Z="1159.942" />
     </Box>
+    
   </Boxes>
 </PvpProfile>
