@@ -1,0 +1,19 @@
+<HBProfile>
+	<Name>Hearthstone only</Name>
+
+
+
+	<QuestOrder>
+
+<CustomBehavior File="ForcedDismount" />
+<CustomBehavior File="WaitTimer" WaitTime="5000" GoalText="Waiting for agro to clear {TimeRemaining}" />
+<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(6948)" WaitTime="1000" />
+<CustomBehavior File="WaitTimer" WaitTime="12000" GoalText="Waiting for Hearth {TimeRemaining}" />
+
+	</QuestOrder>
+
+
+
+
+
+</HBProfile>

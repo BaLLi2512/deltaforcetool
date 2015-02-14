@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Professionbuddy>
-    <!--Dismount and use hearthstone-->
-    <If Condition="!Me.IsCasting" IgnoreCanRun="True">
-      <CustomAction Code="Mount.Dismount();" />
-      <CustomAction Code="Lua.DoString(&quot;UseItemByName(6948)&quot;);" />
-      <WaitAction Condition="Me.IsCasting" Timeout="11000" />
-    </If>
-</Professionbuddy>
