@@ -56,15 +56,6 @@ namespace Singular.ClassSpecific.Warlock
 
                         CreateWarlockDiagnosticOutputBehavior(Dynamics.CompositeBuilder.CurrentBehaviorType.ToString()),
 
-                        new Decorator(
-                            ret => Me.GotAlivePet && Me.GotTarget() && Me.Pet.CurrentTarget != Me.CurrentTarget,
-                            new Action(ret =>
-                            {
-                                PetManager.CastPetAction("Attack");
-                                return RunStatus.Failure;
-                            })
-                            ),
-
                         Helpers.Common.CreateInterruptBehavior(),
 
                         // even though AOE spell, keep on CD for single target unless AoE turned off
@@ -122,6 +113,8 @@ namespace Singular.ClassSpecific.Warlock
 
 
             #region CurrentTarget DoTs
+
+                        Common.CastCataclysm(),
 
                 // check two main DoTs so we cast based upon current state before we look at entering/leaving Metamorphosis
                         Spell.Cast("Corruption", req => !Me.HasAura("Metamorphosis") && Me.CurrentTarget.HasAuraExpired("Corruption", 3)),
@@ -366,6 +359,8 @@ namespace Singular.ClassSpecific.Warlock
                         Pet.CreateCastPetAction("Felstorm")
                         ),
 */
+                    Common.CastCataclysm(),
+
                     new Decorator(
                         ret => Me.HasAura("Metamorphosis"),
                         new PrioritySelector(

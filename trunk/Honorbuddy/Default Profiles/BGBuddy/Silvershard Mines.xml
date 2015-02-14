@@ -1,13 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <PvpProfile>
   <Name>Silvershard Mines</Name>
-
-  <StartLocation X="943.4707" Y="1424.74" Z="345.4574" Side="Horde" />
+  <StartLocation X="628.4111" Y="217.8916" Z="328.892" Side="Horde" />
   <StartLocation X="858.1849" Y="151.6162" Z="328.6777" Side="Alliance" />
 
   <Blackspots>
     <!-- Rock -->
     <Blackspot X="1850.836" Y="1210.905" Z="13.83446" Radius="2.702427" />
   </Blackspots>
+  
+  <Boxes Side="Horde">
+    <Box Name="StartLocation">
+      <TopLeft X="640.02" Y="224.9991" Z="328.9402" />
+      <Center X="628.4962" Y="219.3324" Z="328.9438" />
+      <BottomRight X="618.7122" Y="213.8813" Z="328.825" />
+    </Box>
+  </Boxes>
+
+  <Boxes Side="Alliance">
+    <Box Name="StartLocation">
+      <TopLeft X="846.0786" Y="145.4824" Z="328.9406" />
+      <Center X="857.7291" Y="149.6587" Z="328.7651" />
+      <BottomRight X="867.3932" Y="149.5948" Z="328.876" />
+    </Box>
+  </Boxes>
+
 </PvpProfile>

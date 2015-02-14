@@ -24,4 +24,11 @@
 			  killOrder="5" stage="2" step="5" optional="false" X="22.10945" Y="-103.0591" Z="97.513"/>
 		
 	</BossEncounters>
+	
+	<PullBlackspots>
+		<PullBlackspot Height="5" Radius="15" X="91.08809" Y="-268.7187" Z="91.44707" />
+		<!-- On of the adds at Kyrak.. bot shoul pull boss instead-->
+		<PullBlackspot Height="5" Radius="2"  X="86.39896" Y="-328.9093" Z="91.44574" />
+	</PullBlackspots>
+	
 </DungeonBuddyProfile>

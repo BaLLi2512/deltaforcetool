@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>Arcane Sanctum</Name>
+  <DungeonId>850</DungeonId>
+  <BossEncounters>
+	  <Boss isFinal="false" entry="78948" name="Tectus" 
+			killOrder="1" optional="false" X="3545.568" Y="7944.446" Z="64.34323"/>
+	  
+	  <Boss isFinal="false" entry="78238" name="Pol" 
+			killOrder="2" optional="false" X="4064.037" Y="8470.278" Z="322.2251" />
+	  
+	  <Boss isFinal="false" entry="78237" name="Phemos" 
+			killOrder="2" optional="false" X="4064.037" Y="8470.278" Z="322.2251" />
+
+	  <Boss isFinal="true" entry="79015" name="Ko'ragh" 
+			killOrder="3" optional="false" X="3903.393" Y="8608.154" Z="364.6451"/>
+	  
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

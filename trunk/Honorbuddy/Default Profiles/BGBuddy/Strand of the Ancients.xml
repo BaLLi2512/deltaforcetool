@@ -4,9 +4,6 @@
   <Name>Strand of the Ancients</Name>
   
   <StartLocation X="1545.061" Y="99.0054" Z="5.628502" Side="Defend" />
-  
-  <Blackspots>
-  </Blackspots>
 
   <Boxes Side="Defend">
     <Box Name="ChamberOfAncientRelics">

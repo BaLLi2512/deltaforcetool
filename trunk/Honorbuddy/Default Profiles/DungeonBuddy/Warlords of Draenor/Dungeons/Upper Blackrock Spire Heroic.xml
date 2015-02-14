@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DungeonBuddyProfile xsi:noNamespaceSchemaLocation="../../DungeonbuddyProfile.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>Upper Blackrock Spire Heroic</Name>
+	<DungeonId>860</DungeonId>
+	<BossEncounters>
+		<!-- Clear all trash in the first hallway to the left to open door -->
+		<Boss isFinal="false" entry="76413" name="Orebender Gor'ashan" 
+			  killOrder="1" stage="2" step="1" optional="false" X="144.5426" Y="-258.0315" Z="96.32333" />
+		
+		<Boss isFinal="false" entry="76021" name="Kyrak"
+			  killOrder="2" optional="false" stage="2" step="2" X="77.59349" Y="-330.6225" Z="91.46045" />
+		
+		<Boss isFinal="false" entry="79912" name="Commander Tharbek" 
+			  killOrder="3" stage="2" step="3" optional="false" X="169.1132" Y="-419.7492" Z="110.4723" />
+		
+		<!-- Not worth the effort unless doing the Leeroy Jenkins achievement -->
+		<!--<Boss isFinal="false" entry="77927" name="Son of the Beast" 
+			  killOrder="4"  optional="true" X="87.64008" Y="-553.4017" Z="110.9234"/>-->
+		
+		<Boss isFinal="false" entry="76585" name="Ragewing the Untamed" 
+			  killOrder="4" stage="2" step="4" optional="false" X="20.56284" Y="-404.3033" Z="113.1969"/>
+
+		<Boss isFinal="true" entry="77120" name="Warlord Zaela" 
+			  killOrder="5" stage="2" step="5" optional="false" X="22.10945" Y="-103.0591" Z="97.513"/>
+		
+	</BossEncounters>
+
+	<PullBlackspots>
+		<PullBlackspot Height="5" Radius="15" X="91.08809" Y="-268.7187" Z="91.44707" />
+			<!-- On of the adds at Kyrak.. bot shoul pull boss instead-->
+		<PullBlackspot Height="5" Radius="2"  X="86.39896" Y="-328.9093" Z="91.44574" />
+	</PullBlackspots>
+	
+</DungeonBuddyProfile>

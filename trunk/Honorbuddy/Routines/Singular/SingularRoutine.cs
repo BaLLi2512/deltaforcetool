@@ -78,6 +78,7 @@ namespace Singular
             _lastLogLevel = GlobalSettings.Instance.LogLevel;
 
             // When we actually need to use it, we will.
+            Spell.Init();
             Spell.GcdInitialize();
 
             EventHandlers.Init();
@@ -551,7 +552,7 @@ namespace Singular
                 {
                     _lastPetGuid = Me.Pet.Guid;
                     _lastPetAlive = Me.Pet.IsAlive;
-                    Logger.WriteDebug("YourCurrentPet: #{0}, Name={1}, Level={2}, Type={3}, Talents={4}", Me.PetNumber, Me.Pet.Name, Me.Pet.Level, Me.Pet.CreatureType, PetManager.GetPetTalentTree());
+                    Logger.WriteDebug("YourCurrentPet: #{0}, Name={1}, Level={2}, Type={3}, Talents={4}", Me.PetNumber, Me.Pet.SafeName(), Me.Pet.Level, Me.Pet.CreatureType, PetManager.GetPetTalentTree());
                 }
 
                 // now check pets target
@@ -639,18 +640,18 @@ namespace Singular
             }
         }
 
-        private static void OnPlayerTargetChange(WoWUnit unit)
+        public static void OnPlayerTargetChange(WoWUnit unit)
         {
             // special handling if targeting Training Dummy
             if (ForcedContext == WoWContext.None && unit != null && !IsQuestBotActive && unit.IsTrainingDummy())
             {
                 ForcedContext = SingularRoutine.TrainingDummyBehaviors;
-                Logger.Write( LogColor.Hilite, "^Detected Training Dummy: forcing {0} behaviors", CurrentWoWContext.ToString());
+                Logger.Write( LogColor.Hilite, "^Start Training Dummy: forcing {0} behaviors", CurrentWoWContext.ToString());
             }
             else if (ForcedContext != WoWContext.None && (unit == null || !unit.IsTrainingDummy()))
             {
                 ForcedContext = WoWContext.None;
-                Logger.Write( LogColor.Hilite, "^Detected Training Dummy: reverting to {0} behaviors", CurrentWoWContext.ToString());
+                Logger.Write( LogColor.Hilite, "^Cancel Training Dummy: restoring {0} behaviors", CurrentWoWContext.ToString());
             }
         }
 

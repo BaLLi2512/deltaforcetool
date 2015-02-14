@@ -2,6 +2,14 @@
 <DungeonBuddyProfile>
   <Name>Lost City of the Tol'vir Heroic</Name>
   <DungeonId>325</DungeonId>
+	<Vendors>
+		<Vendor name="Blacksmith Abasi" id="48617" type="Repair" nav="Fly" faction="Both" X="-9404.68" Y="-906.438" Z="112.5408" />
+	</Vendors>
+
+	<MailBoxes>
+		<MailBox faction="Both" nav="Fly" X="-9413.739" Y="-936.2292" Z="113.3585" />
+	</MailBoxes>
+	
   <BossEncounters>
 	<Boss isFinal="false" entry="44577" name="General Husam" killOrder="1" optional="false" X="-10858" Y="-1364.31" Z="15.35391" />
 	<Boss isFinal="false" entry="43614" name="Lockmaw" killOrder="2" optional="false" X="-11058.1" Y="-1656.58" Z="0.745147" />
