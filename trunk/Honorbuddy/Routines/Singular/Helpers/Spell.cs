@@ -66,22 +66,6 @@ namespace Singular.Helpers
 
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-        public static void Init()
-        {
-            SingularRoutine.OnBotEvent += (src,arg) =>
-            {
-                if (arg.Event == SingularBotEvent.BotStarted)
-                {
-                    UndefinedSpells = new Dictionary<string,long>();
-                }
-                else if (arg.Event == SingularBotEvent.BotStopped)
-                {
-                    ListUndefinedSpells();
-                }
-            };
-
-        }
-
         public static void LogCast(string sname, WoWUnit unit, bool isHeal = false)
         {
             LogCast(sname, unit, unit.HealthPercent, unit.SpellDistance(), isHeal);
@@ -519,7 +503,7 @@ namespace Singular.Helpers
 #if HONORBUDDY_GCD_IS_WORKING
             Logger.WriteDebug("GcdInitialize: using HonorBuddy GCD");
 #else
-            Logger.WriteDebug("GcdInitialize: using Singular GCD");
+            Logger.WriteDebug("FixGlobalCooldownInitialize: using Singular GCD");
             switch (StyxWoW.Me.Class)
             {
                 case WoWClass.DeathKnight:
@@ -967,7 +951,7 @@ namespace Singular.Helpers
         /// <param name = "onUnit">The on unit.</param>
         /// <param name = "requirements">The requirements.</param>
         /// <returns>.</returns>
-        public static Composite Cast(int spellId, UnitSelectionDelegate onUnit, SimpleBooleanDelegate requirements)
+        public static Composite Cast(int spellId, UnitSelectionDelegate onUnit, SimpleBooleanDelegate requirements, HasGcd gcd = HasGcd.Yes)
         {
             return Cast(id => spellId, onUnit, requirements);
         }
@@ -980,7 +964,7 @@ namespace Singular.Helpers
         /// <param name = "onUnit">The on unit.</param>
         /// <param name = "requirements">The requirements.</param>
         /// <returns>.</returns>
-        public static Composite Cast(SimpleIntDelegate spellId, UnitSelectionDelegate onUnit, SimpleBooleanDelegate requirements)
+        public static Composite Cast(SimpleIntDelegate spellId, UnitSelectionDelegate onUnit, SimpleBooleanDelegate requirements, HasGcd gcd = HasGcd.Yes)
         {
             if (spellId == null || onUnit == null || requirements == null)
             {
@@ -1036,8 +1020,8 @@ namespace Singular.Helpers
             string key = DoubleCastKey(unit.Guid, spellName);
             if (_DoubleCastPreventionDict.ContainsKey(key))
                 _DoubleCastPreventionDict[key] = expir;
-            else
-                _DoubleCastPreventionDict.Add(key, expir);
+
+            _DoubleCastPreventionDict.Add(key, expir);
         }
 
 
@@ -1245,7 +1229,7 @@ namespace Singular.Helpers
                 );
         }
 
-        public static Composite Buff(string name, int expirSecs, UnitSelectionDelegate onUnit = null, SimpleBooleanDelegate require = null, bool myBuff = true, params string[] buffNames)
+        public static Composite Buff(string name, int expirSecs = 3, UnitSelectionDelegate onUnit = null, SimpleBooleanDelegate require = null, bool myBuff = true, params string[] buffNames)
         {
             return Buff(sp => name, expirSecs, onUnit, require, myBuff, HasGcd.Yes, buffNames);
         }
@@ -1279,10 +1263,7 @@ namespace Singular.Helpers
 
                     SpellFindResults sfr;
                     if (!SpellManager.FindSpell(_buffName, out sfr))
-                    {
-                        AddUndefinedSpell(_buffName);
                         return false;
-                    }
 
                     WoWSpell spell = sfr.Override ?? sfr.Original;
                     _buffName = spell.Name;
@@ -1375,38 +1356,6 @@ namespace Singular.Helpers
             return Buff(name, expirSecs, on => Me, require: requirements, gcd:gcd);
         }
 
-        public static Composite BuffSelfAndWait(string name, SimpleBooleanDelegate requirements = null, int expirSecs = 0, CanRunDecoratorDelegate until = null, bool measure = false, HasGcd gcd = HasGcd.Yes)
-        {
-            return BuffSelfAndWait(b => name, requirements, expirSecs, until, measure, gcd);
-        }
-
-        public static Composite BuffSelfAndWait(int id, SimpleBooleanDelegate requirements = null, HasGcd gcd = HasGcd.Yes)
-        {
-            WoWSpell spell = WoWSpell.FromId(id);
-            if (spell == null || !SpellManager.HasSpell(spell.Id))
-                return new ActionAlwaysFail();
-
-            if (requirements == null)
-                requirements = req => true;
-
-            return new Sequence(
-                BuffSelf(idd => id, requirements, gcd),
-                new PrioritySelector(
-                    new DynaWait(
-                        time => TimeSpan.FromMilliseconds(Me.Combat ? 500 : 1000),
-                        until => StyxWoW.Me.HasAura(id),
-                        new ActionAlwaysSucceed()
-                        ),
-                    new Action(r =>
-                    {
-                        WoWSpell s = WoWSpell.FromId(id);
-                        Logger.WriteDiagnostic("BuffSelfAndWait: aura [{0}] #{1} not applied!!!", s == null ? "(null)" : s.Name, id);
-                        return RunStatus.Failure;
-                    })
-                    )
-                );
-        }
-
         public static Composite BuffSelfAndWait(SimpleStringDelegate name, SimpleBooleanDelegate requirements = null, int expirSecs = 0, CanRunDecoratorDelegate until = null, bool measure = false, HasGcd gcd = HasGcd.Yes)
         {
             if (requirements == null)
@@ -1433,35 +1382,29 @@ namespace Singular.Helpers
                 );
         }
 
-        public static Composite BuffSelfAndWaitPassive(SimpleStringDelegate name, SimpleBooleanDelegate requirements = null, int expirSecs = 0, CanRunDecoratorDelegate until = null, HasGcd gcd = HasGcd.Yes)
+        public static Composite BuffSelfAndWait( int id, SimpleBooleanDelegate requirements = null, HasGcd gcd = HasGcd.Yes)
         {
+            WoWSpell spell = WoWSpell.FromId(id);
+            if (spell == null || !SpellManager.HasSpell(spell.Id))
+                return new ActionAlwaysFail();
+
             if (requirements == null)
                 requirements = req => true;
 
-            if (until == null)
-                until = u => StyxWoW.Me.HasAura(name(u));
-
-            return new PrioritySelector(
-                ctx => name(ctx),
-                new Decorator(
-                    req => SpellManager.HasSpell( req as string)
-                        && !Me.HasAura(req as string)
-                        && !DoubleCastContains(Me, req as string),
-                    new Sequence(
-                        Spell.Cast( sp => sp as string, mov => true, on => Me, requirements, cancel => false, LagTolerance.Yes, false, null, gcd: gcd),
-                        new PrioritySelector(
-                            new DynaWait(
-                                time => TimeSpan.FromMilliseconds(Me.Combat ? 500 : 1000),
-                                until,
-                                new Action( r => UpdateDoubleCast( r as string, Me, 3000 ))
-                                ),
-                            new Action(r =>
-                            {
-                                Logger.WriteDiagnostic("BuffSelfAndWaitPassive: buff of [{0}] failed", name(r));
-                                return RunStatus.Failure;
-                            })
-                            )
-                        )
+            return new Sequence(
+                BuffSelf(idd => id, requirements, gcd),
+                new PrioritySelector(
+                    new DynaWait(
+                        time => TimeSpan.FromMilliseconds(Me.Combat ? 500 : 1000),
+                        until => StyxWoW.Me.HasAura(id),
+                        new ActionAlwaysSucceed()
+                        ),
+                    new Action(r =>
+                    {
+                        WoWSpell s = WoWSpell.FromId(id);
+                        Logger.WriteDiagnostic("BuffSelfAndWait: aura [{0}] #{1} not applied!!!", s == null ? "(null)" : s.Name, id);
+                        return RunStatus.Failure;
+                    })
                     )
                 );
         }
@@ -1553,7 +1496,7 @@ namespace Singular.Helpers
         {
             return new Decorator(
                 req => onUnit(req) != null && onUnit(req).Auras.Values.All(a => a.SpellId != spellId(req)),
-                Cast(spellId, onUnit, requirements) 
+                Cast(spellId, onUnit, requirements, gcd) 
                 );
         }
 
@@ -1691,10 +1634,6 @@ namespace Singular.Helpers
                         {
                             return SpellManager.FindSpell(spellName, out sfr);
                         }
-                        else
-                        {
-                            AddUndefinedSpell(spellName);
-                        }
                     }
 
                     sfr = EmptySFR;
@@ -1796,14 +1735,14 @@ namespace Singular.Helpers
                                 if (gcd == HasGcd.No)
                                 {
                                     if (SingularSettings.DebugSpellCasting)
-                                        Logger.WriteFile("Spell.Cast[{0}]: has no GCD, status GCD={1}, remains={2}", cctx.spell.Name, Spell.IsGlobalCooldown(allow).ToYN(), (long)Spell.GcdTimeLeft.TotalMilliseconds);
+                                        Logger.WriteFile("Spell.Cast[{0}]: offgcd and GCD has {1} left, isgcd={2}", cctx.spell.Name, (long)Spell.GcdTimeLeft.TotalMilliseconds, Spell.IsGlobalCooldown(allow).ToYN());
                                     return true;
                                 }
 
                                 if (cctx.spell.IsInstantCast() && Spell.GcdTimeLeft.TotalMilliseconds > 650)
                                 {
                                     if (SingularSettings.DebugSpellCasting)
-                                        Logger.WriteFile("Spell.Cast[{0}]: is instant, status GCD={1}, remains={2}", cctx.spell.Name, Spell.IsGlobalCooldown(allow).ToYN(), (long)Spell.GcdTimeLeft.TotalMilliseconds);
+                                        Logger.WriteFile( "Spell.Cast[{0}]: instant cast and GCD has {1} left, isgcd={2}", cctx.spell.Name, (long)Spell.GcdTimeLeft.TotalMilliseconds, Spell.IsGlobalCooldown(allow).ToYN());
                                     return true;
                                 }
 
@@ -1846,10 +1785,10 @@ namespace Singular.Helpers
                                 CastContext cctx = r.CastContext();
                                 if (SingularSettings.DebugSpellCasting)
                                 {
-                                    if (!Spell.IsGlobalCooldown())
-                                        Logger.WriteFile("Spell.Cast(\"{0}\"): complete, no gcd active, lag={0} hasgcd={1}", cctx.spell.Name, allow, gcd);
+                                    if (gcd == HasGcd.No)
+                                        Logger.WriteFile("Spell.Cast(\"{0}\"): off the global cooldown", cctx.spell.Name);
                                     else
-                                        Logger.WriteFile("Spell.Cast(\"{0}\"): complete, no cast in progress", cctx.spell.Name);
+                                        Logger.WriteFile("Spell.Cast(\"{0}\"): forcing success, assuming off the global cooldown", cctx.spell.Name);
                                 }
                                 return RunStatus.Success;
                             })
@@ -1861,15 +1800,9 @@ namespace Singular.Helpers
                             new Action(r =>
                             {
                                 CastContext cctx = r.CastContext();
+
                                 if (SingularSettings.DebugSpellCasting)
-                                {
-                                    if (gcd == HasGcd.No)
-                                        Logger.WriteFile("Spell.Cast(\"{0}\"): complete, hasgcd=No", cctx.spell.Name);
-                                    else if (r.CastContext().spell.IsInstantCast())
-                                        Logger.WriteFile("Spell.Cast(\"{0}\"): complete, is instant cast", cctx.spell.Name);
-                                    else
-                                        Logger.WriteFile("Spell.Cast(\"{0}\"): complete, no cancel delegate given", cctx.spell.Name);
-                                }
+                                    Logger.WriteFile( "Spell.Cast(\"{0}\"): no cancel delegate or instant or offgcd", cctx.spell.Name);
                                 return RunStatus.Success;
                             })
                             ),
@@ -1884,7 +1817,7 @@ namespace Singular.Helpers
                                 // Interrupted or finished casting. 
                                 if (!Spell.IsCastingOrChannelling(allow))
                                 {
-                                    Logger.WriteDebug("Spell.Cast(\"{0}\"): complete, iscasting=false", cctx.spell.Name);
+                                    Logger.WriteDebug("Spell.Cast(\"{0}\"): cast has ended", cctx.spell.Name);
                                     return true;
                                 }
 
@@ -1905,7 +1838,7 @@ namespace Singular.Helpers
                         new Action(r =>
                         {
                             CastContext cctx = r.CastContext();
-                            Logger.WriteDebug("Spell.Cast(\"{0}\"): aborting, timed out waiting on cast, gcd={1} cast={2} chanl={3}", cctx.spell.Name, Spell.IsGlobalCooldown().ToYN(), Spell.IsCasting().ToYN(), Spell.IsChannelling().ToYN());
+                            Logger.WriteDebug("Spell.Cast(\"{0}\"): timed out waiting for cast to end", cctx.spell.Name);
                             return RunStatus.Success;
                         })
 
@@ -2089,12 +2022,7 @@ namespace Singular.Helpers
             SpellFindDelegate ssd =
                 (object ctx, out SpellFindResults sfr) =>
                 {
-                    if (! SpellManager.FindSpell(spellName, out sfr))
-                    {
-                        AddUndefinedSpell(spellName);
-                        return false;
-                    }
-                    return true;
+                    return SpellManager.FindSpell(spellName, out sfr);
                 };
 #if ERR
             return new PrioritySelector(
@@ -2136,12 +2064,7 @@ namespace Singular.Helpers
             SpellFindDelegate ssd =
                 (object ctx, out SpellFindResults sfr) =>
                 {
-                    if (!SpellManager.FindSpell(spellName, out sfr))
-                    {
-                        AddUndefinedSpell(spellName);
-                        return false;
-                    }
-                    return true;
+                    return SpellManager.FindSpell(spellName, out sfr);
                 };
 
             return new Decorator(
@@ -2329,7 +2252,6 @@ namespace Singular.Helpers
             if (!SpellManager.FindSpell(castName, out sfr))
             {
                 // Logger.WriteDebug("CanCast: spell [{0}] not known", castName);
-                AddUndefinedSpell(castName);
                 return false;
             }
 
@@ -2764,31 +2686,6 @@ namespace Singular.Helpers
             }
 
             return ret[0] == "1";
-        }
-
-        private static Dictionary<string, long> UndefinedSpells { get; set; }
-
-        private static void AddUndefinedSpell( string s)
-        {
-            if (!SingularSettings.DebugSpellCasting)
-                return;
-
-            if (UndefinedSpells.ContainsKey(s))
-                UndefinedSpells[s] = UndefinedSpells[s] + 1;
-            else
-                UndefinedSpells.Add(s, 1);
-        }
-
-        private static void ListUndefinedSpells()
-        {
-            if (!SingularSettings.DebugSpellCasting)
-                return;
-
-            Logger.WriteDebug("-- Listing {0} Undefined Spells Referenced --", UndefinedSpells.Count());
-            foreach ( var v in UndefinedSpells)
-            {
-                Logger.WriteDebug("   {0}  {1}", v.Key.AlignRight(25), v.Value.ToString().AlignRight(7));
-            }
         }
     }
 

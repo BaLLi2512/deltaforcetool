@@ -227,16 +227,14 @@ namespace Singular.ClassSpecific.Warlock
 
 
                         // remove our banish if they are our CurrentTarget 
-                        new Throttle(2, 
-                            Spell.Cast("Banish", ret =>
-                            {
-                                bool isBanished = Me.CurrentTarget.HasMyAura("Banish");
-                                if (isBanished)
-                                    Logger.WriteDebug("Banish: attempting to remove from current target");
-                                return isBanished;
-                            })
-                            ),
-/*
+                        new Throttle(2, Spell.Cast("Banish", ret =>
+                        {
+                            bool isBanished = Me.CurrentTarget.HasMyAura("Banish");
+                            if (isBanished)
+                                Logger.WriteDebug("Banish: attempting to remove from current target");
+                            return isBanished;
+                        })),
+
                         // banish someone if they are not current target, attacking us, and 12 yds or more away
                         new PrioritySelector(
                             ctx => Unit.NearbyUnfriendlyUnits
@@ -253,7 +251,7 @@ namespace Singular.ClassSpecific.Warlock
                                 .FirstOrDefault(),
                             Spell.Cast("Banish", onUnit => (WoWUnit)onUnit)
                             ),
-*/
+
 
                         new Decorator(
                             ret => Unit.NearbyUnitsInCombatWithMeOrMyStuff.Any(u => u.IsWithinMeleeRange),
@@ -293,10 +291,7 @@ namespace Singular.ClassSpecific.Warlock
                                 )
                             ),
 
-                        Spell.Cast(
-                            "Summon Doomguard", 
-                            ret => Me.CurrentTarget.IsBoss() && PartyBuff.WeHaveBloodlust && !HasTalent(WarlockTalents.DemonicServitude)
-                            ),
+                        Spell.Cast("Summon Doomguard", ret => Me.CurrentTarget.IsBoss() && PartyBuff.WeHaveBloodlust),
 
                         // lower threat if tanks nearby to pickup
                         Spell.BuffSelf("Soulshatter",
@@ -380,18 +375,7 @@ namespace Singular.ClassSpecific.Warlock
 
                         // , Spell.BuffSelf("Kil'jaeden's Cunning", ret => Me.IsMoving && Me.Combat)
                         )
-                    ),
-
-
-                Spell.Cast(
-                    "Meteor Strike", 
-                    req => Spell.UseAOE
-                        && GetCurrentPet() == WarlockPet.Infernal
-                        && HasTalent(WarlockTalents.DemonicServitude)
-                        && 3 <= Unit.UnfriendlyUnits(50).Count( u=> Me.Pet.SpellDistance(u) <= 10)
-                        && !Unit.UnfriendlyUnits(50).Any(u => u.IsAvoidMob())
                     )
-
                 );
         }
 
@@ -546,7 +530,7 @@ namespace Singular.ClassSpecific.Warlock
                                         {
                                             if (Me.CurrentSoulShards == 0)
                                                 Logger.WriteDebug("CreateWarlockSummonPet:  no shards so instant pet summon not available");
-                                            else if (!Me.Combat && !Unit.NearbyUnfriendlyUnits.Any(u => u.Combat || u.IsPlayer))
+                                            else if (false && !Me.Combat && !Unit.NearbyUnfriendlyUnits.Any(u => u.Combat || u.IsPlayer))
                                                 Logger.WriteDebug("CreateWarlockSummonPet:  not in combat and no imminent danger nearby, so saving shards");
                                             else if (!Spell.CanCastHack("Soulburn", Me))
                                                 Logger.WriteDebug("soulburn not available, shards={0}", Me.CurrentSoulShards);
@@ -615,28 +599,6 @@ namespace Singular.ClassSpecific.Warlock
             return Spell.BuffSelfAndWait(sp => "Soulburn", req => Me.CurrentSoulShards > 0 && requirements(req), gcd: HasGcd.No);
         }
 
-        public static Composite CastCataclysm()
-        {
-            if (!HasTalent(WarlockTalents.Cataclysm))
-                return new ActionAlwaysFail();
-
-            return new Sequence(
-                Spell.CastOnGround(
-                    "Cataclysm",
-                    on => Me.CurrentTarget,
-                    req => Me.GotTarget()
-                        && !Me.CurrentTarget.IsMoving
-                        && !Unit.UnfriendlyUnitsNearTarget(8).Any(u => u.IsCrowdControlled() || !u.IsTargetingUs())
-                        && (
-                            Me.CurrentTarget.TimeToDeath(-1) > 10
-                            || 3 <= Unit.UnfriendlyUnitsNearTarget(8).Count()                             
-                           ),
-                    true
-                    ),
-                Spell.WaitForCastOrChannel()
-                );
-        }
-
         #region Pet Support
 
         /// <summary>
@@ -659,9 +621,7 @@ namespace Singular.ClassSpecific.Warlock
 
                 if (bestPet == WarlockPet.Auto)
                 {
-                    if (HasTalent(WarlockTalents.DemonicServitude))
-                        bestPet = WarlockPet.Doomguard;
-                    else if (TalentManager.CurrentSpec == WoWSpec.WarlockDemonology)
+                    if (TalentManager.CurrentSpec == WoWSpec.WarlockDemonology)
                         bestPet = WarlockPet.Felguard;
                     else if (TalentManager.CurrentSpec == WoWSpec.WarlockDestruction && Me.Level == Me.MaxLevel)
                         bestPet = WarlockPet.Felhunter;
@@ -677,9 +637,7 @@ namespace Singular.ClassSpecific.Warlock
                 SpellFindResults sfr;
                 if (!SpellManager.FindSpell(spellName, out sfr))
                 {
-                    if (HasTalent(WarlockTalents.DemonicServitude))
-                        bestPet = WarlockPet.Doomguard;
-                    else if (SingularRoutine.CurrentWoWContext != WoWContext.Instances)
+                    if (SingularRoutine.CurrentWoWContext != WoWContext.Instances)
                         bestPet = WarlockPet.Voidwalker;
                     else if (Me.Level >= 30)
                         bestPet = WarlockPet.Felhunter;
@@ -701,9 +659,7 @@ namespace Singular.ClassSpecific.Warlock
             Wrathguard = 104,
             Voidlord = 101,
             Observer = 103,
-            Shivarra = 102,
-            Terrorguard = 147,
-            Abyssal = 148
+            Shivarra = 102
         }
        
         /// <summary>
@@ -742,8 +698,6 @@ namespace Singular.ClassSpecific.Warlock
                 case (WarlockGrimoireOfSupremecyPets)WarlockPet.Voidwalker:
                 case (WarlockGrimoireOfSupremecyPets)WarlockPet.Felhunter:
                 case (WarlockGrimoireOfSupremecyPets)WarlockPet.Succubus:
-                case (WarlockGrimoireOfSupremecyPets)WarlockPet.Infernal:
-                case (WarlockGrimoireOfSupremecyPets)WarlockPet.Doomguard:
                     return (WarlockPet)Me.Pet.CreatureFamilyInfo.Id;
 
                 case WarlockGrimoireOfSupremecyPets.FelImp:
@@ -756,10 +710,6 @@ namespace Singular.ClassSpecific.Warlock
                     return WarlockPet.Felhunter;
                 case WarlockGrimoireOfSupremecyPets.Shivarra:
                     return WarlockPet.Succubus;
-                case WarlockGrimoireOfSupremecyPets.Abyssal:
-                    return WarlockPet.Infernal;
-                case WarlockGrimoireOfSupremecyPets.Terrorguard:
-                    return WarlockPet.Doomguard;
             }
 
             return WarlockPet.Other;
@@ -950,7 +900,7 @@ namespace Singular.ClassSpecific.Warlock
         MannorothsFury
 #else
 
-        DarkRegeneration = 1,
+        DarkRegeneration,
         SoulLeech,
         HarvestLife,
         SearingFlames = HarvestLife,

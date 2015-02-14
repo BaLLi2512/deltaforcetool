@@ -529,6 +529,7 @@ VoidShift               Void Shift
                             ret => !Spell.IsGlobalCooldown(),
                             new PrioritySelector(
 
+                                Helpers.Common.CreateDismount("Pulling"),
                                 Spell.BuffSelf("Power Word: Shield", ret => Dynamics.CompositeBuilder.CurrentBehaviorType == BehaviorType.Pull && PriestSettings.UseShieldPrePull && !Me.HasAura("Weakened Soul")),
                                 Helpers.Common.CreateInterruptBehavior(),
                                 Dispelling.CreatePurgeEnemyBehavior("Dispel Magic"),

@@ -161,8 +161,6 @@ namespace Singular
             if (HealerManager.Instance != null)
                 HealerManager.Instance.Clear();
 
-            EventHandlers.TrackDamage = false;
-
             // we only do this one time
             if (_restBehavior != null)
                 return;

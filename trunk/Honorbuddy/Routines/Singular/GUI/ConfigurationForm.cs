@@ -31,10 +31,6 @@ namespace Singular.GUI
             if (DialogResult == DialogResult.OK || DialogResult == DialogResult.Yes)
             {
                 Logger.WriteDebug(Color.LightGreen, "Settings saved, rebuilding behaviors...");
-
-                // in case bot not running when config change occurs
-                SingularRoutine.OnPlayerTargetChange(StyxWoW.Me.CurrentTarget);
-
                 HotkeyDirector.Update();
                 MovementManager.Update();
                 SingularRoutine.DescribeContext();
@@ -314,7 +310,6 @@ namespace Singular.GUI
                 SingularSettings.Instance.EnableDebugSpellCasting = chkDebugCasting.Checked;
                 SingularSettings.Instance.EnableDebugTrace = chkDebugTrace.Checked;
                 Extensions.ShowPlayerNames = ShowPlayerNames.Checked;
-
                 SingularRoutine.TrainingDummyBehaviors = (WoWContext) GetComboBoxEnum(cboForceUseOf);
 
                 // save form position

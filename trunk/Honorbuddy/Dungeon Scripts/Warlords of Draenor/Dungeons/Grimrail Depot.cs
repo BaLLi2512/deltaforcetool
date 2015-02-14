@@ -295,33 +295,18 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	    #region Nitrogg Thundertower
 
 	    #region Trash
-		
-		private const int MissileSpellId_BlackrockBomb=164187;
-	    private const int SpellId_ShrapnelBlast = 166675;
 
 	    private const uint MobId_GromkarGrenadier_Trash = 80936;
 	    private const uint MobId_GromkarGunner = 80937;
 	    private const uint MobId_GromkarBoomer_Trash = 80935;
 	    private const uint MobId_GromkarCinderseer = 88163;
-		private const uint MobId_GrimrailBombardier=81407;
-
+	    private const int SpellId_ShrapnelBlast = 166675;
 
 	    [EncounterHandler((int) MobId_GromkarGrenadier_Trash, "Grom'kar Grenadier Trash")]
 	    public Func<WoWUnit, Task<bool>> GromkarGrenadierEncounter()
 	    {
 	        return async npc => { return false; };
 	    }
-
-		[EncounterHandler((int)MobId_GrimrailBombardier, "Grimrail Bombardier")]
-		public Func<WoWUnit, Task<bool>> GrimrailBombardierEncounter()
-		{
-			AddAvoidLocation(
-				ctx => true,
-				5,
-				m => ((WoWMissile) m).ImpactPosition,
-				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_BlackrockBomb && Math.Abs(Me.Z - m.ImpactPosition.Z) < 5));
-			return async npc => { return false; };
-		}
 
 	    [EncounterHandler((int) MobId_GromkarGunner, "Grom'kar Gunner")]
 	    public Func<WoWUnit, Task<bool>> GromkarGunnerEncounter()

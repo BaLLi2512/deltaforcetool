@@ -133,11 +133,7 @@ namespace Honorbuddy.Quest_Behaviors.KillUntilComplete
 
 			try
 			{
-				// Primary attributes...
-				MobIds = (GetAttributeAsArray<int>("MobIds", false, ConstrainAs.MobId, new[] {"NpcIds"}, null) ?? new int[0])
-					.Concat(GetNumberedAttributesAsArray<int>("MobId", 0, ConstrainAs.MobId, new[] { "NpcId" }) ?? new int[0])
-					.ToArray();
-
+                MobIds = GetNumberedAttributesAsArray<int>("MobId", 0, ConstrainAs.MobId, new[] { "NpcID" }) ?? new int[0];
                 HuntingGroundCenter = GetAttributeAsNullable<WoWPoint>("", false, ConstrainAs.WoWPointNonEmpty, null) ?? Me.Location;
 
                 // Tunables...
@@ -182,8 +178,8 @@ namespace Honorbuddy.Quest_Behaviors.KillUntilComplete
         private UtilityCoroutine.NoMobsAtCurrentWaypoint _noMobsAtCurrentWaypoint;
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: KillUntilComplete.cs 1946 2015-02-05 03:53:06Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1946 $"); } }
+		public override string SubversionId { get { return ("$Id: KillUntilComplete.cs 1906 2014-12-22 21:18:26Z Dogan $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 1906 $"); } }
 
         #region Overrides of QuestBehaviorBase
 
