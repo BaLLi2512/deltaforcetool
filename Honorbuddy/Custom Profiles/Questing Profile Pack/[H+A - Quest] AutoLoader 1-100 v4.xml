@@ -140,7 +140,7 @@
 				</If>
 			</If>
 			<If Condition="Me.ZoneId == 5805 &amp;&amp; Me.Level &gt;= 86">
-				<CustomBehavior File="LoadProfile" ProfileName="MoP\[[N - Quest] 86-87 Valley of the Four Winds [Kick]" RememberProfile="True" />
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[N - Quest] 86-87 Valley of the Four Winds [Kick]" RememberProfile="True" />
 			</If>
 			<If Condition="Me.ZoneId == 6134 &amp;&amp; Me.Level &gt;= 87">
 				<CustomBehavior File="LoadProfile" ProfileName="MoP\[N - Quest] 87-88 Krasarang Wilds [Kick]" RememberProfile="True" />
@@ -161,7 +161,7 @@
 				<CustomBehavior File="LoadProfile" ProfileName="MoP\[N - Quest] 87-88 Krasarang Wilds [Kick]" RememberProfile="True" />
 			</If>
 			<If Condition="Me.Level &gt;= 86">
-				<CustomBehavior File="LoadProfile" ProfileName="MoP\[[N - Quest] 86-87 Valley of the Four Winds [Kick]" RememberProfile="True" />
+				<CustomBehavior File="LoadProfile" ProfileName="MoP\[N - Quest] 86-87 Valley of the Four Winds [Kick]" RememberProfile="True" />
 			</If>
 			<If Condition="Me.IsHorde">
 				<CustomBehavior File="LoadProfile" ProfileName="MoP\[H - Quest] 85-86 The Jade Forest [Kick]" RememberProfile="True" />
