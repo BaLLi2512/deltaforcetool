@@ -103,6 +103,7 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 	        var inArenaStands = Me.HasAura("Monster's Brawl");
 
 			var onKargarthEncounter = ScriptHelpers.IsViable(_kargath) && _kargath.Combat;
+	        var tanks = ScriptHelpers.GroupMembers.Where(g => g.IsTank).ToList();
 
 			units.RemoveAll(
 				ret =>
@@ -110,6 +111,7 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 				    var unit = ret as WoWUnit;
 				    if (unit == null)
 				        return false;
+
 
 					if (onKargarthEncounter)
 					{
@@ -119,6 +121,10 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 						if (unit.Entry == MobId_KargathBladefist && inArenaStands)
 							return true;
 					}
+
+					// Some noobs will sometimes solo pull trash. Just ignore any mob if no tank is around
+					if (unit.Combat && !tanks.Any(t => t.Location.DistanceSqr(unit.Location) < 90*90))
+						return true;
 
 					return false;
 				});
@@ -521,7 +527,7 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 			};
 		}
 
-		[EncounterHandler((int)MobId_Brackenspore, "Brackenspore")]
+		[EncounterHandler((int)MobId_Brackenspore, "Brackenspore", BossRange = 200)]
 		public Func<WoWUnit, Task<bool>> BrackensporeEncounter()
 		{
 			AddAvoidObject(5, AreaTriggerId_SporeShot);
@@ -535,9 +541,16 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 					&& ScriptHelpers.IsViable(brackenspore) && brackenspore.Combat
 					&& (Targeting.Instance.IsEmpty() || ScriptHelpers.CanReachUnitFromCircle(Targeting.Instance.FirstUnit, rejuvinationgMushroom.Location, 20)));
 
+			var leftDoorEdge = new WoWPoint(4015.272, 7759.365, 4.900909);
+			var rightDoorEdge = new WoWPoint(4017.969, 7740.247, 1.72341);
+			var randomPointInsideArea = WoWMathHelper.GetRandomPointInCircle(new WoWPoint(4026.877, 7748.938, 0.96492), 3);
 			return async boss =>
 			{
 				brackenspore = boss;
+
+				if (await ScriptHelpers.MoveInsideBossRoom(boss, leftDoorEdge, rightDoorEdge, randomPointInsideArea))
+					return true;
+
 				if (!ScriptHelpers.IsViable(rejuvinationgMushroom))
 				{
 					rejuvinationgMushroom =
