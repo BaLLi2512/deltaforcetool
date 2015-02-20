@@ -430,41 +430,21 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 if (!Me.IsMoving)
                     movementTimer.Reset();
                
-                if (!boss.Combat)
+                if (!boss.Combat && !boss.CanSelect && Me.IsTank())
                 {
-                    if (Me.IsTank() )
-                    {
-                        if (!boss.CanSelect)
-                        {
-                            await ScriptHelpers.ClearArea(roomCenter, 40);
-                            // do nothing if waiting for boss to activate.
-                            return BotPoi.Current.Type == PoiType.None && Targeting.Instance.IsEmpty();
-                        }
-
-                        if (boss.DistanceSqr <= 35*35 && !ScriptHelpers.GroupMembers.All(g => g.Location.DistanceSqr(boss.Location) <= 44*44))
-                        {
-                            TreeRoot.StatusText = "Waiting on party members to move closer";
-                            await CommonCoroutines.StopMoving();
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        var tank = ScriptHelpers.Tank;
-                        if (tank != null && tank.Location.DistanceSqr(roomCenter) <= 44*44
-                            && roomCenter.DistanceSqr(Me.Location) > 44*44)
-                        {
-                            await ScriptHelpers.MoveToContinue(() => randomPointInsideRoom);
-                        }
-                    }
-                    return false;
+                    await ScriptHelpers.ClearArea(roomCenter, 40);
+                    // do nothing if waiting for boss to activate.
+                    return BotPoi.Current.Type == PoiType.None && Targeting.Instance.IsEmpty();
                 }
 
-                if (roomCenter.DistanceSqr(Me.Location) > 45*45 && boss.Combat)
-                {
-                    TreeRoot.StatusText = "Locked out of room. Waiting for encounter to end";
-                    return true;
-                }
+				if (await ScriptHelpers.GetInsideCircularBossRoom(boss, roomCenter, 44, randomPointInsideRoom))
+					return true;
+				
+				if (!boss.Combat)
+					return false;
+
+				if (boss.HealthPercent > 25 && await ScriptHelpers.CastHeroism())
+					return true;
 
                 // LOS the consecrated light at the holy shield.
                 if (InConsecratedLightPhase)

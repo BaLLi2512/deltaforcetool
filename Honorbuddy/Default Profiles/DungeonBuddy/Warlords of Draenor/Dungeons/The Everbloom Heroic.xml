@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>The Everbloom</Name>
+  <DungeonId>866</DungeonId>
+  <BossEncounters>
+	<Boss isFinal="false" entry="81522" name="Witherbark"
+		  killOrder="1" step="1" optional="false" X="417.7986" Y="1615.377" Z="89.29382"/>
+  
+	<Boss isFinal="false" entry="83894" name="Dulhu" 
+		  killOrder="2" step="2" optional="false" X="733.4774" Y="1426.047" Z="84.66391"/>
+  
+	<Boss isFinal="false" entry="83892" name="Life Warden Gola" 
+		  killOrder="2" step="2" optional="false" X="714.8889" Y="1430.497" Z="84.66361"/>
+	  
+	<Boss isFinal="false" entry="83893" name="Earthshaper Telu" 
+		  killOrder="2" step="2" optional="false" X="739.2795" Y="1442.545" Z="85.26766"/>
+	  
+	<Boss isFinal="false" entry="84550" name="Xeri'tac" 
+		  killOrder="3"  optional="true" X="924.4639" Y="1438.677" Z="63.52161"/>
+	  
+	<Boss isFinal="false" entry="82682" name="Archmage Sol" 
+		  killOrder="4" step="3" optional="false" X="617.4983" Y="1560.693" Z="117.0316"/>
+	  
+	<Boss isFinal="true" entry="83846" name="Yalnu" 
+		  killOrder="5" step="4" optional="false" X="908.0452" Y="-1222.085" Z="188.7231"/>  
+  
+	</BossEncounters>
+	<Blackspots>
+	</Blackspots>
+	<PullBlackspots>
+		<PullBlackspot X="539.8788" Y="1560.198" Z="92.15884" Radius="12.34711" />
+		<PullBlackspot X="600.2413" Y="1328.273" Z="82.69798" Radius="14.38105" />
+		<PullBlackspot X="586.5389" Y="1407.787" Z="90.29335" Radius="14.22874" />
+		<PullBlackspot X="627.2769" Y="1392.528" Z="89.15912" Radius="20.06016" />
+		<PullBlackspot X="634.7068" Y="1337.825" Z="80.28246" Radius="10.45599" />
+		<PullBlackspot X="768.1265" Y="1374.996" Z="86.01797" Radius="12.99721" />
+		<PullBlackspot X="337.6426" Y="1538.343" Z="90.10661" Radius="12.10297" />
+	</PullBlackspots>
+</DungeonBuddyProfile>

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bots.DungeonBuddy.Attributes;
+using Bots.DungeonBuddy.Avoidance;
 using Bots.DungeonBuddy.Helpers;
 using Styx;
 using Styx.CommonBot;
+using Styx.Helpers;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 
@@ -362,13 +364,32 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
         private const int MobId_SLGGenericMoP_LargeAOI = 68553;
 
-       // private readonly uint[] MobIds_FieryBoulder = {75853, 75854, 75828};
+		private const uint MobId_FieryBoulder_West = 75828;
+		private const uint MobId_FieryBoulder_Center = 75854;
+		private const uint MobId_FieryBoulder_East = 75853;
 
-        [EncounterHandler(75786, "Roltall")]
+		private readonly uint[] _boulders = new[] { MobId_FieryBoulder_West, MobId_FieryBoulder_Center, MobId_FieryBoulder_East };
+
+		private const uint MobId_Roltall = 75786;
+		[EncounterHandler((int)MobId_Roltall, "Roltall")]
         public Func<WoWUnit, Task<bool>> RoltallEncounter()
         {
+			var centerStart = new WoWPoint(2248.533, -211.1598, 213.3192);
+			var centerEnd = new WoWPoint(2300.788, -211.6719, 211.412);
+
+			var nearstPointInCenter =
+				new PerFrameCachedValue<WoWPoint>(() => Me.Location.GetNearestPointOnSegment(centerEnd, centerStart));
+
             // Fiery Boulder impact location
-            AddAvoidObject(ctx => true, 8, AreaTriggerId_FieryBoulder);
+			AddAvoidObject(ctx => true, 8, _boulders);
+			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 5));
+			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 10));
+			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 15));
+			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 20));
+			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 25));
+
+			AddAvoidObject(o => Me.IsRange(), 15, o => o.Entry == MobId_Roltall && o.ToUnit().HasAura("Scorching Aura"));
+
 
             AddAvoidObject(ctx => true, 6.5f, AreaTriggerId_BurningSlag);
             AddAvoidLocation(
@@ -384,7 +405,20 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 o => o.Entry == MobId_SLGGenericMoP_LargeAOI && o.ToUnit().HasAura("Fiery Boulder"),
                 o => o.Location.GetNearestPointOnSegment(o.Location, o.Location.RayCast(o.Rotation, 60)));
 
-            return async boss => false;
+
+			return async boss =>
+			{
+				// stay in the room center.
+				if (!AvoidanceManager.IsRunningOutOfAvoid && Me.IsRange())
+				{
+					return await ScriptHelpers.StayAtLocationWhile(
+								() => !AvoidanceManager.IsRunningOutOfAvoid && ScriptHelpers.IsViable(boss) && boss.Combat,
+								Me.Location.GetNearestPointOnSegment(centerEnd, centerStart),
+								precision: 4);
+
+				}
+				return false;
+			};
         }
 
         #endregion
@@ -406,8 +440,11 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             return async boss =>
                          {
                              // interupt the boss to prevent him from getting stacks of Molten Core
-                             if (await ScriptHelpers.InterruptCast(boss, SpellId_MoltenBlast))
+                             if ( await ScriptHelpers.InterruptCast(boss, SpellId_MoltenBlast))
                                  return true;
+
+							 if (await ScriptHelpers.DispelGroup("Flame Buffet", ScriptHelpers.PartyDispelType.Magic))
+								 return true;
 
                              // Dispell Molten Core before it gets to 3 stacks and causes boss to gain the Molten Barrage ability.
                              if (await ScriptHelpers.DispelEnemy("Molten Core", ScriptHelpers.EnemyDispelType.Magic, boss))

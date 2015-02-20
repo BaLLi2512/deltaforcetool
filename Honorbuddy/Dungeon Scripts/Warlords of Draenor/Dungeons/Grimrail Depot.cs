@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bots.DungeonBuddy.Attributes;
+using Bots.DungeonBuddy.Avoidance;
 using Bots.DungeonBuddy.Helpers;
 using Buddy.Coroutines;
 using Styx;
@@ -45,6 +46,13 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			units.RemoveAll(
 				ret =>
 				{
+					var unit = ret as WoWUnit;
+					if (unit == null)
+						return false;
+
+					// Ignore assult cannon if it's in a section that is ignited.
+					if (unit.Entry == MobId_AssaultCannon && IgnitedSection == IgnitedSectionType.West)
+						return true;
 					return false;
 				});
 		}
@@ -86,7 +94,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                         case MobId_AssaultCannon:
 				            priority.Score -= 4500;
                             break;
-                        case MobId_GromkarGunner:
+                        case MobId_GromkarGunner_Trash:
                         case MobId_GromkarBoomer:
                             if (isDps)
                                 priority.Score += 4500;
@@ -300,7 +308,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	    private const int SpellId_ShrapnelBlast = 166675;
 
 	    private const uint MobId_GromkarGrenadier_Trash = 80936;
-	    private const uint MobId_GromkarGunner = 80937;
+	    private const uint MobId_GromkarGunner_Trash = 80937;
 	    private const uint MobId_GromkarBoomer_Trash = 80935;
 	    private const uint MobId_GromkarCinderseer = 88163;
 		private const uint MobId_GrimrailBombardier=81407;
@@ -323,14 +331,14 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			return async npc => { return false; };
 		}
 
-	    [EncounterHandler((int) MobId_GromkarGunner, "Grom'kar Gunner")]
+	    [EncounterHandler((int) MobId_GromkarGunner_Trash, "Grom'kar Gunner")]
 	    public Func<WoWUnit, Task<bool>> GromkarGunnerEncounter()
 	    {
             // side-step the Shrapnel Blast abiltiy
 	        AddAvoidObject(
 	            ctx => true,
 	            4,
-	            o => o.Entry == MobId_GromkarGunner && o.ToUnit().HasAura("Shrapnel Blast") ,
+	            o => o.Entry == MobId_GromkarGunner_Trash && o.ToUnit().HasAura("Shrapnel Blast") ,
 	            o => Me.Location.GetNearestPointOnSegment(o.Location, o.Location.RayCast(o.Rotation, 30)));
 
             // turn the NPC away from group when it's starting the Shrapnel Blast cast.
@@ -375,19 +383,22 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
         private const uint MobId_GromkarGrenadier = 79739;
         private const uint MobId_AssaultCannon = 79548;
         private const uint MobId_BlackrockTurret = 82721;
+		private const uint MobId_GromkarGunner = 77483;
 
-        private const uint GameObjectId_AssaultDoor = 232131;
+        private const uint GameObjectId_AssaultDoor = 235677;
+		private const uint AreaTriggerId_SlagBlast_Center = 6197;
+		private const uint AreaTriggerId_SlagBlast = 7374;
+
+		readonly static WoWPoint _eastSectionLoc = new WoWPoint(1647.201, 1796.381, 107.4893);
+		readonly static WoWPoint _middleSectionLoc = new WoWPoint(1646.737, 1819.745, 107.9342);
+		readonly static WoWPoint _westSectionLoc = new WoWPoint(1644.964, 1838.913, 107.8794);
+		readonly static WoWPoint _eastSuppressiveFireLosLoc = new WoWPoint(1633.974, 1806.815, 108.2832);
+		readonly static WoWPoint _middleSuppressiveFireLosLoc = new WoWPoint(1636.23, 1829.66, 107.716f);
 
 	    [EncounterHandler((int) MobId_NitroggThundertower, "Nitrogg Thundertower")]
 	    public Func<WoWUnit, Task<bool>> NitroggThundertowerEncounter()
 	    {
-            var suppressiveFireLosLoc = new WoWPoint(1636.23,1829.66, 107.716f);
-
-            var eastSectionLoc = new WoWPoint (1647.201, 1796.381, 107.4893);
-            var centerSectionLoc = new WoWPoint(1647.205, 1817.852, 107.4129);
-            var westSectionLoc = new WoWPoint(1647.667, 1840.345, 107.6347);
-
-	        var sectionLocations = new WoWPoint[] {eastSectionLoc, centerSectionLoc, westSectionLoc};
+	        var sectionLocations = new [] {_eastSectionLoc, _middleSectionLoc, _westSectionLoc};
 
 	        AddAvoidLocation(
 	            ctx => true,
@@ -401,6 +412,8 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	            o => ((WoWMissile) o).ImpactPosition,
 	            () => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_BlackrockMortar));
 
+			AddAvoidObject(3, AreaTriggerId_SlagBlast);
+
             var targetedBySupressiveFire = new PerFrameCachedValue<bool>(
                 () => Me.HasAura("Suppressive Fire") || ObjectManager.GetObjectsOfType<WoWUnit>()
                     .Any( u => u.Entry == MobId_AssaultCannon && u.CastingSpellId == SpellId_Reloading 
@@ -412,7 +425,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 .Where(g => g.Entry == GameObjectId_AssaultDoor)
                 .Select(g => (WoWDoor)g.SubObj).FirstOrDefault();
 
-                if (assaultDoor != null && assaultDoor.IsClosed && !Me.IsHealer() && assaultDoor.OwnerObject.DistanceSqr <= 16 * 16)
+                if (assaultDoor != null && assaultDoor.IsClosed && !Me.IsHealer() && assaultDoor.OwnerObject.DistanceSqr <= 12 * 12)
                 {
                     TreeRoot.StatusText = "Waiting on assault door to open";
                     return true;
@@ -422,14 +435,14 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 if (assaultDoor == null || assaultDoor.IsClosed)
 	                return false;
 
-	            if (await HandleTurret(boss))
+	            if (!targetedBySupressiveFire && await HandleTurret(boss))
 	                return true;
 
                 if (targetedBySupressiveFire)
 	            {
 	                return await ScriptHelpers.StayAtLocationWhile(
                         () => targetedBySupressiveFire,
-	                    suppressiveFireLosLoc,
+						IgnitedSection == IgnitedSectionType.Middle ? _eastSuppressiveFireLosLoc : _middleSuppressiveFireLosLoc,
 	                    "LOSing Suppressive Fire",
 	                    0.9f);
 	            }
@@ -437,14 +450,16 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	            if (await HandleGrenade())
 	                return true;
 
-	            // we need to loot the corpses of Grenadier and Boomers for their exposives.
+	            // we need to loot the corpses of Grenadier and Boomers for their explosives.
 	            if (!Me.IsHealer() && await LootExplosivesOnCorpse())
 	                return true;
+
+				var waitAtLoc = IgnitedSection == IgnitedSectionType.Middle ? _eastSectionLoc : _middleSectionLoc;
 
 	            if (Me.IsTank())
 	            {
 	                if (Targeting.Instance.TargetList.All(g =>g.Entry == MobId_AssaultCannon || g.Aggro)
-                        && await ScriptHelpers.TankUnitAtLocation(centerSectionLoc, 10))
+						&& await ScriptHelpers.TankUnitAtLocation(waitAtLoc, 10))
 	                {
 	                    return true;
 	                }
@@ -453,31 +468,63 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	            {
 	                // move to tank if something aggroed.
 	                var tank = ScriptHelpers.Tank;
-	                if (tank != null && tank.DistanceSqr > 10*10)
+	                if (tank != null && tank.DistanceSqr > 10*10 && tank.IsAlive)
 	                {
-	                    return
-	                        await
-	                            ScriptHelpers.MoveToContinue(
+	                    return await ScriptHelpers.MoveToContinue(
 	                                () => tank.Location,
-	                                () => ScriptHelpers.IsViable(tank));
+	                                () => ScriptHelpers.IsViable(tank) && tank.IsAlive);
 	                }
 	            }
 
 	            if (Me.IsRange())
 	            {
                     var standAtLoc = boss.HasAura("Mount Turret")
-                        ? centerSectionLoc
+						? waitAtLoc
                         : sectionLocations.OrderBy(l => l.DistanceSqr(boss.Location)).First();
 
 	                return await ScriptHelpers.StayAtLocationWhile(
 	                    () => LootExplosive == null,
-                        standAtLoc,
+						standAtLoc,
 	                    "Kill position",
 	                    8);
 	            }
 	            return false;
 	        };
 	    }
+
+
+		private enum IgnitedSectionType
+		{
+			None,
+			East,
+			Middle,
+			West
+		}
+
+		private readonly PerFrameCachedValue<IgnitedSectionType> IgnitedSection =
+			new PerFrameCachedValue<IgnitedSectionType>(
+				() =>
+				{
+					var slagBlastCenter =
+						ObjectManager.GetObjectsOfType<WoWAreaTrigger>()
+							.Where(a => a.Entry == AreaTriggerId_SlagBlast_Center)
+							.Select(a => a.Location)
+							.FirstOrDefault();
+
+					if (slagBlastCenter == WoWPoint.Zero)
+						return IgnitedSectionType.None;
+
+					if (slagBlastCenter.Distance2DSqr(_eastSectionLoc) < 6*6)
+						return IgnitedSectionType.East;
+
+					if (slagBlastCenter.Distance2DSqr(_westSectionLoc) < 6*6)
+						return IgnitedSectionType.West;
+
+					if (slagBlastCenter.Distance2DSqr(_middleSectionLoc) < 6*6)
+						return IgnitedSectionType.Middle;
+
+					return IgnitedSectionType.None;
+				});
 
 	    private async Task<bool> HandleTurret(WoWUnit boss)
 	    {
@@ -494,11 +541,26 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 }
 
                 TreeRoot.StatusText = "Blasting turret at boss";
-                var button = ActionBar.Active.Buttons.FirstOrDefault();
-                if (button != null && button.CanUse && !Me.IsCasting)
+                var button = ActionBar.Active.Buttons.FirstOrDefault(b => b.CanUse);
+                if (button != null)
                 {
-                    button.Use();
-                    await CommonCoroutines.SleepForLagDuration();
+		            var nearestTarget = Targeting.Instance.TargetList.OrderBy(u => u.DistanceSqr).FirstOrDefault();
+	                if (nearestTarget != null )
+	                {
+		                var isFacing = WoWMathHelper.IsFacing(
+			                transport.Location,
+			                transport.Rotation,
+			                nearestTarget.Location,
+			                WoWMathHelper.DegreesToRadians(15));
+
+						if (!isFacing)
+							WoWMovement.ClickToMove(nearestTarget.Location);
+	                }
+					if ( !Me.IsCasting)
+					{
+						button.Use();
+						await CommonCoroutines.SleepForLagDuration();
+					}
                     return true;
                 }
             }
@@ -514,7 +576,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             // Get in turret...
             if (turret != null )
             {
-                if (!turret.WithinInteractRange)
+                if (turret.DistanceSqr > 3*3)
                     return (await CommonCoroutines.MoveTo(turret.Location, "turret")).IsSuccessful();
                 turret.Interact();
                 return true;
@@ -604,7 +666,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 							var isTank = Me.IsTank();
 							return ObjectManager.GetObjectsOfType<WoWUnit>()
 								.Where(
-									u => (u.Entry == MobId_GromkarGrenadier || u.Entry == MobId_GromkarBoomer && !isTank)
+									u => (u.Entry == MobId_GromkarGrenadier || ((u.Entry == MobId_GromkarGunner || u.Entry == MobId_GromkarBoomer) && !isTank))
 										 && u.IsDead && u.HasAura("Blackrock Munitions"))
 								.OrderBy(u => u.DistanceSqr)
 								.FirstOrDefault();
@@ -784,7 +846,11 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
         private const uint AreaTriggerId_SlagTanker = 7415;
         private const uint AreaTriggerId_DiffusedEnergy = 6864;
         private const uint AreaTriggerId_FreezingSnare = 6907;
+		private const uint AreaTriggerId_ExplosiveSpear = 6197;
+
 	    private const int MissileSpellId_FreezingSnare = 162080;
+		private const int MissileSpellId_ExplosiveSpear = 161675;
+
 	    private readonly WoWPoint _skylordFinalCorpseLoc = new WoWPoint(-2391.91, -1829.73, 9.60577);
         [EncounterHandler((int)MobId_SkylordTovra, "Skylord Tovra")]
         public Func<WoWUnit, Task<bool>> SkylordTovraEncounter()
@@ -795,8 +861,9 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             // make range avoid this boss to avoid stacking on him.
             AddAvoidObject(ctx => Me.IsRange(), 8f, o => o.Entry == MobId_SkylordTovra && o.ToUnit().Combat);
 
-            AddAvoidObject(ctx => true, 6.5f, AreaTriggerId_DiffusedEnergy);
-            AddAvoidObject(ctx => true, 4, AreaTriggerId_FreezingSnare);
+			AddAvoidObject(ctx => true, 6.5f, AreaTriggerId_DiffusedEnergy);
+			AddAvoidObject(ctx => true, 8, AreaTriggerId_ExplosiveSpear);
+            AddAvoidObject(ctx => true, 4, o => o.Entry == AreaTriggerId_FreezingSnare, priority: AvoidancePriority.High);
 
             AddAvoidLocation(ctx => ScriptHelpers.IsViable(boss) && boss.Combat, 10, o => eastGateAvoidLoc);
             AddAvoidLocation(ctx => ScriptHelpers.IsViable(boss) && boss.Combat, 10, o => westGateAvoidLoc);
@@ -826,11 +893,22 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 ctx => true,
                 4,
                 o => ((WoWMissile)o).ImpactPosition,
-                () => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_FreezingSnare)); 
+				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_FreezingSnare),
+				priority: AvoidancePriority.High);
+
+
+			AddAvoidLocation(
+				ctx => true,
+				8,
+				o => ((WoWMissile)o).ImpactPosition,
+				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_ExplosiveSpear),
+				priority: AvoidancePriority.High);
 
             return async npc =>
             {
                 boss = npc;
+				if (boss.HealthPercent > 25 && await ScriptHelpers.CastHeroism())
+					return true;
                 return false;
             };
         }

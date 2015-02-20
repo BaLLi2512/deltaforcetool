@@ -1005,8 +1005,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 			var hasAddAggro = new TimeCachedValue<bool>(
 				TimeSpan.FromMilliseconds(500),
-				() => !Me.IsMelee()
-					&& ObjectManager.GetObjectsOfType<WoWUnit>().Any(u => _yalknuAdds.Contains(u.Entry) && u.Aggro));
+				() => !Me.IsMelee() && ObjectManager.GetObjectsOfType<WoWUnit>().Any(u => _yalknuAdds.Contains(u.Entry) && u.Aggro));
 
 			return async boss =>
 			{
@@ -1021,7 +1020,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 						"tank location");
 				}
 
-				// aquire a feral lasher trample target 
+				// acquire a feral lasher trample target 
 				if (Me.IsDps() && boss.HasAura("Genesis"))
 				{
 					var partyMemberLocs = Me.PartyMembers.Select(p => p.Location).ToList();
@@ -1086,22 +1085,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		public override void OnEnter()
 		{
-			// Followers will automatically leave when leader does so no need to show more than one popup.
-			if (DungeonBuddySettings.Instance.PartyMode != PartyMode.Follower)
-			{
-				Alert.Show(
-					"Dungeon Not Supported",
-					string.Format(
-						"The {0} dungeon is not supported. If you wish to stay in group and play manually then press 'Cancel'. Otherwise Dungeonbuddy will automatically leave group.",
-						Name),
-					30,
-					true,
-					true,
-					() => Lua.DoString("LeaveParty()"),
-					null,
-					"Leave",
-					"Cancel");
-			}
+
 		}
 
 		#endregion

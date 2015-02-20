@@ -53,7 +53,7 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 							tanks = ScriptHelpers.GroupMembers.Where(g => g.IsTank).ToList();
 						var meleeRange = unit.MeleeRange();
 						var meleeRangeSqr = meleeRange*meleeRange;
-						// reove move if no tank is within melee range. These mobs are usually just ignored.
+						// ignore if no tank is within melee range. These mobs are usually just ignored.
 						if (!tanks.Any(t => t.Location.DistanceSqr(unit.Location) <= meleeRangeSqr))
 							return true;
 
@@ -258,7 +258,9 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 		private const uint MobId_Pol = 78238;
 		private const uint MobId_Phemos = 78237;
 	    private const int SpellId_EnfeeblingRoar = 158057;
-		private const uint AreaTriggerId_Blaze = 6987;
+		private const uint AreaTriggerId_Blaze_Medium = 6987;
+		private const uint AreaTriggerId_Blaze_Small = 6197;
+		private const uint AreaTriggerId_Blaze_Big = 6630;
 	    private const int SpellId_ShieldCharge = 158134;
 	    private const int SpellId_InterruptingShout = 158093;
 	    private const int MissileSpellVisualId_PulverizeSmall = 37673;
@@ -317,8 +319,9 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 
 			var roomCenter = new WoWPoint(4069.416f, 8461.772, 322.9503);
 
-
-			AddAvoidObject(ctx => true, () => roomCenter, 40, 10, o => o.Entry == AreaTriggerId_Blaze);
+			AddAvoidObject(ctx => true, () => roomCenter, 40, 4, o => o.Entry == AreaTriggerId_Blaze_Small, o => o.Location.RayCast(o.Rotation, 3));
+			AddAvoidObject(ctx => true, () => roomCenter, 40, 5, o => o.Entry == AreaTriggerId_Blaze_Medium, o => o.Location.RayCast(o.Rotation, 3));
+			AddAvoidObject(ctx => true, () => roomCenter, 40, 6, o => o.Entry == AreaTriggerId_Blaze_Big, o => o.Location.RayCast(o.Rotation, 3));
 
 			var stackOnPhemos =
 				new PerFrameCachedValue<bool>(() => ScriptHelpers.IsViable(phemos) && phemos.CastingSpellId == SpellId_EnfeeblingRoar);
