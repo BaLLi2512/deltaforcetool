@@ -1083,11 +1083,6 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		}
 
 
-		public override void OnEnter()
-		{
-
-		}
-
 		#endregion
 	}
 

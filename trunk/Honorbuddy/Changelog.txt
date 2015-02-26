@@ -1,15 +1,49 @@
 New features:
 --------------
   * Core
-    - Added Styx.CommonBot.Routines.CapabilityManager which disallows a capability for a specific amount of time or until a condition evaluates to 'false' (HB-1980)
+    - Protected Items: Now covers Nat's Lucky Coin, Draenic Potions, and more Crafting items (HB-1950)
 
   * DungeonBuddy
-    - Scripted Heroic Bloodmaul Slag Mines (HB-1822)
+    - Scripted Auchindoun Heroic (HB-1821)
 
-    - Scripted The Everbloom Heroic and added a profile (HB-1827)
+    - Scripted Iron Docks Heroic (HB-1824)
+
+    - Scripted Skyreach Heroic (HB-1825)
+
+    - Scripted Skymoon Burial Grounds Heroic (HB-1826)
+
+  * Other
+    - WoWUnit.IsWorldBoss can now be used to determine whether a given unit is a world boss. (HB-1995)
+
+Api Changes:
+--------------
+    - Added Interrupting, Taunting, OffensiveCooldowns and DefensiveCooldowns to CapabilityFlags (HB-1958)
+
+    - Added GeoRestriction.IsRestricted, which returns whether or not the current build of Honorbuddy is a geo-restricted version (e.g. DE build) (HB-1971)
+
+    - Added GossipEntry.GossipEntryType.ChatBubble as it was previously missing. (HB-1992)
+
+    - The performance has been significantly improved on WoWUnit.GetUnitReaction.  This should have beneficial effects on frequently used dependent calls such as WoWUnit.IsHostile/IsFriendly. (HB-2003)
+
+    - WoWSpell.IsHealingSpell should no longer throw exceptions. Effects are now properly null-checked. (HB-1363)
+
+    - WoWGameObject.CanLoot now correctly returns true for Garrison minerals and herbs that are collectible by any character (regardless of tradeskill) (HB-2004)
 
 Bug fixes:
 --------------
+  * ArchaeologyBuddy
+    - The Rusty Anvil vendor in Uldum should no longer be used to vendor and repair. (HB-1993)
+
   * Core
-    - Fixed an issue that caused CR movement and facing to be disabled permanently after avoiding something (HB-1977)
+    - WoWUnit.Elite will now properly return elite status for units again (HB-1975)
+
+    - No longer tries to purchase taxi rides if you can't afford it. (HB-2009)
+
+  * Documentation
+    - Fixed documentation on WoWUnit.IsMailCourier (HB-1998)
+
+    - Fixed documentation on InboxMailItem.Index to reflect that it returns the one-based index, not the zero-based index. (HB-1941)
+
+  * QuestBehaviour
+    - InteractWith will no longer idle expecting POIs to be handled (HB-1999)
 

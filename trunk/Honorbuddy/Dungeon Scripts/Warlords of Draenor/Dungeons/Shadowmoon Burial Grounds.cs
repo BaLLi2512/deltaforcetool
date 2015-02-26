@@ -95,6 +95,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 							if (isDps || ScriptHelpers.IsViable(_sadana) && _sadana.Combat)
 								priority.Score += 4500;
 							break;
+						case MobId_CarrionWorm:
 						case MobId_PossessedSoul:
 							priority.Score += 4500;
 							break;
@@ -341,22 +342,22 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			Func<bool> handleDarkEclipse = () => inDarkEclipsePhase;
 
 			return async boss =>
-						{
-							_sadana = boss;
-							//if (boss.DistanceSqr > 19 * 19)
-							//    return (await CommonCoroutines.MoveTo(boss.Location)).IsSuccessful();
+			{
+				_sadana = boss;
+				if (boss.HealthPercent > 25 && await ScriptHelpers.CastHeroism())
+					return true;
 
-							if (inDarkEclipsePhase)
-							{
-								var safePoint = DarkEclipseSafePoints.Where(l => !AvoidanceManager.Avoids.Any(a => a.IsPointInAvoid(l)))
-									.OrderBy(l => l.DistanceSqr(Me.Location))
-									.FirstOrDefault();
+				if (inDarkEclipsePhase)
+				{
+					var safePoint = DarkEclipseSafePoints.Where(l => !AvoidanceManager.Avoids.Any(a => a.IsPointInAvoid(l)))
+						.OrderBy(l => l.DistanceSqr(Me.Location))
+						.FirstOrDefault();
 
-								return await ScriptHelpers.StayAtLocationWhile(handleDarkEclipse, safePoint, "Dark Eclipse safe spot", 1f);
-							}
+					return await ScriptHelpers.StayAtLocationWhile(handleDarkEclipse, safePoint, "Dark Eclipse safe spot", 1f);
+				}
 
-							return false;
-						};
+				return false;
+			};
 		}
 
 		#endregion
@@ -517,6 +518,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		WoWPoint _bonemawStartPosition = new WoWPoint(1849.425, -551.4028, 201.3045);
 
 		[EncounterHandler((int) MobId_Bonemaw, "Bonemaw")]
+		// http://www.wowhead.com/guides/dungeons/shadowmoon-burial-grounds-dungeon-strategy-guide#bonemaw
 		public Func<WoWUnit, Task<bool>> BonemawEncounter()
 		{
 			const float doorAvoidLineWidth = 2;
@@ -524,8 +526,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 			WoWUnit boss = null;
 
-			var isInhaling =
-				new PerFrameCachedValue<bool>(
+			var isInhaling = new PerFrameCachedValue<bool>(
 					() => ScriptHelpers.IsViable(boss) && (boss.HasAura(SpellId_Inhale) || ! _inhaleEmoteTimer.IsFinished));
 
 			var isDoorClosed = new PerFrameCachedValue<bool>(
@@ -580,17 +581,20 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			// Range need to stay away from boss so the necrotic pitch isn't placed near boss.
 			AddAvoidObject(ctx => Me.IsRange() && !isInhaling, 30, o => o.Entry == MobId_Bonemaw && o.ToUnit().IsAlive);
 
-			var noMovebehind = ScriptHelpers.CombatRoutineCapabilityManager.CreateNewHandle();
+			var noMovebehind =CapabilityManager.Instance.CreateNewHandle();
 			
 			return async npc =>
 			{
 				boss = npc;
 
 				// Melee can't move behind this NPC
-				ScriptHelpers.CombatRoutineCapabilityManager.Update(
+				CapabilityManager.Instance.Update(
 					noMovebehind,
 					CapabilityFlags.MoveBehind,
 					() => ScriptHelpers.IsViable(boss) && boss.Combat);
+
+				if (boss.HealthPercent > 25 && boss.HealthPercent <= 97 && await ScriptHelpers.CastHeroism())
+					return true;
 
 				// handle getting out of the water
 				if (Me.IsSwimming)
@@ -631,7 +635,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 					if (pitchList.Any())
 					{
-						// try find a pirch that is further then 25 yards from boss. You can still get sucked off if too close to boss.
+						// try find a pitch that is further then 25 yards from boss. You can still get sucked off if too close to boss.
 						var pitch = pitchList.FirstOrDefault(p => p.Location.DistanceSqr(boss.Location) > 25*25) ??
 									pitchList.OrderByDescending(p => p.Location.DistanceSqr(boss.Location)).First();
 
@@ -662,31 +666,31 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		#region Ner'zhul
 
-		[EncounterHandler((int) MobId_Nerzhul, "Ner'zhul", Mode = CallBehaviorMode.CurrentBoss)]
-		public Func<WoWUnit, Task<bool>> LeaveDungeonBehavior()
-		{
-			bool ranOnce = false;
-			return async boss =>
-			{
-				if (ranOnce || DungeonBuddySettings.Instance.PartyMode == PartyMode.Follower || !LootTargeting.Instance.IsEmpty())
-					return false;
+		//[EncounterHandler((int) MobId_Nerzhul, "Ner'zhul", Mode = CallBehaviorMode.CurrentBoss)]
+		//public Func<WoWUnit, Task<bool>> LeaveDungeonBehavior()
+		//{
+		//	bool ranOnce = false;
+		//	return async boss =>
+		//	{
+		//		if (ranOnce || DungeonBuddySettings.Instance.PartyMode == PartyMode.Follower || !LootTargeting.Instance.IsEmpty())
+		//			return false;
 
-				Alert.Show(
-					"Dungeonbuddy: Skip the Ner'zhul boss",
-					"Dungeonbuddy has a difficult time completing the Ner'zhul boss encounter due to complex mechanics. " +
-					"If you wish to stay in group and play manually then press 'Cancel'. Otherwise Dungeonbuddy will automatically leave group.",
-					30,
-					true,
-					true,
-					() => Lua.DoString("LeaveParty()"),
-					null,
-					"Leave",
-					"Cancel");
+		//		Alert.Show(
+		//			"Dungeonbuddy: Skip the Ner'zhul boss",
+		//			"Dungeonbuddy has a difficult time completing the Ner'zhul boss encounter due to complex mechanics. " +
+		//			"If you wish to stay in group and play manually then press 'Cancel'. Otherwise Dungeonbuddy will automatically leave group.",
+		//			30,
+		//			true,
+		//			true,
+		//			() => Lua.DoString("LeaveParty()"),
+		//			null,
+		//			"Leave",
+		//			"Cancel");
 
-				ranOnce = true;
-				return false;
-			};
-		}
+		//		ranOnce = true;
+		//		return false;
+		//	};
+		//}
 
 
 		private const int SpellId_Malevolence = 154442;
@@ -715,25 +719,28 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			// Don't bother avoiding the Omen of Death during kill phase it interfers with positioning
 			AddAvoidObject(
 				ctx => !skeletonKillPhase,
-				o => skeletonPhase ? 10 : 15,
+				o => 15,
 				o => o.Entry == MobId_OmenofDeath);
 
 			AddAvoidObject(
 				ctx => true,
 				6,
 				o => o.Entry == AreaTriggerId_RitualofBones || o.Entry == MobId_RitualofBones && !skeletonKillPhase,
-				o => WoWMathHelper.CalculatePointAtSide(o.Location, o.Rotation, 6, true));
+				o => WoWMathHelper.CalculatePointAtSide(o.Location, o.Rotation, 6, true),
+				priority: AvoidancePriority.High);
 
 			AddAvoidObject(
 				ctx => true,
 				o => skeletonSurvivePhase && Me.IsMoving ? 9 : 5,
 				o => o.Entry == AreaTriggerId_RitualofBones || o.Entry == MobId_RitualofBones && !skeletonKillPhase,
-				o => WoWMathHelper.CalculatePointAtSide(o.Location, o.Rotation, 3, true));
+				o => WoWMathHelper.CalculatePointAtSide(o.Location, o.Rotation, 3, true),
+				priority: AvoidancePriority.High);
 
 			AddAvoidObject(
 				ctx => true,
 				o => skeletonSurvivePhase && Me.IsMoving ? 9 : 5,
-				o => o.Entry == AreaTriggerId_RitualofBones || o.Entry == MobId_RitualofBones && !skeletonKillPhase);
+				o => o.Entry == AreaTriggerId_RitualofBones || o.Entry == MobId_RitualofBones && !skeletonKillPhase,
+				priority: AvoidancePriority.High);
 
 			AddAvoidObject(
 				ctx => true,
@@ -745,10 +752,12 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 				ctx => true,
 				6,
 				o => o.Entry == AreaTriggerId_RitualofBones || o.Entry == MobId_RitualofBones && !skeletonKillPhase,
-				o => WoWMathHelper.CalculatePointAtSide(o.Location, o.Rotation, 6, false));
+				o => WoWMathHelper.CalculatePointAtSide(o.Location, o.Rotation, 6, false),
+				priority: AvoidancePriority.High);
 
 			// Force ranged to stay away from center of room to prevent getting Omens of Death placed in center.
 			AddAvoidObject(ctx => Me.IsRange() && !skeletonPhase, 15, o => o.Entry == MobId_Nerzhul && o.ToUnit().Combat);
+
 			#region Malevolence Avoidance
 
 			// line up a bunch of avoids to make a lone narrow cone.
@@ -876,6 +885,9 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 				if (Me.IsTank())
 				{
+					if (boss.HealthPercent > 25 && boss.HealthPercent <= 97 && await ScriptHelpers.CastHeroism())
+						return true;
+
 					var tankLoc = skeletonPhase
 						? Me.Location.GetNearestPointOnSegment(_selectedRitualOfBonesStartLoc, _selectedRitualOfBonesEndLoc)
 						: _nerzhulRoomCenterLoc;
@@ -1005,28 +1017,6 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		#region Overrides of Dungeon
 
 		public override uint DungeonId { get { return 784; } }
-
-
-		public override void OnEnter()
-		{
-			// Followers will automatically leave when leader does so no need to show more than one popup.
-			if (DungeonBuddySettings.Instance.PartyMode != PartyMode.Follower)
-			{
-				Alert.Show(
-					"Dungeon Not Supported",
-					string.Format(
-						"The {0} dungeon is not supported. If you wish to stay in group and play manually then press 'Cancel'. Otherwise Dungeonbuddy will automatically leave group.",
-						Name),
-					30,
-					true,
-					true,
-					() => Lua.DoString("LeaveParty()"),
-					null,
-					"Leave",
-					"Cancel");
-			}
-			//base.OnEnter();
-		}
 
 		#endregion
 	}

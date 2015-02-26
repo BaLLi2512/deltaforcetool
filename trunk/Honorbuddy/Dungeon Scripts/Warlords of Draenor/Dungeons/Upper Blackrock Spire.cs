@@ -780,19 +780,20 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 				ctx => true,
 				3.5f,
 				o => ((WoWMissile) o).ImpactPosition,
-				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_MagmaSpit));
+				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_MagmaSpit),
+				priority: AvoidancePriority.High);
 
 			AddAvoidObject(
 				3.5f,
-				o => o.Entry == AreaTriggerId_MagmaSpit, ignoreIfBlocking: true);
+				o => o.Entry == AreaTriggerId_MagmaSpit, ignoreIfBlocking: true, priority: AvoidancePriority.High);
 			
-			// Fire storm is the ability used while flying over bridge - Commented out for now since running out of these sometimes causes
+			// Fire storm is the ability used while flying over bridge 
 			// toon to run in the Magma pools which hurt more. 
-			//AddAvoidLocation(
-			//	ctx => true,
-			//	8,
-			//	o => ((WoWMissile) o).ImpactPosition,
-			//	() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_FireStorm));
+			AddAvoidLocation(
+				ctx => true,
+				8,
+				o => ((WoWMissile)o).ImpactPosition,
+				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_FireStorm));
 
 			var leftDoorEdge = new WoWPoint(30.96826, -438.6647, 111.1953);
 			var rightDoorEdge = new WoWPoint(37.24679, -438.27, 111.0201);
