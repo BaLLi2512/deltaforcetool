@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>Shadowmoon Burial Grounds Heroic</Name>
+  <DungeonId>784</DungeonId>
+  <BossEncounters>
+    <Boss isFinal="false" entry="75509" name="Sadana Bloodfury" 
+          killOrder="1" stage="1" step="1" optional="false" X="1795.512" Y="-27.01042" Z="261.3087"/>
+
+    <Boss isFinal="false" entry="75829" name="Nhallish" 
+          killOrder="2" stage="1" step="2" optional="false" X="1702.342" Y="-194.8455" Z="251.3411"/>
+
+    <Boss isFinal="false" entry="75452" name="Bonemaw"
+      killOrder="3" stage="1" step="3" optional="false" X="1835.353" Y="-522.621" Z="201.6532" />
+    
+    <Boss isFinal="true" entry="76407" name="Ner'zhul" 
+          killOrder="4" stage="1" step="4" optional="false" X="1712.156" Y="-820.2639" Z="73.73582"/>
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>
