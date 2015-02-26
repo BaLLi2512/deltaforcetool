@@ -666,12 +666,12 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 
 		public override string SubversionId
 		{
-			get { return ("$Id: InteractWith.cs 1948 2015-02-06 02:46:04Z chinajade $"); }
+			get { return ("$Id: InteractWith.cs 1963 2015-02-24 16:02:42Z highvoltz $"); }
 		}
 
 		public override string SubversionRevision
 		{
-			get { return ("$Revision: 1948 $"); }
+			get { return ("$Revision: 1963 $"); }
 		}
 
 		private enum BindingEventStateType
@@ -880,10 +880,6 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 						return true;
 				}
 			}
-
-			// break if we have something else to do.
-			if (!Query.IsPoiIdle(BotPoi.Current))
-				return false;
 
 			// No mobs in immediate vicinity...
 			// NB: if the terminateBehaviorIfNoTargetsProvider argument evaluates to 'true', calling

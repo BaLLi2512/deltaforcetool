@@ -62,6 +62,10 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                     if (unit.Entry == MobId_Azzakel && unit.HasAura("Claws of Argus") && !Me.IsHealer())
 				        return true;
 
+					// Ignore this mob, just keep on dpsing last boss.
+					if (unit.Entry == MobId_FelborneAbyssal)
+						return true;
+
 					return false;
 				});
 		}
@@ -95,7 +99,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                                 priority.Score += 3500;
                             break;
                         case MobId_SpitefulArbiter:
-                        case MobId_FelborneAbyssal:
+                        case MobId_FelborneAbyssal_Trash:
                         case MobId_TwistedMagus:
                         case MobId_Shaadum:
                         case MobId_Zipteq:
@@ -247,7 +251,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
         private const uint MobId_SargereiArbiter = 88658;
         private const uint MobId_SargereiWarden = 77935;
-        private const uint MobId_FelborneAbyssal = 79508;
+        private const uint MobId_FelborneAbyssal_Trash = 79508;
         private const uint MobId_Felguard = 76259;
 
         private const uint AreaTriggerId_RadiantFury_Trash = 6507;
@@ -282,13 +286,12 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             return async npc => false;
         }
 
-        [EncounterHandler((int)MobId_FelborneAbyssal, "Felborne Abyssal")]
+		[EncounterHandler((int)MobId_FelborneAbyssal_Trash, "Felborne Abyssal")]
         public Func<WoWUnit, Task<bool>> FelborneAbyssalEncounter()
         {
             // run away when fixated and not tank.
             AddAvoidObject(ctx => !Me.IsTank(), 
-                10, 
-                o => o.Entry == MobId_FelborneAbyssal && Me.GetAllAuras()
+				10, o => o.Entry == MobId_FelborneAbyssal_Trash && Me.GetAllAuras()
                     .Any(a => a.SpellId == SpellId_Fixate && a.CreatorGuid == o.Guid));
 
             return async npc => false;
@@ -661,6 +664,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
         private const uint AreaTriggerId_FelPool = 6091;
 
         private const uint AreaTriggerId_Conflagration = 6124;
+		private const uint AreaTriggerId_FelSpark = 6105;
 
         [EncounterHandler(75927, "Azzakel")]
         public Func<WoWUnit, Task<bool>> AzzakelEncounter()
@@ -669,7 +673,8 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             AddAvoidObject(ctx => true, 6, o => o is WoWPlayer && !o.IsMe 
                 && (o.ToPlayer().HasAura("Curtain of Flame") || Me.HasAura("Curtain of Flame")));
 
-            AddAvoidObject(ctx => true, 10, AreaTriggerId_FelPool);
+			AddAvoidObject(10, AreaTriggerId_FelPool);
+			AddAvoidObject(2.75f, AreaTriggerId_FelSpark);
 
             return async boss => false;
         }
@@ -722,6 +727,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
         private const uint MobId_DuragtheDominator = 77890;
         private const uint MobId_Zarshuul = 78735;
         private const uint MobId_GromtashtheDestructor = 77889;
+		private const uint MobId_FelborneAbyssal = 77905;
 
         private const uint AreaTriggerId_ChaosWave = 6438;
         private const uint AreaTriggerId_RainofFire = 6422;
@@ -809,6 +815,12 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 || Me.GetAllAuras().Any(a => a.Name == "Seed of Malevolence" && a.TimeLeft.TotalMilliseconds < 3000)));
 
             AddAvoidObject(ctx => true, 10, AreaTriggerId_RainofFire);
+
+			// run away when fixated and not tank.
+			AddAvoidObject(ctx => !Me.IsTank(),
+				o => Me.IsMoving ? 20 : 15,
+				o => o.Entry == MobId_FelborneAbyssal && Me.GetAllAuras()
+					.Any(a => a.SpellId == SpellId_Fixate && a.CreatorGuid == o.Guid));
 
             return async boss =>
             {

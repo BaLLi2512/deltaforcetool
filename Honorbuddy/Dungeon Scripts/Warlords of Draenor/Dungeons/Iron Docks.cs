@@ -429,30 +429,32 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 o => ((WoWMissile)o).ImpactPosition,
                 () => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_CannonBarrage_Trash && m.ImpactPosition.DistanceSqr(Me.Location) < 35 * 35));
 
+			var northLosLoc = new WoWPoint(6848.57, -969.3016, 23.04621);
+	        var midLosLoc = new WoWPoint(6817.913, -1004.176, 23.06598);
+	        var southLosLoc = new WoWPoint(6785.69, -1005.73, 23.04617);
 
-	        var farLosLoc = new WoWPoint(6817.913, -1004.176, 23.06598);
-	        var nearLosLoc = new WoWPoint(6785.69, -1005.73, 23.04617);
+			WaitTimer startBarrageTimer = null;
 
-	        Func<WoWUnit, WoWPoint> getCannonBarrageLosLoc =
-	            boss =>
-	            {
-	                if (!ScriptHelpers.IsViable(boss))
-	                    return WoWPoint.Zero;
-                    var isChanneling = boss.HasAura("Cannon Barrage");
-	                var myX = Me.X;
-	                if (myX > farLosLoc.X + 5 || isChanneling && myX > farLosLoc.X - 5)
-	                {
-                        Logging.Write("Far loc");
-	                    return farLosLoc;
-	                }
-	                if (myX > nearLosLoc.X + 5 || isChanneling && myX > nearLosLoc.X - 5)
-	                {
-                        Logging.Write("Near loc");
-	                    return nearLosLoc;
-	                }
+	        Func<WoWUnit, WoWPoint> getCannonBarrageLosLoc = boss =>
+	        {
+	            if (!ScriptHelpers.IsViable(boss))
 	                return WoWPoint.Zero;
-	            };
+                var isChanneling = boss.HasAura("Cannon Barrage");
+	            var myX = Me.X;
 
+				if (myX > northLosLoc.X + 5 || isChanneling && myX > northLosLoc.X - 5 
+					|| startBarrageTimer != null && !startBarrageTimer.IsFinished)
+				{
+					return northLosLoc;
+				}
+
+	            if (myX > midLosLoc.X + 5 || isChanneling && myX > midLosLoc.X - 5)
+	                return midLosLoc;
+
+	            if (myX > southLosLoc.X + 5 || isChanneling && myX > southLosLoc.X - 5)
+	                return southLosLoc;
+	            return WoWPoint.Zero;
+	        };
 
 	        return async boss =>
 	        {
@@ -466,11 +468,21 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
                 if (InCannonBarragePhase(boss))
                 {
+					if (startBarrageTimer == null)
+					{
+						startBarrageTimer = new WaitTimer(TimeSpan.FromSeconds(6));
+						startBarrageTimer.Reset();
+					}
+
                     return await ScriptHelpers.StayAtLocationWhile(
                         () => getCannonBarrageLosLoc(boss) != WoWPoint.Zero,
                         getCannonBarrageLosLoc(boss),
                         "LOSing Cannon Barrage",
                         3);
+                }
+                else
+                {
+	                startBarrageTimer = null;
                 }
 	            return false;
 	        };

@@ -14,6 +14,7 @@ using Styx.Common.Helpers;
 using Styx.CommonBot;
 using Styx.CommonBot.Coroutines;
 using Styx.CommonBot.POI;
+using Styx.CommonBot.Routines;
 using Styx.Helpers;
 using Styx.Pathing;
 using Styx.WoWInternals;
@@ -133,7 +134,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	            var gObj = incomingObject as WoWGameObject;
 	            if (gObj != null)
 	            {
-	                if (gObj.Entry == GameObjectId_CacheofArakkoanTreasures
+					if ((gObj.Entry == GameObjectId_CacheofArakkoanTreasures || gObj.Entry == GameObjectId_CacheofArakkoanTreasures_Heroic)
                         && DungeonBuddySettings.Instance.LootMode != LootMode.Off
                         && gObj.CanLoot)
 	                {
@@ -716,14 +717,16 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
         private const uint MobId_PileofAsh = 79505;
         private const uint MobId_SolarFlare = 79505;
-
+		private const int SpellId_Quills = 159382;
         const uint GameObjectId_CacheofArakkoanTreasures = 234164;
-
+		const uint GameObjectId_CacheofArakkoanTreasures_Heroic = 234165;
 	    private const int MissileSpellId_SummonSolarFlare = 153810;
 
-        [EncounterHandler(76143, "Rukhran")]
+        [EncounterHandler(76143, "Rukhran", Mode = CallBehaviorMode.Proximity)]
 	    public Func<WoWUnit, Task<bool>> RukhranEncounter()
-	    {
+        {
+	        WoWUnit rukhran = null;
+
             AddAvoidLocation(
                 ctx => true,
                 5,
@@ -732,7 +735,23 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
             AddAvoidObject(ctx => Me.HasAura("Fixate"), o => Me.IsMoving ? 15 : 8, o => o.Entry == MobId_SolarFlare && !o.ToUnit().HasAura("Dormant"));
 
-	        return async boss => false;
+	        var gabcloserCapabilityHandler = CapabilityManager.Instance.CreateNewHandle();
+			var pillarLosLoc = new WoWPoint (946.8605, 1881.408, 213.8669);
+	        var castingQuills = new PerFrameCachedValue<bool>(() =>
+				        ScriptHelpers.IsViable(rukhran) && (rukhran.CastingSpellId == SpellId_Quills || rukhran.HasAura(SpellId_Quills)));
+
+	        return async boss =>
+			{
+				rukhran = boss;
+				CapabilityManager.Instance.Update(
+					gabcloserCapabilityHandler,
+					CapabilityFlags.GapCloser,
+					() => ScriptHelpers.IsViable(boss) && Targeting.Instance.FirstUnit == boss);
+
+				if (castingQuills)
+					return await ScriptHelpers.StayAtLocationWhile(() => castingQuills, pillarLosLoc, "LOS location", 3);
+				return false;
+			};
 	    }
 
 	    #endregion
