@@ -436,6 +436,8 @@
 	<Item Name="Runic Mana Injector" Id="42545" />
 	<Item Name="Mythical Mana Potion" Id="57192" />
 	<Item Name="Master Mana Potion" Id="76098" />
+	<!-- iLevel:100 -->
+	<Item Name="Draenic Mana Potion" Id="109222" />
 
 	<!-- Basic Items: Potions, Mana Oil (ordered by level to use) -->
 	<Item Name="Minor Mana Oil" Id="20745" />
@@ -486,7 +488,27 @@
 	<Item Name="Potion of the Jade Serpent" Id="76093" />
 	<Item Name="Potion of Mogu Power" Id="76095" />
 	<Item Name="Potion of the Mountains" Id="76090" />
-
+	<!-- iLevel:100 -->
+	<Item Name="Brawler's Bottomless Draenic Intellect Potion" Id="118914" />
+	<Item Name="Brawler's Bottomless Draenic Strength Potion" Id="118915" />
+	<Item Name="Brawler's Draenic Agility Potion" Id="118910" />
+	<Item Name="Brawler's Draenic Intellect Potion" Id="118911" />
+	<Item Name="Brawler's Draenic Strength Potion" Id="118912" />
+	<Item Name="Draenic Agility Potion" Id="109217" />
+	<Item Name="Draenic Agility Potion" Id="122453" />
+	<Item Name="Draenic Armor Potion" Id="109220" />
+	<Item Name="Draenic Armor Potion" Id="122456" />
+	<Item Name="Draenic Channeled Mana Potion" Id="109221" />
+	<Item Name="Draenic Intellect Potion" Id="109218" />
+	<Item Name="Draenic Intellect Potion" Id="122454" />
+	<Item Name="Draenic Invisibility Potion" Id="116268" />
+	<Item Name="Draenic Invisibility Potion" Id="122451" />
+	<Item Name="Draenic Living Action Potion" Id="116276" />
+	<Item Name="Draenic Rejuvenation Potion" Id="109226" />
+	<Item Name="Draenic Strength Potion" Id="109219" />
+	<Item Name="Draenic Strength Potion" Id="122455" />
+	<Item Name="Draenic Swiftness Potion" Id="116266" />
+	<Item Name="Draenic Swiftness Potion" Id="122452" />
 
 	<!-- ========== Harvests (alphabetically) ========== -->
 	<!-- Harvests: Cloth & Spider's Silk (ordered by level) -->
@@ -1281,10 +1303,11 @@
 	<Item Name="Savage Blood" Id="118472" />
 	
 	<!-- Trade: Alchemy Tools (alphabetical) -->
+	<Item Name="Alchemical Catayst" Id="108996" />
+	<Item Name="Cracked Potion Vial" Id="113295" />
+	<Item Name="Living Steel" Id="72104" />
 	<Item Name="Philsopher's Stone" Id="9149" />
 	<Item Name="Pyrium-Laced Crystalline Vial" Id="65892" />
-	<Item Name="Living Steel" Id="72104" />
-	<Item Name="Cracked Potion Vial" Id="113295" />
 
 	<!-- Trade: Archeology Items (alphabetical) -->
 	<Item Name="Draenei Tome" Id="64394" />
@@ -1856,6 +1879,7 @@
 	<Item Name="Lucky Fishing Hat" Id="19972" />
 	<Item Name="Mastercraft Kalu'ak Fishing Pole" Id="44050" />
 	<Item Name="Nat Pagle's Extreme Anglin' Boots" Id="19969" />
+	<Item Name="Nat's Lucky Coin" Id="117397" />
 	<Item Name="Nat's Lucky Fishing Pole" Id="45858" />
 	<Item Name="Pandaren Fishing Pole" Id="84660" />
 	<Item Name="Savage Fishing Pole" Id="116825" />
