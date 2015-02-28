@@ -1,9 +1,5 @@
-Api Changes:
+New features:
 --------------
-    - No longer throws exceptions when acessing MerchantFrame.Instance.MerchantNumItems (HB-2020)
-
-Bug fixes:
---------------
-  * DungeonBuddy
-    - Vendors that can't be navigated to fully are now blacklisted if ground based navigation is used. (HB-1985)
+  * Core
+    - Updated for WoW Patch 6.1.0.19702 (HB-2032)
 

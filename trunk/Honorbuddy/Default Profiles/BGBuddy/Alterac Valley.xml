@@ -147,9 +147,9 @@
   <Boxes Side="Alliance">
     
     <Box Name="StartLocation">
-      <TopLeft X="787.8374" Y="-498.1164" Z="99.84456" />
-      <Center X="793.9294" Y="-493.4746" Z="99.7275" />
-      <BottomRight X="799.3899" Y="-489.0689" Z="99.72477" />
+      <TopLeft X="796.6851" Y="-498.294" Z="99.63807" />
+      <Center X="800.0327" Y="-494.3169" Z="99.64633" />
+      <BottomRight X="804.7948" Y="-490.3908" Z="100.0194" />
     </Box>
     
     <Box Name="FrostwolfReliefHut">
