@@ -39,44 +39,10 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 				if (await ScriptHelpers.CancelCinematicIfPlaying())
 					return true;
 
-				if (await UseAugmentedRunes())
-					return true; 
-
 				return false;
 			};
 		}
 
-		#region Augment Runes
-
-		private readonly List<Tuple<int, uint>> _augmentedRunes = new List<Tuple<int, uint>>
-																  {
-																	  new Tuple<int, uint>(175456, 118630), // Hyper Augment Rune
-																	  new Tuple<int, uint>(175439, 118631), // Focus Augment Rune
-																	  new Tuple<int, uint>(175457, 118632), // Focus Augment Rune
-																  };
-
-		private readonly WaitTimer UseAugmentedRuneTimer = WaitTimer.TenSeconds;
-
-		private async Task<bool> UseAugmentedRunes()
-		{
-			if (!UseAugmentedRuneTimer.IsFinished)
-				return false;
-
-			UseAugmentedRuneTimer.Reset();
-
-			if (Me.GetAllAuras().Any(a => _augmentedRunes.Any(t => t.Item1 == a.SpellId)))
-				return false;
-
-			var rune = Me.BagItems.FirstOrDefault(item => _augmentedRunes.Any(t => t.Item2 == item.Entry));
-
-			if (rune == null)
-				return false;
-
-			Logger.WriteDebug("Using {0}", rune.SafeName);
-			rune.UseContainerItem();
-			return true;
-		}
-		#endregion
 	}
 
 	public class WalledCity : WoDLfr

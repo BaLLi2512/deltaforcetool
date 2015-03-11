@@ -13,6 +13,7 @@ using Styx.Common;
 using Styx.Common.Helpers;
 using Styx.CommonBot;
 using Styx.CommonBot.Coroutines;
+using Styx.CommonBot.Frames;
 using Styx.CommonBot.POI;
 using Styx.CommonBot.Routines;
 using Styx.Helpers;
@@ -28,10 +29,9 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 {
 	#region Normal Difficulty
 
-	public class Skyreach : Dungeon
+	public class Skyreach : WoDDungeon
 	{
 		#region Overrides of Dungeon
-
 	
 		public override uint DungeonId
 		{
@@ -53,6 +53,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	    public override void RemoveTargetsFilter(List<WoWObject> units)
 	    {
 	        var isTank = Me.IsTank();
+		    var isHealer = Me.IsHealer();
 	        List<WoWUnit> ashes = null;
 			units.RemoveAll(
 			obj =>
@@ -60,6 +61,12 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 				var unit = obj as WoWUnit;
 				if (unit == null)
 				    return false;
+
+				//// We want to ignore Ranjit while we're LOSing his quills ability.
+				//// Some CRs (such as Singular) only do healing from Combat behavior and Combat only gets called when we have a kill target
+				//// so inorder to keep the healer healing we make sure he/she has a kill target by not removing the boss from targeting if a healer.
+				//if (unit.Entry == MobId_Ranjit && !isHealer && IsCastingQuills(unit))
+				//	return true; 
 
                 if (unit.Entry == MobId_SolarFlare)
 			    {
@@ -127,25 +134,9 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			}
 		}
 
-	    public override void IncludeLootTargetsFilter(List<WoWObject> incomingObjects, HashSet<WoWObject> outgoingObjects)
-	    {
-	        foreach (var incomingObject in incomingObjects)
-	        {
-	            var gObj = incomingObject as WoWGameObject;
-	            if (gObj != null)
-	            {
-					if ((gObj.Entry == GameObjectId_CacheofArakkoanTreasures || gObj.Entry == GameObjectId_CacheofArakkoanTreasures_Heroic)
-                        && DungeonBuddySettings.Instance.LootMode != LootMode.Off
-                        && gObj.CanLoot)
-	                {
-	                    outgoingObjects.Add(incomingObject);
-	                }
-	            }
-	        }
-	    }
-
 	    public override void OnEnter()
 	    {
+		    _showedDungeonLeaveAlert = false;
 	        _highSageViryxTrash_Blackspots = new List<DynamicBlackspot>
 	                                         {
 	                                             new DynamicBlackspot(
@@ -220,6 +211,8 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	        };
 	    }
 
+		private bool _showedDungeonLeaveAlert;
+
 	    private async Task FollowWindPath()
 	    {
 	        var index = 1;
@@ -251,8 +244,17 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	            {                    
 	                if (Me.GroupInfo.IsInParty)
 	                {
-                        Logger.Write("Got stuck while following wind path. Leaving group.");
-                        Lua.DoString("LeaveParty()");
+		                if (!_showedDungeonLeaveAlert)
+		                {
+							Logger.Write("Got stuck while following wind path. Leaving group unless user intervenes.");
+			                Alert.Show(
+				                "Dungeonbuddy, Skyreach: Stuck at Wind Path",
+				                "It appears your toon got stuck while following the 'Wind Path' in Skyreach and will automatically leave group unless you intervene and cancel leave",
+				                15,
+				                cancelAction: () => Lua.DoString("LeaveParty()"),
+				                cancelButtonText: "Leave group");
+			                _showedDungeonLeaveAlert = true;
+		                }
 	                    return;
 	                }
                     Logger.Write("Got stuck while following wind path. Stopping HB.");
@@ -274,6 +276,28 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 
 	    #endregion
+
+		#region Garrison Inn Quests
+
+		[ObjectHandler(237467, "Pristine Plumage", ObjectRange = 30)]
+		public async Task<bool> PristinePlumageHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 40);
+		}
+
+		[ObjectHandler(237466, "Sun Crystal", ObjectRange = 35)]
+		public async Task<bool> SunCrystalHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 45);
+		}
+
+		[ObjectHandler(237480, "Bottled Windstorm", ObjectRange = 35)]
+		public async Task<bool> BottledWindstormHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 45);
+		} 
+
+		#endregion
 
 	    #region Ranjit
 
@@ -537,6 +561,9 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 if (await ScriptHelpers.MoveInsideBossRoom(boss, leftDoorEdge, rightDoorEdge, randomPointInsideRoom))
                     return true;
 
+				if (boss.HealthPercent <= 97 && boss.HealthPercent >= 25 && await ScriptHelpers.CastHeroism())
+					return true;
+
 	            if (await ScriptHelpers.TankUnitAtLocation(roomCenter, 14))
 	                return true;
 
@@ -735,10 +762,13 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
             AddAvoidObject(ctx => Me.HasAura("Fixate"), o => Me.IsMoving ? 15 : 8, o => o.Entry == MobId_SolarFlare && !o.ToUnit().HasAura("Dormant"));
 
+	        var hasSolarDetonation = new PerFrameCachedValue<bool>(() => StyxWoW.Me.HasAura("Solar Detonation"));
+
+			AddAvoidObject(2, o => o is WoWPlayer && !o.IsMe && (o.ToUnit().HasAura("Solar Detonation") || hasSolarDetonation));
+
 	        var gabcloserCapabilityHandler = CapabilityManager.Instance.CreateNewHandle();
-			var pillarLosLoc = new WoWPoint (946.8605, 1881.408, 213.8669);
-	        var castingQuills = new PerFrameCachedValue<bool>(() =>
-				        ScriptHelpers.IsViable(rukhran) && (rukhran.CastingSpellId == SpellId_Quills || rukhran.HasAura(SpellId_Quills)));
+	        var pillarLosLoc = WoWMathHelper.GetRandomPointInCircle(new WoWPoint(946.8605, 1881.408, 213.8669), 2);
+	        var castingQuills = new PerFrameCachedValue<bool>(() => ScriptHelpers.IsViable(rukhran) && IsCastingQuills(rukhran));
 
 	        return async boss =>
 			{
@@ -753,6 +783,46 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 				return false;
 			};
 	    }
+
+		[ObjectHandler((int)GameObjectId_CacheofArakkoanTreasures, "Cache of Arakkoan Treasures")]
+		[ObjectHandler((int)GameObjectId_CacheofArakkoanTreasures_Heroic, "Cache of Arakkoan Treasures Heroic ")]
+		public async Task<bool> CacheofArakkoanTreasuresHandler(WoWGameObject chest)
+		{
+			// respect loot settings.
+			// We can't loot this chest using normal loot targeting since it's always flagged as 'InUse'
+			var lootMode = DungeonBuddySettings.Instance.LootMode;
+			if (lootMode == LootMode.Off || lootMode == LootMode.BossesOnly)
+				return false;
+
+			if (StyxWoW.Me.Combat|| chest.InUse || !chest.CanUse())
+				return false;
+
+			if (Blacklist.Contains(chest, BlacklistFlags.Loot))
+				return false;
+
+			if (!chest.WithinInteractRange)
+				return (await CommonCoroutines.MoveTo(chest.Location, chest.SafeName)).IsSuccessful();
+
+			await ScriptHelpers.StopMovingIfMoving("looting chest");
+
+			for (int attempt = 0; attempt < 4 && !LootFrame.Instance.IsVisible && ScriptHelpers.IsViable(chest); attempt++)
+			{
+				chest.Interact();
+				// some chests trigger a cast bar when opening.. waits a max of 2 seconds if there is no cast bar.
+				await Coroutine.Wait(2000, () => StyxWoW.Me.IsCasting);
+				await Coroutine.Wait(10000, () => !StyxWoW.Me.IsCasting);
+			}
+			if (LootFrame.Instance.IsVisible)
+				LootFrame.Instance.LootAll();
+
+			Blacklist.Add(chest, BlacklistFlags.Loot, TimeSpan.FromMinutes(3), "Chest looted");
+			return true;
+		}
+
+		private bool IsCastingQuills(WoWUnit unit)
+		{
+			return unit.CastingSpellId == SpellId_Quills || unit.HasAura(SpellId_Quills);
+		}
 
 	    #endregion
 
@@ -815,14 +885,13 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	    public Func<WoWUnit, Task<bool>> HighSageViryxEncounter()
 	    {
             var platformCenter = new WoWPoint(1086.119, 1783.944, 262.1719);
-
             var rightDoorEdge = new WoWPoint(1066.295, 1778.992, 263.4299);
             var leftDoorEdge = new WoWPoint(1082.896, 1803.643, 263.1978);
 
             var randomPointInsideRoom = WoWMathHelper.GetRandomPointInCircle(platformCenter, 3);
 
             // increased avoidance on lens flare for tank to ensure boss is not tanked in them.
-            AddAvoidObject(ctx => true,  6, AreaTriggerId_LensFlare);
+            AddAvoidObject(ctx => true,  o => !Me.IsMoving ? 6 : 15, AreaTriggerId_LensFlare);
             AddAvoidObject(ctx => true, 2, MobId_ArakkoaMagnifyingGlassFocus);
 
             var leftFlareRunToStart = new WoWPoint(1101.015, 1819.824, 262.1719);
@@ -831,8 +900,8 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             var rightFlareRunToend = new WoWPoint(1088.384, 1737.376, 262.1719);
 
 	        return async boss =>
-	        {
-                if (await ScriptHelpers.MoveInsideBossRoom(boss, leftDoorEdge, rightDoorEdge, randomPointInsideRoom))
+			{
+                if (await ScriptHelpers.MoveInsideBossRoom(boss, leftDoorEdge, rightDoorEdge, randomPointInsideRoom, p => p.Z > 230))
                     return true;
 
 	            if (!boss.Combat)

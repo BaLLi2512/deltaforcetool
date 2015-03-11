@@ -30,7 +30,34 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 {
 	#region Normal Difficulty
 
-    public class Auchindoun : Dungeon
+	public abstract class WoDDungeon : Dungeon
+	{
+		private static LocalPlayer Me
+		{
+			get { return StyxWoW.Me; }
+		}
+
+		#region Garrison Inn Quests
+
+		protected async Task<bool> SafeInteractWithGameObject(WoWGameObject gObj, float maxPathDist)
+		{
+			if (!ScriptHelpers.SupportsQuesting)
+				return false;
+
+			// CanUse() is only 'true' when toon has quest associated with object
+			if (Me.IsActuallyInCombat || !gObj.CanUse() || (ScriptHelpers.WillPullAggroAtLocation(gObj.Location) && !Me.IsTank()))
+				return false;
+
+			var pathDist = Me.Location.PathDistance(gObj.Location, maxPathDist);
+			if (!pathDist.HasValue || pathDist.Value >= maxPathDist)
+				return false;
+
+			return await ScriptHelpers.InteractWithObject(gObj, 2000);
+		}
+
+		#endregion
+	}
+	public class Auchindoun : WoDDungeon
 	{
 		#region Overrides of Dungeon
 	
@@ -241,6 +268,31 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 return false;
             };
         }
+
+		#endregion
+
+		#region Garrison Inn Quests
+
+		// The Cure for Death
+		[ObjectHandler(237465, "Soulweave Vessel", ObjectRange = 55)]
+		public async Task<bool> SoulweaveVesselHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 65);
+		}
+
+		// The Soulcutter
+		[ObjectHandler(237464, "Soulsever Blade", ObjectRange = 25)]
+		public async Task<bool> SoulseverBladeHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 35);
+		}
+
+		// Go Fetch
+		[ObjectHandler(237479, "Nightmare Bell", ObjectRange = 25)]
+		public async Task<bool> NightmareBellHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 35);
+		}
 
 		#endregion
 
