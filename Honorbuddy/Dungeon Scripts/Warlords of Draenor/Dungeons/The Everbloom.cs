@@ -30,7 +30,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 {
 	#region Normal Difficulty
 
-	public class TheEverbloom : Dungeon
+	public class TheEverbloom : WoDDungeon
 	{
 		#region Overrides of Dungeon
 
@@ -108,6 +108,12 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 						continue;
 					}
 
+					if (_sporeImageIds.Contains(unit.Entry))
+					{
+						priority.Score -= 4000;
+						continue;
+					}
+
 					switch (unit.Entry)
 					{
 						case MobId_VenomCrazedPaleOne:
@@ -177,6 +183,23 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			return false;
 		}
 
+		public override void IncludeLootTargetsFilter(List<WoWObject> incomingObjects, HashSet<WoWObject> outgoingObjects)
+		{
+			var doSubversiveInfestationQuest = ScriptHelpers.SupportsQuesting && ScriptHelpers.HasQuest(QuestId_SubversiveInfestation)
+				&& !ScriptHelpers.IsQuestInLogComplete(QuestId_SubversiveInfestation);
+
+			foreach (var incomingObject in incomingObjects)
+			{
+				var unit = incomingObject as WoWUnit;
+				if (unit != null)
+				{
+					// ensure mobs required for Subversive Infestation get looted regardless of loot settings.
+					if (doSubversiveInfestationQuest && _subversiveInfestationMobIds.Contains(unit.Entry))
+						outgoingObjects.Add(unit);
+				}
+			}
+		}
+
 		#endregion
 		
 		private static LocalPlayer Me
@@ -189,6 +212,48 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		#endregion
 
+		#region Garrison Inn Quests
+
+		private const int QuestId_SubversiveInfestation = 36813;
+
+		private HashSet<uint> _subversiveInfestationMobIds = new HashSet<uint>
+												   {
+													   MobId_Dreadpetal,
+													   MobId_Gnarlroot,
+													   MobId_Witherbark,
+													   MobId_VerdantMandragora,
+													   MobId_Xeritac
+												   };
+
+		// Titanic Evolution
+		[ObjectHandler(237473, "Overgrown Artifact", ObjectRange = 100)]
+		public async Task<bool> OvergrownArtifactHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 120);
+		}
+
+		// For the Birds
+		[ObjectHandler(237483, "Rustling Peachick Nest", ObjectRange = 45)]
+		public async Task<bool> RustlingPeachickNestHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 55);
+		}
+
+		// Subversive Infestation
+		[ObjectHandler(236462, "Phylarch's Research", ObjectRange = 100)]
+		public async Task<bool> PhylarchsResearchHandler(WoWGameObject gObj)
+		{
+			return !ScriptHelpers.IsBossAlive("Archimage Sol") && await SafeInteractWithGameObject(gObj, 120);
+		}
+
+		// Cenarion Concerns
+		[ObjectHandler(237472, "Strangely-Glowing Frond", ObjectRange = 60)]
+		public async Task<bool> StrangelyGlowingFrondHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 70);
+		}
+
+		#endregion
 		// guide http://www.wowhead.com/guide=2665/everbloom-dungeon-strategy-guide#witherbark
 		#region Witherbark
 
@@ -338,7 +403,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			if (tank == null)
 				return false;
 
-			// try take shortuct if tank is a fool and attempting it
+			// try take shortcut if tank is a fool and attempting it
 			if (tank.Location.Distance2DSqr(_topOfShortcut1ToFirstBoss) > 10 * 10)
 				return false;
 
@@ -926,6 +991,12 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		private const uint AreaTriggerId_FrozenRain = 7388;
 
+		private HashSet<uint> _sporeImageIds = new HashSet<uint>
+		{
+			84386,
+			84387
+		};
+			
 		[EncounterHandler((int)MobId_ArchmageSol, "Archmage Sol")]
 		public Func<WoWUnit, Task<bool>> ArchmageSolEncounter()
 		{
@@ -942,27 +1013,29 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 			return async boss =>
 			{
-				var fireBloom = ObjectManager.GetObjectsOfType<WoWAreaTrigger>().FirstOrDefault();
+				var shouldJump = ObjectManager.GetObjectsOfType<WoWAreaTrigger>().Any(
+					a =>
+					{
+						if (a.Entry != AreaTriggerId_Firebloom)
+							return false;
+
+						var dist = a.Distance;
+						var radius = 30 * (6001 - a.TimeLeft.TotalMilliseconds) / 6000;
+						return dist > radius && dist - radius  < 3;
+					});
 
 				// jump to avoid getting hit by the fire bloom ring
-				if (fireBloom != null)
+				if (shouldJump)
 				{
-					var radius = 30 *  (6000-fireBloom.TimeLeft.TotalMilliseconds) / 6000;
-
-					var dist = fireBloom.Distance;
-					if (dist < radius && radius - dist < 3)
+					try
 					{
-						try
-						{
-							WoWMovement.Move(WoWMovement.MovementDirection.JumpAscend);
-							await Coroutine.Sleep(120);
-						}
-						finally
-						{
-							WoWMovement.Move(WoWMovement.MovementDirection.JumpAscend);
-						}
+						WoWMovement.Move(WoWMovement.MovementDirection.JumpAscend);
+						await Coroutine.Sleep(120);
 					}
-
+					finally
+					{
+						WoWMovement.Move(WoWMovement.MovementDirection.JumpAscend);
+					}
 				}
 				
 

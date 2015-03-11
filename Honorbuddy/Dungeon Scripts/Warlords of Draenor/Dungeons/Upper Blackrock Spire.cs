@@ -22,7 +22,7 @@ using Bots.DungeonBuddy.Helpers;
 namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 // ReSharper restore CheckNamespace
 {
-	public class UpperBlackrockSpire : Dungeon
+	public class UpperBlackrockSpire : WoDDungeon
 	{
 		#region Overrides of Dungeon
 
@@ -73,8 +73,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 						break;
 
 					case MobId_VilemawHatchling:
-						if (isRangeDps)
-							p.Score += 3500;
+						p.Score += 3500;
 						break;
 					case MobId_RallyingBanner:
 					case MobId_WindfuryTotem:
@@ -99,6 +98,9 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					if (unit.Entry == MobId_WarlordZaela && isMelee && IsCastingBlackIronCylone(unit))
 						return true;
 
+					if (unit.Entry == MobId_RagewingtheUntamed && isMelee && unit.Z > 119)
+						return true;
+					
 					if (unit.Entry == MobId_SentryCannon && !unit.IsHostile)
 						return true;
 
@@ -178,6 +180,39 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			}
 
 			return _shouldAvoidTharbeksDoor;
+		}
+
+		#endregion
+
+
+		#region Garrison Inn Quests
+
+		// Family Traditions
+		[ObjectHandler(237468, "Finkle's Improved Skinner", ObjectRange = 35)]
+		public async Task<bool> FinklesImprovedSkinnerHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 45);
+		}
+
+		// Damsels and Dragons
+		[ObjectHandler(237469, "Shed Proto-Dragon Claw", ObjectRange = 35)]
+		public async Task<bool> ShedProtoDragonClawHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 45);
+		}
+
+		// For the Children
+		[ObjectHandler(237476, "Miniature Iron Star", ObjectRange = 35)]
+		public async Task<bool> MiniatureIronStarHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 45);
+		}
+
+		// Oralius' Adventure
+		[ObjectHandler(237481, "Bottled Flamefly", ObjectRange = 25)]
+		public async Task<bool> BottledFlameflyHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 35);
 		}
 
 		#endregion
@@ -742,7 +777,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 
 		readonly WoWPoint RagewingPhaseOneLoc = new WoWPoint(20.56284,-404.3033,113.1969);
-		readonly WoWPoint RagewingBridgeCenter = new WoWPoint(34.26516, -406.6279, 110.7208);
+		readonly WoWPoint RagewingBridgeCenter = new WoWPoint(30.37753, -404.645, 110.7197);
 
 		private const int MissileSpellId_MagmaSpit = 155053;
 		private const int MissileSpellId_FireStorm = 155073;
@@ -777,23 +812,23 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 			// avoid the impact of magma spit missiles and the puddles they leave behind
 			AddAvoidLocation(
-				ctx => true,
+				ctx => !avoidRightToLeftRagingFire && !avoidLeftToRightRagingFire,
 				3.5f,
 				o => ((WoWMissile) o).ImpactPosition,
 				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_MagmaSpit),
 				priority: AvoidancePriority.High);
 
 			AddAvoidObject(
+				ctx => !avoidRightToLeftRagingFire && !avoidLeftToRightRagingFire,
 				3.5f,
-				o => o.Entry == AreaTriggerId_MagmaSpit, ignoreIfBlocking: true, priority: AvoidancePriority.High);
+				o => o.Entry == AreaTriggerId_MagmaSpit, ignoreIfBlocking: false, priority: AvoidancePriority.High);
 			
 			// Fire storm is the ability used while flying over bridge 
-			// toon to run in the Magma pools which hurt more. 
-			AddAvoidLocation(
-				ctx => true,
-				8,
-				o => ((WoWMissile)o).ImpactPosition,
-				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_FireStorm));
+			//AddAvoidLocation(
+			//	ctx => !Me.IsHealer(),
+			//	8,
+			//	o => ((WoWMissile)o).ImpactPosition,
+			//	() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_FireStorm));
 
 			var leftDoorEdge = new WoWPoint(30.96826, -438.6647, 111.1953);
 			var rightDoorEdge = new WoWPoint(37.24679, -438.27, 111.0201);
@@ -809,7 +844,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					return true;
 				
 				// Hero if available. 
-				if (boss.HealthPercent <= 97 && boss.HealthPercent > 25 && await ScriptHelpers.CastHeroism())
+				if (boss.HealthPercent <= 50 && boss.Z < 112 && boss.HealthPercent > 25 && await ScriptHelpers.CastHeroism())
 					return true;
 
 				if (await ScriptHelpers.DispelEnemy("Burning Rage", ScriptHelpers.EnemyDispelType.Enrage, boss))
@@ -831,10 +866,14 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 						"East side of bridge that's safe from Raging Fire", 4);
 				}
 
-				return await ScriptHelpers.StayAtLocationWhile(
-					() => !avoidLeftToRightRagingFire && !avoidRightToLeftRagingFire && ScriptHelpers.IsViable(boss) && boss.Combat,
-					RagewingBridgeCenter,
-					"Center of bridge", 10);
+				if (boss.HealthPercent > 50)
+				{
+					return await ScriptHelpers.StayAtLocationWhile(
+						() => !avoidLeftToRightRagingFire && !avoidRightToLeftRagingFire && ScriptHelpers.IsViable(boss) && boss.Combat,
+						RagewingBridgeCenter,
+						"Center of bridge", 8);
+				}
+				return false;
 			};
 		}
 
@@ -969,26 +1008,6 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		public override uint DungeonId { get { return 860; } }
 
-		public override void OnEnter()
-		{
-			// Followers will automatically leave when leader does so no need to show more than one popup.
-			if (DungeonBuddySettings.Instance.PartyMode != PartyMode.Follower)
-			{
-				Alert.Show(
-					"Dungeon Not Supported",
-					string.Format(
-						"The {0} dungeon is not supported. If you wish to stay in group and play manually then press 'Cancel'. " +
-						"Otherwise Dungeonbuddy will automatically leave group.",
-						Name),
-					30,
-					true,
-					true,
-					() => Lua.DoString("LeaveParty()"),
-					null,
-					"Leave",
-					"Cancel");
-			}
-		}
 		#endregion
 	}
 }

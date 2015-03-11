@@ -7,6 +7,8 @@ using Bots.DungeonBuddy.Avoidance;
 using Bots.DungeonBuddy.Helpers;
 using Styx;
 using Styx.CommonBot;
+using Styx.CommonBot.Coroutines;
+using Styx.CommonBot.Routines;
 using Styx.Helpers;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
@@ -17,7 +19,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 {
     #region Normal Difficulty
 
-    public class BloodmaulSlagMines : Dungeon
+	public class BloodmaulSlagMines : WoDDungeon
     {
         #region Overrides of Dungeon
 
@@ -114,8 +116,24 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             }
         }
 
+	    public override void IncludeLootTargetsFilter(List<WoWObject> incomingObjects, HashSet<WoWObject> outgoingObjects)
+	    {
+		    var doCrosRevengeQuest = ScriptHelpers.SupportsQuesting &&  ScriptHelpers.HasQuest(QuestId_CrosRevenge) 
+				&& !ScriptHelpers.IsQuestInLogComplete(QuestId_CrosRevenge);
 
-        #endregion
+			foreach (var incomingObject in incomingObjects)
+			{
+				var unit = incomingObject as WoWUnit;
+				if (unit != null)
+				{
+					// ensure mobs required for Cro's Revenge get looted regardless of loot settings.
+					if (doCrosRevengeQuest && _crosRevengeMobIds.Contains(unit.Entry))
+						outgoingObjects.Add(unit);
+				}
+			}
+	    }
+
+	    #endregion
 
         private static LocalPlayer Me
         {
@@ -131,6 +149,43 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
         }
 
         #endregion
+
+
+		#region Garrison Inn Quests
+
+	    private const int QuestId_CrosRevenge = 37152;
+		private const uint BloodmaulSlaverId =75191;
+		private const uint BloodmaulEnforcerId =84978;
+		private const uint BloodmaulOverseerId =75193;
+		private const uint BloodmaulGeomancerId =75198;
+		private const uint BloodmaulOgreMageId= 75272;
+		private const uint BloodmaulWarderId =75210;
+
+		// Time-Lost Vikings
+	    [ObjectHandler(237461, "Olaf's Shield", ObjectRange = 50)]
+	    public async Task<bool> OlafsShieldHandler(WoWGameObject gObj)
+	    {
+		    return await SafeInteractWithGameObject(gObj, 60);
+	    }
+
+	    // Ogre Ancestry
+	    [ObjectHandler(237477, "Ogre Family Tree", ObjectRange = 40)]
+	    public async Task<bool> OgreFamilyTreeHandler(WoWGameObject gObj)
+	    {
+		    return await SafeInteractWithGameObject(gObj, 50);
+	    }
+
+	    private readonly HashSet<uint> _crosRevengeMobIds = new HashSet<uint>
+												   {
+													   BloodmaulSlaverId,
+													   BloodmaulEnforcerId,
+													   BloodmaulOverseerId,
+													   BloodmaulGeomancerId,
+													   BloodmaulOgreMageId,
+													   BloodmaulWarderId
+												   };
+
+		#endregion
 
         #region Trash
 
@@ -367,26 +422,30 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		private const uint MobId_FieryBoulder_West = 75828;
 		private const uint MobId_FieryBoulder_Center = 75854;
 		private const uint MobId_FieryBoulder_East = 75853;
+	    private const uint MobId_HeatWave = 75865;
 
-		private readonly uint[] _boulders = new[] { MobId_FieryBoulder_West, MobId_FieryBoulder_Center, MobId_FieryBoulder_East };
+		private readonly HashSet<uint> _boulders = new HashSet<uint>{ MobId_FieryBoulder_West, MobId_FieryBoulder_Center, MobId_FieryBoulder_East };
 
 		private const uint MobId_Roltall = 75786;
 		[EncounterHandler((int)MobId_Roltall, "Roltall")]
         public Func<WoWUnit, Task<bool>> RoltallEncounter()
-        {
-			var centerStart = new WoWPoint(2248.533, -211.1598, 213.3192);
-			var centerEnd = new WoWPoint(2300.788, -211.6719, 211.412);
+		{
+			WoWUnit roltall = null;
+			var centerStart = new WoWPoint(2300.788, -211.6719, 211.412);
+			var centerEnd = new WoWPoint(2258.212, -211.5841, 213.3034);
 
-			var nearstPointInCenter =
-				new PerFrameCachedValue<WoWPoint>(() => Me.Location.GetNearestPointOnSegment(centerEnd, centerStart));
+			var heatWave =
+				new PerFrameCachedValue<bool>(
+					() => ObjectManager.GetObjectsOfTypeFast<WoWUnit>().Any(u => u.Entry == MobId_HeatWave && u.HasAura("Heat Wave")));
 
-            // Fiery Boulder impact location
-			AddAvoidObject(ctx => true, 8, _boulders);
+			// Fiery Boulder impact location
+			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry));
 			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 5));
 			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 10));
 			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 15));
 			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 20));
 			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 25));
+			AddAvoidObject(ctx => true, 8, o => _boulders.Contains(o.Entry), o => o.Location.RayCast(o.Rotation, 30));
 
 			AddAvoidObject(o => Me.IsRange(), 15, o => o.Entry == MobId_Roltall && o.ToUnit().HasAura("Scorching Aura"));
 
@@ -398,24 +457,52 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 o => ((WoWMissile) o).ImpactPosition,
                 () => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_BurningSlag));
 
-            // run out of the path of the fiery boulders
-            AddAvoidObject(
-                ctx => true,
-                8,
-                o => o.Entry == MobId_SLGGenericMoP_LargeAOI && o.ToUnit().HasAura("Fiery Boulder"),
-                o => o.Location.GetNearestPointOnSegment(o.Location, o.Location.RayCast(o.Rotation, 60)));
+			var capabilityHandle = CapabilityManager.Instance.CreateNewHandle();
 
+			var nearstPointInCenter =
+				new PerFrameCachedValue<WoWPoint>(() => Me.Location.GetNearestPointOnSegment(centerEnd, centerStart));
+
+			var moveToCenter =
+				new PerFrameCachedValue<bool>(
+					() =>
+						ScriptHelpers.IsViable(roltall) && roltall.Combat && Me.IsAlive
+						&& nearstPointInCenter.Value.DistanceSqr(Me.Location) > 8 * 8);
+
+			var leftWallEdge = new WoWPoint(2304.589, -197.116, 212.9734);
+			var rightWallEdge = new WoWPoint(2306.383, -226.5228, 213.1124);
+
+			const float wallWidth = 2;
+			// Avoids running into the wall behind boss while running from something else.
+			AddAvoidLocation(
+				ctx => ScriptHelpers.IsViable(roltall) && roltall.Combat,
+				wallWidth * 1.33f,
+				o => (WoWPoint)o,
+				() => ScriptHelpers.GetPointsAlongLineSegment(
+					leftWallEdge,
+					rightWallEdge,
+					wallWidth / 2).OfType<object>(), priority: AvoidancePriority.High);
 
 			return async boss =>
 			{
-				// stay in the room center.
-				if (!AvoidanceManager.IsRunningOutOfAvoid && Me.IsRange())
-				{
-					return await ScriptHelpers.StayAtLocationWhile(
-								() => !AvoidanceManager.IsRunningOutOfAvoid && ScriptHelpers.IsViable(boss) && boss.Combat,
-								Me.Location.GetNearestPointOnSegment(centerEnd, centerStart),
-								precision: 4);
+				roltall = boss;
+				// Unless there are any special boss mechanics, the best time to cast heroism is early in the fight
+				// when procs have just triggered and everyone is alive. There's a misconception that the best time to cast it
+				// is during execution phase (when hp is < 20 to 30 percent) however by that time most procs are on cooldown, chance of players being dead higher and
+				// there's a change part of the buff being wasted if boss is killed before heroism expires. 
+				// Casting heroism early will bring about execution phase faster and thus cancels out
+				// the benefits it gives from casting it during execution phase.
+				if (boss.HealthPercent <= 97 && boss.HealthPercent > 25 && await ScriptHelpers.CastHeroism())
+					return true;
 
+				// stay in the room center.
+				if (heatWave && moveToCenter)
+				{
+					await CommonCoroutines.MoveTo(nearstPointInCenter, "Center of bridge");
+					CapabilityManager.Instance.Update(capabilityHandle, CapabilityFlags.Movement, () => moveToCenter, "Moving to center of bridge");
+					CapabilityManager.Instance.Update(capabilityHandle, CapabilityFlags.Facing, () => moveToCenter, "Moving to center of bridge");
+					// if CR doesn't use Capabilities then return return 'true' to prevent behavior from dropping down to CR and causing movement conflictions. 
+					if (RoutineManager.Current.SupportedCapabilities == CapabilityFlags.None)
+						return true;
 				}
 				return false;
 			};
@@ -438,20 +525,20 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             AddAvoidObject(ctx => true, 5, MobId_MagmaEruption);
 
             return async boss =>
-                         {
-                             // interupt the boss to prevent him from getting stacks of Molten Core
-                             if ( await ScriptHelpers.InterruptCast(boss, SpellId_MoltenBlast))
-                                 return true;
+            {
+                // interupt the boss to prevent him from getting stacks of Molten Core
+                if ( await ScriptHelpers.InterruptCast(boss, SpellId_MoltenBlast))
+                    return true;
 
-							 if (await ScriptHelpers.DispelGroup("Flame Buffet", ScriptHelpers.PartyDispelType.Magic))
-								 return true;
+				if (await ScriptHelpers.DispelGroup("Flame Buffet", ScriptHelpers.PartyDispelType.Magic))
+					return true;
 
-                             // Dispell Molten Core before it gets to 3 stacks and causes boss to gain the Molten Barrage ability.
-                             if (await ScriptHelpers.DispelEnemy("Molten Core", ScriptHelpers.EnemyDispelType.Magic, boss))
-                                 return true;
+                // Dispell Molten Core before it gets to 3 stacks and causes boss to gain the Molten Barrage ability.
+                if (await ScriptHelpers.DispelEnemy("Molten Core", ScriptHelpers.EnemyDispelType.Magic, boss))
+                    return true;
 
-                             return false;
-                         };
+                return false;
+            };
         }
 
         #endregion

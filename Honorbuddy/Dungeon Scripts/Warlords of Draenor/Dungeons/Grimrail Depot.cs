@@ -22,7 +22,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 {
 	#region Normal Difficulty
 
-	public class GrimrailDepot : Dungeon
+	public class GrimrailDepot : WoDDungeon
 	{
 		#region Overrides of Dungeon
 
@@ -178,6 +178,31 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
         {
             return async npc => await ScriptHelpers.CancelCinematicIfPlaying();
         }
+		#endregion
+
+		#region Garrison Inn Quests
+		
+		// And No Maces!
+		[ObjectHandler(237474, "Huge Crate of Weapons", ObjectRange = 25)]
+		public async Task<bool> HugeCrateofWeaponsHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 35);
+		}
+
+		// Cleaving Time
+		[ObjectHandler(237475, "Iron Limbcleaver", ObjectRange = 15)]
+		public async Task<bool> IronLimbcleaverHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 25);
+		}
+
+		// Cold Steel
+		[ObjectHandler(237484, "Iron Autocannon", ObjectRange = 25)]
+		public async Task<bool> IronAutocannonHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 35);
+		} 
+
 		#endregion
 
         #region Rocketspark and Borka

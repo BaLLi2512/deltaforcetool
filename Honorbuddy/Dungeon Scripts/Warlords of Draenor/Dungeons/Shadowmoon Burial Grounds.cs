@@ -33,7 +33,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 	#region Normal Difficulty
 
-	public class ShadowmoonBurialGrounds : Dungeon
+	public class ShadowmoonBurialGrounds : WoDDungeon
 	{
 		#region Overrides of Dungeon
 
@@ -220,6 +220,31 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		#endregion
 
+		#region Garrison Inn Quests
+
+		// Shadowy Secrets
+		[ObjectHandler(237470, "Dark Parchment", ObjectRange = 30)]
+		public async Task<bool> DarkParchmentHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 40);
+		}
+
+		// The Void-Gate
+		[ObjectHandler(237482, "Void-Gate Key", ObjectRange = 45)]
+		public async Task<bool> VoidGateKeyHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 55);
+		}
+
+		// The Huntress
+		[ObjectHandler(237471, "Silver-Lined Arrow", ObjectRange = 65)]
+		public async Task<bool> SilverLinedArrowHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 75);
+		}
+
+		#endregion
+
 		#region Sadana Bloodfury
 
 		#region Trash
@@ -312,7 +337,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		private WoWUnit _sadana;
 		// http://www.wowhead.com/guide=2668/shadowmoon-burial-grounds-dungeon-strategy-guide#sadana-bloodfury
-		[EncounterHandler((int) MobId_SadanaBloodfury, "Sadana Bloodfury")]
+		[EncounterHandler((int) MobId_SadanaBloodfury, "Sadana Bloodfury", Mode= CallBehaviorMode.Proximity)]
 		public Func<WoWUnit, Task<bool>> SadanaBloodfuryEncounter()
 		{
 			var roomCenterLoc = new WoWPoint(1795.512, -27.01042, 261.3087);
@@ -341,9 +366,24 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 			Func<bool> handleDarkEclipse = () => inDarkEclipsePhase;
 
+			var rightDoorEdge = new WoWPoint(1787.233, 24.70311, 261.1445);
+			var leftDoorEdge = new WoWPoint(1805.031, 23.9772, 261.0555);
+
+			var randomPointInsideRoom = WoWMathHelper.GetRandomPointInCircle(new WoWPoint (1795.797, -0.1476936, 261.3087), 2);
+
 			return async boss =>
 			{
 				_sadana = boss;
+
+				if (await ScriptHelpers.MoveInsideBossRoom(boss, leftDoorEdge, rightDoorEdge, 
+					randomPointInsideRoom, player => player.Z < 265))
+				{
+					return true;
+				}
+
+				if (!boss.Combat)
+					return false;
+
 				if (boss.HealthPercent > 25 && await ScriptHelpers.CastHeroism())
 					return true;
 
@@ -666,31 +706,45 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		#region Ner'zhul
 
-		//[EncounterHandler((int) MobId_Nerzhul, "Ner'zhul", Mode = CallBehaviorMode.CurrentBoss)]
-		//public Func<WoWUnit, Task<bool>> LeaveDungeonBehavior()
-		//{
-		//	bool ranOnce = false;
-		//	return async boss =>
-		//	{
-		//		if (ranOnce || DungeonBuddySettings.Instance.PartyMode == PartyMode.Follower || !LootTargeting.Instance.IsEmpty())
-		//			return false;
+		protected virtual int MinRequireGroupItemLevelForNerzhul
+		{
+			get { return 608; }
+		}
 
-		//		Alert.Show(
-		//			"Dungeonbuddy: Skip the Ner'zhul boss",
-		//			"Dungeonbuddy has a difficult time completing the Ner'zhul boss encounter due to complex mechanics. " +
-		//			"If you wish to stay in group and play manually then press 'Cancel'. Otherwise Dungeonbuddy will automatically leave group.",
-		//			30,
-		//			true,
-		//			true,
-		//			() => Lua.DoString("LeaveParty()"),
-		//			null,
-		//			"Leave",
-		//			"Cancel");
+		private float AverageGroupItemLevel
+		{
+			get { return ScriptHelpers.GroupMembers.Where(g => g.Player!= null).Average(g => g.Player.AverageItemLevelTotal); }
+		}
 
-		//		ranOnce = true;
-		//		return false;
-		//	};
-		//}
+
+		[EncounterHandler((int)MobId_Nerzhul, "Ner'zhul", Mode = CallBehaviorMode.CurrentBoss)]
+		public Func<WoWUnit, Task<bool>> LeaveDungeonBehavior()
+		{
+			bool ranOnce = false;
+			return async boss =>
+			{
+				if (ranOnce || DungeonBuddySettings.Instance.PartyMode != PartyMode.Leader || !LootTargeting.Instance.IsEmpty())
+					return false;
+
+				if (AverageGroupItemLevel >= MinRequireGroupItemLevelForNerzhul)
+					return false;
+
+				Alert.Show(
+					"Dungeonbuddy: Skip the Ner'zhul boss",
+					"Dungeonbuddy has a difficult time completing the Ner'zhul boss encounter due to complex mechanics. " +
+					"If you wish to stay in group and play manually then press 'Cancel'. Otherwise Dungeonbuddy will automatically leave group.",
+					30,
+					true,
+					true,
+					() => Lua.DoString("LeaveParty()"),
+					null,
+					"Leave",
+					"Cancel");
+
+				ranOnce = true;
+				return false;
+			};
+		}
 
 
 		private const int SpellId_Malevolence = 154442;
@@ -1019,6 +1073,11 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		public override uint DungeonId { get { return 784; } }
 
 		#endregion
+
+		protected override int MinRequireGroupItemLevelForNerzhul
+		{
+			get { return 625; }
+		}
 	}
 
 	#endregion

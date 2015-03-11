@@ -23,7 +23,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 {
 	#region Normal Difficulty
 
-    public class IronDocks : Dungeon
+	public class IronDocks : WoDDungeon
     {
         #region Overrides of Dungeon
 
@@ -121,6 +121,31 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 
         #endregion
+
+		#region Garrison Inn Quests
+
+		// Budd's Gambit 
+		[ObjectHandler(237478, "Very Shiny Thing", ObjectRange = 30)]
+		public async Task<bool> VeryShinyThingHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 40);
+		}
+
+		// Feeling A Bit Morose
+		[ObjectHandler(237462, "Horribly Acidic Solution", ObjectRange = 100)]
+		public async Task<bool> HorriblyAcidicSolutionHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 120);
+		}
+
+		// The Brass Compass
+		[ObjectHandler(237463, "Strange Brass Compass", ObjectRange = 100)]
+		public async Task<bool> StrangeBrassCompassHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 120);
+		}
+
+		#endregion
 
         #region Trash
 

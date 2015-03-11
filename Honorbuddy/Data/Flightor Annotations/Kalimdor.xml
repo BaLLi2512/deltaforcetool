@@ -150,16 +150,19 @@
       </Points>
     </TubularIndoorArea>
        
-    <TubularIndoorArea Name="Razorfen Krail Entrance, Thousand Needles" Radius="15">
+    <PolygonIndoorArea Name="Razorfen Krail Entrance, Thousand Needles" MinZ="90" MaxZ="110" >
       <EntrancePath>
         <Waypoint Dismount="False" Radius="3" X="-4473.923" Y="-1693.145" Z="89.05875" />
         <Waypoint Dismount="False" Radius="3" X="-4470.164" Y="-1679.504" Z="84.21727" />
       </EntrancePath>
       <Points>
-        <Point X="-4464.004" Y="-1665.057" Z="82.07106" />
-        <Point X="-4467.566" Y="-1670.065" Z="84.5459" />
-      </Points>
-    </TubularIndoorArea>
+				<Point X="-4635.458" Y="-2494.123" />
+				<Point X="-4667.533" Y="-2479.515" />
+				<Point X="-4681.751" Y="-2509.485" />
+				<Point X="-4665.196" Y="-2530.263" />
+				<Point X="-4657.628" Y="-2533.898" />
+			</Points>
+		</PolygonIndoorArea>
   
     <CompositeIndoorArea Name="The Wailing Caverns, Desolace">
       <Entrance Radius="3" Dismount="True" X="-846.1706" Y="-2031.29" Z="81.03545" />

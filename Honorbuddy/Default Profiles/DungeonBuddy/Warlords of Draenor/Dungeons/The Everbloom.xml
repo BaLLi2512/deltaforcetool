@@ -36,5 +36,6 @@
 		<PullBlackspot X="634.7068" Y="1337.825" Z="80.28246" Radius="10.45599" />
 		<PullBlackspot X="768.1265" Y="1374.996" Z="86.01797" Radius="12.99721" />
 		<PullBlackspot X="337.6426" Y="1538.343" Z="90.10661" Radius="12.10297" />
+		<PullBlackspot X="623.0204" Y="1340.544" Z="84.80746" Radius="46.46201" />
 	</PullBlackspots>
 </DungeonBuddyProfile>
