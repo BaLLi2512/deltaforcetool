@@ -1,0 +1,72 @@
+<HBProfile>
+///////////////////////////////////////////////////
+//                                               //
+// Profile generated with ZapRecorder2 v1.2.0    //
+// Created by BadWolf                            //
+//                                               //
+///////////////////////////////////////////////////
+<Name>[GB2] Scorged Whelpling (Icecrown)</Name>
+<MinDurability>0.4</MinDurability>
+<MinFreeBagSlots>1</MinFreeBagSlots>
+
+<MinLevel>1</MinLevel>
+<MaxLevel>91</MaxLevel>
+<Factions>99999</Factions>
+
+<MailGrey>false</MailGrey>
+<MailWhite>false</MailWhite>
+<MailGreen>false</MailGreen>
+<MailBlue>false</MailBlue>
+<MailPurple>false</MailPurple>
+
+<SellGrey>false</SellGrey>
+<SellWhite>false</SellWhite>
+<SellGreen>false</SellGreen>
+<SellBlue>false</SellBlue>
+<SellPurple>false</SellPurple>
+
+<Vendors>
+</Vendors>
+
+<Mailboxes>
+</Mailboxes>
+
+<Blackspots>
+</Blackspots>
+
+<Hotspots>
+<Hotspot X="7578.391" Y="769.6121" Z="516.5622" />
+<Hotspot X="7602.054" Y="778.0574" Z="515.5363" />
+<Hotspot X="7662.666" Y="796.0167" Z="514.2415" />
+<Hotspot X="7722.692" Y="814.7487" Z="513.4428" />
+<Hotspot X="7784.417" Y="816.4055" Z="518.317" />
+<Hotspot X="7832.896" Y="803.1213" Z="553.4509" />
+<Hotspot X="7877.463" Y="773.5099" Z="576.5712" />
+<Hotspot X="7932.659" Y="743.8285" Z="573.1683" />
+<Hotspot X="7993.983" Y="734.903" Z="565.7717" />
+<Hotspot X="8056.635" Y="733.8819" Z="559.174" />
+<Hotspot X="8119.293" Y="740.8512" Z="553.3989" />
+<Hotspot X="8158.948" Y="784.2813" Z="551.1626" />
+<Hotspot X="8138.202" Y="840.8349" Z="556.1248" />
+<Hotspot X="8082.519" Y="869.6946" Z="555.8893" />
+<Hotspot X="8023.325" Y="888.8273" Z="545.412" />
+<Hotspot X="7966.101" Y="911.1157" Z="534.1056" />
+<Hotspot X="7917.428" Y="949.6892" Z="524.1038" />
+<Hotspot X="7883.903" Y="1002.345" Z="515.8708" />
+<Hotspot X="7873.851" Y="1063.507" Z="508.6114" />
+<Hotspot X="7876.968" Y="1126.036" Z="503.5297" />
+<Hotspot X="7833.01" Y="1164.979" Z="500.2436" />
+<Hotspot X="7771.789" Y="1153.437" Z="502.9502" />
+<Hotspot X="7713.071" Y="1130.247" Z="505.1196" />
+<Hotspot X="7654.496" Y="1106.923" Z="507.0399" />
+<Hotspot X="7595.45" Y="1084.686" Z="508.8824" />
+<Hotspot X="7535.715" Y="1064.497" Z="510.5551" />
+<Hotspot X="7475.86" Y="1044.267" Z="512.2311" />
+<Hotspot X="7418.423" Y="1018.65" Z="514.0475" />
+<Hotspot X="7372.029" Y="976.0192" Z="515.9238" />
+<Hotspot X="7354.78" Y="917.3809" Z="517.4859" />
+<Hotspot X="7375.269" Y="859.0165" Z="519.4949" />
+<Hotspot X="7410.77" Y="808.8057" Z="521.3376" />
+<Hotspot X="7444.443" Y="759.3884" Z="522.62" />
+</Hotspots>
+</HBProfile>

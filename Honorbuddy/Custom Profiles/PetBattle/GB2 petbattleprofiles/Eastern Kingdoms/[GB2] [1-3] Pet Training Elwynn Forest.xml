@@ -1,0 +1,25 @@
+<HBProfile>
+  <!--Created By Guadah-->
+  <Name>Pet Training</Name>
+
+    <SubProfile>
+     <Name>Elwinn Forest</Name>
+     <MinLevel>1</MinLevel>                                            
+     <MaxLevel>91</MaxLevel>                                          
+ 	 <TargetElites>False</TargetElites>
+
+     <GrindArea>
+     <TargetMinLevel>1</TargetMinLevel> 
+     <TargetMaxLevel>91</TargetMaxLevel> 
+     <Hotspots>      
+      <Hotspot X="-9962.45" Y="567.156" Z="102.5313" />
+	  <Hotspot X="-9831.581" Y="-906.747" Z="104.9778" />
+	  <Hotspot X="-9385.877" Y="-1229.449" Z="137.3533" />
+	  <Hotspot X="-9094.058" Y="-1043.106" Z="146.1579" />
+	  <Hotspot X="-9534.568" Y="-323.871" Z="137.6645" />
+	  <Hotspot X="-9158.104" Y="4.050167" Z="139.171" />
+     </Hotspots>
+     </GrindArea>
+    </SubProfile>
+   
+ </HBProfile>
