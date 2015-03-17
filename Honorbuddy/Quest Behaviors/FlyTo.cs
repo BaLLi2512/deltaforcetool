@@ -220,16 +220,6 @@ namespace Honorbuddy.Quest_Behaviors.FlyTo
 				IgnoreIndoors = GetAttributeAsNullable<bool>("IgnoreIndoors", false, null, null) ?? false;
 				Land = GetAttributeAsNullable<bool>("Land", false, null, null) ?? false;
 
-				// Make certain ArrivalTolerance is coherent with Navigator.PathPrecision...
-				if (DefaultArrivalTolerance < Navigator.PathPrecision)
-				{
-					QBCLog.DeveloperInfo("ArrivalTolerance({0:F1}) is less than PathPrecision({1:F1})."
-										 + "  Setting ArrivalTolerance to be PathPrecision to prevent navigational issues.",
-										 DefaultArrivalTolerance,
-										 Navigator.PathPrecision);
-					DefaultArrivalTolerance = Navigator.PathPrecision;
-				}
-
                 // 'Destination choices' processing...
                 PotentialDestinations =
                     HuntingGroundsType.GetOrCreate(Element,
@@ -284,8 +274,8 @@ namespace Honorbuddy.Quest_Behaviors.FlyTo
 
 		#region Overrides of CustomForcedBehavior
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: FlyTo.cs 1844 2014-11-18 19:27:06Z Dogan $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1844 $"); } }
+		public override string SubversionId { get { return ("$Id: FlyTo.cs 1987 2015-03-13 06:29:43Z chinajade $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 1987 $"); } }
 
 		// CreateBehavior supplied by QuestBehaviorBase.
 		// Instead, provide CreateMainBehavior definition.
@@ -307,6 +297,16 @@ namespace Honorbuddy.Quest_Behaviors.FlyTo
 			// So we don't want to falsely inform the user of things that will be skipped.
 			if (isBehaviorShouldRun)
 			{
+				// Make certain ArrivalTolerance is coherent with Navigator.PathPrecision...
+				if (DefaultArrivalTolerance < Navigator.PathPrecision)
+				{
+					QBCLog.DeveloperInfo("ArrivalTolerance({0:F1}) is less than PathPrecision({1:F1})."
+										 + "  Setting ArrivalTolerance to be PathPrecision to prevent navigational issues.",
+										 DefaultArrivalTolerance,
+										 Navigator.PathPrecision);
+					DefaultArrivalTolerance = Navigator.PathPrecision;
+				}
+
 				// Disable any settings that may cause us to dismount --
 				// When we mount for travel via FlyTo, we don't want to be distracted by other things.
 				// NOTE: the ConfigMemento in QuestBehaviorBase restores these settings to their

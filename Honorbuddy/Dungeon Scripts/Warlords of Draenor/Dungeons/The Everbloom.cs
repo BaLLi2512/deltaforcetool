@@ -138,7 +138,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 						priority.Score += 4500;
 
 					// DPS should priorite the adds that spawn during Yalknu encounter
-					if (isDps && _yalknuAdds.Contains(unit.Entry))
+					if (isDps && _yalnuAdds.Contains(unit.Entry))
 					{
 						priority.Score += 4000;
 						continue;
@@ -1065,10 +1065,16 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		private const uint MobId_FeralLasher = 86684;
 
-		private readonly uint[] _yalknuAdds = {MobId_ViciousMandragora, MobId_GnarledAncient, MobId_SwiftSproutling, MobId_FeralLasher};
+		private readonly HashSet<uint> _yalnuAdds = new HashSet<uint>
+													{
+														MobId_ViciousMandragora,
+														MobId_GnarledAncient,
+														MobId_SwiftSproutling,
+														MobId_FeralLasher
+													};
 
 		private readonly WoWPoint _portalToValnuLoc = new WoWPoint(623.4323, 1734.328, 144.1603);
-		private readonly WoWPoint _valnuFinalLoc = new WoWPoint(924.4457, -1220.136, 183.9173);
+		private readonly WoWPoint _yalnuFinalLoc = new WoWPoint(924.4457, -1220.136, 183.9173);
 
 		[EncounterHandler((int) MobId_Yalnu, "Yalnu")]
 		public Func<WoWUnit, Task<bool>> YalnuEncounter()
@@ -1078,7 +1084,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 			var hasAddAggro = new TimeCachedValue<bool>(
 				TimeSpan.FromMilliseconds(500),
-				() => !Me.IsMelee() && ObjectManager.GetObjectsOfType<WoWUnit>().Any(u => _yalknuAdds.Contains(u.Entry) && u.Aggro));
+				() => !Me.IsMelee() && ObjectManager.GetObjectsOfType<WoWUnit>().Any(u => _yalnuAdds.Contains(u.Entry) && u.Aggro));
 
 			return async boss =>
 			{
@@ -1136,7 +1142,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		private bool AtYalnuEncounter(WoWPoint loc)
 		{
-			return loc.DistanceSqr(_valnuFinalLoc) <= 100*100;
+			return loc.DistanceSqr(_yalnuFinalLoc) <= 100*100;
 		}
 
 		#endregion

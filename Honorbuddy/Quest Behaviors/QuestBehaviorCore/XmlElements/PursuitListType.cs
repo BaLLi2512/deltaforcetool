@@ -115,8 +115,8 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 
 		#region Concrete class required implementations...
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: PursuitListType.cs 1839 2014-11-18 06:11:55Z chinajade $"; } }
-		public override string SubversionRevision { get { return "$Rev: 1839 $"; } }
+		public override string SubversionId { get { return "$Id: PursuitListType.cs 1997 2015-03-15 02:56:33Z chinajade $"; } }
+		public override string SubversionRevision { get { return "$Rev: 1997 $"; } }
 
 		public override XElement ToXml(string elementName = null)
 		{
@@ -136,6 +136,42 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 		#region Private and Convenience variables
         #endregion
 
+	    /// <summary>Adds the ids.</summary>
+	    /// <param name="mobIds">The mob ids.</param>
+	    /// <param name="factionIds">The faction ids.</param>
+	    /// <param name="includeSelf">Include self if set to <c>true</c>.</param>
+	    public void AddIds(IEnumerable<int> mobIds, IEnumerable<int> factionIds, bool includeSelf)
+		{
+			foreach (var id in mobIds)
+				PursueObjects.Add(new PursueObjectType<WoWObject>(id));
+
+			foreach (var id in factionIds)
+				PursueObjects.Add(new PursueObjectType<WoWUnit>(0, unit => unit.FactionId == id));
+
+			// there can only be one LocalPlayer object in the objectmanager and that is StyxWoW.Me
+			if (includeSelf)
+				PursueObjects.Add(new PursueObjectType<LocalPlayer>(0, player => true));
+		}
+
+	    /// <summary>Gets the names of pursue targets.</summary>
+	    /// <returns></returns>
+	    public IEnumerable<string> GetNames()
+		{
+			foreach (var pursueObject in PursueObjects)
+			{
+				if (pursueObject.Id != 0)
+					yield return Utility.GetObjectNameFromId(pursueObject.Id);
+
+				if (pursueObject is PursueObjectType<LocalPlayer>)
+					yield return "Me";
+
+				if (pursueObject.PursueWhenDelayCompiledExpression != null)
+					yield return pursueObject.PursueWhenDelayCompiledExpression.ExpressionString;
+
+				yield return "Unknown";
+			}
+		}
+
         public IEnumerable<WoWObject> GetPursuitedObjects()
         {
             return from obj in ObjectManager.ObjectList
@@ -145,6 +181,8 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
                 orderby obj.DistanceSqr
                 select obj;
         }
+
+
 
         public static PursuitListType GetOrCreate(XElement parentElement, string elementName)
         {

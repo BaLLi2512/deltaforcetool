@@ -54,7 +54,29 @@
 				<GrindArea>
 					<Factions>1711 1712 16</Factions>
 					<Hotspots>
-						<Hotspot X="-1152.127" Y="-1779.344" Z="8.196811" />
+						<Hotspot X="-1322.761" Y="-2033.454" Z="6.620878" />
+				<Hotspot X="-1226.906" Y="-1973.849" Z="3.876017" />
+				<Hotspot X="-1199.064" Y="-1961.526" Z="7.053379" />
+				<Hotspot X="-1142.183" Y="-1933.294" Z="3.850416" />
+				<Hotspot X="-1155.656" Y="-1813.401" Z="6.814441" />
+				<Hotspot X="-1142.906" Y="-1763.998" Z="7.394245" />
+				<Hotspot X="-1171.02" Y="-1687.997" Z="10.62061" />
+				<Hotspot X="-1258.905" Y="-1582.104" Z="7.360569" />
+				<Hotspot X="-1323.271" Y="-1485.929" Z="7.353296" />
+				<Hotspot X="-1371.961" Y="-1438.235" Z="4.838542" />
+				<Hotspot X="-1435.553" Y="-1456.542" Z="3.459456" />
+				<Hotspot X="-1438.847" Y="-1471.18" Z="6.261462" />
+				<Hotspot X="-1471.87" Y="-1539.687" Z="8.397044" />
+				<Hotspot X="-1542.431" Y="-1612.738" Z="8.74235" />
+				<Hotspot X="-1546.901" Y="-1690.056" Z="8.173005" />
+				<Hotspot X="-1555.014" Y="-1721.235" Z="7.531788" />
+				<Hotspot X="-1573.657" Y="-1739.293" Z="7.55783" />
+				<Hotspot X="-1617.998" Y="-1781.026" Z="8.220594" />
+				<Hotspot X="-1586.036" Y="-1846.609" Z="8.294185" />
+				<Hotspot X="-1483.452" Y="-1798.75" Z="20.91407" />
+				<Hotspot X="-1576.618" Y="-1874.447" Z="7.935413" />
+				<Hotspot X="-1543.495" Y="-1905.452" Z="-6.113788" />
+				<Hotspot X="-1152.127" Y="-1779.344" Z="8.196811" />
 						<Hotspot X="-1151.5" Y="-1739.191" Z="7.360145" />
 						<Hotspot X="-1163.126" Y="-1700.136" Z="8.206305" />
 						<Hotspot X="-1187.693" Y="-1667.948" Z="12.22746" />
@@ -116,12 +138,14 @@
 						<Hotspot X="-1219.168" Y="-1621.883" Z="7.845561" />
 						<Hotspot X="-1242.772" Y="-1588.954" Z="7.395076" />
 						<Hotspot X="-1280.179" Y="-1572.775" Z="7.35952" />
-						<Hotspot X="-1320.289" Y="-1574.265" Z="2.956794" />	
+						<Hotspot X="-1320.289" Y="-1574.265" Z="2.956794" />
 					</Hotspots>
 				</GrindArea>  
 			</SetGrindArea>
 			<GrindTo Condition="IsObjectiveComplete(1, 36692)" GoalText="Assaulting Darktide Roost!"  />
 		</If>
+					<CustomBehavior File="UserSettings" KillBetweenHotspots="True" />
+
 	
 	<!-- We're done, now lets turn them in! -->
 	<If Condition="HasQuest(36692) &amp;&amp; IsQuestCompleted(36692)" >
@@ -129,6 +153,6 @@
 		<CustomBehavior File="WaitTimer" WaitTime="5000" /> 
 		<TurnIn QuestId="36692" QuestName="Assault on the Darktide Roost" TurnInName="Shadow Hunter Ukambe" TurnInId="78495" X="5573.493" Y="4597.967" Z="142.0461" />
 	</If>
-<!-- <CustomBehavior File="RunCode" Code="HBRelogApi.SkipCurrentTask(HBRelogApi.CurrentProfileName);" />  -->
+ <CustomBehavior File="HBRelogSkip"  />  
 	</QuestOrder>
 </HBProfile>

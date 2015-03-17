@@ -24,12 +24,18 @@
 	<AvoidMobs>
 		<Mob Name="Shadowglen Thornshooter" Entry="81502" />
 		<Mob Name="Shadowglen Spitter" Entry="81637" />
-		<Mob Name="Sargerei Demonlord" Entry="81543" />
+		<Mob Name="Dämonenfürst der Sargerai" Entry="81543" />
 	</AvoidMobs>
+	
+	<Blacklist>
+		<Mob Name="Shadowglen Thornshooter" Entry="81502" Flags="Pull"  />
+		<Mob Name="Shadowglen Spitter" Entry="81637" Flags="Pull" />
+		<Mob Name="Dämonenfürst der Sargerai" Entry="81543" Flags="Pull" />
+    </Blacklist>
 
 	<Blackspots>
-		<Blackspot X="-751.191" Y="-911.592" Z="121.0737" Radius="5"/>
-		<Blackspot X="-845.5746" Y="-920.6215" Z="114.2543" Radius="5"/>
+		<Blackspot X="-751.191" Y="-911.592" Z="121.0737" Radius="15"/>
+		<Blackspot X="-845.5746" Y="-920.6215" Z="114.2543" Radius="15"/>
 	</Blackspots>
 
 	<Mailboxes>
@@ -51,20 +57,27 @@
 		<While Condition="HasQuest(36691) &amp;&amp; !IsQuestCompleted(36691)" >
 			<CustomBehavior File="InteractWith" MobId="85991" ObjectType="GameObject" QuestId="36691" InteractByQuestFrameDisposition="Accept">
 				<HuntingGrounds>
+					<Hotspot X="-691.7855" Y="-998.6001" Z="96.64851" />
+					<Hotspot X="-736.4188" Y="-1053.698" Z="84.54719" />	
+					<Hotspot X="-798.5917" Y="-1090.169" Z="84.04662" />
+					<Hotspot X="-880.2324" Y="-1051.382" Z="96.53597" />
+					<Hotspot X="-892.7075" Y="-994.0547" Z="92.56141" />
+					<Hotspot X="-940.8651" Y="-927.661" Z="98.54305" />
+					<Hotspot X="-726.7661" Y="-940.1936" Z="91.96842" />
+					<Hotspot X="-685.8311" Y="-897.4438" Z="96.15575" />
 					<Hotspot X="-1013.313" Y="-723.0705" Z="148.977" />
 					<Hotspot X="-920.0626" Y="-1208.371" Z="106.0583" />
 					<Hotspot X="-730.3031" Y="-1172.013" Z="75.54263" />
-					
 				</HuntingGrounds>
 			</CustomBehavior>
 		</While>
-		
+			<CustomBehavior File="UserSettings" KillBetweenHotspots="True" />
 		<!-- We're done, now lets turn them in! -->
 		<If Condition="HasQuest(36691) &amp;&amp; IsQuestCompleted(36691)" >
 			<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(110560)" WaitTime="2000" />
 			<CustomBehavior File="WaitTimer" WaitTime="5000" /> 
 			<TurnIn QuestId="36691" QuestName="Assault on Socrethar's Rise" TurnInName="Shadow Hunter Ukambe" TurnInId="78495" X="5573.493" Y="4597.967" Z="142.0461" />
 		</If>
-<!-- <CustomBehavior File="RunCode" Code="HBRelogApi.SkipCurrentTask(HBRelogApi.CurrentProfileName);" />  -->
+		<CustomBehavior File="HBRelogSkip"  />  
 	</QuestOrder>
 </HBProfile>

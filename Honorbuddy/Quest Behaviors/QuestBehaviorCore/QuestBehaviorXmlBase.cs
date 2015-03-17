@@ -15,12 +15,14 @@ using System.Linq;
 using System.Xml.Linq;
 
 using Styx;
+using Styx.CommonBot.Profiles;
+
 #endregion
 
 
 namespace Honorbuddy.QuestBehaviorCore.XmlElements
 {
-    public abstract class QuestBehaviorXmlBase
+    public abstract class QuestBehaviorXmlBase : IXmlObject
     {
         protected QuestBehaviorXmlBase(XElement xElement)
         {
@@ -51,8 +53,8 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 
 
 		#region Concrete class required implementations...
-		public virtual string SubversionId { get { return "$Id: QuestBehaviorXmlBase.cs 1777 2014-11-07 10:27:43Z mainhaxor $"; } }
-		public virtual string SubversionRevision { get { return "$Rev: 1777 $"; } }
+		public virtual string SubversionId { get { return "$Id: QuestBehaviorXmlBase.cs 1974 2015-03-12 00:29:37Z mainhaxor $"; } }
+		public virtual string SubversionRevision { get { return "$Rev: 1974 $"; } }
 
 		public abstract XElement ToXml(string elementName = null);
 		#endregion

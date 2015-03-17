@@ -179,8 +179,8 @@ namespace Honorbuddy.Quest_Behaviors.Vehicles.FlyingVehicle
 		private double PrecisionSqr { get; set; }
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: FlyingVehicle.cs 1738 2014-10-15 19:47:44Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1738 $"); } }
+		public override string SubversionId { get { return ("$Id: FlyingVehicle.cs 1987 2015-03-13 06:29:43Z chinajade $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 1987 $"); } }
 
 		#endregion
 
@@ -378,10 +378,11 @@ namespace Honorbuddy.Quest_Behaviors.Vehicles.FlyingVehicle
 				await CommonCoroutines.SleepForLagDuration();
 			}
 
+			await Coroutine.Sleep(StyxWoW.Random.Next(5000, 6000));
 			UseVehicleButton(DropPassengerButton);
 
 			await CommonCoroutines.SleepForLagDuration();
-			if (!await Coroutine.Wait(6000, () => !Query.IsViable(passenger) || !UnitIsRidingMyVehicle(passenger)))
+			if (!await Coroutine.Wait(10000, () => !Query.IsViable(passenger) || !UnitIsRidingMyVehicle(passenger)))
 			{
 				QBCLog.Warning("Failed to drop passenger off");
 				return false;

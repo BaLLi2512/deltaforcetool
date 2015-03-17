@@ -249,6 +249,8 @@ using Styx;
 using Styx.Common;
 using Styx.CommonBot;
 using Styx.CommonBot.Profiles;
+using Styx.CommonBot.Profiles.Quest.Order;
+using Styx.Helpers;
 using Styx.Pathing;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
@@ -287,11 +289,9 @@ namespace Honorbuddy.QuestBehaviorCore
 				// Go ahead and compile the "TerminateWhen" expression to look for problems...
                 // Doing this in the constructor allows us to catch 'blind change'problems when ProfileDebuggingMode is turned on.
 				// If there is a problem, an exception will be thrown (and handled here).
-                var terminateWhenExpression = GetAttributeAs<string>("TerminateWhen", false, ConstrainAs.StringNonEmpty, null) ?? "false";
-                TerminateWhen = new UserDefinedExpression<bool>("TerminateWhen", terminateWhenExpression);
-
-			    if (TerminateWhen.HasErrors)
-			        IsAttributeProblem = true;
+                var terminateWhenExpression = GetAttributeAs<string>("TerminateWhen", false, ConstrainAs.StringNonEmpty, null);
+				TerminateWhenCompiledExpression = Utility.ProduceParameterlessCompiledExpression<bool>(terminateWhenExpression);
+				TerminateWhen = Utility.ProduceCachedValueFromCompiledExpression(TerminateWhenCompiledExpression, false);
 
 				TerminationChecksQuestProgress = GetAttributeAsNullable<bool>("TerminationChecksQuestProgress", false, null, null) ?? true;
 
@@ -350,20 +350,28 @@ namespace Honorbuddy.QuestBehaviorCore
 		public bool IgnoreMobsInBlackspots { get; protected set; }
         public MovementByType MovementBy { get; protected set; }
         public PursuitListType PursuitList { get; protected set; }
+
+
 		public double NonCompeteDistance { get; protected set; }
 		public int QuestId { get; protected set; }
 		public int QuestObjectiveIndex { get; protected set; }
 		public QuestCompleteRequirement QuestRequirementComplete { get; protected set; }
 		public QuestInLogRequirement QuestRequirementInLog { get; protected set; }
 		private int TerminateAtMaxRunTimeSecs { get; set; }
-		public UserDefinedExpression<bool> TerminateWhen { get; protected set; }
+		
+		private PerFrameCachedValue<bool> TerminateWhen { get; set; }
+
+		[CompileExpression]
+		public DelayCompiledExpression<Func<bool>> TerminateWhenCompiledExpression { get; protected set; }
+
+
 		public bool TerminationChecksQuestProgress { get; protected set; }
 
 		public readonly Stopwatch _behaviorRunTimer = new Stopwatch();
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: QuestBehaviorBase.cs 1946 2015-02-05 03:53:06Z chinajade $"; } }
-		public override string SubversionRevision { get { return "$Rev: 1946 $"; } }
+		public override string SubversionId { get { return "$Id: QuestBehaviorBase.cs 1997 2015-03-15 02:56:33Z chinajade $"; } }
+		public override string SubversionRevision { get { return "$Rev: 1997 $"; } }
 		#endregion
 
 
@@ -416,7 +424,7 @@ namespace Honorbuddy.QuestBehaviorCore
 			get
 			{
 				return _isBehaviorDone // normal completion
-					   || TerminateWhen.Evaluate() // Specified condition in profile
+					   || TerminateWhen // Specified condition in profile
 					   || CheckTermination(); // Quest/objective ID
 			}
 		}

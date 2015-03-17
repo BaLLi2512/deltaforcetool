@@ -1,78 +1,47 @@
 New features:
 --------------
-  * BGBuddy
-    - Alterac Valley rewritten to use a coroutine, lots of new logic to make the bot smarter than it was before, horde might even start winning. (HB-2068)
+  * ProfessionBuddy
+    - CastSpellAction will now automatically place spells that require placement (such as cooking fire) at player's feet. (HB-1489)
 
-  * Core
-    - The Heirloom mount will now be used sub-20 if the character knows it (HB-2007)
+  * QuestBehaviour
+    - Hearthstone has been rewritten to handle multiple fail modes, use Innkeepers Daughter hearthstone and use Garrison Hearthstone if UseGarrisonHearthstone=true (HB-614)
 
-  * DungeonBuddy
-    - Dungeon scripts will now collect items needed to complete the 25 quests available in garrison inn. This includes both normal and heroic dungeon quests. (HB-2014)
+    - QBcore based behaviors can now use a 'PursuitList' sub element to select targets to pursue. Currently only InteractWith and KillUntilComplete use this PursueList (HB-693)
 
-  * Other
-    - The settings menu now has an option to display "Character @ Realm" as the Honorbuddy title rather than Process ID (HB-1945)
+    - EscortGroup is now QBcore-based (HB-712)
 
-  * Singular
-    - Oralius' Whispering Crystal has been supported for months as a flask.  The default for Use Flasks was false, so changing to true but users upgrading will have to manually change this setting for item to be used. (HB-1914)
+    - MrFishIt: Added a TerminateWhen attribute  (HB-1169)
 
-Api Changes:
---------------
-    - ProtectedItemManager.Add documentation now properly reflects addition (HB-1962)
+    - BuyItemCount is now a math equation (HB-1172)
 
-    - Added KnowsMount to ProfileHelperFunctionsBase (HB-958)
+    - MrFishIt: CollectItemCount can now be a C# expression (HB-1174)
 
-    - bools in InboxMailItem should now return correct values (HB-1486)
+    - InteractWith: Added a new option, MissingBuyItemIsFatal, which specifies whether profile should terminate when a vendor doesn't have an item to buy. Default value: true (HB-1231)
 
-    - WoWUnit.IsBoss is now cached for 3 seconds rather than per frame in order to alleviate performance issues (HB-2002)
+    - InteractWith will now warn the user if WaitForNpcs='true' and a HuntingGrounds sub element with multiple waypoints is used.  (HB-2026)
+
+  * Questing
+    - Profile line number is now printed in log for nodes that throw an exception while being executed (HB-757)
 
 Bug fixes:
 --------------
   * ArchaeologyBuddy
-    - Will now use Brittle Cartography Journal to train Archeology to 700 max skill (HB-2013)
-
-  * BGBuddy
-    - Will now prioritize destroying vehicles in Strand of the Ancients (HB-2043)
-
-    - Will now always attack all the bosses without fail in Alterac Valley when it's supposed to. (HB-2067)
-
-    - Should no longer sometimes stand around doing nothing in Stonehearth Bunker when doing Alterac Valley. (HB-1874)
-
-  * Core
-    - Cleaned up an ambiguous log message related to Taxi vs Walk time comparisons when determining which is better to use. (HB-1956)
-
-    - Talented no longer tries to learn talents above your max talent tier. (HB-2045)
-
-    - Updated Spells.bin with new spell names (HB-2036)
-
-  * DungeonBuddy
-    - Ancient Mogu Treasures will now be opened instead of left in the bags. (HB-2037)
-
-    - Skyreach, Ruhkran: Chest is now looted and players with the 'Solar Detonation' debuf are now avoided. (HB-1656)
-
-    - Skyreach dungeon: User is now alerted and given an option to abort leaving dungeon if toon is stuck while navigating the wind path to final boss. (HB-1740)
-
-    - Bloodmaul Slag Mines: Improved logic for the Roltall encounter (HB-2019)
-
-    - The Everbloom (normal or heroic): Fixed a mesh issue near entrance that cause bot to try navigate up a hill that is too steep (HB-2021)
-
-  * Gatherbuddy
-    - Fixed a bug where the bot might get stuck in a back and forth movement between a node and next hotspot (HB-2040)
-
-  * ProfessionBuddy
-    - Fixed an issue that caused CastSpell to just throw errors when bot was stopped and restarted (HB-2030)
+    - Should be working properly on pre-draenor maps now (HB-2039)
 
   * QuestBehaviour
-    - MrFishIt QuestBehaviour now no longer throws exceptions when OnFinished is called on it (HB-1986)
+    - FlyingVehicle will now wait longer before and after dropping off passenger (HB-675)
+
+    - Vendoring is now disabled while EscortGroup is running (HB-1175)
+
+    - FlyTo is no longer spamming log with warnings while profile is loaded. Also eliminated spam coming from HuntingGroundsType  (HB-2077)
+
+    - UseTransport will now disable behaviors that cause distractions (HB-443)
+
+Other changes:
+--------------
+  * QuestBehaviour
+    - InteractWith now uses the correct symbol for infinity for TtB (Time to blacklist) (HB-2000)
 
   * Questing
-    - Honorbuddy will continue trying to turnin a quest if bot is not successfully in targeting the turnin NPC. (HB-1915)
-
-  * Singular
-    - Updated to recognize Glyph of Untamed Stars and react accordingly (HB-1867)
-
-    - Now correctly detects not in Battle Stance and switches (HB-2052)
-
-    - Arms Warrior was infrequently throwing exception in PVP which resulted in death. (HB-1884)
-
-    - No longer spams Seal of Righteousness.  Updated Buff logic to deal with Seal of Righteousness as an override of Seal of Command (HB-2011)
+    - Reduce quest profile loading time and memory usage (HB-1905)
 

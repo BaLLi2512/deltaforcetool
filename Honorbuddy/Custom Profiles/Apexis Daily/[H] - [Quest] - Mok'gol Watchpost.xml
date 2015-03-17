@@ -22,11 +22,12 @@
 	<MailPurple>true</MailPurple>
 
 	<AvoidMobs>
-		<Mob Name="Highmaul Guard" Entry="87221" />
 		<Mob Name="Direfang Alpha" Entry="86932" />
-		<Mob Name="Direfang Prowler" Entry="86931" />
-		<Mob Name="Marsh Anaconda" Entry="87039" />
-		<Mob Name="Deadly Gloomstalker" Entry="86773" />
+	<Mob Name="Marsh Anaconda" Entry="87039" />
+	<Mob Name="Slithershock Eel" Entry="83742" />
+	<Mob Name="Territorial Meadowstomper" />
+	<Mob Name="Meadowstomper" Entry="78460" />
+	<Mob Name="Deadly Gloomstalker" Entry="86773" />
 	</AvoidMobs>
 
 	<Blackspots>
@@ -62,7 +63,13 @@
 			
 				<CustomBehavior File="InteractWith" MobId="237263" ObjectType="GameObject" QuestId="36693" PreInteractMountStrategy="DismountOrCancelShapeshift" InteractByQuestFrameDisposition="Accept" >
 					<HuntingGrounds>
-						<Hotspot X="3469.78" Y="6861.467" Z="3.070986" />
+						<Hotspot X="3605.591" Y="6712.171" Z="12.30328" />
+				<Hotspot X="3545.526" Y="6731.188" Z="7.945073" />
+				<Hotspot X="3486.783" Y="6775.085" Z="3.216084" />
+				<Hotspot X="3465.389" Y="6852.431" Z="3.029907" />
+				<Hotspot X="3599.202" Y="6843.138" Z="17.10222" />
+				<Hotspot X="3532.403" Y="6911.903" Z="23.53185" />
+				<Hotspot X="3469.78" Y="6861.467" Z="3.070986" />
 						<Hotspot X="3537.745" Y="6747.625" Z="6.699275" />
 						<Hotspot X="3600.267" Y="6704.172" Z="11.87251" />
 						<Hotspot X="3602.515" Y="6838.987" Z="16.88023" />
@@ -70,13 +77,14 @@
 					</HuntingGrounds>
 				</CustomBehavior>			
 		</While>
-		
+				<CustomBehavior File="UserSettings" KillBetweenHotspots="True" />
+	
 		<!-- We're done, now lets turn them in! -->
 		<If Condition="HasQuest(36693) &amp;&amp; IsQuestCompleted(36693)" >
 			<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(110560)" WaitTime="2000" />
 			<CustomBehavior File="WaitTimer" WaitTime="5000" /> 
 			<TurnIn QuestId="36693" QuestName="Assault on Mok'gol Watchpost" TurnInName="Shadow Hunter Ukambe" TurnInId="78495" X="5573.493" Y="4597.967" Z="142.0461" />
 		</If>
-<!-- <CustomBehavior File="RunCode" Code="HBRelogApi.SkipCurrentTask(HBRelogApi.CurrentProfileName);" />  -->
+ <CustomBehavior File="HBRelogSkip"  />  
 	</QuestOrder>
 </HBProfile>

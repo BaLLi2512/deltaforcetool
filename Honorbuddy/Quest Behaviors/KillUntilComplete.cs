@@ -182,8 +182,8 @@ namespace Honorbuddy.Quest_Behaviors.KillUntilComplete
         private UtilityCoroutine.NoMobsAtCurrentWaypoint _noMobsAtCurrentWaypoint;
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: KillUntilComplete.cs 1946 2015-02-05 03:53:06Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1946 $"); } }
+		public override string SubversionId { get { return ("$Id: KillUntilComplete.cs 1974 2015-03-12 00:29:37Z mainhaxor $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 1974 $"); } }
 
         #region Overrides of QuestBehaviorBase
 
@@ -313,7 +313,7 @@ namespace Honorbuddy.Quest_Behaviors.KillUntilComplete
 	    {
 	        foreach (var mobId in mobIds)
 	        {
-	            var pursueObject = new PursueObjectType<WoWUnit>(mobId);
+				var pursueObject = new PursueObjectType<WoWUnit>(mobId);
                 pursuitList.PursueObjects.Add(pursueObject);
 	        }
 	    }
