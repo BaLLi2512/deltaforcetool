@@ -22,13 +22,22 @@
 	<MailPurple>true</MailPurple>
 
 	<AvoidMobs>
-		<Mob Name="Highmaul Guard" Entry="87221" />
-		<Mob Name="Direfang Alpha" Entry="86932" />
-		<Mob Name="Direfang Prowler" Entry="86931" />
-		<Mob Name="Marsh Anaconda" Entry="87039" />
-		<Mob Name="Deadly Gloomstalker" Entry="86773" />
-		<Mob Name="Mok'gol Grunt" Entry="86657" />
+		<Mob Name="Highmaul Guard" Id="87221" />
+		<Mob Name="Direfang Alpha" Id="86932" />
+		<Mob Name="Direfang Prowler" Id="86931" />
+		<Mob Name="Marsh Anaconda" Id="87039" />
+		<Mob Name="Deadly Gloomstalker" Id="86773" />
+		<Mob Name="Mok'gol Grunt" Id="86657" />
 	</AvoidMobs>
+	
+	<Blacklist>
+		<Mob Name="Highmaul Guard" Id="87221" Flag="Pull, Combat" />
+		<Mob Name="Direfang Alpha" Id="86932" Flag="Pull, Combat" />
+		<Mob Name="Direfang Prowler" Id="86931" Flag="Pull, Combat" />
+		<Mob Name="Marsh Anaconda" Id="87039" Flag="Pull, Combat" />
+		<Mob Name="Deadly Gloomstalker" Id="86773" Flag="Pull, Combat" />
+		<Mob Name="Mok'gol Grunt" Id="86657" Flag="Pull, Combat" />
+	</Blacklist>
 
 	<Blackspots>
 		<Blackspot X="4453.967" Y="6960.078" Z="142.3922" Radius="20" />
@@ -53,19 +62,19 @@
 				<CustomBehavior File="Message" Text="Searching for Reliquaries" LogColor="Cyan" />
 				<CustomBehavior File="InteractWith" MobId="237453" ObjectType="GameObject" QuestId="36694" InteractByQuestFrameDisposition="Accept" >
 					<HuntingGrounds>
-					<Hotspot X="4020.122" Y="7174.524" Z="68.9325" />
-					<Hotspot X="4129.452" Y="7299.534" Z="96.63145" />
-					<Hotspot X="4170.202" Y="7262.392" Z="96.73138" />
-					<Hotspot X="4285.641" Y="7200.056" Z="110.6381" />
-					<Hotspot X="4317.211" Y="7259.013" Z="111.5065" />
-					<Hotspot X="4351.014" Y="7142.25" Z="124.2582" />
-					<Hotspot X="4416.431" Y="7119.982" Z="133.244" />
-					<Hotspot X="4378.426" Y="6990.312" Z="133.2449" />
-					<Hotspot X="4297.206" Y="7062.722" Z="133.2447" />
-					<Hotspot X="4267.547" Y="7164.401" Z="109.6874" />
-					<Hotspot X="4171.845" Y="7217.061" Z="96.51284" />
-					<Hotspot X="4035.86" Y="7173.1" Z="72.08737" />
-					<Hotspot X="4010.682" Y="7097.853" Z="68.91238" />
+							<Hotspot X="4020.122" Y="7174.524" Z="68.9325" />
+							<Hotspot X="4129.452" Y="7299.534" Z="96.63145" />
+							<Hotspot X="4170.202" Y="7262.392" Z="96.73138" />
+							<Hotspot X="4285.641" Y="7200.056" Z="110.6381" />
+							<Hotspot X="4317.211" Y="7259.013" Z="111.5065" />
+							<Hotspot X="4351.014" Y="7142.25" Z="124.2582" />
+							<Hotspot X="4416.431" Y="7119.982" Z="133.244" />
+							<Hotspot X="4378.426" Y="6990.312" Z="133.2449" />
+							<Hotspot X="4297.206" Y="7062.722" Z="133.2447" />
+							<Hotspot X="4267.547" Y="7164.401" Z="109.6874" />
+							<Hotspot X="4171.845" Y="7217.061" Z="96.51284" />
+							<Hotspot X="4035.86" Y="7173.1" Z="72.08737" />
+							<Hotspot X="4010.682" Y="7097.853" Z="68.91238" />
 						<Hotspot X="4049.718" Y="7107.803" Z="70.18295" />
 						<Hotspot X="4085.417" Y="7121.654" Z="82.45463" />
 						<Hotspot X="4115.588" Y="7146.002" Z="95.16399" />
@@ -127,6 +136,6 @@
 		<CustomBehavior File="WaitTimer" WaitTime="5000" /> 
 		<TurnIn QuestId="36694" QuestName="Assault on the Broken Precipice" TurnInName="Shadow Hunter Ukambe" TurnInId="78495" X="5573.493" Y="4597.967" Z="142.0461" />
 	</If>
- <CustomBehavior File="HBRelogSkip"  />  
+	 <CustomBehavior File="HBRelogSkip"  />  
 	</QuestOrder>
 </HBProfile>

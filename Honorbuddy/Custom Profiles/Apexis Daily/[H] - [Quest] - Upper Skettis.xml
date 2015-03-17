@@ -55,12 +55,12 @@
 				<GrindArea>
 					<Factions>16</Factions>
 					<Hotspots>
-					<Hotspot X="902.7831" Y="1257.886" Z="180.5228" />
-					<Hotspot X="911.9269" Y="1437.684" Z="285.4711" />
-					<Hotspot X="960.0444" Y="1561.721" Z="302.6513" />
-					<Hotspot X="1013.194" Y="1413.779" Z="290.2898" />
-					<Hotspot X="1038.443" Y="1337.477" Z="276.2807" />
-					<Hotspot X="932.6331" Y="1086.841" Z="179.2555" />
+						<Hotspot X="902.7831" Y="1257.886" Z="180.5228" />
+						<Hotspot X="911.9269" Y="1437.684" Z="285.4711" />
+						<Hotspot X="960.0444" Y="1561.721" Z="302.6513" />
+						<Hotspot X="1013.194" Y="1413.779" Z="290.2898" />
+						<Hotspot X="1038.443" Y="1337.477" Z="276.2807" />
+						<Hotspot X="932.6331" Y="1086.841" Z="179.2555" />
 						<Hotspot X="998.4891" Y="1569.703" Z="304.8752" />
 					</Hotspots>
 				</GrindArea>  
@@ -85,6 +85,6 @@
 			<CustomBehavior File="WaitTimer" WaitTime="5000" /> 
 			<TurnIn QuestId="36688" QuestName="Assault on Skettis" TurnInName="Shadow Hunter Ukambe" TurnInId="78495" X="5573.493" Y="4597.967" Z="142.0461" />
 		</If>
- <CustomBehavior File="HBRelogSkip"  />  
+	 <CustomBehavior File="HBRelogSkip"  />  
 	</QuestOrder>
 </HBProfile>

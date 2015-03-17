@@ -71,6 +71,6 @@
 		<If Condition="HasQuest(36691)" ><CustomBehavior File="LoadProfile" ProfileName="[H] - [Quest] - Socrethar's Rise" RememberProfile="true" /></If>
 		<If Condition="HasQuest(36693)" ><CustomBehavior File="LoadProfile" ProfileName="[H] - [Quest] - Mok'gol Watchpost" RememberProfile="true" /></If>
 		<!-- <CustomBehavior File="RunCode" Code="" /> -->
-<!-- <CustomBehavior File="RunCode" Code="HBRelogApi.SkipCurrentTask(HBRelogApi.CurrentProfileName);" />  -->  
+	<CustomBehavior File="HBRelogSkip"  />  
 	</QuestOrder>
 </HBProfile>

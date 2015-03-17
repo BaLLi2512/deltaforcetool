@@ -22,14 +22,24 @@
 	<MailPurple>true</MailPurple>
 
 	<AvoidMobs>
-	<Mob Name="Frostbeak Scavenger" Entry="78108" />
-	<Mob Name="Bloodmaul Bonecrusher" Entry="77995" /> <!-- Elite, also way up in a tower.  Usually a 'get stuck' issue -->
-<!-- These are Mobs you will encounter if you click Start within your Garrison, or in another zone. -->
-	<Mob Name="Frostwing Screecher" Entry="79643" />
-	<Mob Name="Frostspinner Widow" Entry="80211" />
-	<Mob Name="Frostspinner Spider" Entry="80212" />
-	<Mob Name="Frostspinner Spiderling" Entry="80247" />
+		<Mob Name="Frostbeak Scavenger" Id="78108" />
+		<Mob Name="Bloodmaul Bonecrusher" Id="77995" /> <!-- Elite, also way up in a tower.  Usually a 'get stuck' issue -->
+	<!-- These are Mobs you will encounter if you click Start within your Garrison, or in another zone. -->
+		<Mob Name="Frostwing Screecher" Id="79643" />
+		<Mob Name="Frostspinner Widow" Id="80211" />
+		<Mob Name="Frostspinner Spider" Id="80212" />
+		<Mob Name="Frostspinner Spiderling" Id="80247" />
 	</AvoidMobs>
+	
+	<Blacklist>
+		<Mob Name="Frostbeak Scavenger" Id="78108" Flag="Pull, Combat" />
+		<Mob Name="Bloodmaul Bonecrusher" Id="77995" Flag="Pull, Combat" /> <!-- Elite, also way up in a tower.  Usually a 'get stuck' issue -->
+	<!-- These are Mobs you will encounter if you click Start within your Garrison, or in another zone. -->
+		<Mob Name="Frostwing Screecher" Id="79643" Flag="Pull, Combat" />
+		<Mob Name="Frostspinner Widow" Id="80211" Flag="Pull, Combat" />
+		<Mob Name="Frostspinner Spider" Id="80212" Flag="Pull, Combat" />
+		<Mob Name="Frostspinner Spiderling" Id="80247" Flag="Pull, Combat" />
+	</Blacklist>
 
 	<Blackspots>
 		<Blackspot X="7378.223" Y="4736.919" Z="179.937" Radius="3.20665" />
@@ -85,11 +95,11 @@
 					<CustomBehavior File="Message" Text="Opening prisoner cages!" LogColor="Cyan" />
 					<CustomBehavior File="InteractWith" MobId="233004" QuestId="36669" InteractByQuestFrameDisposition="Accept" >
 						<HuntingGrounds>
-					<Hotspot X="7463.403" Y="4781.247" Z="179.9368" />
-					<Hotspot X="7357.604" Y="4565.688" Z="150.9572" />
-					<Hotspot X="7612.319" Y="4755.327" Z="129.0884" />
-					<Hotspot X="7735.692" Y="4669.627" Z="41.28682" />
-					<Hotspot X="7601.042" Y="4780.485" Z="129.0896" />
+							<Hotspot X="7463.403" Y="4781.247" Z="179.9368" />
+							<Hotspot X="7357.604" Y="4565.688" Z="150.9572" />
+							<Hotspot X="7612.319" Y="4755.327" Z="129.0884" />
+							<Hotspot X="7735.692" Y="4669.627" Z="41.28682" />
+							<Hotspot X="7601.042" Y="4780.485" Z="129.0896" />
 							<Hotspot X="7677.886" Y="4773.429" Z="130.1364" />
 							<Hotspot X="7746.76" Y="4611.852" Z="41.60731" />
 							<Hotspot X="7895.704" Y="4890.958" Z="0.5729805" />
@@ -112,9 +122,9 @@
 						<Hotspot X="7584.946" Y="4615.166" Z="101.5826" />
 						<Hotspot X="7741.537" Y="4656.857" Z="41.46461" />
 						<Hotspot X="7463.403" Y="4781.247" Z="179.9368" />
-					<Hotspot X="7357.604" Y="4565.688" Z="150.9572" />
-					<Hotspot X="7612.319" Y="4755.327" Z="129.0884" />
-					<Hotspot X="7735.692" Y="4669.627" Z="41.28682" />
+						<Hotspot X="7357.604" Y="4565.688" Z="150.9572" />
+						<Hotspot X="7612.319" Y="4755.327" Z="129.0884" />
+						<Hotspot X="7735.692" Y="4669.627" Z="41.28682" />
 					</HuntingGrounds>
 				</CustomBehavior>
 			<!-- Then do it again! -->
@@ -128,6 +138,6 @@
 		<CustomBehavior File="WaitTimer" WaitTime="5000" /> 
 		<TurnIn QuestId="36669" QuestName="Assault on the Stonefury Cliffs" TurnInName="Shadow Hunter Ukambe" TurnInId="78495" X="5573.493" Y="4597.967" Z="142.0461" />
 	</If>
- <CustomBehavior File="HBRelogSkip"  />  
+	 <CustomBehavior File="HBRelogSkip"  />  
 	</QuestOrder>
 </HBProfile>

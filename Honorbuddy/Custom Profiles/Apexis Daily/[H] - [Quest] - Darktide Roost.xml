@@ -22,8 +22,12 @@
 	<MailPurple>true</MailPurple>
 
 	<AvoidMobs>
-		<Mob Name="Darktide Bomb Bot" Entry="78822" />
+		<Mob Name="Darktide Bomb Bot" Id="78822" />
 	</AvoidMobs>
+	
+	<Blacklist>
+		<Mob Name="Darktide Bomb Bot" Id="78822" Flag="Pull, Combat" />
+	</Blacklist>
 
 	<Blackspots>
 	</Blackspots>

@@ -23,12 +23,19 @@
 
 	<AvoidMobs>
 		<!-- Not an objective of the daily -->
-		<Mob Name="Ravenous Ironchewer" Entry="72347" /> 
-		<Mob Name="Rolling Shardback" Entry="82144" />
-		<Mob Name="Direfang Alpha" Entry="86932" />
-	    <Mob Name="Marsh Anaconda" Entry="87039" />
-		
+		<Mob Name="Ravenous Ironchewer" Id="72347" /> 
+		<Mob Name="Rolling Shardback" Id="82144" />
+		<Mob Name="Direfang Alpha" Id="86932" />
+	    <Mob Name="Marsh Anaconda" Id="87039" />
 	</AvoidMobs>
+	
+	<Blacklist>
+		<!-- Not an objective of the daily -->
+		<Mob Name="Ravenous Ironchewer" Id="72347" Flag="Pull, Combat" /> 
+		<Mob Name="Rolling Shardback" Id="82144" Flag="Pull, Combat" />
+		<Mob Name="Direfang Alpha" Id="86932" Flag="Pull, Combat" />
+	    <Mob Name="Marsh Anaconda" Id="87039" Flag="Pull, Combat" />
+	</Blacklist>
 
 	<Blackspots>
 		<Blackspot X="6990.117" Y="3315.148" Z="167.1314" /> <!-- Under the ledge -->
@@ -69,7 +76,6 @@
 						<Hotspot X="7309.112" Y="3176.075" Z="143.3992" />
 						<Hotspot X="7164.64" Y="3277.109" Z="145.6098" />
 						<Hotspot X="7013.332" Y="3335.475" Z="164.8776" />
-
 					</HuntingGrounds>
 				</CustomBehavior>
 				
@@ -107,6 +113,6 @@
 		<CustomBehavior File="WaitTimer" WaitTime="5000" /> 
 		<TurnIn QuestId="36697" QuestName="Assault on Magnarok" TurnInName="Shadow Hunter Ukambe" TurnInId="78495" X="5573.493" Y="4597.967" Z="142.0461" />
 	</If>
- <CustomBehavior File="HBRelogSkip"  />  
+	<CustomBehavior File="HBRelogSkip"  />  
 	</QuestOrder>
 </HBProfile>
