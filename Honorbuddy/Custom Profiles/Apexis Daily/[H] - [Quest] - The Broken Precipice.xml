@@ -31,12 +31,12 @@
 	</AvoidMobs>
 	
 	<Blacklist>
-		<Mob Name="Highmaul Guard" Id="87221" Flag="Pull, Combat" />
-		<Mob Name="Direfang Alpha" Id="86932" Flag="Pull, Combat" />
-		<Mob Name="Direfang Prowler" Id="86931" Flag="Pull, Combat" />
-		<Mob Name="Marsh Anaconda" Id="87039" Flag="Pull, Combat" />
-		<Mob Name="Deadly Gloomstalker" Id="86773" Flag="Pull, Combat" />
-		<Mob Name="Mok'gol Grunt" Id="86657" Flag="Pull, Combat" />
+		<Mob Name="Highmaul Guard" Id="87221" Flags="Pull,Combat" />
+		<Mob Name="Direfang Alpha" Id="86932" Flags="Pull,Combat" />
+		<Mob Name="Direfang Prowler" Id="86931" Flags="Pull,Combat" />
+		<Mob Name="Marsh Anaconda" Id="87039" Flags="Pull,Combat" />
+		<Mob Name="Deadly Gloomstalker" Id="86773" Flags="Pull,Combat" />
+		<Mob Name="Mok'gol Grunt" Id="86657" Flags="Pull,Combat" />
 	</Blacklist>
 
 	<Blackspots>

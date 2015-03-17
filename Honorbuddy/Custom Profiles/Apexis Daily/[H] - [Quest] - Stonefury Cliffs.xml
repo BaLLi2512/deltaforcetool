@@ -32,13 +32,13 @@
 	</AvoidMobs>
 	
 	<Blacklist>
-		<Mob Name="Frostbeak Scavenger" Id="78108" Flag="Pull, Combat" />
-		<Mob Name="Bloodmaul Bonecrusher" Id="77995" Flag="Pull, Combat" /> <!-- Elite, also way up in a tower.  Usually a 'get stuck' issue -->
+		<Mob Name="Frostbeak Scavenger" Id="78108" Flags="Pull,Combat" />
+		<Mob Name="Bloodmaul Bonecrusher" Id="77995" Flags="Pull,Combat" /> <!-- Elite, also way up in a tower.  Usually a 'get stuck' issue -->
 	<!-- These are Mobs you will encounter if you click Start within your Garrison, or in another zone. -->
-		<Mob Name="Frostwing Screecher" Id="79643" Flag="Pull, Combat" />
-		<Mob Name="Frostspinner Widow" Id="80211" Flag="Pull, Combat" />
-		<Mob Name="Frostspinner Spider" Id="80212" Flag="Pull, Combat" />
-		<Mob Name="Frostspinner Spiderling" Id="80247" Flag="Pull, Combat" />
+		<Mob Name="Frostwing Screecher" Id="79643" Flags="Pull,Combat" />
+		<Mob Name="Frostspinner Widow" Id="80211" Flags="Pull,Combat" />
+		<Mob Name="Frostspinner Spider" Id="80212" Flags="Pull,Combat" />
+		<Mob Name="Frostspinner Spiderling" Id="80247" Flags="Pull,Combat" />
 	</Blacklist>
 
 	<Blackspots>

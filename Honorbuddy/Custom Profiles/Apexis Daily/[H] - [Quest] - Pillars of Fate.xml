@@ -26,7 +26,7 @@
 	</AvoidMobs>
 	
 	<Blacklist>
-		<Mob Name="Darktide Bomb Bot" Id="78822" Flag="Pull, Combat" />
+		<Mob Name="Darktide Bomb Bot" Id="78822" Flags="Pull,Combat" />
 	</Blacklist>
 	
 	<Blackspots>

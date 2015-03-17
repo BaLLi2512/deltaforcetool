@@ -31,12 +31,12 @@
 	</AvoidMobs>
 	
 	<Blacklist>
-		<Mob Name="Direfang Alpha" Id="86932" Flag="Pull, Combat" />
-		<Mob Name="Marsh Anaconda" Id="87039" Flag="Pull, Combat" />
-		<Mob Name="Slithershock Eel" Id="83742" Flag="Pull, Combat" />
-		<Mob Name="Territorial Meadowstomper" Flag="Pull, Combat" />
-		<Mob Name="Meadowstomper" Id="78460" Flag="Pull, Combat" />
-		<Mob Name="Deadly Gloomstalker" Id="86773" Flag="Pull, Combat" />
+		<Mob Name="Direfang Alpha" Id="86932" Flags="Pull,Combat" />
+		<Mob Name="Marsh Anaconda" Id="87039" Flags="Pull,Combat" />
+		<Mob Name="Slithershock Eel" Id="83742" Flags="Pull,Combat" />
+		<Mob Name="Territorial Meadowstomper" Flags="Pull,Combat" />
+		<Mob Name="Meadowstomper" Id="78460" Flags="Pull,Combat" />
+		<Mob Name="Deadly Gloomstalker" Id="86773" Flags="Pull,Combat" />
 	</Blacklist>
 
 
@@ -71,7 +71,7 @@
 		<CustomBehavior File="Message" Text="Beginning Apex Daily: Mok'gol Watchpost" LogColor="Cyan" />
 		<While Condition="HasQuest(36693) &amp;&amp; !IsQuestCompleted(36693)" >
 			
-				<!-- <CustomBehavior File="InteractWith" MobId="237263" ObjectType="GameObject" QuestId="36693" PreInteractMountStrategy="DismountOrCancelShapeshift" InteractByQuestFrameDisposition="Accept" > -->
+				<CustomBehavior File="InteractWith" MobId="237263" ObjectType="GameObject" QuestId="36693" PreInteractMountStrategy="DismountOrCancelShapeshift" InteractByQuestFrameDisposition="Accept" >
 					<HuntingGrounds>
 						<Hotspot X="3605.591" Y="6712.171" Z="12.30328" />
 						<Hotspot X="3545.526" Y="6731.188" Z="7.945073" />
