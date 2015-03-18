@@ -21,8 +21,8 @@ echo.
 echo Um mit dem Update zu beginnen
 pause
 :: noetige Ordner anlegen
-mkdir TEMP
-mkdir TEMP\Settings
+mkdir %root%\TEMP
+mkdir %root%\TEMP\Settings
 :: Sicherung der vorhandenen Settings
 xcopy %settingsdir% %tmp%\Settings /E /Q /H
 :: entfernen alter Software
