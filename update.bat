@@ -21,8 +21,8 @@ echo.
 echo Um mit dem Update zu beginnen
 pause
 :: noetige Ordner anlegen
-mkdir %root%\TEMP
-mkdir %root%\TEMP\Settings
+mkdir TEMP
+mkdir TEMP\Settings
 :: Sicherung der vorhandenen Settings
 xcopy %settingsdir% %tmp%\Settings /E /Q /H
 :: entfernen alter Software
@@ -46,7 +46,7 @@ for %%i in (*) do move "%%i" %settingsdir%
 for /d %%i in (*) do move "%%i" %settingsdir%
 :: Aufraeumen
 cd %root%
-rd /S /Q %root%\TEMP
+rd /S /Q TEMP
 del /f /s /q deltaforcetool-master.zip
 cls
 echo.
