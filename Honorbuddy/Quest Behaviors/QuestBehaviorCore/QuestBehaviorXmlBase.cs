@@ -11,6 +11,7 @@
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -53,8 +54,8 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 
 
 		#region Concrete class required implementations...
-		public virtual string SubversionId { get { return "$Id: QuestBehaviorXmlBase.cs 1974 2015-03-12 00:29:37Z mainhaxor $"; } }
-		public virtual string SubversionRevision { get { return "$Rev: 1974 $"; } }
+		public virtual string SubversionId { get { return "$Id: QuestBehaviorXmlBase.cs 2005 2015-03-17 16:45:59Z mainhaxor $"; } }
+		public virtual string SubversionRevision { get { return "$Rev: 2005 $"; } }
 
 		public abstract XElement ToXml(string elementName = null);
 		#endregion
@@ -536,7 +537,7 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 
             int tmpResult;
 
-            if (int.TryParse(suffix, out tmpResult))
+			if (int.TryParse(suffix, NumberStyles.Integer, CultureInfo.InvariantCulture, out tmpResult))
                 { return (true); }
 
             return (false);
@@ -552,7 +553,7 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
             {
                 int tmpInt;
 
-                if (int.TryParse(attributeValueAsString, out tmpInt))
+				if (int.TryParse(attributeValueAsString, NumberStyles.Integer, CultureInfo.InvariantCulture, out tmpInt))
                 {
                     attributeValueAsString = (tmpInt != 0) ? "true" : "false";
 
@@ -585,7 +586,7 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
                     // If the provided value is a number instead of Enum name, ask the profile writer to fix it...
                     // This is not fatal, so we let it go without flagging IsAttributeProblem.
                     int tmpInt;
-                    if (int.TryParse(attributeValueAsString, out tmpInt))
+					if (int.TryParse(attributeValueAsString, NumberStyles.Integer, CultureInfo.InvariantCulture, out tmpInt))
                     {
                         QBCLog.Warning(QBCLog.BuildMessageWithContext(Element,
                             "The '{1}' attribute's value '{2}' has been implicitly converted"
@@ -615,7 +616,7 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 
 
             try
-                { return ((T)Convert.ChangeType(attributeValueAsString, concreteType)); }
+                { return ((T)Convert.ChangeType(attributeValueAsString, concreteType, CultureInfo.InvariantCulture)); }
             catch (Exception except)
             {
                 QBCLog.Error(QBCLog.BuildMessageWithContext(Element,

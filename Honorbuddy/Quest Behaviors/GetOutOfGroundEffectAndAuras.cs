@@ -198,6 +198,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -370,8 +371,8 @@ namespace Honorbuddy.Quest_Behaviors.GetOutOfGroundEffectAndAuras
 		private MovementByType MovementBy { get; set; }
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: GetOutOfGroundEffectAndAuras.cs 1728 2014-10-13 23:25:24Z chinajade $"; } }
-		public override string SubversionRevision { get { return "$Rev: 1728 $"; } }
+		public override string SubversionId { get { return "$Id: GetOutOfGroundEffectAndAuras.cs 2005 2015-03-17 16:45:59Z mainhaxor $"; } }
+		public override string SubversionRevision { get { return "$Rev: 2005 $"; } }
 		#endregion
 
 
@@ -1190,21 +1191,21 @@ namespace Honorbuddy.Quest_Behaviors.GetOutOfGroundEffectAndAuras
 					bool isParseProblem = false;
 
 					double x = 0.0;
-					if (!double.TryParse(xAttribute.Value, out x))
+					if (!double.TryParse(xAttribute.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out x))
 					{
 						QBCLog.Error("Unable to parse X attribute for {0}", elementAsString);
 						isParseProblem = true;
 					}
 
 					double y = 0.0;
-					if (!double.TryParse(yAttribute.Value, out y))
+					if (!double.TryParse(yAttribute.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out y))
 					{
 						QBCLog.Error("Unable to parse Y attribute for {0}", elementAsString);
 						isParseProblem = true;
 					}
 
 					double z = 0.0;
-					if (!double.TryParse(zAttribute.Value, out z))
+					if (!double.TryParse(zAttribute.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out z))
 					{
 						QBCLog.Error("Unable to parse Z attribute for {0}", elementAsString);
 						isParseProblem = true;

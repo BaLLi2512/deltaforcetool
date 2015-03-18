@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -185,8 +186,8 @@ namespace Honorbuddy.Quest_Behaviors.UserSettings
 
 		#region Overrides of QuestBehaviorBase
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: UserSettings.cs 1581 2014-06-27 02:34:30Z Mainhaxor $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1581 $"); } }
+		public override string SubversionId { get { return ("$Id: UserSettings.cs 2005 2015-03-17 16:45:59Z mainhaxor $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2005 $"); } }
 
 
 		protected override ConfigMemento CreateConfigMemento()
@@ -784,7 +785,7 @@ namespace Honorbuddy.Quest_Behaviors.UserSettings
 		{
 			try
 			{
-				var newValue = (int)Convert.ChangeType(value, typeof(int));
+				var newValue = (int)Convert.ChangeType(value, typeof(int), CultureInfo.InvariantCulture);
 
 				return (newValue >= _minValue) && (newValue <= _maxValue);
 			}
@@ -937,7 +938,7 @@ namespace Honorbuddy.Quest_Behaviors.UserSettings
 				if (underlyingType != null)
 				{
 					// Nullables are treated specially as they can be assigned from a null reference or just an underlying value
-					return value != null ? Convert.ChangeType(value, underlyingType) : null;
+					return value != null ? Convert.ChangeType(value, underlyingType, CultureInfo.InvariantCulture) : null;
 				}
 				
 				// Disallow int => bool conversions...
@@ -945,7 +946,7 @@ namespace Honorbuddy.Quest_Behaviors.UserSettings
 				if ((providedType == typeof(int) && (backingType == typeof(bool))))
 				{ throw new ArgumentException(); }
 
-				return Convert.ChangeType(value, backingType);
+				return Convert.ChangeType(value, backingType, CultureInfo.InvariantCulture);
 			}
 			catch (Exception)
 			{

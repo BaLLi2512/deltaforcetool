@@ -34,6 +34,7 @@
 #region Usings
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -178,8 +179,8 @@ namespace Honorbuddy.Quest_Behaviors.VehicleBehavior
 		// Styx.Logic.Profiles.Quest.ProfileHelperFunctionsBase
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: VehicleBehavior.cs 1728 2014-10-13 23:25:24Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1728 $"); } }
+		public override string SubversionId { get { return ("$Id: VehicleBehavior.cs 2005 2015-03-17 16:45:59Z mainhaxor $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2005 $"); } }
 
 		WoWPoint MoveToLocation
 		{
@@ -445,9 +446,9 @@ namespace Honorbuddy.Quest_Behaviors.VehicleBehavior
 				XAttribute zAttribute = element.Attribute("Z");
 
 				float x, y, z;
-				float.TryParse(xAttribute.Value, out x);
-				float.TryParse(yAttribute.Value, out y);
-				float.TryParse(zAttribute.Value, out z);
+				float.TryParse(xAttribute.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out x);
+				float.TryParse(yAttribute.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out y);
+				float.TryParse(zAttribute.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out z);
 				temp.Add(new WoWPoint(x, y, z));
 			}
 

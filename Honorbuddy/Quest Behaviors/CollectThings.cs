@@ -79,6 +79,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -246,8 +247,8 @@ namespace Honorbuddy.Quest_Behaviors.CollectThings
 		}
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: CollectThings.cs 1906 2014-12-22 21:18:26Z Dogan $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1906 $"); } }
+		public override string SubversionId { get { return ("$Id: CollectThings.cs 2005 2015-03-17 16:45:59Z mainhaxor $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2005 $"); } }
 
 
 
@@ -387,7 +388,7 @@ namespace Honorbuddy.Quest_Behaviors.CollectThings
 				return (null);
 			}
 
-			if (!double.TryParse(element.Attribute(attributeName).Value, out tmpDouble))
+			if (!double.TryParse(element.Attribute(attributeName).Value, NumberStyles.Float, CultureInfo.InvariantCulture, out tmpDouble))
 			{
 				QBCLog.Error("Hotspot{0} '{1}' attribute is malformed", location, attributeName);
 				IsAttributeProblem = true;

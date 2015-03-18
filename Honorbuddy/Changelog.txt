@@ -1,47 +1,5 @@
-New features:
---------------
-  * ProfessionBuddy
-    - CastSpellAction will now automatically place spells that require placement (such as cooking fire) at player's feet. (HB-1489)
-
-  * QuestBehaviour
-    - Hearthstone has been rewritten to handle multiple fail modes, use Innkeepers Daughter hearthstone and use Garrison Hearthstone if UseGarrisonHearthstone=true (HB-614)
-
-    - QBcore based behaviors can now use a 'PursuitList' sub element to select targets to pursue. Currently only InteractWith and KillUntilComplete use this PursueList (HB-693)
-
-    - EscortGroup is now QBcore-based (HB-712)
-
-    - MrFishIt: Added a TerminateWhen attribute  (HB-1169)
-
-    - BuyItemCount is now a math equation (HB-1172)
-
-    - MrFishIt: CollectItemCount can now be a C# expression (HB-1174)
-
-    - InteractWith: Added a new option, MissingBuyItemIsFatal, which specifies whether profile should terminate when a vendor doesn't have an item to buy. Default value: true (HB-1231)
-
-    - InteractWith will now warn the user if WaitForNpcs='true' and a HuntingGrounds sub element with multiple waypoints is used.  (HB-2026)
-
-  * Questing
-    - Profile line number is now printed in log for nodes that throw an exception while being executed (HB-757)
-
 Bug fixes:
 --------------
-  * ArchaeologyBuddy
-    - Should be working properly on pre-draenor maps now (HB-2039)
-
-  * QuestBehaviour
-    - FlyingVehicle will now wait longer before and after dropping off passenger (HB-675)
-
-    - Vendoring is now disabled while EscortGroup is running (HB-1175)
-
-    - FlyTo is no longer spamming log with warnings while profile is loaded. Also eliminated spam coming from HuntingGroundsType  (HB-2077)
-
-    - UseTransport will now disable behaviors that cause distractions (HB-443)
-
-Other changes:
---------------
-  * QuestBehaviour
-    - InteractWith now uses the correct symbol for infinity for TtB (Time to blacklist) (HB-2000)
-
   * Questing
-    - Reduce quest profile loading time and memory usage (HB-1905)
+    - Profiles should load properly without errors now (HB-2086)
 
