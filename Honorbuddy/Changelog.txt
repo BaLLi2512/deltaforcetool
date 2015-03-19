@@ -1,5 +1,0 @@
-Bug fixes:
---------------
-  * Questing
-    - Profiles should load properly without errors now (HB-2086)
-
