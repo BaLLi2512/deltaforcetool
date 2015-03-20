@@ -25,12 +25,14 @@
 		<Mob Name="Shadowglen Thornshooter" Id="81502" />
 		<Mob Name="Shadowglen Spitter" Id="81637" />
 		<Mob Name="Sargerei Demonlord" Id="81543" />
+		<Mob Name="D?monensprecher" Id="86024" />
 	</AvoidMobs>
 	
 	<Blacklist>
 		<Mob Name="Shadowglen Thornshooter" Id="81502" Flags="Pull,Combat" />
 		<Mob Name="Shadowglen Spitter" Id="81637" Flags="Pull,Combat" />
 		<Mob Name="Sargerei Demonlord" Id="81543" Flags="Pull,Combat" />
+		<Mob Name="D?monensprecher" Id="86024" Flags="Pull,Combat" />
 	</Blacklist>
 	
 	<Blackspots>
