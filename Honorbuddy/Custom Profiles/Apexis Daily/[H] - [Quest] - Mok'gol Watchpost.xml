@@ -71,8 +71,10 @@
 		<CustomBehavior File="Message" Text="Beginning Apex Daily: Mok'gol Watchpost" LogColor="Cyan" />
 		<While Condition="HasQuest(36693) &amp;&amp; !IsQuestCompleted(36693)" >
 			
-				<CustomBehavior File="InteractWith" MobId="237263" ObjectType="GameObject" QuestId="36693" PreInteractMountStrategy="DismountOrCancelShapeshift" InteractByQuestFrameDisposition="Accept" >
-					<HuntingGrounds>
+			<SetGrindArea>
+				<GrindArea>
+					<Factions>16</Factions>
+					<Hotspots>
 						<Hotspot X="3605.591" Y="6712.171" Z="12.30328" />
 						<Hotspot X="3545.526" Y="6731.188" Z="7.945073" />
 						<Hotspot X="3486.783" Y="6775.085" Z="3.216084" />
@@ -84,8 +86,9 @@
 						<Hotspot X="3600.267" Y="6704.172" Z="11.87251" />
 						<Hotspot X="3602.515" Y="6838.987" Z="16.88023" />
 						<Hotspot X="3540.747" Y="6901.51" Z="20.08891" />
-					</HuntingGrounds>
-				</CustomBehavior>			
+					</Hotspots>
+				</GrindArea>  
+			</SetGrindArea>			
 		</While>
 				<CustomBehavior File="UserSettings" KillBetweenHotspots="True" />
 	
