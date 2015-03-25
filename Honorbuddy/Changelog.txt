@@ -1,0 +1,7 @@
+Bug fixes:
+--------------
+  * QuestBehaviour
+    - EscortGroup: Fixed compile warning for NonCompeteDistance  (HB-2103)
+
+    - Fixed a bug in DoWhen that caused it to only perform a custom action once. (HB-2106)
+

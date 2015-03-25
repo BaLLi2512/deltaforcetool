@@ -127,7 +127,7 @@
 // At any time, to see the list of current DoWhen activities, use the "ShowActivities" Command:
 //      <CustomBehavior File="Hooks\DoWhen" Command="ShowActivities" />
 // Output will be generated to the log that looks like the following:
-//      [DoWhen-v$Rev: 1974 $(info)] DoWhenActivities in use (count:2):
+//      [DoWhen-v$Rev: 2009 $(info)] DoWhenActivities in use (count:2):
 //          SpellId(159)
 //              Used when: "Me.GotTarget && (Me.CurrentTarget.Entry == 43034)"
 //              Enabled=True
@@ -343,8 +343,8 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 
 		#region Overrides of CustomForcedBehavior
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: DoWhen.cs 1974 2015-03-12 00:29:37Z mainhaxor $"; } }
-		public override string SubversionRevision { get { return "$Rev: 1974 $"; } }
+		public override string SubversionId { get { return "$Id: DoWhen.cs 2009 2015-03-20 22:35:54Z mainhaxor $"; } }
+		public override string SubversionRevision { get { return "$Rev: 2009 $"; } }
 
 
 		// CreateBehavior supplied by QuestBehaviorBase.
@@ -927,7 +927,8 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 			{
                 if (BehaviorExecutor == null)
 				{
-					var questOrder = new QuestOrder(Nodes);
+					// We need to create a shadow-copy of Nodes since the executor deletes nodes from collection when done. 
+					var questOrder = new QuestOrder(new OrderNodeCollection(Nodes));
 					questOrder.UpdateNodes();
 					BehaviorExecutor = new ForcedBehaviorExecutor(questOrder);
 				}
@@ -952,6 +953,7 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
                 return UseWhenPredicate.IsReady() || (BehaviorExecutor != null);
             }
 		}
+
 		#endregion
 
         #region Helper Classes - IUseWhenPredicate
