@@ -1,7 +1,12 @@
+New features:
+--------------
+  * Other
+    - PartyBot will now always wait for a rez if a rezzer is nearby (HB-876)
+
+    - AutoAngler will now only load a previous profile if no profile is loaded on bot startup (HB-1551)
+
 Bug fixes:
 --------------
-  * QuestBehaviour
-    - EscortGroup: Fixed compile warning for NonCompeteDistance  (HB-2103)
-
-    - Fixed a bug in DoWhen that caused it to only perform a custom action once. (HB-2106)
+  * Other
+    - AutoAngler: Fixed the "The name 'FilletFish' does not exist" compiler error (HB-2117)
 

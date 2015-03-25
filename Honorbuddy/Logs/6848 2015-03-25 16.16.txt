@@ -1,0 +1,9 @@
+[15:16:56.200 N] Honorbuddy v2.5.13288.776 started.
+[15:16:56.303 Q] Honorbuddy was unable to check for an update.
+Honorbuddy will not be able to update automatically.
+[15:16:56.305 D] System.ArgumentException: Version string portion was too short or too long.
+   at System.Version.VersionResult.SetFailure(ParseFailureKind failure, String argument)
+   at System.Version.TryParseVersion(String version, VersionResult& result)
+   at System.Version.Parse(String input)
+   at System.Version..ctor(String version)
+   at Honorbuddy.MainWindow.CheckForUpdate()
