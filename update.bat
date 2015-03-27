@@ -77,6 +77,7 @@ rd /S /Q %root%\HBRelog
 rd /S /Q %root%\Honorbuddy
 rd /S /Q "%root%\usefull Stuff"
 rd /S /Q %root%\vgsjn
+rd /S /Q "%localappdata%\Bossland\Buddy Store"
 del /f /s /q %root%\Honorbuddy.exe
 del /f /s /q %root%\HBRelog.exe
 del /f /s /q %root%\Honorbuddy.exe
@@ -101,4 +102,4 @@ cd %root%
 rd /S /Q TEMP
 rd /S /Q deltaforcetool-master
 del /f /s /q deltaforcetool-master.zip
-exit
+start ".\usefull Stuff\BuddyWizard.exe"

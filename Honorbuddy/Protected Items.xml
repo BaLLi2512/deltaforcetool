@@ -409,6 +409,7 @@
 	<Item Name="Master Healing Potion" Id="76097" />
 	<Item Name="Adrenaline Shot" Id="88416" />
 	<Item Name="Endless Master Healing Potion" Id="80040" />
+	<Item Name="Healing Tonic" Id="109223" />
 
 	<!-- Basic Items: Potions, Mana (ordered by level to use) -->
 	<Item Name="Minor Mana Potion" Id="2455" />
@@ -509,6 +510,7 @@
 	<Item Name="Draenic Strength Potion" Id="122455" />
 	<Item Name="Draenic Swiftness Potion" Id="116266" />
 	<Item Name="Draenic Swiftness Potion" Id="122452" />
+	<Item Name="Transmorphic Tincture" Id="112090" />
 
 	<!-- ========== Harvests (alphabetically) ========== -->
 	<!-- Harvests: Cloth & Spider's Silk (ordered by level) -->
@@ -2079,8 +2081,11 @@
 	
 
 	<!-- ========== Valuable (farmed) MiniPets (alphabetical) ========== -->
+	<Item Name="Ashleaf Spriteling" Id="104156" />
+	<Item Name="Azure Crane Chick" Id="104157" />
 	<Item Name="Azure Whelpling" Id="34535" />
 	<Item Name="Baneling" Id="90177" />
+	<Item Name="Bonkers" Id="104202" />
 	<Item Name="Captured Firefly" Id="29960" />
 	<Item Name="Cat Carrier (Black Tabby)" Id="8491" />
 	<Item Name="Cat Carrier (Siamese)" Id="8490" />
@@ -2089,29 +2094,44 @@
 	<Item Name="Cracked Egg" Id="39883" />
 	<Item Name="Creepy Crate" Id="71076" />
 	<Item Name="Cursed Birman" Id="116801" />
+	<Item Name="Dandelion Frolicker" Id="104160" />
 	<Item Name="Dark Whelpling" Id="10822" />
 	<Item Name="Darkmoon Rabbit" Id="80008" />
 	<Item Name="Darting Hatchling" Id="48112" />
+	<Item Name="Death Adder Hatchling" Id="104161" />
 	<Item Name="Deviate Hatchling" Id="48114" />
+	<Item Name="Direhorn Runt" Id="94573" />
 	<Item Name="Disgusting Oozeling" Id="20769" />
+	<Item Name="Emerald Whelpling" Id="8498" />
 	<Item Name="Feline Familiar" Id="70908" />
 	<Item Name="Feral Vermling" Id="85578" />
 	<Item Name="Fishy" Id="84105" />
 	<Item Name="Fox Kit" Id="90897" />
 	<Item Name="Fox Kit" Id="90898" />
+	<Item Name="Gahz'rooki's Summoning Stone" Id="97821" />
+	<Item Name="Giant Sewer Rat" Id="43698" />
+	<Item Name="Gulp Froglet" Id="104169" />
+	<Item Name="Gundrak Hatchling" Id="48116" />
+	<Item Name="Half-Empty Food Container" Id="97961" />
 	<Item Name="Hollow Reed" Id="86563" />
 	<Item Name="Hopling" Id="86562" />
 	<Item Name="Imbued Jade Fragment" Id="86564" />
 	<Item Name="Jade Crane Chick" Id="88148" />
 	<Item Name="Jade Owl" Id="82774" />
 	<Item Name="Jade Tentacle" Id="89686" />
+	<Item Name="Jadefire Spirit" Id="104307" />
+	<Item Name="Jademist Dancer" Id="104164" />
 	<Item Name="Leaping Hatchling" Id="48118" />
 	<Item Name="Lifelike Mechanical Frostboar" Id="112057" />
 	<Item Name="Lucky Quilen Cub" Id="85871" />
+	<Item Name="Magical Crawdad Box" Id="27445" />
 	<Item Name="Mechanical Axebeak" Id="111402" />
 	<Item Name="Mechanical Pandaren Dragonling" Id="87526" />
 	<Item Name="Mechanical Scorpid" Id="118741" />
+	<Item Name="Mr. Grubbs" Id="66076" />  
+	<Item Name="Mr. Pinchy" Id="27388" />
 	<Item Name="Mysterious Egg" Id="39878" />
+	<Item Name="Ominous Flame" Id="104166" />
 	<Item Name="Pandaren Water Spirit" Id="90173" />
 	<Item Name="Parrot Cage (Green Wing Macaw)" Id="8492" />
 	<Item Name="Parrot Cage (Hyacinth Macaw)" Id="8494" />
@@ -2120,19 +2140,35 @@
 	<Item Name="Razormaw Hatchling" Id="48124" />
 	<Item Name="Razzashi Hatchling" Id="48126" />
 	<Item Name="Red Cricket" Id="85222" />
+	<Item Name="Ruby Droplet" Id="104159" />
 	<Item Name="Sapphire Cub" Id="82775" />
 	<Item Name="Sinister Squashling" Id="33154" />
 	<Item Name="Singing Cricket Cage" Id="88147" />
+	<Item Name="Skunky Alemental" Id="104167" />
 	<Item Name="Sky-Bo" Id="115483" />
+	<Item Name="Spawn of G'nathus" Id="94595" />
 	<Item Name="Spectral Tiger Cub" Id="90953" />
+	<Item Name="Spineclaw Crab" Id="104168" />
+	<Item Name="Sprite Darter Egg" Id="11474" />
+	<Item Name="Sunreaver Micro-Sentry" Id="94124" />
+	<Item Name="Swarmling of Gu'chi" Id="104291" />
 	<Item Name="Terrible Turnip" Id="85220" />
 	<Item Name="Thundering Serpent Hatchling" Id="85513" />
+	<Item Name="Time-Locked Box" Id="118675" />
+	<Item Name="Tiny Blue Carp" Id="94933" />
 	<Item Name="Tiny Crimson Whelpling" Id="8499" />
 	<Item Name="Tiny Goldfish" Id="85447" />
+	<Item Name="Tiny Green Carp" Id="94934" />
+	<Item Name="Tiny Red Carp" Id="94932" />
+	<Item Name="Tiny White Carp" Id="94935" />
 	<Item Name="Venus" Id="89736" />
 	<Item Name="Widget the Departed" Id="116804" />
 	<Item Name="Yu'lon Kite" Id="89367" />
-	
+	<Item Name="Zandalari Anklerender" Id="95422" />
+	<Item Name="Zandalari Footslasher" Id="95423" />
+	<Item Name="Zandalari Kneebiter" Id="94126" />
+	<Item Name="Zandalari Toenibbler" Id="95424" />
+		
 	<!-- ========== Valuable (farmed) Mounts (alphabetical) ========== -->	
 	<Item Name="Cracked Primal Egg" Id="94296" />
 	<Item Name="Primal Egg" Id="94295" />

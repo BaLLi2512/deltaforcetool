@@ -1,12 +1,16 @@
 New features:
 --------------
-  * Other
-    - PartyBot will now always wait for a rez if a rezzer is nearby (HB-876)
+  * Core
+    - New Protected Items: Healing Tonic, Transmorphic Tincture, expansion of mini-pets list (HB-2111)
 
-    - AutoAngler will now only load a previous profile if no profile is loaded on bot startup (HB-1551)
+Api Changes:
+--------------
+    - Improved documentation on Lua.GetReturnValues to specify do's and don'ts (HB-2123)
 
 Bug fixes:
 --------------
-  * Other
-    - AutoAngler: Fixed the "The name 'FilletFish' does not exist" compiler error (HB-2117)
+  * Core
+    - General Goods vendors are now considered as food vendors (HB-1902)
+
+    - Fixed a bug with movement flags getting stuck causing jittered movement (HB-2088)
 
