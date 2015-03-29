@@ -77,7 +77,7 @@ rd /S /Q %root%\HBRelog
 rd /S /Q %root%\Honorbuddy
 rd /S /Q "%root%\usefull Stuff"
 rd /S /Q %root%\vgsjn
-rd /S /Q "%localappdata%\Bossland\Buddy Store"
+::rd /S /Q "%localappdata%\Bossland\Buddy Store"
 del /f /s /q %root%\Honorbuddy.exe
 del /f /s /q %root%\HBRelog.exe
 del /f /s /q %root%\Honorbuddy.exe
@@ -94,7 +94,11 @@ for %%i in (*) do move "%%i" %settingsdir%
 for /d %%i in (*) do move "%%i" %settingsdir%
 cls
 echo.
-echo Schwein gehabt - Update erfolgreich ausgefuehrt.
+echo Schwein gehabt - Update erfolgreich ausgefuehrt. Bitte ziehe in Betracht, 
+echo den BuddyWizard unter usefull Stuff zusaetzlich auszufuehren.
+echo.
+echo Falls der HB beim Start hängen bleibt, lösche bitte den 
+echo Buddy Store-Ordner in den 'LocalAppData'.
 echo Zum Aufraeumen und Bennden
 pause
 :: Aufraeumen
@@ -102,4 +106,4 @@ cd %root%
 rd /S /Q TEMP
 rd /S /Q deltaforcetool-master
 del /f /s /q deltaforcetool-master.zip
-start ".\usefull Stuff\BuddyWizard.exe"
+::start ".\usefull Stuff\BuddyWizard.exe"
