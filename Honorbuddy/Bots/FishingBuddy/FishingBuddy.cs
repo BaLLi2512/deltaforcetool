@@ -378,6 +378,7 @@ namespace Bots.FishingBuddy
 			Debug("PathPrecision: {0}", FishingBuddySettings.Instance.PathPrecision);
 			Debug("Poolfishing: {0}", FishingBuddySettings.Instance.Poolfishing);
 			Debug("TraceStep: {0}", FishingBuddySettings.Instance.TraceStep);
+			Debug("UseBait: {0}", FishingBuddySettings.Instance.UseBait);
 			Debug("UseWaterWalking: {0}", FishingBuddySettings.Instance.UseWaterWalking);
 	    }
     }

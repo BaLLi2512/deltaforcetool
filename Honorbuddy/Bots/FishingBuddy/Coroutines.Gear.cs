@@ -41,7 +41,8 @@ namespace Bots.FishingBuddy
 				.ThenByDescending(i => i.ItemInfo.Level)
 				.FirstOrDefault();
 
-			if (pole == null || pole == mainHand)
+			// We are comparing Entry rather then the WoWItems instance since there can be multiple of the same item
+			if (pole == null || (mainHand != null && pole.Entry == mainHand.Entry))
 				return false;
 
 			return await EquipItem(pole, WoWInventorySlot.MainHand);
@@ -51,11 +52,13 @@ namespace Bots.FishingBuddy
 		{
 			var hat = Utility.GetFishingHat();
 
-			if (hat == null || StyxWoW.Me.Inventory.Equipped.Head == hat)
+			var equippedHat = StyxWoW.Me.Inventory.Equipped.Head;
+
+			// We are comparing Entry rather then the WoWItems instance since there can be multiple of the same item
+			if (hat == null || (equippedHat != null && equippedHat.Entry == hat.Entry))
 				return false;
 
-			return Utility.EquipItem(hat, WoWInventorySlot.Head) 
-				&& await Coroutine.Wait(4000, () => StyxWoW.Me.Inventory.Equipped.Head == hat);
+			return Utility.EquipItem(hat, WoWInventorySlot.Head);
 		}
 
 		public async static Task<bool> EquipItem(WoWItem item, WoWInventorySlot slot)

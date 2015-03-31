@@ -118,6 +118,20 @@ namespace Bots.FishingBuddy
 			if (!vendor.WithinInteractRange)
 				return await FlyTo(vendor.Location, vendor.SafeName);
 
+			if (GossipFrame.Instance.IsVisible && GossipFrame.Instance.GossipOptionEntries != null)
+			{
+				var gossip = GossipFrame.Instance.GossipOptionEntries.FirstOrDefault(g => g.Type == GossipEntry.GossipEntryType.Vendor);
+				if (gossip.Type == GossipEntry.GossipEntryType.Unknown)
+				{
+					TreeRoot.Stop(string.Format("{0} does not provide a vendor frame. ", vendor.SafeName));
+					return true;
+				}
+
+				GossipFrame.Instance.SelectGossipOption(gossip.Index);
+				await CommonCoroutines.SleepForRandomUiInteractionTime();
+				return true;
+			}
+
 			if (!MerchantFrame.Instance.IsVisible)
 			{
 				vendor.Interact();

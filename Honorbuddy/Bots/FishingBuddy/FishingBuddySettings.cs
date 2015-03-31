@@ -67,6 +67,9 @@ namespace Bots.FishingBuddy
 		Category("Fishing")]
 		public bool NinjaNodes { get; set; }
 
+		[Setting, Styx.Helpers.DefaultValue(true), Description("If set to true bot will automatically apply fishing baits"),
+		Category("Fishing")]
+		public bool UseBait { get; set; }
 		#endregion
 
 		#region Advanced

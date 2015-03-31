@@ -26,7 +26,10 @@
 	<Mailboxes>
 
 	</Mailboxes>
-
+  <Blackspots>
+    <!-- Node that bot gets stuck at -->
+    <Blackspot X="-13395.4" Y="-244.3395" Z="27.08173" Radius="4" />
+  </Blackspots>
   <Hotspots>
     <Hotspot X="-12409.57" Y="-143.4801" Z="96.48011" />
     <Hotspot X="-12394.27" Y="-191.0815" Z="96.88416" />

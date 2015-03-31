@@ -26,6 +26,9 @@ namespace Bots.FishingBuddy
 
 		public async static Task<bool> ApplyBait()
 		{
+			if (FishingBuddySettings.Instance.Poolfishing || !FishingBuddySettings.Instance.UseBait)
+				return false;
+
 			if (!BaitRecastTimer.IsFinished)
 				return false;
 

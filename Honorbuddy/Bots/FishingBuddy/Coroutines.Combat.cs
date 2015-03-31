@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Bots.Grind;
+using Styx.CommonBot;
 using Styx.CommonBot.Coroutines;
 using Styx.CommonBot.POI;
 using Styx.TreeSharp;
@@ -18,7 +19,7 @@ namespace Bots.FishingBuddy
 
 		public static async Task<bool> HandleCombat()
 		{
-			if (!Me.IsFlying && Me.IsActuallyInCombat)
+			if (!Me.IsFlying && Me.IsActuallyInCombat && Targeting.Instance.FirstUnit != null)
 			{
 				var mainHand = Me.Inventory.Equipped.MainHand;
 				if ((mainHand == null || mainHand.Entry != FishingBuddySettings.Instance.MainHand)

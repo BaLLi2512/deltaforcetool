@@ -66,8 +66,12 @@ namespace Bots.FishingBuddy
 			if (await HandleVendoring())
 				return true;
 
-			if (!StyxWoW.Me.IsAlive || StyxWoW.Me.Combat || RoutineManager.Current.NeedRest)
+			if (!StyxWoW.Me.IsAlive
+				|| (StyxWoW.Me.IsActuallyInCombat && Targeting.Instance.FirstUnit != null)
+				|| RoutineManager.Current.NeedRest)
+			{
 				return false;
+			}
 
 			if (BotPoi.Current.Type == PoiType.None && LootTargeting.Instance.FirstObject != null)
 				SetLootPoi(LootTargeting.Instance.FirstObject);

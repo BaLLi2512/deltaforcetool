@@ -52,7 +52,7 @@
     <Custom Code="LowestMinLevel = (bool)Settings[&quot;Mining&quot;] &amp;&amp; (bool)Settings[&quot;Herb&quot;] ? (MiningMaxLevel &lt; HerbMaxLevel ? MiningMaxLevel : HerbMaxLevel):(bool)Settings[&quot;Mining&quot;] ? MiningMaxLevel :HerbMaxLevel;" />
     <Custom Code="FreeBagSlots = (int)Me.FreeNormalBagSlots;&#xD;&#xA;if(FreeBagSlots &lt; 4)&#xD;&#xA;  MyLog(&quot;FreeBagSlots: {0}&quot;,FreeBagSlots);" />
     <If Condition="(bool)Settings[&quot;Ignore grey nodes&quot;]" IgnoreCanRun="True">
-      <Custom Code="using (StyxWoW.Memory.AcquireFrame())&#xD;&#xA;{&#xD;&#xA;  foreach (var node in ObjectManager.GetObjectsOfType&lt;WoWGameObject&gt;().Where( g =&gt; (g.IsMineral &amp;&amp; (bool)Settings[&quot;Mining&quot;] || g.IsHerb &amp;&amp; (bool)Settings[&quot;Herb&quot;]) &amp;&amp; !Blacklist.Contains(g, BlacklistFlags.Node)))&#xD;&#xA;  {&#xD;&#xA;    var requiredSkillLevel = node.RequiredSkill;&#xD;&#xA;    if (!requiredSkillLevel.HasValue) continue;&#xD;&#xA;    var skillLevel =  node.IsHerb ? HerbLevel : MiningLevel;&#xD;&#xA;    if (requiredSkillLevel.Value + 150 &lt; skillLevel)&#xD;&#xA;    {&#xD;&#xA;          Blacklist.Add(node, BlacklistFlags.Node, TimeSpan.FromDays(365));&#xD;&#xA;           MyLog(&quot;Blacklisting {0} because it's grey&quot;, node.Name);&#xD;&#xA;          MyLog(&quot;My Skill: {0}, Required Skill: {1}&quot;,skillLevel ,requiredSkillLevel.Value);&#xD;&#xA;    } &#xD;&#xA;  }&#xD;&#xA;}" />
+      <Custom Code="using (StyxWoW.Memory.AcquireFrame())&#xD;&#xA;{&#xD;&#xA;  foreach (var node in ObjectManager.GetObjectsOfType&lt;WoWGameObject&gt;().Where( g =&gt; (g.IsMineral &amp;&amp; (bool)Settings[&quot;Mining&quot;] || g.IsHerb &amp;&amp; (bool)Settings[&quot;Herb&quot;]) &amp;&amp; !Blacklist.Contains(g, BlacklistFlags.Node)))&#xD;&#xA;  {&#xD;&#xA;    int greySkillLevel;&#xD;&#xA;    if (!node.GetDataSlot(GameObjectDataSlot.GreySkillLevel, out greySkillLevel) || greySkillLevel &lt;=  0)&#xD;&#xA;      return;&#xD;&#xA;    var skillLevel =  node.IsHerb ? HerbLevel : MiningLevel;&#xD;&#xA;    if (greySkillLevel &lt; skillLevel)&#xD;&#xA;    {&#xD;&#xA;          Blacklist.Add(node, BlacklistFlags.Node, TimeSpan.FromDays(365));&#xD;&#xA;           MyLog(&quot;Blacklisting {0} because it's grey&quot;, node.Name);&#xD;&#xA;          MyLog(&quot;My Skill: {0}, Grey Skill: {1}&quot;,skillLevel , greySkillLevel );&#xD;&#xA;    } &#xD;&#xA;  }&#xD;&#xA;}" />
     </If>
     <!--Train skills-->
     <If Condition="((bool)Settings[&quot;Mining&quot;] &amp;&amp; MiningMaxLevel-MiningLevel &lt;=25  &amp;&amp; MiningMaxLevel &lt; 600 ) || ((bool)Settings[&quot;Herb&quot;] &amp;&amp; HerbMaxLevel - HerbLevel &lt;= 25 &amp;&amp; HerbMaxLevel &lt; 600 )" IgnoreCanRun="True">
@@ -94,12 +94,12 @@
     <!--Take portal to Pandaria-->
     <If Condition="Me.IsAlliance &amp;&amp; Me.MapId == 0" IgnoreCanRun="True">
       <FlyTo Dismount="False" Location="-8194.038, 528.3931, 117.3273" />
-      <Interact InteractType="GameObject" Entry="215457" InteractDelay="2000" GameObjectType="SpellCaster" SpellFocus="Anvil" />
+      <Interact InteractType="GameObject" Entry="215457" InteractDelay="2000" GameObjectType="SpellCaster" SpellFocus="Anvil" WaitForObject="True" />
       <Wait Condition="Me.MapId == 870" Timeout="40000" />
     </If>
     <If Condition="Me.IsHorde &amp;&amp; Me.MapId == 1 " IgnoreCanRun="True">
       <FlyTo Dismount="False" Location="2015.015, -4700.216, 28.6201" />
-      <Interact InteractType="GameObject" Entry="215424" InteractDelay="2000" GameObjectType="SpellCaster" SpellFocus="Anvil" />
+      <Interact InteractType="GameObject" Entry="215424" InteractDelay="2000" GameObjectType="SpellCaster" SpellFocus="Anvil" WaitForObject="True" />
       <Wait Condition="Me.MapId == 870" Timeout="40000" />
     </If>
   </While>
@@ -130,7 +130,7 @@
       </If>
       <If Condition="(bool)Settings[&quot;AH Items&quot;]" IgnoreCanRun="True">
         <FlyTo Dismount="False" Location="-311.6545, -1776.63, 62.67051" />
-        <Interact InteractType="GameObject" Entry="210805" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+        <Interact InteractType="GameObject" Entry="210805" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
         <Wait Condition="Me.MapId == 0" Timeout="40000" />
       </If>
     </If>
@@ -186,7 +186,7 @@
       </If>
       <If Condition="(bool)Settings[&quot;AH Items&quot;]" IgnoreCanRun="True">
         <FlyTo Dismount="False" Location="2924.921, -510.5903, 268.8555" />
-        <Interact InteractType="GameObject" Entry="210804" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" />
+        <Interact InteractType="GameObject" Entry="210804" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
         <Wait Condition="Me.MapId == 1" Timeout="40000" />
       </If>
     </If>

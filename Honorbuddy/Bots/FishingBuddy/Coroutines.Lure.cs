@@ -34,7 +34,7 @@ namespace Bots.FishingBuddy
 		// does nothing if no lures are in bag
 		public async static Task<bool> Applylure()
 		{
-			if (FishingBuddySettings.Instance.Poolfishing || FishingBuddyBot.Instance.Profile.FishAtHotspot)
+			if (FishingBuddySettings.Instance.Poolfishing )
 				return false;
 
 			if (StyxWoW.Me.IsCasting || HasLureOnPole)
