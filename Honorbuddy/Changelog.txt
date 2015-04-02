@@ -1,26 +1,23 @@
 New features:
 --------------
-  * QuestBehaviour
-    - QuestBehaviorCore: Added UtilityCoroutine.Gossip coroutine for handling gossip type logic (HB-1212)
+  * Core
+    - ProtectedItems updates: Sharpened Fishing Hook, Worm Supreme (HB-2142)
 
-    - QuestBehaviorCore: Added UtilityCoroutines.BuyItem coroutine which buys items from NPCs (or any object with a vendor frame) (HB-1213)
-
-    - QuestBehaviorCore: Added UtilityCoroutines.UseTransport coroutine for taking transports like ships/zeplins e.g.  (HB-2130)
-
-    - QuestBehaviorCore: Added UtilityCoroutines.TurninQuest coroutine (HB-2131)
-
-    - QuestBehaviorCore: Added UtilityCoroutines.UseHearthstone coroutine (HB-2132)
-
-  * Questing
-    - QuestBot now includes line numbers in GoalText (HB-1119)
+  * Singular
+    - Singular 4.0.0.4544 - when user enables game message for Hot Key toggle key presses, messages will now be written to overlay window rather than chat window.  Added setting to control how long messages are displayed in overlay. (HB-2136)
 
 Bug fixes:
 --------------
-  * Core
-    - Fixed a bug where 'Ignore grey nodes' option in 1-600 Mining/Herb profile caused all nodes to be ignored (HB-2143)
+  * DungeonBuddy
+    - Fixed a bug that caused Query.GetNearestNpc and related functions to sometimes not ignore blacklisted NPCs (HB-2134)
 
-    - Fixed a rare bug that could cause the toon to equip unwanted gear during a sell run (HB-2114)
+  * QuestBehaviour
+    - Fixed an issue where InteractWith sometimes failed to detect interruption while interacting with an object (HB-2070)
 
-  * Other
-    - The MountHook is now fixed. This QB was causing a "The expression set that owns this expression has not yet been compiled" error whenever it tried to go purchase a mount. (HB-2109)
+  * Singular
+    - Singular 4.0.0.4524+ now ignores Bottled Nethergon Vapor (HB-613)
+
+    - Singular 4.0.0.4544 - fixed bug where auto attack enabled prior to Pick Pocket attempt (HB-1978)
+
+    - Solved issues with warlock targeting (HB-2133)
 

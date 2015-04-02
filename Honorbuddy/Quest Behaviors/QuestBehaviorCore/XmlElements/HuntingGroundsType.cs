@@ -170,8 +170,8 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 
 		#region Concrete class required implementations...
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: HuntingGroundsType.cs 1987 2015-03-13 06:29:43Z chinajade $"; } }
-		public override string SubversionRevision { get { return "$Rev: 1987 $"; } }
+		public override string SubversionId { get { return "$Id: HuntingGroundsType.cs 2017 2015-03-31 18:59:59Z chinajade $"; } }
+		public override string SubversionRevision { get { return "$Rev: 2017 $"; } }
 
 		public override XElement ToXml(string elementName = null)
 		{
@@ -215,7 +215,7 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 
 			// If we haven't arrived at the current waypoint, still use it...
 			var currentWaypoint = FindWaypointAtIndex(_indexOfCurrentWaypoint);
-			if (currentLocation.Value.Distance(currentWaypoint.Location) >= currentWaypoint.ArrivalTolerance)
+			if (!Query.AtLocation(currentLocation.Value, currentWaypoint.Location, (float)currentWaypoint.ArrivalTolerance))
 				return currentWaypoint;
 
 			// Otherwise, find next waypoint index, and return new waypoint...

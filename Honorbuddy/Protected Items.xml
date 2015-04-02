@@ -1894,13 +1894,15 @@
 	<Item Name="Weather-Beaten Fishing Hat" Id="33820" />
 	
 	<!-- Trade: Fishing Bait (WoD) -->
-	<Item Name="Jawless Skulker Bait" Id="110274" />
-	<Item Name="Fat Sleeper Bait" Id="110289" />
-	<Item Name="Blind Lake Sturgeon Bait" Id="110290" />
-	<Item Name="Fire Ammonite Bait" Id="110291" />
-	<Item Name="Sea Scorpion Bait" Id="110292" />
 	<Item Name="Abyssal Gulper Eel Bait" Id="110293" />
 	<Item Name="Blackwater Whiptail Bait" Id="110294" />
+	<Item Name="Blind Lake Sturgeon Bait" Id="110290" />
+	<Item Name="Jawless Skulker Bait" Id="110274" />
+	<Item Name="Fat Sleeper Bait" Id="110289" />
+	<Item Name="Fire Ammonite Bait" Id="110291" />
+	<Item Name="Sea Scorpion Bait" Id="110292" />
+	<Item Name="Sharpened Fish Hook" Id="34861" />
+	<Item Name="Worm Supreme" Id="118391" />
 		
 	<!-- Trade: Herbalist Tools (alphabetical) -->
 	<Item Name="Forager's Gloves" Id="86566" />
