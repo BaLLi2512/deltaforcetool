@@ -97,7 +97,7 @@ echo.
 echo Schwein gehabt - Update erfolgreich ausgefuehrt. Bitte ziehe in Betracht, 
 echo den BuddyWizard unter usefull Stuff zusaetzlich auszufuehren.
 echo.
-echo Falls der HB beim Start hängen bleibt, lösche bitte den 
+echo Falls der HB beim Start haengen bleibt, loesche bitte den 
 echo Buddy Store-Ordner in den 'LocalAppData'.
 echo Zum Aufraeumen und Bennden
 pause
