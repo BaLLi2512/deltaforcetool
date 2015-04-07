@@ -71,6 +71,25 @@
         <Point X="5548.236" Y="5729.116" />
       </Points>
     </PolygonIndoorArea>
+
+		<PolygonIndoorArea MinZ="160" MaxZ="180" Name="Westguard Keep">
+			<Entrance Dismount="True" Radius="1"  X="1345.32153" Y="-3186.53369" Z="162.819763" />
+			<Points>
+				<Point X="1386.44519" Y="-3199.14966" />
+				<Point X="1403.83044" Y="-3190.935" />
+				<Point X="1370.66626" Y="-3128.819" />
+				<Point X="1357.18359" Y="-3140.65942" />
+				<Point X="1346.18372" Y="-3135.12524" />
+				<Point X="1329.21252" Y="-3143.82666" />
+				<Point X="1326.50085" Y="-3154.40186" />
+				<Point X="1309.19739" Y="-3161.139" />
+				<Point X="1342.24377" Y="-3223.706" />
+				<Point X="1357.46265" Y="-3215.64087" />
+				<Point X="1336.566" Y="-3178.03979" />
+				<Point X="1369.18347" Y="-3160.99365" />
+				<Point X="1387.4856" Y="-3197.495" />
+			</Points>
+		</PolygonIndoorArea>
   </IndoorAreas>
   
 </FlightorAnnotations>

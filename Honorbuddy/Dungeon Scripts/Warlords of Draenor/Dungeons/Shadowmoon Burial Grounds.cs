@@ -1035,8 +1035,6 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		private void MoveToLocationWhileFacingUnit(WoWPoint destination, WoWUnit unit, Func<bool> conditon, string reason = null)
 		{
-			DungeonBuddySettings.Instance.DungeonType = DungeonType.Specific;
-
 			var dumbCR = RoutineManager.Current.SupportedCapabilities == CapabilityFlags.None;
 			if (dumbCR && ScriptHelpers.MovementEnabled)
 			{

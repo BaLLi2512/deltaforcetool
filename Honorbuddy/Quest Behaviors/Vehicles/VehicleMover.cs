@@ -156,7 +156,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-
+using Bots.Grind;
 using CommonBehaviors.Actions;
 using Honorbuddy.QuestBehaviorCore;
 using Styx;
@@ -268,8 +268,8 @@ namespace Honorbuddy.Quest_Behaviors.Vehicles.VehicleMover
 
 		#region Overrides of CustomForcedBehavior
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: VehicleMover.cs 1733 2014-10-14 10:39:58Z Dogan $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1733 $"); } }
+		public override string SubversionId { get { return ("$Id: VehicleMover.cs 2022 2015-04-02 23:55:40Z chinajade $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2022 $"); } }
 
 		// CreateBehavior supplied by QuestBehaviorBase.
 		// Instead, provide CreateMainBehavior definition.
@@ -358,6 +358,14 @@ namespace Honorbuddy.Quest_Behaviors.Vehicles.VehicleMover
 							new Decorator(context => DidSuccessfullyMount && !IsInVehicle()
 														&& (WoWMovement.ActiveMover.Location.Distance(FinalDestination) < 15.0),
 								new Action(context => { BehaviorDone(); })),
+
+							// Enable combat while not in a vehicle
+							new Decorator(ctx => (LevelBot.BehaviorFlags & BehaviorFlags.Combat) == 0 && !Query.IsInVehicle(),
+								new Action(ctx => LevelBot.BehaviorFlags |= BehaviorFlags.Combat)),
+
+							// Disable combat while in a vehicle
+							new Decorator(ctx => (LevelBot.BehaviorFlags & BehaviorFlags.Combat) != 0 && Query.IsInVehicle(),
+								new Action(ctx => LevelBot.BehaviorFlags &= ~BehaviorFlags.Combat)),
 
 							// If we're not in a vehicle, go fetch one...
 							new Decorator(context => !IsInVehicle() && Query.IsViable(VehicleUnoccupied),

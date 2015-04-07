@@ -58,6 +58,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
 using System.Xml.Linq;
+using Bots.Grind;
 using Buddy.Coroutines;
 using CommonBehaviors.Actions;
 using Honorbuddy.QuestBehaviorCore;
@@ -179,8 +180,8 @@ namespace Honorbuddy.Quest_Behaviors.Vehicles.FlyingVehicle
 		private double PrecisionSqr { get; set; }
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: FlyingVehicle.cs 1987 2015-03-13 06:29:43Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1987 $"); } }
+		public override string SubversionId { get { return ("$Id: FlyingVehicle.cs 2022 2015-04-02 23:55:40Z chinajade $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2022 $"); } }
 
 		#endregion
 
@@ -216,7 +217,17 @@ namespace Honorbuddy.Quest_Behaviors.Vehicles.FlyingVehicle
 				return false;
 
 			if (!Query.IsInVehicle())
+			{
+				// Enable combat while not in a vehicle
+				if ((LevelBot.BehaviorFlags & BehaviorFlags.Combat) == 0)
+					LevelBot.BehaviorFlags |= BehaviorFlags.Combat;
+
 				return await GetInVehicleLogic();
+			}
+
+			// Disable combat while in a vehicle
+			if ((LevelBot.BehaviorFlags & BehaviorFlags.Combat) != 0)
+				LevelBot.BehaviorFlags &= ~BehaviorFlags.Combat;
 
 			var vehicleLoc = Vehicle.Location;
 			var target = FindTarget(vehicleLoc);

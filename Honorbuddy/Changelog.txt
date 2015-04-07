@@ -1,23 +1,32 @@
 New features:
 --------------
-  * Core
-    - ProtectedItems updates: Sharpened Fishing Hook, Worm Supreme (HB-2142)
+  * QuestBehaviour
+    - Avoid QB will no-longer prevent Combat Routines that use CombatRoutine Capabilities (http://wiki.thebuddyforum.com/index.php?title=Honorbuddy:Developer_Notebook:Combat_Routine_Capabilities) from executing while running out of bad stuff.  (HB-1900)
 
-  * Singular
-    - Singular 4.0.0.4544 - when user enables game message for Hot Key toggle key presses, messages will now be written to overlay window rather than chat window.  Added setting to control how long messages are displayed in overlay. (HB-2136)
+Api Changes:
+--------------
+    - StyxWoW.BuildType has been added that can be used to check whether the client is a Regular, Beta or German build. (HB-1305)
 
 Bug fixes:
 --------------
+  * ArchaeologyBuddy
+    - Should be properly detecting all digsites in pre draenor maps now. This used to cause endless loading tiles loops. (HB-2101)
+
   * DungeonBuddy
-    - Fixed a bug that caused Query.GetNearestNpc and related functions to sometimes not ignore blacklisted NPCs (HB-2134)
+    - Fixed an issue that cause 'Dungeon Type' to be changed to 'Specific' after completing Shadowmoon Burial Grounds (HB-2099)
+
+  * Navigation
+    - Added a Flightor indoor annotation for Westguard Keep, Howling Fjord  (HB-1207)
 
   * QuestBehaviour
-    - Fixed an issue where InteractWith sometimes failed to detect interruption while interacting with an object (HB-2070)
+    - TheGrandMelee: Fixed an issue that caused Taurens to not mount (HB-1185)
 
-  * Singular
-    - Singular 4.0.0.4524+ now ignores Bottled Nethergon Vapor (HB-613)
+    - AtTheEnemysGates: Bot will now stay far enough away from scouts for it to use the Shield-breaker ability (HB-1186)
 
-    - Singular 4.0.0.4544 - fixed bug where auto attack enabled prior to Pick Pocket attempt (HB-1978)
+    - Vehicle quest behaviors now disable combat while riding a vehicle. (HB-1646)
 
-    - Solved issues with warlock targeting (HB-2133)
+    - TaxiRide will now terminate after successfully taking a taxi ride (HB-1925)
+
+  * Questing
+    - The 'Now That We're Friends...' quest is no-longer marked as completed after quest is turned in. This allows the quest to be done multiple times. (HB-1148)
 

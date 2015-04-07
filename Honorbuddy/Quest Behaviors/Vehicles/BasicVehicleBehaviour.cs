@@ -40,6 +40,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bots.Grind;
 using Buddy.Coroutines;
 using CommonBehaviors.Actions;
 using Honorbuddy.QuestBehaviorCore;
@@ -113,6 +114,7 @@ namespace Honorbuddy.Quest_Behaviors.BasicVehicleBehaviour
 		private bool _isBehaviorDone;
 		private Composite _root;
 		private List<WoWUnit> _vehicleList;
+		private BehaviorFlags _originalBehaviorFlags;
 
 		// Private properties
 		private int Counter { get; set; }
@@ -121,8 +123,8 @@ namespace Honorbuddy.Quest_Behaviors.BasicVehicleBehaviour
 		public WoWPoint MountedPoint { get; private set; }
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: BasicVehicleBehaviour.cs 1728 2014-10-13 23:25:24Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1728 $"); } }
+		public override string SubversionId { get { return ("$Id: BasicVehicleBehaviour.cs 2022 2015-04-02 23:55:40Z chinajade $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2022 $"); } }
 
 
 		#region Overrides of CustomForcedBehavior
@@ -140,6 +142,14 @@ namespace Honorbuddy.Quest_Behaviors.BasicVehicleBehaviour
 					new Decorator(ret => (QuestId != 0 && Me.QuestLog.GetQuestById((uint)QuestId) != null &&
 						 Me.QuestLog.GetQuestById((uint)QuestId).IsCompleted),
 						new Action(ret => _isBehaviorDone = true)),
+
+					// Enable combat while not in a vehicle
+					new Decorator(ctx => (LevelBot.BehaviorFlags & BehaviorFlags.Combat) == 0 && !Query.IsInVehicle(),
+						new Action(ctx => LevelBot.BehaviorFlags |= BehaviorFlags.Combat)),
+
+					// Disable combat while in a vehicle
+					new Decorator(ctx => (LevelBot.BehaviorFlags & BehaviorFlags.Combat) != 0 && Query.IsInVehicle(),
+						new Action(ctx => LevelBot.BehaviorFlags &= ~BehaviorFlags.Combat)),
 
 					new Decorator(ret => Counter >= 1,
 						new Action(ret => _isBehaviorDone = true)),
@@ -203,6 +213,7 @@ namespace Honorbuddy.Quest_Behaviors.BasicVehicleBehaviour
         {
             TreeRoot.GoalText = string.Empty;
             TreeRoot.StatusText = string.Empty;
+	        LevelBot.BehaviorFlags = _originalBehaviorFlags;
             base.OnFinished();
         }
 
@@ -223,6 +234,8 @@ namespace Honorbuddy.Quest_Behaviors.BasicVehicleBehaviour
 			// We had to defer this action, as the 'profile line number' is not available during the element's
 			// constructor call.
 			OnStart_HandleAttributeProblem();
+
+			_originalBehaviorFlags = LevelBot.BehaviorFlags;
 
 			// If the quest is complete, this behavior is already done...
 			// So we don't want to falsely inform the user of things that will be skipped.
