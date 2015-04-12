@@ -614,7 +614,7 @@ namespace Singular.Helpers
                 });
         }
 
-        public static bool IsGlobalCooldown(LagTolerance allow = LagTolerance.Yes)
+        public static bool IsGlobalCooldown(LagTolerance allow = LagTolerance.No)
         {
 #if NO_LATENCY_ISSUES_WITH_GLOBAL_COOLDOWN
             uint latency = allow == LagTolerance.Yes ? SingularRoutine.Latency : 0;
@@ -655,7 +655,7 @@ namespace Singular.Helpers
             }
             catch(Styx.InvalidObjectPointerException ie)
             {
-                Logger.WriteDiagnostic("IsCasting: InvalidObjectPointerException exception encountered - returning true");
+                Logger.WriteDiagnostic("IsCasting: InvalidObjectPointerException exception encountered - returning true", ie);
                 return true;
             }
 
@@ -711,7 +711,7 @@ namespace Singular.Helpers
             }
             catch (Styx.InvalidObjectPointerException ie)
             {
-                Logger.WriteDiagnostic("IsChannelling: InvalidObjectPointerException exception encountered - returning true");
+                Logger.WriteDiagnostic("IsChannelling: InvalidObjectPointerException exception encountered - returning true", ie);
                 return true;
             }
 
