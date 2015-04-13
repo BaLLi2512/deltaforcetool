@@ -45,7 +45,7 @@
 			36688 - Upper Skettis
 			36691 - Socrethar's Rise
 			36693 - Mok'gol Watchpost
-			
+			36690 - Lost Veil Anzu
 
 
 
@@ -54,7 +54,7 @@
 		
 	<QuestOrder >
 	<!-- Pick up the Apex daily quest if we don't have it already-->
-		<If Condition="(!HasQuest(36693) &amp;&amp; !IsQuestCompleted(36693)) &amp;&amp; (!HasQuest(36691) &amp;&amp; !IsQuestCompleted(36691)) &amp;&amp; (!HasQuest(36688) &amp;&amp; !IsQuestCompleted(36688)) &amp;&amp; (!HasQuest(36697) &amp;&amp; !IsQuestCompleted(36697)) &amp;&amp; (!HasQuest(36694) &amp;&amp; !IsQuestCompleted(36694)) &amp;&amp; (!HasQuest(36695) &amp;&amp; !IsQuestCompleted(36695)) &amp;&amp; (!HasQuest(36669) &amp;&amp; !IsQuestCompleted(36669)) &amp;&amp; (!HasQuest(36692) &amp;&amp; !IsQuestCompleted(36692)) &amp;&amp; (!HasQuest(36689) &amp;&amp; !IsQuestCompleted(36689))" > <!-- Only grab the quest if we aren't on it already -->
+		<If Condition="(!HasQuest(36693) &amp;&amp; !IsQuestCompleted(36693)) &amp;&amp; (!HasQuest(36691) &amp;&amp; !IsQuestCompleted(36691)) &amp;&amp; (!HasQuest(36688) &amp;&amp; !IsQuestCompleted(36688)) &amp;&amp; (!HasQuest(36697) &amp;&amp; !IsQuestCompleted(36697)) &amp;&amp; (!HasQuest(36694) &amp;&amp; !IsQuestCompleted(36694)) &amp;&amp; (!HasQuest(36695) &amp;&amp; !IsQuestCompleted(36695)) &amp;&amp; (!HasQuest(36669) &amp;&amp; !IsQuestCompleted(36669)) &amp;&amp; (!HasQuest(36692) &amp;&amp; !IsQuestCompleted(36692)) &amp;&amp; (!HasQuest(36689) &amp;&amp; !IsQuestCompleted(36689)) &amp;&amp; (!HasQuest(36690) &amp;&amp; !IsQuestCompleted(36690))" > <!-- Only grab the quest if we aren't on it already -->
 			<CustomBehavior File="Message" Text="Getting Apex daily quest from war planning table..." LogColor="Cyan" />
 			<CustomBehavior File="InteractWith" MobId="236206" Range="5" WaitTime="2000"  X="5576.45" Y="4597.654" Z="143.2046"  /> <!-- War Planning Map (Level 3 Garrison)-->
 			<CustomBehavior File="Misc\RunLua" Lua="QuestChoiceFrameOption1.OptionButton:Click()" WaitTime="1000" />
@@ -70,6 +70,7 @@
 		<If Condition="HasQuest(36688)" ><CustomBehavior File="LoadProfile" ProfileName="[H] - [Quest] - Upper Skettis" RememberProfile="true" /></If>
 		<If Condition="HasQuest(36691)" ><CustomBehavior File="LoadProfile" ProfileName="[H] - [Quest] - Socrethar's Rise" RememberProfile="true" /></If>
 		<If Condition="HasQuest(36693)" ><CustomBehavior File="LoadProfile" ProfileName="[H] - [Quest] - Mok'gol Watchpost" RememberProfile="true" /></If>
+		<If Condition="HasQuest(36690)" ><CustomBehavior File="LoadProfile" ProfileName="[N] - [Quest] - Lost Veil Anzu" RememberProfile="true" /></If>		
 		<!-- <CustomBehavior File="RunCode" Code="" /> -->
 	<CustomBehavior File="HBRelogSkip"  />  
 	</QuestOrder>

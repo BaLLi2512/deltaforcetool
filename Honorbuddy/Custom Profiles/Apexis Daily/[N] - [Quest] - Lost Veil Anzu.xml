@@ -1,0 +1,75 @@
+<HBProfile>
+
+<Name>[N] - [Quest] - Lost Veil Anzu</Name>
+<MinDurability>0.4</MinDurability>
+<MinFreeBagSlots>1</MinFreeBagSlots>
+
+<MinLevel>99</MinLevel>
+<MaxLevel>101</MaxLevel>
+
+<MailGrey>false</MailGrey>
+<MailWhite>true</MailWhite>
+<MailGreen>true</MailGreen>
+<MailBlue>true</MailBlue>
+<MailPurple>true</MailPurple>
+
+<SellGrey>true</SellGrey>
+<SellWhite>false</SellWhite>
+<SellGreen>false</SellGreen>
+<SellBlue>false</SellBlue>
+<SellPurple>false</SellPurple>
+
+<TargetElites>false</TargetElites>	
+
+   <Vendors>
+   </Vendors>
+
+<Mailboxes>
+</Mailboxes>
+
+<Blackspots>
+    <Blackspot X="-478.0942" Y="281.4142" Z="3.524597" Radius="17.76607" />
+    <Blackspot X="-306.7838" Y="255.4174" Z="-0.3223599" Radius="10.31941" />
+</Blackspots>
+
+<QuestOrder>
+    <If Condition="HasQuest(36690) &amp;&amp; !IsQuestCompleted(36690)" >       
+    <CustomBehavior File="Message" Text="Beginning Apex Daily: Assault on Lost Veil Anzu" LogColor="Cyan" />
+    <CustomBehavior File="NoCombatMoveTo" X="-600.2482" Y="236.4695" Z="-0.2874449" />
+        <While Condition="!IsObjectiveComplete(1, 36690)">
+            <SetGrindArea>
+                <GrindArea>
+	                <RandomizeHotspots>true</RandomizeHotspots>
+			        <Factions> 16 2111 2775 35 2777 2561 </Factions>
+                        <Hotspots>
+                            <Hotspot X="-350.8128" Y="165.7607" Z="3.867106" />
+                            <Hotspot X="-557.1736" Y="227.1584" Z="-0.2869926" />
+                            <Hotspot X="-510.7142" Y="277.2128" Z="7.345837" />
+                            <Hotspot X="-428.9347" Y="347.763" Z="9.117505" />
+                            <Hotspot X="-478.5136" Y="299.4176" Z="7.368894" />
+                            <Hotspot X="-455.2722" Y="208.755" Z="-0.2886663" />
+                            <Hotspot X="-425.2552" Y="175.802" Z="1.070635" />
+                            <Hotspot X="-397.2018" Y="227.5586" Z="-0.2616374" />
+                            <Hotspot X="-332.2901" Y="225.3526" Z="-0.297742" />
+                            <Hotspot X="-271.7966" Y="230.9037" Z="1.08599" />
+                            <Hotspot X="-187.8956" Y="170.2909" Z="5.518055" />
+		        	    </Hotspots>
+                </GrindArea>    
+            </SetGrindArea>
+            <GrindTo Condition="IsQuestCompleted(36690)" />
+        </While>
+    </If>
+
+<CustomBehavior File="UserSettings" KillBetweenHotspots="True" />
+
+<!-- We're done, now lets turn them in! -->
+<If Condition="HasQuest(36690) &amp;&amp; IsQuestCompleted(36690)" >
+	<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(110560)" WaitTime="2000" />
+	<CustomBehavior File="WaitTimer" WaitTime="5000" /> 
+	<TurnIn QuestId="36690" QuestName="Assault on Lost Veil Anzu" TurnInName="Shadow Hunter Ukambe" TurnInId="78495" X="5573.493" Y="4597.967" Z="142.0461" />
+</If>
+
+<CustomBehavior File="HBRelogSkip"  />  
+
+</QuestOrder>
+</HBProfile>
