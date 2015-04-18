@@ -58,7 +58,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 					var unit = ret.ToUnit();
 					if (unit != null)
 					{
-						if (!unit.Combat && (Me.IsSwimming || !Me.IsSwimming && unit.Z < -58))
+						if (!unit.Combat && unit.Entry != MobId_GuardianoftheDeep && (Me.IsSwimming || !Me.IsSwimming && unit.Z < -58))
 							return true;
 						if (unit.Entry == SkitteringCrustaceanId && !unit.Combat)
 							return true;
@@ -91,7 +91,9 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 		#region Root
 
 		private const int NightmareOfTheDeeps = 26888;
+		private const uint MobId_GuardianoftheDeep = 74508;
 		private const uint JeneuSancreaId = 12736;
+
 		[EncounterHandler(44375, "Zeya", Mode = CallBehaviorMode.Proximity, BossRange = 40)]
 		[EncounterHandler(12736, "Je'neu Sancrea", Mode = CallBehaviorMode.Proximity, BossRange = 40)]
 		[EncounterHandler(44387, "Flaming Eradicator", Mode = CallBehaviorMode.Proximity, BossRange = 40)]
@@ -171,7 +173,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 		[ObjectHandler(224720, "Fire of Aku'mai", 50)]
 		public async Task<bool> FireOfAkumaiHandler(WoWGameObject fire)
 		{
-			if (!Me.IsTank() || !Targeting.Instance.IsEmpty())
+			if (!Me.IsTank() || !Targeting.Instance.IsEmpty() || Me.Z < -30)
 				return false;
 
 			if (IsAkumaiDoorOpen(true))

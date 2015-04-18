@@ -268,8 +268,8 @@ namespace Honorbuddy.Quest_Behaviors.DeathknightStart.WaitForPatrol
 
 		#region Overrides of CustomForcedBehavior
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: WaitForPatrol.cs 1733 2014-10-14 10:39:58Z Dogan $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1733 $"); } }
+		public override string SubversionId { get { return ("$Id: WaitForPatrol.cs 2036 2015-04-17 10:51:44Z chinajade $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2036 $"); } }
 
 		// CreateBehavior supplied by QuestBehaviorBase.
 		// Instead, provide CreateMainBehavior definition.
@@ -432,11 +432,12 @@ namespace Honorbuddy.Quest_Behaviors.DeathknightStart.WaitForPatrol
 								new ActionFail(context => { Utility.Target(Mob_ToMoveNear); }),
 
 								// Move to mob...
-                                new ActionRunCoroutine(
-                                    context => UtilityCoroutine.MoveTo(
-                                        Mob_ToMoveNear.Location,
-                                        Mob_ToMoveNear.SafeName, 
-                                        MovementBy))
+								new Decorator(ctx => !Navigator.AtLocation(Mob_ToMoveNear.Location),
+									new ActionRunCoroutine(
+										context => UtilityCoroutine.MoveTo(
+											Mob_ToMoveNear.Location,
+											Mob_ToMoveNear.SafeName, 
+											MovementBy)))
 							)),
 
 						// Need to wait for Mob to respawn...
@@ -448,7 +449,7 @@ namespace Honorbuddy.Quest_Behaviors.DeathknightStart.WaitForPatrol
 					)),
 
 				// No "Move Near" mob, so use the provided Safe spot coordinates...
-				new Decorator(context => MobIdToMoveNear <= 0,
+				new Decorator(context => MobIdToMoveNear <= 0 && !Navigator.AtLocation(SafespotLocation),
                     new ActionRunCoroutine(
                         context => UtilityCoroutine.MoveTo(
                             SafespotLocation,

@@ -12,6 +12,8 @@ using Styx.WoWInternals.WoWObjects;
 using Bots.DungeonBuddy.Profiles;
 using Bots.DungeonBuddy.Attributes;
 using Bots.DungeonBuddy.Helpers;
+using Styx.Pathing;
+
 namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 {
 	public class RazorfenKraul : Dungeon
@@ -101,8 +103,26 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 		}
 
 
-		[EncounterHandler(44402, "Auld Stonespire", Mode = CallBehaviorMode.Proximity)]
-		[EncounterHandler(44415, "Spirit of Agamaggan", Mode = CallBehaviorMode.Proximity)]
+		[EncounterHandler(44402, "Auld Stonespire", BossRange = 45, Mode = CallBehaviorMode.Proximity)]
+		[EncounterHandler(44415, "Spirit of Agamaggan", BossRange = 45, Mode = CallBehaviorMode.Proximity)]
+		public async Task<bool> QuestPickupTurninHandler(WoWUnit npc)
+		{
+			if (Me.Combat || ScriptHelpers.WillPullAggroAtLocation(npc.Location) )
+				return false;
+
+			if (!npc.HasQuestAvailable(true) && !npc.HasQuestTurnin())
+				return false;
+
+			var pathDist = Navigator.PathDistance(Me.Location, npc.Location, 45);
+			if (!pathDist.HasValue || pathDist.Value >= 45)
+				return false;
+
+			// pickup or turnin quests if any are available.
+			return npc.HasQuestAvailable(true)
+				? await ScriptHelpers.PickupQuest(npc)
+				: await ScriptHelpers.TurninQuest(npc);
+		}
+
 		public Composite AuldStonespireEncounter()
 		{
 			WoWUnit unit = null;

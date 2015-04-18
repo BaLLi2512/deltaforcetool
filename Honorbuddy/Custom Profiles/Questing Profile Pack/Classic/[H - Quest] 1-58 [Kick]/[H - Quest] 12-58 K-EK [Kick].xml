@@ -3719,7 +3719,9 @@
 			<TurnIn QuestName="Competition Schmompetition" QuestId="29086" TurnInName="Sputtervalve" TurnInId="3442" />
 			<TurnIn QuestName="The Escape" QuestId="863" TurnInName="Sputtervalve" TurnInId="3442" />
 			<PickUp QuestName="Samophlange Repair" QuestId="14003" GiverName="Sputtervalve" GiverId="3442" />
-			<TurnIn QuestName="Sludge Beast!" QuestId="29089" TurnInName="Nozzlepot" TurnInId="34698" />
+			<If Condition="HasQuest(29089) &amp;&amp; IsQuestCompleted(29089)">
+				<TurnIn QuestName="Sludge Beast!" QuestId="29089" TurnInName="Nozzlepot" TurnInId="34698" />
+			</If>
 			<TurnIn QuestName="Hyena Extermination" QuestId="29088" TurnInName="Nozzlepot" TurnInId="34698" />
 			<If Condition="HasQuest(14003) &amp;&amp; IsQuestCompleted(14003)">
 				<TurnIn QuestName="Samophlange Repair" QuestId="14003" TurnInName="Brak Blusterpipe" TurnInId="34674" />
@@ -3781,8 +3783,14 @@
 				<TurnIn QuestId="875" />
 				<CustomBehavior File="WaitTimer" WaitTime="5000" GoalText="Waiting for bot {TimeRemaining}" />
 			</While>
+
+			<If Condition="!HasQuest(876) &amp;&amp; !IsQuestCompleted(876)">
+				<PickUp QuestName="Serena Bloodfeather" QuestId="876" GiverName="Darsok Swiftdagger" GiverId="3449" />				
+			</If>
+			<MoveTo DestName="Serena Bloodfeather" QuestId="876" X="767.1889" Y="-1339.757" Z="91.45845" />
 			<Objective QuestName="Serena Bloodfeather" QuestId="876" Type="CollectItem" ItemId="5067" CollectCount="1" />
 			<TurnIn QuestName="Serena Bloodfeather" QuestId="876" TurnInName="Darsok Swiftdagger" TurnInId="3449" />
+
 			<PickUp QuestName="Report to Thork" QuestId="29095" GiverName="Darsok Swiftdagger" GiverId="3449" />
 			<TurnIn QuestName="Report to Thork" QuestId="29095" TurnInName="Thork" TurnInId="3429" />
 			<PickUp QuestName="Mor'shan Caravan Pick-Up" QuestId="29109" GiverName="Thork" GiverId="3429" />
@@ -3965,12 +3973,12 @@
                  for completing this quest.
             -->
 			<While Condition="HasQuest(13712) &amp;&amp; !IsQuestCompleted(13712)">
-				<MoveTo X="1236.776" Y="-2251.217" Z="91.92881" />
+				<MoveTo DestName="Kadrak" X="1236.776" Y="-2251.217" Z="91.92881" />
 				<CustomBehavior File="ForcedDismount" />
 				<CustomBehavior File="WaitTimer" WaitTime="2000" />
 				<CustomBehavior File="InteractWith" QuestId="13712" MobId="8582"
-                                InteractByGossipOptions="2" X="1236.776" Y="-2251.217" Z="91.92881" />
-				<CustomBehavior File="WaitTimer" QuestId="13712" WaitTime="70000"
+                                InteractByGossipOptions="1" X="1236.776" Y="-2251.217" Z="91.92881" />
+				<CustomBehavior File="WaitTimer" QuestId="13712" WaitTime="120000"
                                 GoalText="Waiting {TimeRemaining} for flight to end" />
 			</While>
 			<!-- End of Warsong Labor Camp Quests -->
@@ -4115,19 +4123,20 @@
 			<Objective QuestName="Wet Work" QuestId="13865" Type="KillMob" MobId="34177" KillCount="12" />
 			<!-- Summon Krokk for TurnIn -->
 			<While Condition="HasQuest(13815) &amp;&amp; IsQuestCompleted(13815) &amp;&amp; ( Unit(33889) == null )">
+				<While Condition="!HasItem(45710)">
+					<CustomBehavior File="InteractWith" MobId="33837" 
+                                        InteractByGossipOptions="1" WaitTime="5000"
+                                        X="2284.792" Y="-2544.701" Z="98.3289" />
+					<CustomBehavior File="WaitTimer" WaitTime="5000" GoalText="Waiting for Secret Signal Powder {TimeRemaining}" />
+				</While>
 				<MoveTo X="2611.031" Y="-3058.034" Z="156.4043" />
+				<CustomBehavior File="ForcedDismount" />
 				<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for agro to clear {TimeRemaining}" />
 				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:45710&quot;)" />
 				<CustomBehavior File="WaitTimer" WaitTime="8000" GoalText="Waiting for npc to spawn {TimeRemaining}" />
 			</While>
 
-			<While Condition="HasQuest(13865) &amp;&amp; IsQuestCompleted(13865) &amp;&amp; ( Unit(33889) == null )">
-				<MoveTo X="2611.031" Y="-3058.034" Z="156.4043" />
-				<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for agro to clear {TimeRemaining}" />
-				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:45710&quot;)" />
-				<CustomBehavior File="WaitTimer" WaitTime="8000" GoalText="Waiting for npc to spawn {TimeRemaining}" />
-				<TurnIn QuestName="Wet Work" QuestId="13865" TurnInName="Krokk" TurnInId="33889" X="2611.031" Y="-3058.034" Z="156.4043" />
-			</While>
+
 			<If Condition="HasQuest(13865)" >
 				<TurnIn QuestName="Wet Work" QuestId="13865" TurnInName="Krokk" TurnInId="33889" X="2611.031" Y="-3058.034" Z="156.4043" />
 			</If>
@@ -6359,7 +6368,7 @@
 			<PickUp QuestName="Taerar's Fall" QuestId="25379" GiverName="Ysondre" GiverId="39407" />
 			<MoveTo QuestId="25379" DestName="Taerar" X="-4337.523" Y="-211.8387" Z="125.1737" />
 			<CustomBehavior File="WaitTimer" WaitTime="20000" GoalText="Waiting for Taerar {TimeRemaining}" />
-			<CustomBehavior File="InteractWith" QuestId="25379" MobId="39853" PreInteractMountStrategy="DismountOrCancelShapeshift" WaitForNpcs="False" X="-4337.523" Y="-211.8387" Z="125.1737" />
+			<CustomBehavior File="InteractWith" QuestId="25379" MobId="39853" PreInteractMountStrategy="DismountOrCancelShapeshift" NonCompeteDistance="0"  WaitForNpcs="False" X="-4337.523" Y="-211.8387" Z="125.1737" />
 			<CustomBehavior File="WaitTimer" WaitTime="8000" GoalText="Waiting for kill {TimeRemaining}" />
 			<If Condition="!IsQuestCompleted(25379)">
 				<AbandonQuest QuestId="25379" Type="Failed" />
@@ -6450,10 +6459,16 @@
 				<Hotspot X="-7763.371" Y="-3802.709" Z="29.44543" />
 				<Hotspot X="-7859.293" Y="-3681.476" Z="44.93718" />
 				<Hotspot X="-7922.329" Y="-3748.97" Z="50.77891" />
+				<Hotspot X="-7311.105" Y="-3549.135" Z="8.698274" />
+				<Hotspot X="-7437.441" Y="-3760.71" Z="9.384009" />
+				<Hotspot X="-7870.852" Y="-3865.849" Z="20.95782" />
+				<Hotspot X="-7861.789" Y="-3655.047" Z="51.61002" />
+				<Hotspot X="-7762.536" Y="-3497.85" Z="42.49944" />
+				<Hotspot X="-7607.863" Y="-3491.582" Z="23.88138" />
+				<Hotspot X="-7622.471" Y="-3672.566" Z="20.16784" />
 			</HuntingGrounds>
 		</CustomBehavior>
 
-		<Objective QuestName="Butcherbot" QuestId="25112" Type="KillMob" MobId="39702" KillCount="10" />
 		<TurnIn QuestName="Butcherbot" QuestId="25112" TurnInName="Driz Plunkbow" TurnInId="39178" />
 		<PickUp QuestName="Scavengers Scavenged" QuestId="25111" GiverName="Driz Plunkbow" GiverId="39178" />
 
