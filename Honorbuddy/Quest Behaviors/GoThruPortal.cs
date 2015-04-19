@@ -199,8 +199,8 @@ namespace Honorbuddy.Quest_Behaviors.GoThruPortal
 
 		#region Overrides of CustomForcedBehavior
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: GoThruPortal.cs 2036 2015-04-17 10:51:44Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 2036 $"); } }
+		public override string SubversionId { get { return ("$Id: GoThruPortal.cs 1728 2014-10-13 23:25:24Z chinajade $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 1728 $"); } }
 
 
 		public override void OnFinished()
@@ -273,13 +273,15 @@ namespace Honorbuddy.Quest_Behaviors.GoThruPortal
 				return true;
 
 			// Move to portal starting position...
+			if (await UtilityCoroutine.MoveTo(StartingPoint, "Portal", MovementBy))
+				return true;
+
+			// If we're not at StartingPoint then something seriously went wrong.
 			if (!Navigator.AtLocation(StartingPoint))
 			{
-				if (!await UtilityCoroutine.MoveTo(StartingPoint, "Portal", MovementBy))
-					QBCLog.Fatal("Unable to Navigate to StartingPoint");
+				QBCLog.Fatal("Unable to Navigate to StartingPoint");
 				return true;
 			}
-
 
 			if (await EnterPortal())
 				return true;

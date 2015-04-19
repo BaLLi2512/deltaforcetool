@@ -857,16 +857,8 @@ namespace Singular
         {
             if (_prevBehaviorFlags != Bots.Grind.LevelBot.BehaviorFlags)
             {
-                // get mask of those turned off
-                Bots.Grind.BehaviorFlags disabled = _prevBehaviorFlags & (Bots.Grind.LevelBot.BehaviorFlags ^ Bots.Grind.BehaviorFlags.All);
-                // get mask of those turned on
-                Bots.Grind.BehaviorFlags enabled = (_prevBehaviorFlags ^ Bots.Grind.BehaviorFlags.All) & Bots.Grind.LevelBot.BehaviorFlags;
-
                 _prevBehaviorFlags = Bots.Grind.LevelBot.BehaviorFlags;
-                if (disabled != 0)
-                    Logger.Write(Color.HotPink, "info: BehaviorFlags [{0}] disabled by {1}, Plug-in or Profile", disabled.ToString(), GetBotName());
-                if (enabled != 0)
-                    Logger.Write(Color.HotPink, "info: BehaviorFlags [{0}] enabled by {1}, Plug-in or Profile", enabled.ToString(), GetBotName());
+                Logger.WriteDiagnostic(Color.HotPink, "info: Behavior Flags set to [{0}] by {1}, Plug-in or Profile", _prevBehaviorFlags.ToString(), GetBotName());
             }
         }
 

@@ -35,7 +35,7 @@
 // Tunables:
 //      ImmediatelySwitchToHighestPriorityTarget [optional; default: true]
 //          If a higher-priority target becomes available, the behavior will immediately switch
-//          to killing it if toon is in combat, rather than waiting for the current mob to die
+//          to killing it, rather than waiting for the current mob to die.
 //      WaitForNpcs [optional; Default: true]
 //          This value affects what happens if there are no MobIds in the immediate area.
 //          If true, the behavior will move to the next hunting ground waypoint, or if there
@@ -182,8 +182,8 @@ namespace Honorbuddy.Quest_Behaviors.KillUntilComplete
         private UtilityCoroutine.NoMobsAtCurrentWaypoint _noMobsAtCurrentWaypoint;
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: KillUntilComplete.cs 2034 2015-04-15 03:58:20Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 2034 $"); } }
+		public override string SubversionId { get { return ("$Id: KillUntilComplete.cs 1974 2015-03-12 00:29:37Z mainhaxor $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 1974 $"); } }
 
         #region Overrides of QuestBehaviorBase
 
@@ -256,7 +256,7 @@ namespace Honorbuddy.Quest_Behaviors.KillUntilComplete
 
         private async Task<bool> Coroutine_CombatMain()
         {
-            if (!_targetSwitchTimer.IsFinished || BotPoi.Current.Type != PoiType.Kill || !ImmediatelySwitchToHighestPriorityTarget || !Me.Combat)
+            if (!_targetSwitchTimer.IsFinished || BotPoi.Current.Type != PoiType.Kill || !ImmediatelySwitchToHighestPriorityTarget)
                 return false;
 
             var firstUnit = Targeting.Instance.FirstUnit;

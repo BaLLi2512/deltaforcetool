@@ -172,20 +172,20 @@ namespace Singular.ClassSpecific.DeathKnight
 
                         CreateDarkSuccorBehavior(),
                         Common.CreateGetOverHereBehavior(),
-                        new Throttle(
-                            TimeSpan.FromSeconds(1.5),
-                            Spell.Cast("Outbreak"),
-                            Spell.Cast("Howling Blast"),
-                            Spell.Buff("Icy Touch")
-                            )
+                        Spell.Cast("Outbreak"),
+                        Spell.Cast("Howling Blast"),
+                        Spell.Buff("Icy Touch")
                         )
-                    )
+                    ),
+
+                Movement.CreateMoveToMeleeBehavior(true)
                 );
         }
 
-        [Behavior(BehaviorType.Pull, WoWClass.DeathKnight, WoWSpec.DeathKnightFrost, WoWContext.Instances)]
-        [Behavior(BehaviorType.Pull, WoWClass.DeathKnight, WoWSpec.DeathKnightUnholy, WoWContext.Instances)]
         // Non-blood DKs shouldn't be using Death Grip in instances. Only tanks should!
+        // You also shouldn't be a blood DK if you're DPSing. Thats just silly. (Like taking a prot war as DPS... you just don't do it)
+        [Behavior(BehaviorType.Pull, WoWClass.DeathKnight, WoWSpec.DeathKnightUnholy, WoWContext.Instances)]
+        [Behavior(BehaviorType.Pull, WoWClass.DeathKnight, WoWSpec.DeathKnightFrost, WoWContext.Instances)]
         public static Composite CreateDeathKnightFrostAndUnholyInstancePull()
         {
             return new PrioritySelector(
@@ -197,14 +197,11 @@ namespace Singular.ClassSpecific.DeathKnight
                             Movement.WaitForFacing(),
                             Movement.WaitForLineOfSpellSight(),
 
-                        new Throttle(
-                            TimeSpan.FromSeconds(1.5),
-                            Spell.Cast("Outbreak"),
                             Spell.Cast("Howling Blast"),
                             Spell.Buff("Icy Touch")
                             )
-                        )
-                    )
+                    ),
+                Movement.CreateMoveToMeleeBehavior(true)
                 );
         }
 
@@ -567,7 +564,8 @@ namespace Singular.ClassSpecific.DeathKnight
             return new Decorator(
                 req => Me.GetAuraTimeLeft("Dark Succor").TotalMilliseconds > 250
                     && (Me.HealthPercent < 80 || Me.GetAuraTimeLeft("Dark Succor").TotalMilliseconds < 3000 || (Me.GotTarget() && Me.CurrentTarget.TimeToDeath(99) < 6) 
-                    && Me.IsSafelyFacing( Me.CurrentTarget, 170)
+                    && Me.CurrentTarget.InLineOfSpellSight 
+                    && Me.IsSafelyFacing( Me.CurrentTarget)
                     && Spell.CanCastHack("Death Strike", Me.CurrentTarget)),
                 new Sequence(
                     new Action( r => Logger.WriteDebug( Color.White, "Dark Succor ({0} ms left) influenced Death Strike coming....", (int) Me.GetAuraTimeLeft("Dark Succor").TotalMilliseconds  )),
@@ -641,7 +639,7 @@ namespace Singular.ClassSpecific.DeathKnight
                             else if (stolenSpell.IsDamageRedux())
                                 strType = "buff ";
 
-                            Logger.Write(LogColor.Hilite, "^Dark Simulacrum: we gained {0}[{1}] #{2}", strType, stolenSpell.Name, stolenSpell.Id);
+                            Logger.Write(Color.DodgerBlue, "^Dark Simulacrum: we gained {0}[{1}] #{2}", strType, stolenSpell.Name, stolenSpell.Id);
                             return RunStatus.Success;
                         })
                         )

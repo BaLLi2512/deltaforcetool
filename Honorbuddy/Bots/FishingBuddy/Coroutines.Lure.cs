@@ -15,21 +15,21 @@ namespace Bots.FishingBuddy
 		private readonly static WaitTimer LureRecastTimer = WaitTimer.TenSeconds;
 
 
-		private static readonly List<Lure> Lures = new List<Lure>
-													{
-														new Lure(6529, "Shiny Bauble", 25),
-														new Lure(6530, "Nightcrawlers", 50),
-														new Lure(6532, "Bright Baubles", 75),
-														new Lure(6811, "Aquadynamic Fish Lens", 50),
-														new Lure(6533, "Aquadynamic Fish Attractor", 100),
-														new Lure(7307, "Flesh Eating Worm", 75),
-														new Lure(34861, "Sharpened Fish Hook", 100),
-														new Lure(46006, "Glow Worm", 100),
-														new Lure(62673, "Feathered Lure", 100),
-														new Lure(67404, "Glass Fishing Bobber", 15),
-														new Lure(68049, "Heat-Treated Spinning Lure", 150),
-														new Lure(118391, "Worm Supreme", 200),
-													};
+		private static readonly Dictionary<uint, string> Lures = new Dictionary<uint, string>
+																{
+																	{68049, "Heat-Treated Spinning Lure"},
+																	{62673, "Feathered Lure"},
+																	{34861, "Sharpened Fish Hook"},
+																	{46006, "Glow Worm"},
+																	{6533, "Aquadynamic Fish Attractor"},
+																	{7307, "Flesh Eating Worm"},
+																	{6532, "Bright Baubles"},
+																	{6530, "Nightcrawlers"},
+																	{6811, "Aquadynamic Fish Lens"},
+																	{6529, "Shiny Bauble"},
+																	{67404, "Glass Fishing Bobber"},
+																	{118391, "Worm Supreme"}
+																};
 
 		// does nothing if no lures are in bag
 		public async static Task<bool> Applylure()
@@ -50,32 +50,29 @@ namespace Bots.FishingBuddy
 				return false;
 
 			// use any item with a lure effect
-			WoWItem wearableItem = GetWearableItemWithLureEffect();
-			if (wearableItem != null)
+			WoWItem item = GetItemWithLureEffect();
+			if (item != null)
 			{
-				FishingBuddyBot.Log("Appling lure from {0} to fishing pole", wearableItem.SafeName);
-				wearableItem.Use();
+				FishingBuddyBot.Log("Appling lure from {0} to fishing pole", item.SafeName);
+				item.Use();
 				await CommonCoroutines.SleepForLagDuration();
 				return true;
 			}
 
-
-
-			var bestLure = (from item in StyxWoW.Me.BagItems
-				let lure = Lures.FirstOrDefault(l => l.ItemId == item.Entry)
-				where lure != null
-				orderby lure.BonusSkill descending
-				select item).FirstOrDefault();
-
-			if (bestLure == null || !bestLure.Use())
-				return false;
-
-			FishingBuddyBot.Log("Appling {0} to fishing pole", bestLure.SafeName);
-			await CommonCoroutines.SleepForLagDuration();
-			return true;
+			foreach (var kv in Lures)
+			{
+				WoWItem lureInBag = Utility.GetItemInBag(kv.Key);
+				if (lureInBag != null && lureInBag.Use())
+				{
+					FishingBuddyBot.Log("Appling {0} to fishing pole", kv.Value);
+					await CommonCoroutines.SleepForLagDuration();
+					return true;
+				}
+			}
+			return false;
 		}
 
-		private static WoWItem GetWearableItemWithLureEffect()
+		private static WoWItem GetItemWithLureEffect()
 		{
 			var item = StyxWoW.Me.Inventory.Equipped.MainHand;
 
@@ -96,6 +93,13 @@ namespace Bots.FishingBuddy
 				&& item.Effects.Any(e => e.TriggerType == ItemEffectTriggerType.OnUse && e.Spell != null && !e.Spell.Cooldown);
 		}
 
+		public static IEnumerable<WoWItem> GetLures()
+		{
+			return StyxWoW.Me.BagItems.Where(
+			i => Utility.FishingHatIds.Contains(i.Entry)
+				|| Lures.ContainsKey(i.Entry));
+		}
+
 		public static bool HasLureOnPole
 		{
 			get
@@ -103,20 +107,6 @@ namespace Bots.FishingBuddy
 				var ret = Lua.GetReturnValues("return GetWeaponEnchantInfo()");
 				return ret != null && ret.Count > 0 && ret[0] == "1";
 			}
-		}
-
-		private class Lure
-		{
-			public Lure(int itemId, string name, int bonusSkill)
-			{
-				ItemId = itemId;
-				Name = name;
-				BonusSkill = bonusSkill;
-			}
-
-			public int ItemId { get; private set; }
-			public string Name { get; private set; }
-			public int BonusSkill { get; private set; }
 		}
 
 	}

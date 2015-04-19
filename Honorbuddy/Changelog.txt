@@ -1,90 +1,30 @@
 New features:
 --------------
-  * Core
-    - Protected Items updates: Swiftness Potion, Thermal Anvil (HB-2150)
-
-  * GarrisonBuddy
-    - Added Garrisonbuddy! The official Garrison bot from the Buddy Team (HB-2217)
-
-  * Plugin
-    - The new Buddy Control Panel plugin allows for keyboard shortcuts within the Game client to be associated with the pause/resume and stop/start functionality of Honorbuddy. (HB-832)
-
-    - The new Buddy Control Panel plugin provides a minimalist Honorbuddy interface, available from within the Game client itself. (HB-490)
-
-    - Honorbuddy ships with a new Plugin, the Buddy Control Panel.  This plugin provides access to Honorbuddy from within the game-client window.  Stop, Start, and Pause buttons are provided which can be assign Hotkeys.  Using the right-click Context Menu, you have access to all existing of Honorbuddy functionality, and a few more features.  There is also a built-in set of Help menus to quickly take you to the appropriate locations that can help you solve problems. (HB-2223)
-
-  * UI
-    - "The new Buddy Control Panel plugin allows a user to override the profile settings for MailX, SellX, and IgnoreCheckpoints. (HB-38)
-
-    - The new Buddy Control Panel plugin presents distinct Pause, Play, and Stop buttons to the user from within the Game client itself. (HB-1236)
+  * Profile
+    - Mail and Sell properties of a profile can now be overriden in the settings window for each character individually (HB-2162)
 
 Api Changes:
 --------------
-    - Garrison API has been wrapped inside the Styx.WoWInternals.Garrison namespace. (HB-1107)
+    - Added QuestLog.IsFull API (HB-2180)
 
-    - WoWTotemInfo now has a TimeLeft property that calculates the time remaining on the totem. (HB-1935)
+    - AssemblyLoader no longer throws exceptions when encountering Dynamic assemblies, or assemblies stored in the GAC. These types of assemblies are now ignored completely. Also fixed ReflectionTypeLoad exceptions when dealing with certain assembly types. (HB-2181)
 
 Bug fixes:
 --------------
-  * Core
-    - Fixed an issue where elite mobs would be wrongly removed from targeting in certain situations (HB-2205)
+  * Flightor
+    - Can now be used in Vashj'ir without underwater mounts. It used to throw exceptions when the toon didn't have any mounts. (HB-1968)
 
-    - Fixed a repair vendor mount use infinite loop (HB-2079)
+  * Gatherbuddy
+    - Fixed a bug where it kept mounting and dismounting continuously during a guild vault run (HB-1033)
 
-    - Blacksmithing trainer Dumphry should no longer be used as a vendor (HB-2183)
+    - Should no longer trigger anti stuck behavior while reaching nodes when Framelock is disabled (HB-1146)
 
-  * DungeonBuddy
-    - Razorfen Kraul: Bot no-longer pulls hostile mob group while trying to turn in Spirit of Agamaggan (HB-1515)
+  * ProfessionBuddy
+    - CancelAuction is now faster (HB-1423)
 
-    - Added Horde and Alliance vendors to the Stonecore profile (HB-1624)
+    - The professionbuddy log now makes it clear that it's loading tradekill recipes.  (HB-1460)
 
-    - Blackfathom Deeps: Fixed a navigation issue that occurred while navigating towards Guardian of the Deep (HB-2191)
+    - Fixed a bug that caused BuyItemFromAhAction to either not bid or re-bid on items that toon is already highest bidder.  (HB-1513)
 
-    - Shadowmoon Burial Grounds: Fixed an issue that caused tank to get stuck at Nhallish  (HB-2192)
-
-  * FishingBuddy
-    - Only the best lure is now applied to fishing pole. (HB-2144)
-
-  * GarrisonBuddy
-    - Fixed an issue where Garrisonbuddy would try to upgrade followers who were in invalid states. (On missions, Inactive, etc) (HB-2218)
-
-  * Navigation
-    - Honorbuddy no-longer spams log when waiting for elevator (HB-1623)
-
-  * Other
-    - Addressed an issue with turning in quests (HB-1805)
-
-  * Profile
-    - Proper gossip option is now selcted to complete "To the Rescue" (HB-2166)
-
-    - EscortGroup will once again terminate once the behavior completes. (HB-2167)
-
-    - Repaired by ignoring other players in competition for the same mob. (HB-2168)
-
-    - Honorbuddy should now succeed in completing The Fledgling Collosus quest with Kick's profile (HB-2169)
-
-    - Repaired by HB-2167's fix to EscortGroup behavior. (HB-2170)
-
-    - Toon should now correctly interact with The Pearl of the Depths. (HB-2172)
-
-    - Deathknights will now look for and accept the alternate quest by the same name that is exclusive to that class. (HB-2173)
-
-    - Adding Name="Swoop Hunting" QuestId="761" and "Poison Water" QuestId="20440" in order to get to the required gold threshold. (HB-2177)
-
-    - Changed to use InteractWith (HB-2193)
-
-    - Fixed yet again.  Worst quest in WoD (HB-2201)
-
-    - Added hotspots (HB-2204)
-
-  * QuestBehaviour
-    - PursuitListType.GetNames() no-longer returns incorrect values. (HB-2158)
-
-    - KillUntilComplete.ImmediatelySwitchToHighestPriorityTarget now only effects targeting when in combat. Before this change, it would prevent bot from looting (HB-1630)
-
-  * Singular
-    - Protection warriors should now use ranged pulls once again. (HB-1797)
-
-  * UI
-    - Korean and Turkish translations should be working properly now (HB-2178)
+    - MailItemAction will now properly handle splitting items before mailing them (HB-1761)
 

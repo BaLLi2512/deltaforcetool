@@ -468,8 +468,6 @@
 	<Item Name="Alchemist's Rejuvenation" Id="76094" />
 
 	<!-- Basic Items: Potions, Utility (ordered alphabetically) -->
-	<!-- iLevel: 15 -->
-	<Item Name="Swiftness Potion" Id="2459" />
 	<!-- iLevel:85 -->
 	<Item Name="Draught of War" Id="67415" />
 	<Item Name="Earthen Potion" Id="58090" />
@@ -2023,10 +2021,9 @@
 	<!-- Warlords of Draenor -->
 	<Item Name="Truesteel Ingot" Id="108257" />
 
-	<!-- Trade: Multi-purpose Tools [Blacksmith/Engineering/Mining/Skinning] Tools (alphabetical) -->
+	<!-- Trade: Multi-purpose Tools [Blacksmith/Mining/Skinning] Tools (alphabetical) -->
 	<Item Name="Bladed Pickaxe" Id="40893" />
 	<Item Name="Hammer Pick" Id="40892" />
-	<Item Name="Thermal Anvil" Id="87216" />
 
 	<!-- Trade: Skinning Tools (also see Trade Tools: Multi-purpose) -->
 	<Item Name="Finkle's Skinner" Id="12709" />
