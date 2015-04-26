@@ -693,12 +693,12 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 
 		public override string SubversionId
 		{
-			get { return ("$Id: InteractWith.cs 1997 2015-03-15 02:56:33Z chinajade $"); }
+			get { return ("$Id: InteractWith.cs 2040 2015-04-20 20:03:20Z mainhaxor $"); }
 		}
 
 		public override string SubversionRevision
 		{
-			get { return ("$Revision: 1997 $"); }
+			get { return ("$Revision: 2040 $"); }
 		}
 
 		private enum BindingEventStateType
@@ -1033,12 +1033,15 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 				// Interact by casting spell...
 				if (InteractByUsingItemId > 0)
 				{
-					await UtilityCoroutine.UseItemOnTarget(
+					var succeed = await UtilityCoroutine.UseItemOnTarget(
 							InteractByUsingItemId,
 							SelectedTarget,
 							() =>
 								BehaviorDone(
 									string.Format("Terminating behavior due to missing {0}", Utility.GetItemNameFromId(InteractByUsingItemId))));
+
+					if (!succeed)
+						return false;
 				}
 
 				// Interact by right-click..

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile>
+  <Name>Proving Grounds</Name>
+  <DungeonId>640</DungeonId>
+  <BossEncounters>		
+		<Boss isFinal="true" entry="0" name="Boogie Man" 
+					killOrder="1" stage="2" step="1" optional="false" X="3795.754" Y="533.6238" Z="639.0072"/>
+  </BossEncounters>
+</DungeonBuddyProfile>

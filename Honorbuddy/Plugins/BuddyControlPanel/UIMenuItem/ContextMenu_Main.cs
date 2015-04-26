@@ -67,12 +67,26 @@ namespace BuddyControlPanel
 
 			Items.Add(new Assets.ThemedSeparator());
 			Items.Add(new MenuItem_Cancel(this));
-			Items.Add(new MenuItem_Exit());
+			Items.Add(BuildExitChoices());
         }
 		#endregion
 
 	    private readonly MenuItem_BotActions _menuItem_BotActions;
 
+	    private MenuItem BuildExitChoices()
+	    {
+		    var exitSubMenu = new Assets.ThemedMenuItem()
+		    {
+			    Header = BCPGlobalization.Item_Exit_Label,
+			    ToolTip = null,
+		    };
+
+			exitSubMenu.Items.Add(new MenuItem_Exit_BuddyBotClose());
+			exitSubMenu.Items.Add(new MenuItem_Exit_GameClientLogout());
+			exitSubMenu.Items.Add(new MenuItem_Exit_GameClientExit());
+
+		    return exitSubMenu;
+	    }
 
 	    public void NotifyBotChanged(BotBase newBot)
 	    {
@@ -163,14 +177,22 @@ namespace BuddyControlPanel
 	}
 
 
-	internal class MenuItem_Exit : MenuItemBase
+	internal abstract class MenuItem_ExitBase : MenuItemBase
 	{
-		public MenuItem_Exit()
-			: base(BCPGlobalization.Item_Exit_Label, 
-					string.Format(BCPGlobalization.Item_Exit_ToolTipFormat, BCPGlobalization.BuddyBotName))
+		public MenuItem_ExitBase(string exitActionLabel,
+							string exitActionToolTip,
+							string exitActionConfirmationQuestion)
+			: base(exitActionLabel, exitActionToolTip)
 		{
-			// empty
+			Contract.Requires(!string.IsNullOrEmpty(exitActionLabel), () => "exitActionLabel may not be null or empty.");
+			Contract.Requires(!string.IsNullOrEmpty(exitActionToolTip), () => "exitActionToolTip may not be null or empty.");
+			Contract.Requires(!string.IsNullOrEmpty(exitActionConfirmationQuestion),
+								() => "exitActionConfirmationQuestion may not be null or empty.");
+
+			_exitActionConfirmationQuestion = exitActionConfirmationQuestion;
 		}
+
+		private readonly string _exitActionConfirmationQuestion;
 
 		protected override void OnClick()
 		{
@@ -180,7 +202,7 @@ namespace BuddyControlPanel
 			{
 				var exitConfirmationDialog = new Dialog_General(SystemIcons.Question,
 					BCPGlobalization.Title_ExitConfirmation,
-					string.Format(BCPGlobalization.GeneralText_ExitConfirmationFormat, BCPGlobalization.BuddyBotName),
+					_exitActionConfirmationQuestion,
 					MessageBoxButton.OKCancel)
 				{
 					WindowStartupLocation = WindowStartupLocation.Manual,
@@ -190,10 +212,60 @@ namespace BuddyControlPanel
 
 				var messageBoxResult = exitConfirmationDialog.ShowDialog();
 				if (messageBoxResult.HasValue && messageBoxResult.Value)
-					Application.Current.Shutdown(0);
+					DoExitAction();
 			});
 
 			base.OnClick();
+		}
+
+		protected abstract void DoExitAction();
+	}
+
+	internal class MenuItem_Exit_BuddyBotClose : MenuItem_ExitBase
+	{
+		public MenuItem_Exit_BuddyBotClose()
+			: base(string.Format(BCPGlobalization.Item_Exit_BuddyBotClose_LabelFormat, BCPGlobalization.BuddyBotName),
+				string.Format(BCPGlobalization.Item_Exit_BuddyBotClose_ToolTipFormat, BCPGlobalization.BuddyBotName),
+				string.Format(BCPGlobalization.Item_Exit_BuddyBotClose_ConfirmationQuestion, BCPGlobalization.BuddyBotName))
+		{
+			// empty
+		}
+
+		protected override void DoExitAction()
+		{
+			Utility.BuddyBotExit();
+		}
+	}
+
+	internal class MenuItem_Exit_GameClientExit : MenuItem_ExitBase
+	{
+		public MenuItem_Exit_GameClientExit()
+			: base(BCPGlobalization.Item_Exit_GameClientExit_Label,
+				string.Format(BCPGlobalization.Item_Exit_GameClientExit_ToolTipFormat, BCPGlobalization.BuddyBotName),
+				string.Format(BCPGlobalization.Item_Exit_GameClientExit_ConfirmationQuestion, BCPGlobalization.BuddyBotName))
+		{
+			// empty
+		}
+
+		protected override void DoExitAction()
+		{
+			Utility.GameClientExit();
+		}
+	}
+
+	internal class MenuItem_Exit_GameClientLogout : MenuItem_ExitBase
+	{
+		public MenuItem_Exit_GameClientLogout()
+			: base(BCPGlobalization.Item_Exit_GameClientLogout_Label,
+				string.Format(BCPGlobalization.Item_Exit_GameClientLogout_ToolTipFormat, BCPGlobalization.BuddyBotName),
+				string.Format(BCPGlobalization.Item_Exit_GameClientLogout_ConfirmationQuestion, BCPGlobalization.BuddyBotName))
+		{
+			// empty
+		}
+
+		protected override void DoExitAction()
+		{
+			Utility.GameClientLogout();
 		}
 	}
 

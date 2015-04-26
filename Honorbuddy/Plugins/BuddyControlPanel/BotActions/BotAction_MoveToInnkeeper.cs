@@ -420,7 +420,7 @@ namespace BuddyControlPanel
 											_innkeeperToPursue.Name);
 					PluginLog.Info(message);
 					Utility.OverlayNotification(message, Assets.ColorInformation, Tunable_ImportantMessageDelay);
-					TreeRoot.Stop();
+					Utility.BuddyBotStop();
 					return false;
 				}
 
@@ -441,14 +441,7 @@ namespace BuddyControlPanel
 					}
 
 					// Otherwise, schedule a game-client shutdown as a background thread...
-					ThreadPool.QueueUserWorkItem(o =>
-					{
-						// Give some time for things to settle, before we terminate game client...
-						Thread.Sleep(1500);
-						Lua.DoString("ForceQuit()");
-						Application.Current.Shutdown();
-					});
-					TreeRoot.Stop();
+					Utility.GameClientExit();
 					return false;
 				}
 
@@ -469,14 +462,7 @@ namespace BuddyControlPanel
 					}
 
 					// Otherwise, schedule a game-client shutdown as a background thread...
-					ThreadPool.QueueUserWorkItem(o =>
-					{
-						// Give some time for things to settle, before we terminate game client...
-						Thread.Sleep(1500);
-						Lua.DoString("Logout()");
-						Application.Current.Shutdown();
-					});
-					TreeRoot.Stop();
+					Utility.GameClientLogout();
 					return false;
 				}
 

@@ -163,6 +163,7 @@ using Styx;
 using Styx.CommonBot;
 using Styx.CommonBot.Profiles;
 using Styx.Helpers;
+using Styx.Pathing;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
@@ -268,8 +269,8 @@ namespace Honorbuddy.Quest_Behaviors.Vehicles.VehicleMover
 
 		#region Overrides of CustomForcedBehavior
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: VehicleMover.cs 2022 2015-04-02 23:55:40Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 2022 $"); } }
+		public override string SubversionId { get { return ("$Id: VehicleMover.cs 2036 2015-04-17 10:51:44Z chinajade $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2036 $"); } }
 
 		// CreateBehavior supplied by QuestBehaviorBase.
 		// Instead, provide CreateMainBehavior definition.
@@ -407,11 +408,12 @@ namespace Honorbuddy.Quest_Behaviors.Vehicles.VehicleMover
 									 new Decorator(context => !DidSuccessfullyMount,
 										new Action(context => { DidSuccessfullyMount = true; })),
 
-                                    new ActionRunCoroutine(
-									    interactUnitContext => UtilityCoroutine.MoveTo(
-									        FinalDestination,
-									        FinalDestinationName,
-									        MovementBy)),
+									new Decorator(context => !Navigator.AtLocation(FinalDestination),
+										new ActionRunCoroutine(
+											interactUnitContext => UtilityCoroutine.MoveTo(
+												FinalDestination,
+												FinalDestinationName,
+												MovementBy))),
 
 									new Decorator(context => WoWMovement.ActiveMover.IsMoving,
 										new Action(context => { WoWMovement.MoveStop(); })),

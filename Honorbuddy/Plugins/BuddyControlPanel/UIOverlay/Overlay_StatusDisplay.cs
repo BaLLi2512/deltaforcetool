@@ -97,13 +97,10 @@ namespace BuddyControlPanel
 
 					Utility.InvokeOnSpecificDispatcher(overlayControl.Dispatcher, () =>
 					{
-						if (overlayControl.AllowMoving)
-						{
-							settings = _instance.Configuration_Get();
-							settings.ControlLeft = overlayControl.X;
-							settings.ControlTop = overlayControl.Y;
-							settings.ControlWidth = overlayControl.Width;
-						}
+						settings = _instance.Configuration_Get();
+						settings.ControlLeft = overlayControl.X;
+						settings.ControlTop = overlayControl.Y;
+						settings.ControlWidth = overlayControl.Width;
 					});
 
 					if (settings != null)

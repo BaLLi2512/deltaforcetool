@@ -156,8 +156,8 @@ namespace Honorbuddy.Quest_Behaviors.Tanaris.RocketRescue_24910
 
 		#region Overrides of CustomForcedBehavior
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: 24910-Tanaris-RocketRescue.cs 1728 2014-10-13 23:25:24Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Rev: 1728 $"); } }
+		public override string SubversionId { get { return ("$Id: 24910-Tanaris-RocketRescue.cs 2036 2015-04-17 10:51:44Z chinajade $"); } }
+		public override string SubversionRevision { get { return ("$Rev: 2036 $"); } }
 
 		// CreateBehavior supplied by QuestBehaviorBase.
 		// Instead, provide CreateMainBehavior definition.
@@ -281,8 +281,8 @@ namespace Honorbuddy.Quest_Behaviors.Tanaris.RocketRescue_24910
 				}
 
 				// No vehicle found, move to staging area...
-				if (await UtilityCoroutine.MoveTo(VehicleStagingArea, "Vehicle Staging Area", MovementBy))
-				{return true;}
+				if (!Navigator.AtLocation(VehicleStagingArea))
+					return await UtilityCoroutine.MoveTo(VehicleStagingArea, "Vehicle Staging Area", MovementBy);
 
 				await (_updateUser_MountingVehicle_waitingForSpawn ?? (_updateUser_MountingVehicle_waitingForSpawn =
 					new ThrottleCoroutineTask(

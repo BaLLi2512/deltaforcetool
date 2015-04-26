@@ -24,7 +24,7 @@ namespace BuddyControlPanel
     public class Assets
     {
 		public const string PluginAuthor = "chinajade";
-		public static readonly Version PluginVersion = new Version(1, 3, 3, 67);
+		public static readonly Version PluginVersion = new Version(1, 3, 3, 68);
 
 		// Many constructs need a unique name for the plugin.  We don't want to use the localized
 		// plugin name for various reasons (e.g., a file system may not support certain characters, etc).

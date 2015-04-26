@@ -262,11 +262,17 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		private readonly TimeCachedValue<bool> ShouldAvoidLeftEntranceSide = new TimeCachedValue<bool>(
 			TimeSpan.FromSeconds(5),
-			() => ScriptHelpers.GetUnfriendlyNpsAtLocation(LeftEntranceTrashLoc, 20, unit => unit.IsHostile).Any());
+			() => ScriptHelpers.GetUnfriendlyNpsAtLocation(
+				LeftEntranceTrashLoc, 
+				20,
+				unit => unit.IsHostile && Math.Abs(unit.Z - RightEntranceTrashLoc.Z) < 8).Any());
 
 		private readonly TimeCachedValue<bool> ShouldAvoidRightEntranceSide = new TimeCachedValue<bool>(
 			TimeSpan.FromSeconds(5),
-			() => ScriptHelpers.GetUnfriendlyNpsAtLocation(RightEntranceTrashLoc, 20, unit => unit.IsHostile).Any());
+			() => ScriptHelpers.GetUnfriendlyNpsAtLocation(
+				RightEntranceTrashLoc, 
+				20, 
+				unit => unit.IsHostile && Math.Abs(unit.Z - RightEntranceTrashLoc.Z) < 8).Any());
 
 		[EncounterHandler((int) MobId_ShadowmoonLoyalist, "Shadowmoon Loyalist")]
 		public Func<WoWUnit, Task<bool>> ShadowmoonLoyalistEncounter()
@@ -289,6 +295,11 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		[EncounterHandler((int) MobId_VoidSpawn, "Void Spawn")]
 		public Func<WoWUnit, Task<bool>> VoidSpawnEncounter()
 		{
+			// Avoid aggroing this pat if a follower.
+			AddAvoidObject(
+				ctx => Me.IsFollower(),
+				23,
+				o => o.Entry == MobId_VoidSpawn && !o.ToUnit().Combat && o.ToUnit().IsAlive && o.ZDiff < 12);
 			return async npc => await ScriptHelpers.InterruptCast(npc, SpellId_VoidPulse);
 		}
 
@@ -429,7 +440,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 		[EncounterHandler((int) MobId_Nhallish, "Nhallish", Mode = CallBehaviorMode.Proximity)]
 		public Func<WoWUnit, Task<bool>> NhallishEncounter()
 		{
-			AddAvoidObject(ctx => true, 4.5f, AreaTriggerId_SummonAncestors);
+			AddAvoidObject(4f, o => o.Entry == AreaTriggerId_SummonAncestors, ignoreIfBlocking: true);
 			AddAvoidObject(ctx => true, 6, AreaTriggerId_VoidDevastation);
 			AddAvoidObject(
 				ctx => true,
@@ -473,11 +484,15 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		private readonly TimeCachedValue<bool> ShouldAvoidLeftBonemawSide = new TimeCachedValue<bool>(
 			TimeSpan.FromSeconds(5),
-			() => ScriptHelpers.GetUnfriendlyNpsAtLocation(LeftBonemawTrashLoc, 20, unit => unit.IsHostile).Any());
+			() => !ScriptHelpers.IsBossAlive("Nhallish")
+				&& Math.Abs(Me.Z - LeftBonemawTrashLoc.Z) < 10 && Me.Location.DistanceSqr(LeftBonemawTrashLoc) < 75*75
+				&& ScriptHelpers.GetUnfriendlyNpsAtLocation(LeftBonemawTrashLoc, 20, unit => unit.IsHostile).Any());
 
 		private readonly TimeCachedValue<bool> ShouldAvoidRightBonemawSide = new TimeCachedValue<bool>(
 			TimeSpan.FromSeconds(5),
-			() => ScriptHelpers.GetUnfriendlyNpsAtLocation(RightBonemawTrashLoc, 20, unit => unit.IsHostile).Any());
+			() => !ScriptHelpers.IsBossAlive("Nhallish")
+				&& Math.Abs(Me.Z - RightBonemawTrashLoc.Z) < 10 && Me.Location.DistanceSqr(RightBonemawTrashLoc) < 75*75
+				&& ScriptHelpers.GetUnfriendlyNpsAtLocation(RightBonemawTrashLoc, 20, unit => unit.IsHostile).Any());
 
 		private IEnumerable<DynamicBlackspot> GetBonemawTrashBlackspots()
 		{

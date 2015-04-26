@@ -3665,14 +3665,12 @@
 				<CustomBehavior File="FlyTo" X="4486.529" Y="5711.003" Z="81.36137" />
 				<CustomBehavior File="ForcedDismount" />
 				<TurnIn QuestName="We Strike!" QuestId="11592" TurnInName="Overlord Bor'gorok"
-                        TurnInId="25326" Nav="Fly" />
+                        TurnInId="25326"  />
+				<MoveTo DestName="Outside shed" X="3583.783" Y="6662.74" Z="195.2674" />
 			</If>
-			<If Condition="HasQuest(12486) &amp;&amp; IsQuestCompleted(12486)">
-				<CustomBehavior File="FlyTo" X="4486.529" Y="5711.003" Z="81.36137" />
-				<CustomBehavior File="ForcedDismount" />
-			</If>
-			<TurnIn QuestName="To Bor'gorok Outpost, Quickly!" QuestId="12486"
-                    TurnInName="Spirit Talker Snarlfang" TurnInId="25339" Nav="Fly" />
+
+			<TurnIn Nav="Fly" QuestName="To Bor'gorok Outpost, Quickly!" QuestId="12486"
+                    TurnInName="Spirit Talker Snarlfang" TurnInId="25339" X="4486.529" Y="5711.003" Z="81.36137" />
 			<PickUp QuestName="The Sky Will Know" QuestId="11624" GiverName="Spirit Talker Snarlfang"
                     GiverId="25339" Nav="Fly" />
 			<If
@@ -4246,18 +4244,19 @@
 				<PickUp QuestName="Winterfin Commerce" QuestId="11559" GiverName="King Mrgl-Mrgl"
                         GiverId="25197" Nav="Fly" />
 			</If>
-			<If Condition="!HasQuest(11559) &amp;&amp; !IsQuestCompleted(11559)">
-				<CustomBehavior File="FlyTo" DestName="Pickup Quest" X="4369.232" Y="6067.438" Z="0.6517756" />
-				<CustomBehavior File="ForcedDismount" />
-				<PickUp QuestName="Winterfin Commerce" QuestId="11559" GiverName="King Mrgl-Mrgl"
-                        GiverId="25197" Nav="Fly" />
-			</If>
+			<PickUp QuestName="Winterfin Commerce" QuestId="11559" GiverName="King Mrgl-Mrgl"
+                        GiverId="25197" Nav="Fly" X="4369.232" Y="6067.438" Z="0.6517756" />
+
 			<If Condition="HasQuest(11559) &amp;&amp; !IsQuestCompleted(11559)">
 				<!-- convert this to collect things behavior -->
 				<CustomBehavior File="FlyTo" DestName="Objective" X="4280.093" Y="6194.892" Z="0.6556662" />
-				<CustomBehavior File="InteractWith" QuestId="11559" MobId="187367" Range="8"
-
-                                NumOfTimes="100" X="4266.167" Y="6233.443" Z="-0.06203166" />
+				<CustomBehavior File="InteractWith" QuestId="11559" MobId="187367" Range="8" PreInteractMountStrategy="Dismount" NumOfTimes="100" >
+					<HuntingGrounds WaypointVisitStrategy="InOrder" >
+						<Hotspot X="4189.774" Y="6162.767" Z="1.551716" />
+						<Hotspot X="4200.608" Y="6308.625" Z="13.19273" />
+						<Hotspot X="4319.816" Y="6444.575" Z="0.508819" />
+					</HuntingGrounds>
+				</CustomBehavior>
 			</If>
 			<If Condition="HasQuest(11559) &amp;&amp; IsQuestCompleted(11559)">
 				<CustomBehavior File="FlyTo" DestName="Turnin Quest" X="4372.893" Y="6089.508" Z="0.4932972" />
@@ -4803,11 +4802,14 @@
                         Y="6970.033" Z="170.109" />
 			</If>
 			<While Condition="HasQuest(11957) &amp;&amp; !IsQuestCompleted(11957)">
+				<CustomBehavior File="FlyTo" Land="true" DestName="Keristrasza for Saragosa's End" X="3614.556" Y="6970.033" Z="170.109" />
 				<CustomBehavior File="ForcedDismount" />
+				<CustomBehavior File="WaitTimer" WaitTime="4000" GoalText="Waiting to stop moving:{TimeRemaining}" />
 				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:35671&quot;)" />
-				<CustomBehavior File="WaitTimer" WaitTime="4000" GoalText="Waiting for Keristrsza {TimeRemaining}" />
+				<CustomBehavior File="WaitTimer" WaitTime="4000" GoalText="Waiting for Keristrsza: {TimeRemaining}" />
 				<CustomBehavior File="InteractWith" MobId="26206" InteractByGossipOptions="1" />
-				<CustomBehavior File="WaitTimer" WaitTime="5000" GoalText="Waiting for teleport {TimeRemaining}" />
+				<CustomBehavior File="WaitTimer" WaitTime="5000" GoalText="Waiting for teleport: {TimeRemaining}" />
+				<CustomBehavior File="FlyTo" Land="true" DestName="UseItem for Saragosa's End" X="4022.919" Y="7296.054" Z="635.97" />
 				<UseItem QuestId="11957" ItemId="35690" X="4022.919" Y="7296.054" Z="635.97" />
 				<CustomBehavior File="WaitTimer" WaitTime="21000" />
 				<Objective QuestName="Saragosa's End" QuestId="11957" Type="CollectItem" ItemId="35709"
@@ -12483,11 +12485,19 @@
 			<CustomBehavior File="ForcedDismount" />
 			<PickUp QuestName="Discipline" QuestId="12906" GiverName="Mildred the Cruel" GiverId="29885" />
 		</If>
-		<While Condition="HasQuest(12906) &amp;&amp; !IsQuestCompleted(12906)">
-			<CustomBehavior File="InteractWith" QuestId="12906" MobId="30146" InteractByUsingItemId="42837"
-                            NumOfTimes="6" WaitTime="6000" Range="4" PreInteractMountStrategy="DismountOrCancelShapeshift" X="6929.614" Y="-1316.467"
-                            Z="831.2584" />
-		</While>
+		<CustomBehavior File="InteractWith" QuestId="12906" MobId="30146" InteractByUsingItemId="42837"
+                            NumOfTimes="100" WaitTime="6000" Range="4" PreInteractMountStrategy="DismountOrCancelShapeshift"  >
+			<HuntingGrounds>
+				<Hotspot Name="Exhausted Vrykul 0" X="7009.367" Y="-1324.08" Z="819.6984" />
+				<Hotspot Name="Exhausted Vrykul 1" X="6876.571" Y="-1265.302" Z="813.3456" />
+				<Hotspot Name="Exhausted Vrykul 2" X="7017.163" Y="-1353.612" Z="830.9448" />
+				<Hotspot Name="Exhausted Vrykul 3" X="6862.876" Y="-1342.013" Z="833.0758" />
+				<Hotspot Name="Exhausted Vrykul 4" X="6929.614" Y="-1316.467" Z="831.2584" />
+				<Hotspot Name="Exhausted Vrykul 5" X="6831.262" Y="-1314.478" Z="834.092" />
+				<Hotspot Name="Exhausted Vrykul 6" X="6814.385" Y="-1347.558" Z="819.5478" />
+				<Hotspot Name="Exhausted Vrykul 7" X="6876.571" Y="-1265.302" Z="813.3456" />
+			</HuntingGrounds>
+		</CustomBehavior>
 		<If Condition="HasQuest(12906) &amp;&amp; IsQuestCompleted(12906)">
 			<TurnIn QuestName="Discipline" QuestId="12906" TurnInName="Mildred the Cruel" TurnInId="29885" />
 			<PickUp QuestName="Examples to be Made" QuestId="12907" GiverName="Mildred the Cruel" GiverId="29885" />
@@ -12553,11 +12563,11 @@
 			<CustomBehavior File="ForcedDismount" />
 			<PickUp QuestName="The Hyldsmeet" QuestId="12970" GiverName="Lok'lira the Crone" GiverId="29975" />
 		</If>
-		<If Condition="HasQuest(12970) &amp;&amp; !IsQuestCompleted(12970)">
-			<CustomBehavior File="FlyTo" DestName="Lok'lira the Crone" X="6921.689" Y="-1539.909" Z="834.6035" />
-			<CustomBehavior File="InteractWith" QuestId="12970" MobId="29975" InteractByGossipOptions="1,1,1,1" X="6922.175" Y="-1534.575" Z="836.0744" />
-			<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for quest to complete {TimeRemaining}" />
-		</If>
+		<CustomBehavior File="InteractWith" QuestId="12970" MobId="29975" InteractByGossipOptions="1,1,1,1,1" >
+			<HuntingGrounds>
+				<Hotspot Name="Lok'lira the Crone" X="6922.175" Y="-1534.575" Z="836.0746" />
+			</HuntingGrounds>
+		</CustomBehavior>
 		<If Condition="HasQuest(12970) &amp;&amp; IsQuestCompleted(12970)">
 			<CustomBehavior File="FlyTo" DestName="Turnin Quest" X="6921.689" Y="-1539.909" Z="834.6035" />
 			<CustomBehavior File="ForcedDismount" />

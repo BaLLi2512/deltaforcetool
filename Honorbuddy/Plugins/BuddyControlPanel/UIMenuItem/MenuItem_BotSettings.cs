@@ -38,7 +38,9 @@ namespace BuddyControlPanel
 
 			var startLocation = Utility.GetStartLocation(this);
 
-			Utility.BeginInvokeOnSpecificDispatcher(Dispatcher, () =>
+			// N.B. The ConfigurationForm/ConfigurationWindow should always be launched
+			// from the 'main' thread, since they may have already been created and cached.
+			Utility.BeginInvokeOnSpecificDispatcher(Application.Current.Dispatcher, () =>
 			{
 				var configForm = BotManager.Current.ConfigurationForm;
 				var configWindow = BotManager.Current.ConfigurationWindow;
@@ -56,27 +58,36 @@ namespace BuddyControlPanel
 
 	    public override void NotifyBotChanged(BotBase newBot)
 	    {
-			Utility.BeginInvokeOnSpecificDispatcher(Dispatcher, () =>
+			// N.B.: Prevent Configuration windows from being created on 'wrong' thread...
+			// Accessing some ConfigurationForm/ConfigurationWindow may cause them to be created and cached.
+			// We don't want this to happen on the 'wrong' (Overlay) thread, so we structure the logic to prevent this.
+			Utility.BeginInvokeOnSpecificDispatcher(Application.Current.Dispatcher, () =>
 			{
-				if (newBot == null)
+				var hasConfiguration = false;
+
+				if (newBot != null)
 				{
-					Header = BCPGlobalization.Item_BotConfiguration_Label;
-					IsEnabled = false;
-					ToolTip = BCPGlobalization.Item_BotConfigurationUnavailable_ToolTip;
-					return;
+					var configForm = newBot.ConfigurationForm;
+					var configWindow = newBot.ConfigurationWindow;
+
+					hasConfiguration = (configForm != null) && !configForm.IsDisposed && !configForm.Disposing;
+					hasConfiguration |= (configWindow != null);
 				}
 
-				var configForm = newBot.ConfigurationForm;
-				var configWindow = newBot.ConfigurationWindow;
+				Utility.InvokeOnSpecificDispatcher(Dispatcher, () =>
+				{
+					Header = (newBot == null)
+						? BCPGlobalization.Item_BotConfiguration_Label
+						: string.Format(BCPGlobalization.Item_BotConfigurationSpecific_LabelFormat, newBot.Name);
 
-				var hasConfiguration = (configForm != null) && !configForm.IsDisposed && !configForm.Disposing;
-				hasConfiguration |= (configWindow != null);
+					IsEnabled = hasConfiguration;
 
-				Header = string.Format(BCPGlobalization.Item_BotConfigurationSpecific_LabelFormat, newBot.Name);
-				IsEnabled = hasConfiguration;
-				ToolTip = IsEnabled
-					? string.Format(BCPGlobalization.Item_BotConfigurationSpecific_ToolTipFormat, newBot.Name)
-					: string.Format(BCPGlobalization.Item_BotConfigurationSpecificUnavailable_ToolTipFormat, newBot.Name);
+					ToolTip = (newBot == null)
+						? BCPGlobalization.Item_BotConfigurationUnavailable_ToolTip
+						: IsEnabled
+							? string.Format(BCPGlobalization.Item_BotConfigurationSpecific_ToolTipFormat, newBot.Name)
+							: string.Format(BCPGlobalization.Item_BotConfigurationSpecificUnavailable_ToolTipFormat, newBot.Name);
+				});
 			});
 	    }
     }

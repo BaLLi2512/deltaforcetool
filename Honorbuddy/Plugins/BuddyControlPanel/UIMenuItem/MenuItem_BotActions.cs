@@ -15,7 +15,9 @@ using System.Linq;
 using System.Windows;
 using Bots.ArchaeologyBuddy;
 using Bots.Grind;
+#if !HB_DE
 using Bots.Quest;
+#endif
 using BuddyControlPanel.Resources.Localization;
 using Styx.CommonBot;
 
@@ -125,7 +127,9 @@ namespace BuddyControlPanel
 			where
 				(botBase is ArchBuddy)
 				|| (botBase is LevelBot)
+#if !HB_DE
 				|| (botBase is QuestBot)
+#endif
 			select botBase)
 			.ToList();
 
@@ -133,7 +137,9 @@ namespace BuddyControlPanel
 			(from botBase in BotManager.Instance.Bots.Values
 			where
 				(botBase is LevelBot)
+#if !HB_DE
 				|| (botBase is QuestBot)
+#endif
 			select botBase)
 			.ToList();
 

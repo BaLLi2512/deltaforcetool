@@ -1,7 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DungeonBuddyProfile>
+<DungeonBuddyProfile xsi:noNamespaceSchemaLocation="../../DungeonbuddyProfile.xsd"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>The Stonecore</Name>
   <DungeonId>307</DungeonId>
+	<Vendors>
+		<Vendor name="Rixi the Driller Bombdigger" entry="45293" type="Repair" nav="Fly" X="1091.19" Y="436.332" Z="-45.96807" faction="Horde" />
+		<Vendor name="Dugsley Deepdelver" entry="45294" type="Repair" nav="Fly" X="1052.99" Y="636.936" Z="-45.87093" faction="Alliance"/>
+	</Vendors>
   <BossEncounters>
 	  <Boss isFinal="false" entry="43438" name="Corborus"
 		  killOrder="1" step="1" optional="false" X="1154.55" Y="878.8431" Z="284.9632" />

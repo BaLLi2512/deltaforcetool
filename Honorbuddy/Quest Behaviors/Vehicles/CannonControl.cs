@@ -143,12 +143,12 @@ namespace Honorbuddy.Quest_Behaviors.Vehicles.CannonControl
 		// DON'T EDIT THESE--they are auto-populated by Subversion
 		public override string SubversionId
 		{
-			get { return ("$Id: CannonControl.cs 2022 2015-04-02 23:55:40Z chinajade $"); }
+			get { return ("$Id: CannonControl.cs 2047 2015-04-23 02:23:45Z chinajade $"); }
 		}
 
 		public override string SubversionRevision
 		{
-			get { return ("$Revision: 2022 $"); }
+			get { return ("$Revision: 2047 $"); }
 		}
 
 		#region Overrides of QuestBehaviorBase
@@ -158,20 +158,6 @@ namespace Honorbuddy.Quest_Behaviors.Vehicles.CannonControl
 			return _root ?? (_root = new ActionRunCoroutine(ctx => MainCoroutine()));
 		}
 
-		public override void OnStart()
-		{
-			// This reports problems, and stops BT processing if there was a problem with attributes...
-			// We had to defer this action, as the 'profile line number' is not available during the element's
-			// constructor call.
-			OnStart_HandleAttributeProblem();
-
-			// If the quest is complete, this behavior is already done...
-			// So we don't want to falsely inform the user of things that will be skipped.
-			if (!IsDone)
-			{
-				this.UpdateGoalText(QuestId);
-			}
-		}
 
 		public override void OnFinished()
 		{

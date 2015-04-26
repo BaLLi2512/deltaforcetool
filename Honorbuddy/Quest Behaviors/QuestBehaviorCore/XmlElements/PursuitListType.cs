@@ -115,8 +115,8 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 
 		#region Concrete class required implementations...
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: PursuitListType.cs 1997 2015-03-15 02:56:33Z chinajade $"; } }
-		public override string SubversionRevision { get { return "$Rev: 1997 $"; } }
+		public override string SubversionId { get { return "$Id: PursuitListType.cs 2034 2015-04-15 03:58:20Z chinajade $"; } }
+		public override string SubversionRevision { get { return "$Rev: 2034 $"; } }
 
 		public override XElement ToXml(string elementName = null)
 		{
@@ -161,14 +161,12 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 			{
 				if (pursueObject.Id != 0)
 					yield return Utility.GetObjectNameFromId(pursueObject.Id);
-
-				if (pursueObject is PursueObjectType<LocalPlayer>)
+				else if (pursueObject is PursueObjectType<LocalPlayer>)
 					yield return "Me";
-
-				if (pursueObject.PursueWhenDelayCompiledExpression != null)
+				else if (pursueObject.PursueWhenDelayCompiledExpression != null)
 					yield return pursueObject.PursueWhenDelayCompiledExpression.ExpressionString;
-
-				yield return "Unknown";
+				else 
+					yield return "Unknown";
 			}
 		}
 

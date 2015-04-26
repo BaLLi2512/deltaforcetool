@@ -311,12 +311,6 @@ NOTES:
     <value>Disabled while profile is loading.</value>
     <comment>"Disabled while profile is loading."</comment>
   </data>
-  <data name="GeneralText_ExitConfirmationFormat" xml:space="preserve">
-    <value>Do you wish to exit {0}?</value>
-    <comment>"Do you wish to exit {0}?"
-NOTES:
-* {0} will be supplied as the BuddyBot name (e.g., Honorbuddy)</comment>
-  </data>
   <data name="GeneralText_FailedToStartBot" xml:space="preserve">
     <value>{0} failed to start {1}</value>
     <comment>"{0} failed to start {1}"
@@ -552,13 +546,6 @@ NOTES:
   <data name="Item_Exit_Label" xml:space="preserve">
     <value>Exit</value>
     <comment>"Exit"</comment>
-  </data>
-  <data name="Item_Exit_ToolTipFormat" xml:space="preserve">
-    <value>Shuts down {0}.</value>
-    <comment>"Shuts down {0}."
-NOTES:
-* {0} will be supplied as the BuddyBot name (e.g., Honorbuddy)
-* ToolTips should be properly capitalized and punctuated (e.g., end in a 'period').  This is required because ToolTips for certain controls are frequently composed of many smaller ToolTips.</comment>
   </data>
   <data name="Item_Goal_Label" xml:space="preserve">
     <value>Goal:</value>
@@ -1205,5 +1192,55 @@ NOTES:
     <comment>"Default profile settings are in use.{0}Current profile setting is reflected here"
 NOTES:
 * {0} will be supplied as a newline character.</comment>
+  </data>
+  <data name="Item_Exit_BuddyBotClose_ConfirmationQuestion" xml:space="preserve">
+    <value>Do you wish to EXIT {0}?</value>
+    <comment>"Do you wish to EXIT {0}?"
+NOTES:
+* {0} will be provided as the Buddy Bot name (e.g., Honorbuddy)</comment>
+  </data>
+  <data name="Item_Exit_BuddyBotClose_LabelFormat" xml:space="preserve">
+    <value>Close {0}</value>
+    <comment>"Close {0}"
+NOTES:
+* {0} will be provided as the Buddy Bot name (e.g., Honorbuddy)</comment>
+  </data>
+  <data name="Item_Exit_BuddyBotClose_ToolTipFormat" xml:space="preserve">
+    <value>Shuts down {0}.</value>
+    <comment>"Shuts down {0}."
+NOTES:
+* {0} will be provided as the Buddy Bot name (e.g., Honorbuddy)</comment>
+  </data>
+  <data name="Item_Exit_GameClientExit_ConfirmationQuestion" xml:space="preserve">
+    <value>Do you wish to TERMINATE the Game client, and exit {0}?</value>
+    <comment>"Do you wish to TERMINATE the Game client, and exit {0}?"
+NOTES:
+* {0} will be provided as the Buddy Bot name (e.g., Honorbuddy)</comment>
+  </data>
+  <data name="Item_Exit_GameClientExit_Label" xml:space="preserve">
+    <value>Game client Exit</value>
+    <comment>"Game client Exit"</comment>
+  </data>
+  <data name="Item_Exit_GameClientExit_ToolTipFormat" xml:space="preserve">
+    <value>Terminates the Game client, and shuts down {0}.</value>
+    <comment>"Terminates the Game client, and shuts down {0}."
+NOTES:
+* {0} will be provided as the Buddy Bot name (e.g., Honorbuddy)</comment>
+  </data>
+  <data name="Item_Exit_GameClientLogout_ConfirmationQuestion" xml:space="preserve">
+    <value>Do you wish to LOG OUT of the Game client, and exit {0}?</value>
+    <comment>"Do you wish to LOG OUT of the Game client, and exit {0}?"
+NOTES:
+* {0} will be provided as the Buddy Bot name (e.g., Honorbuddy)</comment>
+  </data>
+  <data name="Item_Exit_GameClientLogout_Label" xml:space="preserve">
+    <value>Game client Logout</value>
+    <comment>"Game client Logout"</comment>
+  </data>
+  <data name="Item_Exit_GameClientLogout_ToolTipFormat" xml:space="preserve">
+    <value>Logs out of the Game client, and shuts down {0}.</value>
+    <comment>"Logs out of the Game client, and shuts down {0}."
+NOTES:
+* {0} will be provided as the Buddy Bot name (e.g., Honorbuddy)</comment>
   </data>
 </root>

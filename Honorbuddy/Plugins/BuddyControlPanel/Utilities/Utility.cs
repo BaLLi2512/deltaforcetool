@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -31,6 +32,7 @@ using Styx.Helpers;
 using Styx.Localization;
 using Styx.Pathing;
 using Styx.Plugins;
+using Styx.WoWInternals;
 using Styx.WoWInternals.DBC;
 using Styx.WoWInternals.World;
 using Color = System.Windows.Media.Color;
@@ -119,6 +121,18 @@ namespace BuddyControlPanel
 		}
 
 
+	    public static void BuddyBotExit()
+	    {
+			TreeRoot.Shutdown();
+	    }
+
+
+	    public static void BuddyBotStop()
+	    {
+			TreeRoot.Stop();
+	    }
+
+
 		public static XElement ElementIgnoreCase(this XElement rootElement, XName name)
 		{
 			var xElement = rootElement.Element(name);
@@ -170,6 +184,32 @@ namespace BuddyControlPanel
 		}
 
 
+	    public static void GameClientExit()
+	    {
+			// Otherwise, schedule a game-client shutdown as a background thread...
+			ThreadPool.QueueUserWorkItem(o =>
+			{
+				// Give some time for things to settle, before we terminate game client...
+				Thread.Sleep(500);
+				TreeRoot.Shutdown(HonorbuddyExitCode.Default, true);
+			});
+			TreeRoot.Stop();
+	    }
+
+
+	    public static void GameClientLogout()
+	    {
+			// Otherwise, schedule a game-client shutdown as a background thread...
+			ThreadPool.QueueUserWorkItem(o =>
+			{
+				// Give some time for things to settle, before we terminate game client...
+				Thread.Sleep(500);
+				Lua.DoString("Logout()");
+				TreeRoot.Shutdown();
+			});
+			TreeRoot.Stop();
+	    }
+
 		public static Stream GenerateStreamFromString(string s)
 		{
 			MemoryStream stream = new MemoryStream();
@@ -211,7 +251,6 @@ namespace BuddyControlPanel
 		{
 			return frameworkElement.PointToScreen(new Point(0, 0));
 		}
-
 
 		/// <summary>
 		/// Allows ACTION to be synchronously executed on the specified DISPATCHER.  This is useful for performing

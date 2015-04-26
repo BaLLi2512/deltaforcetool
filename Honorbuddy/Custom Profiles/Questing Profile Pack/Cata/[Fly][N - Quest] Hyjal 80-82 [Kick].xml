@@ -49,15 +49,16 @@
 	</Mailboxes>
 
 	<AvoidMobs>
-		<!--
-            <Mob Name="Azralon the Gatekeeper" Id="40814" />
-            <Mob Name="Nemesis" Id="40340" />
-        -->
 		<Mob Name="Smolderos the Carbonizer" Id="39348" />
 		<Mob Name="Blazing Trainer" Id="40434" />
 		<Mob Name="Twilight Juggernaut" Id="41031" />
 		<Mob Name="Baron Geddon" Id="40147" />
 	</AvoidMobs>
+
+	<Blacklist>
+		<Mob Name="Ragnaros for Alliance" Id="41634" Flags="Combat, Pull, Interact" />
+		<Mob Name="Ragnaros for Horde" Id="40793" Flags="Combat, Pull, Interact" />
+	</Blacklist>
 
 
 	<Quest Id="25910" Name="The Time for Mercy has Passed">
@@ -1680,7 +1681,7 @@
 			<If Condition="Me.Class == WoWClass.Druid">
 				<CustomBehavior File="RunMacro" Macro="/cancelaura cat form\n/cancelaura moonkin form" />
 			</If>
-			<CustomBehavior File="InteractWith" QuestId="25462" MobId="40190" Range="8" CollectionDistance="2"
+			<CustomBehavior File="InteractWith" QuestId="25462" MobId="40190" Range="8" CollectionDistance="2" NonCompeteDistance="0" WaitForNpc="true"
                             X="5254.562" Y="-1536.917" Z="1361.341" />
 			<CustomBehavior File="WaitTimer" WaitTime="2000" />
 			<CustomBehavior File="SpecificQuests\MountHyjal\BearsUpThere" QuestName="The Bears Up There"
@@ -1738,10 +1739,16 @@
                             X="4760.058" Y="-2267.526" Z="1194.575" />
 			<Objective QuestName="Fresh Bait" QuestId="25493" Type="CollectItem" CollectCount="4" ItemId="54609" />
 		</If>
-		<If Condition="HasQuest(25492) &amp;&amp; !IsQuestCompleted(25492)">
-			<CustomBehavior File="FlyTo" DestName="kill 10 Lava Surgers" X="4760.058" Y="-2267.526" Z="1194.575" />
-			<Objective Nav="Fly" QuestName="Firebreak" QuestId="25492" Type="KillMob" KillCount="10" MobId="46911" />
-		</If>
+
+		<CustomBehavior File="FlyTo" Land="true" DestName="Firebreak" QuestId="25492" X="4603.53" Y="-2163.651" Z="1148.501" />
+		<CustomBehavior File="KillUntilComplete" QuestId="25492" MobIds="46911" >
+			<HuntingGrounds WaypointVisitStrategy="InOrder" >
+				<Hotspot Name="The Flamewake - North" X="4677.754" Y="-2674.678" Z="1154.505" /> 
+				<Hotspot Name="The Flamewake - South" X="4603.53" Y="-2163.651" Z="1148.501"  />
+			</HuntingGrounds>
+		</CustomBehavior>
+
+
 		<If Condition="HasQuest(25491) &amp;&amp; IsQuestCompleted(25491)">
 			<CustomBehavior File="FlyTo" DestName="Turnin Quest" X="4422.33" Y="-2080.43" Z="1211.042" />
 			<TurnIn QuestName="Durable Seeds" QuestId="25491" TurnInName="Arch Druid Hamuul Runetotem" TurnInId="39858" />
@@ -2328,9 +2335,6 @@
                     TurnInId="39858" />
 			<CustomBehavior File="WaitTimer" WaitTime="55000"
                             GoalText="Waiting for Arch Druid to think {TimeRemaining}" />
-			<PickUp QuestName="Tortolla's Revenge" QuestId="25843" GiverName="Arch Druid Hamuul Runetotem"
-                    GiverId="41480"
-                    X="5125.255" Y="-1758.526" Z="1334.464" />
 		</If>
 		<While Condition="!HasQuest(25843) &amp;&amp; !IsQuestCompleted(25843)">
 			<CustomBehavior File="FlyTo" DestName="Pickup: Tortolla's Revenge" Land="true" X="5120.336" Y="-1766.116" Z="1333.958" />
@@ -3219,19 +3223,29 @@
 			<TurnIn QuestName="Brood of Evil" QuestId="25552" TurnInName="Aronus" TurnInId="40816" />
 			<PickUp QuestName="Death to the Broodmother" QuestId="25553" GiverName="Aronus" GiverId="40816" />
 		</If>
+		<!-- Desperiona is bugged. 	-->
 		<If Condition="!HasQuest(25553) &amp;&amp; !IsQuestCompleted(25553)">
 			<CustomBehavior File="FlyTo" DestName="Pickup Quest" X="4101.964" Y="-3994.722" Z="970.7802" />
 			<PickUp QuestName="Death to the Broodmother" QuestId="25553" GiverName="Aronus" GiverId="40816" />
 		</If>
+
 		<While Condition="HasQuest(25553) &amp;&amp; !IsQuestCompleted(25553)">
 			<CustomBehavior File="FlyTo" DestName="Desperiona" ArrivalTolerance="2" X="3752.322" Y="-3260.478" Z="981.9627" />
 			<CustomBehavior File="ForcedDismount" />
-
-			<MoveTo X="3774.15" Y="-3228.275" Z="971.3578" />
+			<!-- Try normal combat with IinteractWith -->
+			<MoveTo DestName="The Ledge" X="3774.15" Y="-3228.275" Z="971.3578" />
 			<CustomBehavior File="WaitTimer" WaitTime="1000" />
 			<UseItem QuestId="25553" ItemId="55173" X="3774.15" Y="-3228.275" Z="971.3578" />
-			<MoveTo X="3758.404" Y="-3217.764" Z="974.2463" />
-			<CustomBehavior File="WaitTimer" WaitTime="20000" />
+			<CustomBehavior File="WaitTimer" WaitTime="15000" />
+			<MoveTo DestName="Desperiona" X="3774.15" Y="-3228.275" Z="971.3578" />
+			<CustomBehavior File="InteractWith" QuestId="25553" MobId="40974" MobState="dead" X="3774.15" Y="-3228.275" Z="971.3578" />
+			<MoveTo DestName="Away from ledge" QuestId="25553" X="3758.404" Y="-3217.764" Z="974.2463" />
+			<!-- Try StandAndKill -->
+			<MoveTo DestName="The Ledge" X="3774.15" Y="-3228.275" Z="971.3578" />
+			<CustomBehavior File="WaitTimer" WaitTime="1000" />
+			<UseItem QuestId="25553" ItemId="55173" X="3774.15" Y="-3228.275" Z="971.3578" />
+			<MoveTo DestName="Away from ledge" X="3758.404" Y="-3217.764" Z="974.2463" />
+			<CustomBehavior File="WaitTimer" WaitTime="10000" />
 			<CustomBehavior File="StandAndKill" QuestId="25553" MobId="40974" X="3774.15" Y="-3228.275" Z="971.3578" />
 		</While>
 		<While Condition="HasQuest(25550) &amp;&amp; !IsQuestCompleted(25550)">
@@ -3279,6 +3293,33 @@
 				</If>
 			</While>
 
+			<!-- Hawker's attempt -->
+			<While Condition="Me.IsIndoors &amp;&amp; !IsQuestCompleted(25551)">
+
+				<MoveTo DestName="Cenarius at start" X="3950.404" Y="-2827.787" Z="618.747" />
+
+				<CustomBehavior File="InteractWith"  Name="Cenarius" MobIds="40803, 41631" InteractByGossipOptions="1" WaitTime="30000" 
+				X="3954.5" Y="-2825.82" Z="618.7479" TerminateWhen="Object(40804) != null || Object(40805) != null"/>
+
+				<MoveTo Name="Ragnaros" X="4015.854" Y="-3018.517" Z="575.3887" />
+
+				<CustomBehavior File="WaitTimer" WaitTime="30000" GoalText="Waiting for Cenarius {TimeRemaining}" /> 
+
+				<CustomBehavior File="KillUntilComplete" QuestId="25551" MobIds="40794" >
+					<HuntingGrounds WaypointVisitStrategy="InOrder" >
+						<Hotspot Name="North Defence" X="3970.192" Y="-3083.27" Z="582.5388" />
+						<Hotspot Name="Stairs" X="4008.65" Y="-2992.213" Z="575.3884" />
+						<Hotspot Name="South Defence" X="4086.588" Y="-3042.002" Z="582.5385" />
+						<Hotspot Name="Stairs" X="4008.65" Y="-2992.213" Z="575.3884" />
+					</HuntingGrounds>
+				</CustomBehavior>
+
+				<MoveTo DestName="Cenarius at end" X="3950.404" Y="-2827.787" Z="618.747" />
+
+			</While>
+
+			<!--
+
 			<If Condition="Me.IsIndoors">
 				<MoveTo X="3950.404" Y="-2827.787" Z="618.747" />
 			</If>
@@ -3296,6 +3337,7 @@
                         X="3954.5" Y="-2825.82" Z="618.7477" />
 				<CustomBehavior File="WaitTimer" WaitTime="3000" GoalText="Waiting for bot {TimeRemaining}" />
 			</If>
+			-->
 		</If>
 		<!--</If>-->
 

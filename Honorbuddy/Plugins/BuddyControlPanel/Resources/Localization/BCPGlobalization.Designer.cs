@@ -313,15 +313,6 @@ namespace BuddyControlPanel.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you wish to exit {0}?.
-        /// </summary>
-        internal static string GeneralText_ExitConfirmationFormat {
-            get {
-                return ResourceManager.GetString("GeneralText_ExitConfirmationFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {0} failed to start {1}.
         /// </summary>
         internal static string GeneralText_FailedToStartBot {
@@ -988,20 +979,92 @@ namespace BuddyControlPanel.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit.
+        ///   Looks up a localized string similar to Do you wish to EXIT {0}?.
         /// </summary>
-        internal static string Item_Exit_Label {
+        internal static string Item_Exit_BuddyBotClose_ConfirmationQuestion {
             get {
-                return ResourceManager.GetString("Item_Exit_Label", resourceCulture);
+                return ResourceManager.GetString("Item_Exit_BuddyBotClose_ConfirmationQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close {0}.
+        /// </summary>
+        internal static string Item_Exit_BuddyBotClose_LabelFormat {
+            get {
+                return ResourceManager.GetString("Item_Exit_BuddyBotClose_LabelFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Shuts down {0}..
         /// </summary>
-        internal static string Item_Exit_ToolTipFormat {
+        internal static string Item_Exit_BuddyBotClose_ToolTipFormat {
             get {
-                return ResourceManager.GetString("Item_Exit_ToolTipFormat", resourceCulture);
+                return ResourceManager.GetString("Item_Exit_BuddyBotClose_ToolTipFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you wish to TERMINATE the Game client, and exit {0}?.
+        /// </summary>
+        internal static string Item_Exit_GameClientExit_ConfirmationQuestion {
+            get {
+                return ResourceManager.GetString("Item_Exit_GameClientExit_ConfirmationQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game client Exit.
+        /// </summary>
+        internal static string Item_Exit_GameClientExit_Label {
+            get {
+                return ResourceManager.GetString("Item_Exit_GameClientExit_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminates the Game client, and shuts down {0}..
+        /// </summary>
+        internal static string Item_Exit_GameClientExit_ToolTipFormat {
+            get {
+                return ResourceManager.GetString("Item_Exit_GameClientExit_ToolTipFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you wish to LOG OUT of the Game client, and exit {0}?.
+        /// </summary>
+        internal static string Item_Exit_GameClientLogout_ConfirmationQuestion {
+            get {
+                return ResourceManager.GetString("Item_Exit_GameClientLogout_ConfirmationQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game client Logout.
+        /// </summary>
+        internal static string Item_Exit_GameClientLogout_Label {
+            get {
+                return ResourceManager.GetString("Item_Exit_GameClientLogout_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs out of the Game client, and shuts down {0}..
+        /// </summary>
+        internal static string Item_Exit_GameClientLogout_ToolTipFormat {
+            get {
+                return ResourceManager.GetString("Item_Exit_GameClientLogout_ToolTipFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        internal static string Item_Exit_Label {
+            get {
+                return ResourceManager.GetString("Item_Exit_Label", resourceCulture);
             }
         }
         

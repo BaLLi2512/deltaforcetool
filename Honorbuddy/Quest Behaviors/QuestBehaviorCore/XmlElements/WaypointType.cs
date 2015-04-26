@@ -67,6 +67,11 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 		public double ArrivalTolerance { get; set; }
 		public double AllowedVariance { get; set; }
 
+	    public bool AtLocation(WoWPoint location)
+	    {
+		    return Query.AtLocation(location, Location, (float) ArrivalTolerance);
+	    }
+
         /// <summary>
         /// This is the original location with which the <see cref="WaypointType"/> was defined.
         /// This location is not affected by <see cref="AllowedVariance"/>.
@@ -95,8 +100,8 @@ namespace Honorbuddy.QuestBehaviorCore.XmlElements
 
 		#region Concrete class required implementations...
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-        public override string SubversionId { get { return "$Id: WaypointType.cs 1764 2014-10-31 08:59:41Z hawker $"; } }
-        public override string SubversionRevision { get { return "$Rev: 1764 $"; } }
+        public override string SubversionId { get { return "$Id: WaypointType.cs 2036 2015-04-17 10:51:44Z chinajade $"; } }
+        public override string SubversionRevision { get { return "$Rev: 2036 $"; } }
 
 		public override XElement ToXml(string elementName = null)
 		{
