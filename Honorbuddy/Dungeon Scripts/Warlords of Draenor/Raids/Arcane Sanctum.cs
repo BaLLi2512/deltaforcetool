@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Bots.DungeonBuddy.Attributes;
 using Bots.DungeonBuddy.Helpers;
+using Buddy.Coroutines;
 using Styx;
 using Styx.CommonBot;
 using Styx.CommonBot.Coroutines;
@@ -17,7 +19,7 @@ using Vector2 = Tripper.Tools.Math.Vector2;
 namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 // ReSharper restore CheckNamespace
 {
-	public class ArcaneSanctum : WoDLfr
+	public class ArcaneSanctum : HighMaulFirstAndSecondWings
 	{
 		#region Overrides of Dungeon
 	
@@ -47,16 +49,15 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 				    if (unit == null)
 				        return false;
 
-					if (unit.Entry == MobId_NightTwistedSoothsayer)
+					if (unit.Combat && MobIds_CombatStuckTrash.Contains(unit.Entry))
 					{
 						if (tanks == null)
 							tanks = ScriptHelpers.GroupMembers.Where(g => g.IsTank).ToList();
-						var meleeRange = unit.MeleeRange();
-						var meleeRangeSqr = meleeRange*meleeRange;
+						var minTankRange = unit.MeleeRange() + 20;
+						var meleeRangeSqr = minTankRange;
 						// ignore if no tank is within melee range. These mobs are usually just ignored.
 						if (!tanks.Any(t => t.Location.DistanceSqr(unit.Location) <= meleeRangeSqr))
 							return true;
-
 					}
 
 					if (unit.Entry == MobId_Koragh && unit.HasAura("Vulnerability") && isMelee)
@@ -134,19 +135,22 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 
 			if (meIsInUpperArcaneSanctum && !destIsInUpperArcaneSanctum)
 				return (await CommonCoroutines.MoveTo(_topPortalLoc, "Top Portal")).IsSuccessful();
-			
-			return false;
+
+			// See if we need to take shortcut.
+		    if (await HandleTheButcherShortcut(location))
+			    return true;
+
+		    return false;
 	    }
 
-	    #endregion
 
+	    #endregion
 
 	    #endregion
 		
 		#region Root
 
 		#endregion
-
 
 		#region Tectus
 
@@ -159,7 +163,28 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 		private const uint MobId_Oro = 86072;
 		private const uint MobId_Lokk = 86073;
 		private const uint MobId_Rokkaa = 86071;
+
 		private const uint MobId_NightTwistedSoothsayer = 85240;
+		private const uint MobId_GorianGuardsman = 81270;
+		private const uint MobId_NightTwistedPale = 82694;
+		private const uint MobId_GorianRunemaster = 81272;
+		private const uint MobId_GorianSorcerer = 85225;
+		private const uint MobId_NightTwistedBrute = 85241;
+		private const uint MobId_NightTwistedDevout = 82698;
+		private const uint MobId_GorianEnforcer = 82900;
+
+		private readonly HashSet<uint> MobIds_CombatStuckTrash = new HashSet<uint>
+														{
+															MobId_NightTwistedSoothsayer,
+															MobId_GorianGuardsman,
+															MobId_NightTwistedPale,
+															MobId_GorianRunemaster,
+															MobId_GorianSorcerer,
+															MobId_NightTwistedBrute,
+															MobId_NightTwistedDevout,
+															MobId_GorianEnforcer
+														};
+
 
 		private const uint AreaTriggerId_RuneofDisintegration = 8035;
 

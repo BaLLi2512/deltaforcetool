@@ -107,8 +107,8 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Wrath_of_the_Lich_King
 						ShouldApplyBlackspotAtDoorByShortcut)),
 				() => _shortcutLoc,
 				LfgDungeon.MapId,
-				35,
-				100,
+				27,
+				10,
 				"shortcut");
 
 			DynamicBlackspotManager.AddBlackspot(_shortcutBlackspot);
@@ -164,10 +164,10 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Wrath_of_the_Lich_King
 		private const uint DalronnTheControllerId = 27390;
 		private const uint DrakeId = 24083;
 		private const uint FrostTombId = 23965;
-		const uint ShortcutDoorId = 186694;
+		private const uint GameObjectId_ThirdForgeFire = 186691;
 		private TimeCachedValue<bool> _applyShortcutDoorBlackspot;
 		private DynamicBlackspot _shortcutBlackspot;
-		private readonly WoWPoint _shortcutLoc = new WoWPoint(147.2509, -141.6872, 92.32478);
+		private readonly WoWPoint _shortcutLoc = new WoWPoint(324.4288, -10.87024, 24.67791);
 		private LocalPlayer Me
 		{
 			get { return StyxWoW.Me; }
@@ -195,8 +195,8 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Wrath_of_the_Lich_King
 		private static bool ShouldApplyBlackspotAtDoorByShortcut()
 		{
 			var door = ObjectManager.GetObjectsOfType<WoWGameObject>()
-				.FirstOrDefault(g => g.Entry == ShortcutDoorId);
-			return door == null || ((WoWDoor)door.SubObj).IsClosed;
+				.FirstOrDefault(g => g.Entry == GameObjectId_ThirdForgeFire);
+			return door != null && ((WoWDoor)door.SubObj).IsClosed;
 		}
 
 		#endregion

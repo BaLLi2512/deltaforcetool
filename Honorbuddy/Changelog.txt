@@ -1,99 +1,26 @@
-New features:
---------------
-  * Core
-    - Questbot nolonger automatically mail items after done selling/repairing if the vendor run was initiated through ForceSell/ForceRepair. (HB-1180)
-
-    - Added the following properties to GossipEntry.  	ServerIndex: An index into the total number of possible gossip options, including options not currently displayed and can be used to identify a gossip option in a locale-independent fassion. 	Cost: The cost in copper if gossip option is selected and causes a confirmation dialog to be displayed. 	ConfirmationText: The text shown in confirmation dialog. 	Flags: Gossip option flags. (HB-2278)
-
-  * GarrisonBuddy
-    - Added an option to disable opening Salvage items (Bags and Crates) (HB-2230)
-
-    - You may now disable follower missions from the main GSB Config UI. (HB-2237)
-
-    - Added an end of run parking location to the settings, so you can tell the bot where you would like to have your character stop when everything is finished. See the Config UI to set this value. (HB-2239)
-
-    - Added documentation for the mission group API. (HB-2240)
-
-    - Lists in the config UI are now sorted by item name, or comment, as well as disabled state. (HB-2241)
-
-    - Trading post configs are generated for the characters current faction only. This removes a lot of UI bulk. (HB-2256)
-
-    - Will now check if the opening quest for each building has been completed, before attempting work orders. This resolves issues related to not being able to actually place any yet. (HB-2258)
-
-    - Added some extra configuration options for users who have done faction transfers and have the shipment count bug. (HB-2263)
-
-  * Plugin
-    - The Buddy Control Panel now works correctly for HonorbuddyDE users. (HB-2244)
-
-    - Buddy Control Panel now provides three exit options: Close Honorbuddy, Logout of Game client, and Exit Game client. (HB-2246)
-
-Api Changes:
---------------
-    - Quest profiles now have access to new methods to assist with quest-driven scenarios.  1) IsScenarioCriteriaComplete(int stageIndex, int criteriaIndex); returns true if criteria for given stageIndex is complete.  2) IsScenarioCriteriaComplete(int criteriaIndex); returns true if criteria for current scenario stage is complete.  3) CurrentScenarioStage; returns the current scenario stage number. (HB-1259)
-
-    - Fixed a bug in MerchantFrame that would cause the bot to not purchase items when it is a currency-based purchase, and less than a full stack. (HB-2257)
-
-    - Query.GetNearestMailbox will now only return mailboxes congruent with toon's faction  (HB-1959)
-
 Bug fixes:
 --------------
-  * ArchaeologyBuddy
-    - MailboxManager.GetClosestMailbox() now searches object database if profile has no mailbox (HB-1166)
-
-    - Should no longer interrupt casting while crating artifacts (HB-2215)
-
-  * Core
-    - The stuck handler should not give frequent false positives when detecting if it is stuck anymore. (HB-1997)
-
-    - Should no longer keep inserting mailboxes to database when they are already recorded. (HB-2273)
+  * BGBuddy
+    - BGBuddy: Fixed an InvalidCastException (HB-2357)
 
   * DungeonBuddy
-    - Fixed an issue where Honorbuddy was not loading last used profile after switching to another botbase and back (HB-1807)
+    - The Nexus:"Postponing the Inevitable" quest is now picked up and completed. (HB-780)
+
+    - Shado Pan Monastery: Toons will now zone out and back in if they get stuck at the Sha of Violence exit door  (HB-2096)
+
+    - Grimrail Depot: Fixed an issue that caused toons to idle during the beginning of the Nitrogg encounter (HB-2126)
+
+    - Utgarde Keep: Toons will now go left at furnace room entrance if left wall is gone (HB-2286)
 
   * GarrisonBuddy
-    - Fixed an issue where the bot would attempt to upgrade followers who were already max item level. (HB-2224)
+    - Fixed a missing implementation of a converter for the UI that would cause most checkboxes to throw exceptions (HB-2373)
 
-    - Fixed an issue where upgrading followers was done too quickly, causing an "Item not ready" message (HB-2225)
+    - The bot will now move closer to shipments before picking them up. (HB-2375)
 
-    - Barn work orders should now work properly. Gossip option indexes were off by 1. (HB-2242)
+    - Fixed Jewelcrafting building prequest turnin. It will now turn in the quest to the correct NPC (HB-2362)
 
-    - Mission Planning Strategy should now be properly saved (and used) when changed in the Config UI. (HB-2249)
+    - Fixed a bug that was causing ArgumentOutOfRange exceptions when trying to check archaeology solving (HB-2369)
 
-    - GSB includes a configurable setting for minimum free bag slots. When you go below this threshold, the bot will do a sell/repair/mail run. (HB-2267)
-
-    - Fixed a bug in the Barn opening quest Breaking into the Trap Game on alliance where it would run to the horde garrison to create a work order (HB-2282)
-
-    - Fixed a bug that caused the bot to not see the correct rank of the Barracks when not actually inside the garrison (HB-2293)
-
-    - The By Experience and By Experience Per Hour mission sorters no longer include missions that yield no actual experience. (HB-2296)
-
-    - Fixed Lumber Mill prequest Turning Trees into Profit missing small timber on alliance (HB-2304)
-
-    - Fixed an issue where the search range for shipments was just slightly too large, causing the bot to get stuck near the alliance fountain when looking for mine shipments. (HB-2251)
-
-    - Fixed a bug causing the bot to try and use level 100 items when not actually level 100 (HB-2288)
-
-  * Navigation
-    - Fixed an issue where the navigation path's waypoints were sometimes moved beneath terrain when path randomization is enabled. (HB-1820)
-
-  * Plugin
-    - BuddyControlPanel should no longer crash Honorbuddy because configuration windows are created on the Overlay thread. (HB-2279)
-
-  * Profile
-    - Fixed an issue that caused InteractWith with multiple HuntingGround waypoints to terminate before completion after navigating to first waypoint (HB-2171)
-
-    - HuntingGrounds added and its fixed now (HB-2174)
-
-    - Additional Flyto added for robustness. (HB-2196)
-
-    - Improved IW and works now (HB-2197)
-
-    - Redid using KillUntilcomplete and its works great now (HB-2198)
-
-    - We only try Glirin / Follower now if we have already selected Lumber Mill (HB-2220)
-
-  * QuestBehaviour
-    - UtilityCoroutine.UseItem nolonger uses the legacy spell interruption detection system (HB-2270)
-
-    - CannonControl will now re-enable Combat BehaviorFlag when finished (HB-2219)
+  * ProfessionBuddy
+    - CancelAction: Fixed an issue that caused all auctions to be searched rather then just the toon's (HB-2189)
 

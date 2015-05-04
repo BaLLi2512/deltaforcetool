@@ -76,10 +76,16 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
         //	get { return new WoWPoint(699.101, 2080.291, 374.6979); }
         //}
 
-        public override WoWPoint ExitLocation
-        {
-            get { return new WoWPoint(721.3207, 2098.361, 403.9803); }
-        }
+	    public override WoWPoint ExitLocation
+	    {
+		    get
+		    {
+				// use the top exit portal if dungeon is not complete or toon is not by last boss.
+			    return !IsComplete || Me.Z > LevelDividerZ
+				    ? new WoWPoint(721.3207, 2098.361, 403.9803)
+				    : new WoWPoint(958.9496, 2161.863, 296.1056);
+		    }
+	    }
 
         private readonly CircularQueue<WoWPoint> _corpseRunBreadCrumb = new CircularQueue<WoWPoint>()
 																	{

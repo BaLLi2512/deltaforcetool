@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CommonBehaviors.Actions;
 using Styx;
 using Styx.Common.Helpers;
@@ -17,7 +18,11 @@ using Action = Styx.TreeSharp.Action;
 
 using Bots.DungeonBuddy.Profiles;
 using Bots.DungeonBuddy.Attributes;
+using Bots.DungeonBuddy.Enums;
 using Bots.DungeonBuddy.Helpers;
+using Buddy.Coroutines;
+using Styx.CommonBot.Coroutines;
+
 namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 {
 	public class ZulFarrak : Dungeon
@@ -81,23 +86,42 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 			}
 		}
 
+		public override void IncludeLootTargetsFilter(List<WoWObject> incomingunits, HashSet<WoWObject> outgoingunits)
+		{
+			foreach (var obj in incomingunits)
+			{
+
+				var unit = obj as WoWUnit;
+				if (unit != null)
+				{
+					// make sure quest object gets looted regardless of loot settings.
+					if ((unit.Entry == MobId_HydromancerVelratha || unit.Entry == MobId_Gahzrill)
+						&& unit.IsDead && unit.CanLoot && unit.DistanceSqr < 50 * 50 
+						&& ScriptHelpers.HasQuest(QuestId_AFoolsErrand) && !ScriptHelpers.IsQuestInLogComplete(QuestId_AFoolsErrand))
+					{
+						outgoingunits.Add(unit);
+					}
+				}
+			}
+		}
+
 		readonly WoWPoint _holeByPrisonerLoc = new WoWPoint(1874.575, 1285.383, 41.17591);
 		readonly WoWPoint _holeExitLoc = new WoWPoint(1883.203, 1277.124, 42.04437);
 
-		public override MoveResult MoveTo(WoWPoint location)
+		public override async Task<bool> HandleMovement(WoWPoint location)
 		{
 			var myLoc = Me.Location;
-			if (myLoc.DistanceSqr(_holeByPrisonerLoc) < 12*12 && myLoc.Z < 41.5)
+			if (myLoc.DistanceSqr(_holeByPrisonerLoc) < 12 * 12 && myLoc.Z < 41.5)
 			{
-				if (myLoc.Distance2DSqr(_holeExitLoc) < 4*4)
+				if (myLoc.Distance2DSqr(_holeExitLoc) < 4 * 4)
 				{
 					WoWMovement.Move(WoWMovement.MovementDirection.JumpAscend);
 					WoWMovement.MoveStop(WoWMovement.MovementDirection.JumpAscend);
 				}
 				Navigator.PlayerMover.MoveTowards(_holeExitLoc);
-				return MoveResult.Moved;
+				return true;
 			}
-			return base.MoveTo(location);
+			return false;
 		}
 
 		#endregion
@@ -126,19 +150,48 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 		}
 
 		#region Root
+		readonly WoWPoint _lastBossLocation = new WoWPoint(1726.733, 1018.31, 54.88902);
+
+		private const uint QuestId_ChiefUkorzSandscalp = 27068;
+		private const uint QuestId_AFoolsErrand = 27070;
+		private const uint QuestId_WrathOfTheSandfury = 27071;
+		private const uint QuestId_BreakingAndEntering = 27076;
+
+		private IEnumerable<uint> QuestsAtEntrance
+		{
+			get
+			{
+				yield return QuestId_ChiefUkorzSandscalp;
+				yield return QuestId_AFoolsErrand;
+				yield return QuestId_WrathOfTheSandfury;
+				yield return QuestId_BreakingAndEntering;
+			}
+		}
+
 
 		[EncounterHandler(40712, "Mazoga's Spirit", Mode = CallBehaviorMode.Proximity, BossRange = 45)]
-		public Composite QuestPickupHandler()
+		[EncounterHandler(44929, "Tran'rek", Mode = CallBehaviorMode.Proximity, BossRange = 45)]
+		[EncounterHandler(7407, "Chief Engineer Bilgewhizzle", Mode = CallBehaviorMode.Proximity, BossRange = 45)]
+		public async Task<bool> QuestPickupTurninHandler(WoWUnit npc)
 		{
-			WoWUnit unit = null;
-			return new PrioritySelector(
-				ctx => unit = ctx as WoWUnit,
-				new Decorator(
-					ctx => !Me.Combat && !ScriptHelpers.WillPullAggroAtLocation(unit.Location) && unit.QuestGiverStatus == QuestGiverStatus.Available,
-					ScriptHelpers.CreatePickupQuest(ctx => unit)),
-				new Decorator(
-					ctx => !Me.Combat && !ScriptHelpers.WillPullAggroAtLocation(unit.Location) && unit.QuestGiverStatus == QuestGiverStatus.TurnIn,
-					ScriptHelpers.CreateTurninQuest(ctx => unit)));
+			if (Me.Combat || ScriptHelpers.WillPullAggroAtLocation(npc.Location))
+				return false;
+			// pickup or turnin quests if any are available.
+			return npc.HasQuestAvailable(true)
+				? await ScriptHelpers.PickupQuest(npc)
+				: npc.HasQuestTurnin() && await ScriptHelpers.TurninQuest(npc);
+		}
+
+		[EncounterHandler(0, "Root")]
+		public async Task<bool> RootLogic(WoWUnit supplies)
+		{
+			// port outside and back in to hand in quests once dungeon is complete.
+			// QuestPickupTurninHandler will handle the turnin
+			return IsComplete && !Me.Combat
+					&& QuestsAtEntrance.Any(ScriptHelpers.IsQuestInLogComplete)
+					&& LootTargeting.Instance.IsEmpty()
+					&& Me.Location.DistanceSqr(_lastBossLocation) < 50 * 50
+					&& await ScriptHelpers.PortOutsideAndBackIn();
 		}
 
 		#endregion
@@ -199,52 +252,48 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 
 		#region Hydromancer Velratha
 
-		[EncounterHandler(7795, "Hydromancer Velratha")]
-		public Composite HydromancerVelrathaFight()
+		private const uint MobId_HydromancerVelratha = 7795;
+
+		[EncounterHandler((int)MobId_HydromancerVelratha, "Hydromancer Velratha")]
+		public Func<WoWUnit, Task<bool>> HydromancerVelrathaFight()
 		{
 			const int healingWaveId = 12491;
-			WoWUnit boss = null;
-			return new PrioritySelector(ctx => boss = ctx as WoWUnit, ScriptHelpers.CreateInterruptCast(ctx => boss, healingWaveId));
+			return async boss => await ScriptHelpers.InterruptCast(boss, healingWaveId);
 		}
 
 		#endregion
 
 		#region Gahz'rilla
 
-		private const uint GahzrillId = 7273;
+		private const uint MobId_Gahzrill = 7273;
 
 		[ObjectHandler(141832, "Gong of Zul'Farrak", 100)]
-		public Composite GongHandler()
+		public async Task<bool> GongHandler(WoWGameObject gong)
 		{
-			WoWGameObject gong = null;
-			return new PrioritySelector(
-				ctx => gong = ctx as WoWGameObject,
-				new Decorator(
-					ctx => BossManager.CurrentBoss != null && BossManager.CurrentBoss.Entry == GahzrillId,
-					new PrioritySelector(
-						new Decorator(
-							ctx =>
-							ScriptHelpers.GetUnfriendlyNpsAtLocation(gong.Location, 100, u => u.IsHostile).Any() && Targeting.Instance.IsEmpty() &&
-							BotPoi.Current.Type == PoiType.None,
-							ScriptHelpers.CreateClearArea(() => gong.Location, 100, u => u.IsHostile)),
-						new Decorator(
-							ctx =>
-							ScriptHelpers.IsBossAlive("Gahz'rilla") && Me.IsTank() && Targeting.Instance.IsEmpty() && Gahzrilla == null && BotPoi.Current.Type == PoiType.None &&
-							!ScriptHelpers.GetUnfriendlyNpsAtLocation(gong.Location, 100, u => u.IsHostile).Any(),
-							new PrioritySelector( 
-								new ActionSetActivity("Interacting with {0}", gong),
-								new Decorator(ctx => gong.DistanceSqr > 4 * 4, new Action(ctx => Navigator.MoveTo(gong.Location))),
-								new Decorator(ctx => Me.IsMoving, new Action(ctx => WoWMovement.MoveStop())),
-								new Sequence(
-									new Action(ctx => gong.Interact()),
-									new Wait(5, ret => Gahzrilla != null, new Sleep(250))))))));
+			if (BossManager.CurrentBoss == null|| BossManager.CurrentBoss.Entry != MobId_Gahzrill || !Me.IsLeader())
+				return false;
+
+			if (Gahzrilla != null || !ScriptHelpers.IsBossAlive("Gahz'rilla"))
+				return false;
+
+			if (BotPoi.Current.Type != PoiType.None || !Targeting.Instance.IsEmpty())
+				return false;
+
+			if (ScriptHelpers.GetUnfriendlyNpsAtLocation(gong.Location, 100, u => u.IsHostile).Any())
+				return await ScriptHelpers.ClearArea(gong.Location, 100, u => u.IsHostile);
+
+			if (gong.DistanceSqr > 4*4)
+				return (await CommonCoroutines.MoveTo(gong.Location)).IsSuccessful();
+			await CommonCoroutines.StopMoving();
+			gong.Interact();
+			await Coroutine.Wait(5000, () => Gahzrilla != null);
+			return true;
 		}
 
-		[EncounterHandler(7273, "Gahz'rilla")]
-		public Composite GahzrillaFight()
+		[EncounterHandler((int)MobId_Gahzrill, "Gahz'rilla")]
+		public async Task<bool> GahzrillaFight()
 		{
-			WoWUnit boss = null;
-			return new PrioritySelector(ctx => boss = ctx as WoWUnit, ScriptHelpers.CreateDispelGroup("Freeze Solid", ScriptHelpers.PartyDispelType.Magic));
+			return await ScriptHelpers.DispelGroup("Freeze Solid", ScriptHelpers.PartyDispelType.Magic);
 		}
 
 		#endregion
@@ -307,7 +356,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 							new PrioritySelector(
 								ctx => sergeantBly = SergeantBly,
 								new Decorator(
-									ctx => sergeantBly != null && Targeting.Instance.IsEmpty() && sergeantBly.CanGossip && sergeantBly.Location.DistanceSqr(FinalBlyLocation) < 7,
+									ctx => sergeantBly != null && !Me.Combat && sergeantBly.CanGossip && sergeantBly.Location.DistanceSqr(FinalBlyLocation) < 7,
 									ScriptHelpers.CreateTalkToNpc(ctx => sergeantBly)),
 								new Decorator(
 									ctx => sergeantBly != null && sergeantBly.IsAlive && sergeantBly.DistanceSqr >= 6 * 6,

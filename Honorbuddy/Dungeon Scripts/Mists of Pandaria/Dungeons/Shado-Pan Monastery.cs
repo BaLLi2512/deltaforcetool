@@ -21,6 +21,8 @@ using Action = Styx.TreeSharp.Action;
 using Bots.DungeonBuddy.Profiles;
 using Bots.DungeonBuddy.Attributes;
 using Bots.DungeonBuddy.Helpers;
+using Tripper.Tools.Math;
+
 namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 {
 	public class ShadoPanMonastery : Dungeon
@@ -29,6 +31,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 
 		private readonly WoWPoint _azureSerpentFollowerLoc = new WoWPoint(3736.51, 2670.499, 768.0417);
 		private readonly WoWPoint _azureSerpentTankLoc = new WoWPoint(3727.666, 2688.185, 768.0416);
+		private readonly WoWPoint _exitDoorAt3rdBossLoc = new WoWPoint(3947.273, 2893.141, 772.5763);
 
 		public override uint DungeonId
 		{
@@ -176,6 +179,17 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                     return (await CommonCoroutines.MoveTo(_azureSerpentFollowerLoc)).IsSuccessful();
 				return true;
 			}
+
+			// Fixes a stuck issue where some toom, especially rogues with 'Cloak and Dagger' talent get stuck on the 
+			// wrong side of the door.
+			if (!Me.Combat && myLoc.DistanceSqr(_exitDoorAt3rdBossLoc) < 8*8 
+				&& WoWMathHelper.IsPointInPoly(location, _first3BossesArea)
+				&& ShaOfViolenceExitDoorIsClosed)
+			{
+				Logger.Write("Stuck on other side of closed door past Sha of Violence");
+				await CommonCoroutines.StopMoving();
+				await ScriptHelpers.PortOutsideAndBackIn();
+			}
 		    return false;
 		}
 
@@ -267,6 +281,17 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 		}
 
 		#region Root
+
+		private Vector2[] _first3BossesArea = new[]
+											  {
+												  new Vector2(3992.671f, 2784.757f), new Vector2(3930.853f, 3010.861f), new Vector2(3834.559f, 3138.905f),
+												  new Vector2(3713.046f, 2991.065f), new Vector2(3736.759f, 2672.043f), new Vector2(3774.408f, 2531.415f),
+												  new Vector2(3634.32f, 2486.246f), new Vector2(3508.878f, 2725.093f), new Vector2(3569.901f, 2863.264f),
+												  new Vector2(3594.771f, 3093.342f), new Vector2(3728.923f, 3251.155f), new Vector2(3801.244f, 3259.495f),
+												  new Vector2(4019.388f, 3095.193f), new Vector2(4097.335f, 2996.045f), new Vector2(4127.745f, 2895.484f),
+												  new Vector2(4076.809f, 2769.453f),
+											  };
+
 
 		[EncounterHandler(0, "Root")]
 		public Composite RootEncounter()
@@ -465,6 +490,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 		#region Sha of Violence
 
 		private const uint ShaOfViolenceId = 56719;
+		private const uint GameObjectId_ShaOfViolenceExitDoor = 210866;
 
 		[EncounterHandler(56764, "Consuming Sha")]
 		public Composite ConsumingShaEncounter()
@@ -534,6 +560,16 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 				ctx => boss = ctx as WoWUnit,
 				ScriptHelpers.CreateDispelEnemy("Enrage", ScriptHelpers.EnemyDispelType.Enrage, ctx => boss),
 				ScriptHelpers.CreateDispelGroup("Disorienting Smash", ScriptHelpers.PartyDispelType.Magic));
+		}
+
+		private bool ShaOfViolenceExitDoorIsClosed
+		{
+			get
+			{
+				return
+					ObjectManager.GetObjectsOfType<WoWGameObject>()
+						.Any(g => g.Entry == GameObjectId_ShaOfViolenceExitDoor && ((WoWDoor) g.SubObj).IsClosed);
+			}
 		}
 
 		#endregion

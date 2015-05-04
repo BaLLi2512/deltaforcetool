@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using CommonBehaviors.Actions;
 using Styx;
 using Styx.Common.Helpers;
@@ -18,6 +19,9 @@ using Action = Styx.TreeSharp.Action;
 using Bots.DungeonBuddy.Profiles;
 using Bots.DungeonBuddy.Attributes;
 using Bots.DungeonBuddy.Helpers;
+using Buddy.Coroutines;
+using Styx.CommonBot.Coroutines;
+
 namespace Bots.DungeonBuddy.Dungeon_Scripts.Wrath_of_the_Lich_King
 {
 	public class TheNexus : Dungeon
@@ -106,29 +110,66 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Wrath_of_the_Lich_King
 		private const uint CrystallineFrayerId = 26793;
 		private const uint OrmorokId = 26794;
 
-
+	
 		private LocalPlayer Me
 		{
 			get { return StyxWoW.Me; }
 		}
 
+		#region Quest
+
 		[EncounterHandler(55531, "Warmage Kaitlyn", Mode = CallBehaviorMode.Proximity, BossRange = 35)]
 		[EncounterHandler(55536, "Image of Warmage Kaitlyn", Mode = CallBehaviorMode.Proximity, BossRange = 35)]
 		[EncounterHandler(55537, "Image of Warmage Kaitlyn", Mode = CallBehaviorMode.Proximity, BossRange = 35)]
-		public Composite QuestPickupHandler()
+		[EncounterHandler(55535, "Image of Warmage Kaitlyn", Mode = CallBehaviorMode.Proximity, BossRange = 35)]
+		public async Task<bool> QuestPickupTurninHandler(WoWUnit npc)
 		{
-			WoWUnit unit = null;
-			return new PrioritySelector(
-				ctx => unit = ctx as WoWUnit,
-				new Decorator(
-					ctx => !Me.Combat && !ScriptHelpers.WillPullAggroAtLocation(unit.Location) && unit.QuestGiverStatus == QuestGiverStatus.Available,
-					ScriptHelpers.CreatePickupQuest(ctx => unit)),
-				new Decorator(
-					ctx => !Me.Combat && !ScriptHelpers.WillPullAggroAtLocation(unit.Location) && unit.QuestGiverStatus == QuestGiverStatus.TurnIn,
-					ScriptHelpers.CreateTurninQuest(ctx => unit)));
+			if (Me.Combat || ScriptHelpers.WillPullAggroAtLocation(npc.Location))
+				return false;
+			// pickup or turnin quests if any are available.
+			return npc.HasQuestAvailable(true)
+				? await ScriptHelpers.PickupQuest(npc)
+				: npc.HasQuestTurnin() && await ScriptHelpers.TurninQuest(npc);
 		}
 
-	    private const uint BerinandsResearchId = 192788;
+		private const uint QuestId_PostponingTheInevitiable = 11905;
+		private const uint ItemId_InterdimentionalRefabricator = 35479;
+		private const uint BerinandsResearchId = 192788;
+
+		[LocationHandler(637.8363, -313.2727, -9.455564, 50, "Postponing the inevitable")]
+		public Func<WoWPoint, Task<bool>> TheRiftLocationHandler()
+		{
+			return async loc =>
+			{
+				if (!ScriptHelpers.SupportsQuesting || Me.Combat || !ScriptHelpers.HasQuest(QuestId_PostponingTheInevitiable) ||
+					ScriptHelpers.IsQuestInLogComplete(QuestId_PostponingTheInevitiable))
+				{
+					return false;
+				}
+
+				var questItem = Me.BagItems.FirstOrDefault(i => i.Entry == ItemId_InterdimentionalRefabricator);
+
+				// Abandon quest so it's picked up again if item is missing
+				if (questItem == null)
+				{
+					StyxWoW.Me.QuestLog.AbandonQuestById(QuestId_PostponingTheInevitiable);
+					await CommonCoroutines.SleepForRandomUiInteractionTime();
+					return true;
+				}
+
+				if (!ScriptHelpers.AtLocation(Me.Location, loc, 4))
+					return (await CommonCoroutines.MoveTo(loc)).IsSuccessful();
+
+				await CommonCoroutines.StopMoving();
+				questItem.Use();
+				await Coroutine.Sleep(3000);
+				await CommonCoroutines.SleepForRandomUiInteractionTime();
+				return true;
+			};
+}
+
+		#endregion
+
 
 		[EncounterHandler(26731, "Grand Magus Telestra", Mode = CallBehaviorMode.Proximity, BossRange = 65)]
 		public Composite GrandMagusTelestraEncounter()
@@ -147,14 +188,6 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Wrath_of_the_Lich_King
 				);
 		}
 
-		[EncounterHandler(26763, "Anomalus")]
-		public Composite AnomalusEncounter()
-		{
-			WoWUnit boss = null;
-			return new PrioritySelector(
-				ctx => boss = ctx as WoWUnit
-				);
-		}
 
 		[EncounterHandler(26794, "Ormorok the Tree-Shaper", Mode = CallBehaviorMode.CurrentBoss)]
 		public Composite OrmorokTheTreeShaperGauntletBehavior()

@@ -16,7 +16,7 @@ using Styx.Helpers;
 using Styx.Pathing;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
-using Tripper.Tools.Math;
+using Vector2 = Tripper.Tools.Math.Vector2;
 
 // ReSharper disable CheckNamespace
 namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
@@ -45,7 +45,70 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 
 	}
 
-	public class WalledCity : WoDLfr
+	public abstract class HighMaulFirstAndSecondWings : WoDLfr
+	{
+		private static readonly WoWPoint TheButcherShortcutStart = new WoWPoint(3607.386, 7690.8, 49.68718);
+		private static readonly WoWPoint TheButcherShortcutEnd = new WoWPoint(3625.253, 7694.636, 24.75327);
+
+		private static readonly Vector2[] _butcherBrackensporeTectusArea =
+		{
+			new Vector2(3665.059f, 7702.031f),
+			new Vector2(3648.062f, 7721.875f), new Vector2(3635.858f, 7720.968f), new Vector2(3618.896f, 7699.576f),
+			new Vector2(3678.591f, 7598.532f), new Vector2(3746.321f, 7578.863f), new Vector2(4205.131f, 7639.263f),
+			new Vector2(4237.474f, 7889.901f), new Vector2(3821.84f, 7957.633f), new Vector2(3586.8f, 8124.939f),
+			new Vector2(3427.558f, 7955.679f), new Vector2(3589.751f, 7789.652f), new Vector2(3650.96f, 7858.167f),
+			new Vector2(3742.038f, 7750.912f),
+		};
+
+		private readonly WoWPoint[] _combatStuckTrashPackLocs =
+		{
+			new WoWPoint(3650.748, 7811.058, 45.69595),
+			new WoWPoint(3606.859, 7744.549, 49.52811),
+		};
+
+		private static bool IsAtAreaByFirstBoss(WoWPoint location)
+		{
+			return location.Z > 40 && WoWMathHelper.IsPointInPoly(location, AreaByFirstBoss);
+		}
+
+		private static readonly Vector2[] AreaByFirstBoss =
+	    {
+			new Vector2(3649.214f, 7736.967f), new Vector2(3551.274f, 7466.804f),
+			new Vector2(3266.306f, 7510.375f), new Vector2(3564.712f, 7821.45f),
+		};
+
+		private static bool IsAtButcherBrackensporeTectusArea(WoWPoint location)
+		{
+			return WoWMathHelper.IsPointInPoly(location, _butcherBrackensporeTectusArea);
+		}
+
+		protected internal async Task<bool> HandleTheButcherShortcut(WoWPoint destination)
+		{
+			// See if we need to take shortcut.
+			if (!IsAtAreaByFirstBoss(Me.Location) || !IsAtButcherBrackensporeTectusArea(destination)
+				|| !_combatStuckTrashPackLocs.Any(loc => ScriptHelpers.GetUnfriendlyNpsAtLocation(loc, 20).Any()))
+			{
+				return false;
+			}
+
+			if (!Navigator.AtLocation(TheButcherShortcutStart))
+				return (await CommonCoroutines.MoveTo(TheButcherShortcutStart, "The Butcher shortcut")).IsSuccessful();
+
+			var timer = Stopwatch.StartNew();
+			while (timer.ElapsedMilliseconds < 5000 && !IsAtButcherBrackensporeTectusArea(Me.Location))
+			{
+				WoWMovement.ClickToMove(TheButcherShortcutEnd);
+				WoWMovement.Move(WoWMovement.MovementDirection.JumpAscend);
+				await Coroutine.Sleep(120);
+				WoWMovement.MoveStop(WoWMovement.MovementDirection.JumpAscend);
+				if (await Coroutine.Wait(1000, () => IsAtButcherBrackensporeTectusArea(Me.Location)))
+					break;
+			}
+			return false;
+		}
+	}
+
+	public class WalledCity : HighMaulFirstAndSecondWings
 	{
 		#region Overrides of Dungeon
 	
@@ -69,7 +132,7 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 	        var inArenaStands = Me.HasAura("Monster's Brawl");
 
 			var onKargarthEncounter = ScriptHelpers.IsViable(_kargath) && _kargath.Combat;
-	        var tanks = ScriptHelpers.GroupMembers.Where(g => g.IsTank).ToList();
+			List<GroupMember> tanks = null;
 
 			units.RemoveAll(
 				ret =>
@@ -88,9 +151,16 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 							return true;
 					}
 
-					// Some noobs will sometimes solo pull trash. Just ignore any mob if no tank is around
-					if (unit.Combat && !tanks.Any(t => t.Location.DistanceSqr(unit.Location) < 90*90))
-						return true;
+					if (unit.Combat && MobIds_CombatStuckTrash.Contains(unit.Entry))
+					{
+						if (tanks == null)
+							tanks = ScriptHelpers.GroupMembers.Where(g => g.IsTank).ToList();
+						var minTankRange = unit.MeleeRange() + 20;
+						var meleeRangeSqr = minTankRange;
+						// ignore if no tank is within melee range. These mobs are usually just ignored.
+						if (!tanks.Any(t => t.Location.DistanceSqr(unit.Location) <= meleeRangeSqr))
+							return true;
+					}
 
 					return false;
 				});
@@ -191,23 +261,8 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 			}
 
 			// See if we need to take shortcut.
-		    if (IsAtAreaByFirstBoss(Me.Location) && IsAtTheButcherArea(location))
-		    {
-				if (!Navigator.AtLocation(TheButcherShortcutStart))
-					return (await CommonCoroutines.MoveTo(TheButcherShortcutStart, "The Butcher shortcut")).IsSuccessful();
-
-				var timer = Stopwatch.StartNew();
-				while (timer.ElapsedMilliseconds < 5000 && !IsAtTheButcherArea(Me.Location))
-				{
-					WoWMovement.ClickToMove(TheButcherShortcutEnd);
-					WoWMovement.Move(WoWMovement.MovementDirection.JumpAscend);
-					await Coroutine.Sleep(120);
-					WoWMovement.MoveStop(WoWMovement.MovementDirection.JumpAscend);
-					if (await Coroutine.Wait(1000, () => IsAtTheButcherArea(Me.Location)))
-						break;
-				}
-			    return true;
-		    }
+			if (await HandleTheButcherShortcut(location))
+				return true;
 
 		    return false;
 	    }
@@ -219,6 +274,28 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 		private const uint GameObjectId_ArenaElevator = 233098;
 
 		private const uint MobId_Gharg = 84971;
+
+		private const uint MobId_NightTwistedSoothsayer = 85240;
+		private const uint MobId_GorianGuardsman = 81270;
+		private const uint MobId_NightTwistedPale = 82694;
+		private const uint MobId_GorianRunemaster = 81272;
+		private const uint MobId_GorianSorcerer = 85225;
+		private const uint MobId_NightTwistedBrute = 85241;
+		private const uint MobId_NightTwistedDevout = 82698;
+		private const uint MobId_GorianEnforcer = 82900;
+
+		private readonly HashSet<uint> MobIds_CombatStuckTrash = new HashSet<uint>
+														{
+															MobId_NightTwistedSoothsayer,
+															MobId_GorianGuardsman,
+															MobId_NightTwistedPale,
+															MobId_GorianRunemaster,
+															MobId_GorianSorcerer,
+															MobId_NightTwistedBrute,
+															MobId_NightTwistedDevout,
+															MobId_GorianEnforcer
+														};
+
 		private static readonly WoWPoint EntranceAreaLoc = new WoWPoint(3482.574, 7597.803, 11.36744);
 
 		private static bool IsAtEntrance(WoWPoint location)
@@ -265,12 +342,6 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 	    private const int MissileSpellId_MoltenBomb = 161631;
 		private const uint AreaTriggerId_MoltenBomb = 6867;
 
-		private static readonly Vector2[] AreaByFirstBoss =
-	    {
-			new Vector2(3649.214f, 7736.967f), new Vector2(3551.274f, 7466.804f),
-			new Vector2(3266.306f, 7510.375f), new Vector2(3564.712f, 7821.45f),
-		};
-
 		[EncounterHandler((int)MobId_Vulgor, "Vul'gor")]
 		public Func<WoWUnit, Task<bool>> VulgorEncounter()
 		{
@@ -307,11 +378,6 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 			AddAvoidObject(4, AreaTriggerId_MoltenBomb);
 
 			return async npc => await ScriptHelpers.InterruptCast(npc, SpellId_FlameBolt);
-		}
-
-		private static bool IsAtAreaByFirstBoss(WoWPoint location)
-		{
-			return location.Z > 40 && WoWMathHelper.IsPointInPoly(location, AreaByFirstBoss);
 		}
 
 	    #endregion
@@ -412,10 +478,6 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 	    #endregion
 
 		private  const uint MobId_TheButcher = 77404;
-		private static readonly WoWPoint TheButcherShortcutStart = new WoWPoint(3607.386, 7690.8, 49.68718);
-		private static readonly WoWPoint TheButcherShortcutEnd = new WoWPoint(3625.253,7694.636,24.75327);
-
-		private static readonly WoWPoint TheButcherAreaCenter = new WoWPoint(3739.223,7658.993,25.68915);
 
 		// http://www.wowhead.com/guide=2783/the-butcher-highmaul-raid-strategy-guide
 		[EncounterHandler((int)MobId_TheButcher, "The Butcher")]
@@ -432,11 +494,6 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 				return false;
 			};
 		}
-
-	    private static bool IsAtTheButcherArea(WoWPoint location)
-	    {
-		    return location.Z < 30 && location.Distance2DSqr(TheButcherAreaCenter) < 200*200;
-	    }
 
 		#endregion
 

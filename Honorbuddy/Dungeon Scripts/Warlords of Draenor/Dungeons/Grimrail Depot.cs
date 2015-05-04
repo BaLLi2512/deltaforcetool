@@ -11,6 +11,7 @@ using Styx.Common.Helpers;
 using Styx.CommonBot;
 using Styx.CommonBot.Bars;
 using Styx.CommonBot.Coroutines;
+using Styx.CommonBot.Routines;
 using Styx.Helpers;
 using Styx.Pathing;
 using Styx.WoWInternals;
@@ -42,7 +43,9 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	    }
 
 	    public override void RemoveTargetsFilter(List<WoWObject> units)
-		{
+	    {
+		    var isMelee = Me.IsMelee();
+
 			units.RemoveAll(
 				ret =>
 				{
@@ -52,6 +55,9 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 					// Ignore assult cannon if it's in a section that is ignited.
 					if (unit.Entry == MobId_AssaultCannon && IgnitedSection == IgnitedSectionType.West)
+						return true;
+					// melee need to ignore mobs standing in bad stuff during 2nd boss encounter.
+					if (isMelee && _nitgroggTrash.Contains(unit.Entry) && AvoidanceManager.Avoids.Any(a => a.IsPointInAvoid(unit.Location)))
 						return true;
 					return false;
 				});
@@ -397,6 +403,13 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 	    #endregion
 
+		private readonly HashSet<uint> _nitgroggTrash = new HashSet<uint>()
+											  {
+												  MobId_GromkarBoomer,
+												  MobId_GromkarGrenadier,
+												  MobId_GromkarGunner
+											  };
+
 	    private const int SpellId_BlackrockGrenade = 161060;
 	    private const int SpellId_Reloading = 160680;
 
@@ -425,6 +438,10 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	    {
 	        var sectionLocations = new [] {_eastSectionLoc, _middleSectionLoc, _westSectionLoc};
 
+			var rightDoorEdgeLoc = new WoWPoint(649.81274, 1768.44482, 107.773865);
+			var leftDoorEdgeLoc = new WoWPoint(643.949, 1768.04211, 107.820145);
+		    var randomPointInRoom = WoWMathHelper.GetRandomPointInCircle(new WoWPoint(1647.146, 1779.222, 107.6348), 2);
+
 	        AddAvoidLocation(
 	            ctx => true,
 	            3,
@@ -437,12 +454,14 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	            o => ((WoWMissile) o).ImpactPosition,
 	            () => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_BlackrockMortar));
 
-			AddAvoidObject(3, AreaTriggerId_SlagBlast);
+			AddAvoidObject(4, AreaTriggerId_SlagBlast);
 
             var targetedBySupressiveFire = new PerFrameCachedValue<bool>(
                 () => Me.HasAura("Suppressive Fire") || ObjectManager.GetObjectsOfType<WoWUnit>()
                     .Any( u => u.Entry == MobId_AssaultCannon && u.CastingSpellId == SpellId_Reloading 
                         && u.CurrentTargetGuid == Me.Guid));
+
+		    var capabilityHandler = CapabilityManager.Instance.CreateNewHandle();
 
 	        return async boss =>
 	        {
@@ -450,11 +469,16 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 .Where(g => g.Entry == GameObjectId_AssaultDoor)
                 .Select(g => (WoWDoor)g.SubObj).FirstOrDefault();
 
-                if (assaultDoor != null && assaultDoor.IsClosed && !Me.IsHealer() && assaultDoor.OwnerObject.DistanceSqr <= 12 * 12)
-                {
-                    TreeRoot.StatusText = "Waiting on assault door to open";
-                    return true;
-                }
+				if (assaultDoor != null && assaultDoor.IsClosed && !Me.IsHealer() 
+					&& assaultDoor.OwnerObject.DistanceSqr <= 12 * 12
+					&& boss.TransportGuid.IsValid)
+				{
+					if (!Me.Location.IsPointLeftOfLine(leftDoorEdgeLoc, rightDoorEdgeLoc))
+						return (await CommonCoroutines.MoveTo(randomPointInRoom)).IsSuccessful();
+
+					TreeRoot.StatusText = "Waiting on assault door to open";
+					return true;
+				}
 
 	            // Phase 2 logic
                 if (assaultDoor == null || assaultDoor.IsClosed)
@@ -462,6 +486,8 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 	            if (!targetedBySupressiveFire && await HandleTurret(boss))
 	                return true;
+
+				CapabilityManager.Instance.Update(capabilityHandler, CapabilityFlags.Movement, () => targetedBySupressiveFire);
 
                 if (targetedBySupressiveFire)
 	            {

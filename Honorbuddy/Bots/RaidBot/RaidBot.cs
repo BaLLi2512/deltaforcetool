@@ -1,8 +1,9 @@
 ﻿//This BotBase was created by Apoc, I take no credit for anything within this code
 //I just changed "!StyxWoW.Me.CurrentTarget.IsFriendly" to "!StyxWoW.Me.CurrentTarget.IsHostile"
 //For the purpose of allowing RaidBot to work within Arenas
-
+using System;
 using System.Windows.Forms;
+using System.Windows.Media;
 using Styx;
 using Styx.Common;
 using Styx.CommonBot;
@@ -10,6 +11,7 @@ using Styx.CommonBot.Profiles;
 using Styx.CommonBot.Routines;
 using Styx.WoWInternals;
 using Styx.TreeSharp;
+using Action = Styx.TreeSharp.Action;
 
 namespace RaidBot
 {
@@ -34,17 +36,22 @@ namespace RaidBot
 						IsPaused = !IsPaused;
 						if (IsPaused)
 						{
-							Lua.DoString("print('RaidBot Paused!')");
+							AddToast("RaidBot Paused!", Colors.Red);
 							// Make the bot use less resources while paused.
 							TreeRoot.TicksPerSecond = 5;
 						}
 						else
 						{
-							Lua.DoString("print('RaidBot Resumed!')");
+							AddToast("RaidBot Resumed!", Colors.Green);
 							// Kick it back into overdrive!
 							TreeRoot.TicksPerSecond = 30;
 						}
 					});
+		}
+
+		private void AddToast(string text, Color color)
+		{
+			StyxWoW.Overlay.AddToast(() => text, TimeSpan.FromSeconds(2), color, Colors.Black, new FontFamily("Courier"));			
 		}
 
 		private Composite CreateRootBehavior()
