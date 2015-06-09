@@ -373,6 +373,7 @@ using Honorbuddy.QuestBehaviorCore.XmlElements;
 using Styx;
 using Styx.Common.Helpers;
 using Styx.CommonBot;
+using Styx.CommonBot.Coroutines;
 using Styx.CommonBot.Frames;
 using Styx.CommonBot.POI;
 using Styx.CommonBot.Profiles;
@@ -693,12 +694,12 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 
 		public override string SubversionId
 		{
-			get { return ("$Id: InteractWith.cs 2040 2015-04-20 20:03:20Z mainhaxor $"); }
+			get { return ("$Id: InteractWith.cs 2059 2015-05-11 08:29:41Z Dogan $"); }
 		}
 
 		public override string SubversionRevision
 		{
-			get { return ("$Revision: 2040 $"); }
+			get { return ("$Revision: 2059 $"); }
 		}
 
 		private enum BindingEventStateType
@@ -1191,7 +1192,7 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 			}
 
 			// Prep to interact...
-			await UtilityCoroutine.MoveStop();
+			await CommonCoroutines.StopMoving();
 			if (await UtilityCoroutine.ExecuteMountStrategy(PreInteractMountStrategy))
 				return true;
 			_watchdogTimerToReachDestination = null;

@@ -52,16 +52,25 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 
 		public override void RemoveTargetsFilter(List<WoWObject> units)
 		{
+			var tank = ScriptHelpers.Tank;
+
 			units.RemoveAll(
 				ret =>
 				{
 					var unit = ret.ToUnit();
-					if (unit != null)
+					if (unit == null)
+						return false;
+
+					if (!unit.Combat && unit.Entry != MobId_GuardianoftheDeep && (Me.IsSwimming || !Me.IsSwimming && unit.Z < -58))
+						return true;
+					if (unit.Entry == SkitteringCrustaceanId && !unit.Combat)
+						return true;
+
+					// ignore any deep terrors with no tank nearby. 
+					if (tank != null && Me.IsDps() && MobIds_DeepTerror_Trash.Contains(unit.Entry)
+						&& tank.Location.DistanceSqr(unit.Location) > 20*20)
 					{
-						if (!unit.Combat && unit.Entry != MobId_GuardianoftheDeep && (Me.IsSwimming || !Me.IsSwimming && unit.Z < -58))
-							return true;
-						if (unit.Entry == SkitteringCrustaceanId && !unit.Combat)
-							return true;
+						return true;
 					}
 					return false;
 				});
@@ -94,6 +103,8 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 		private const uint MobId_GuardianoftheDeep = 74508;
 		private const uint JeneuSancreaId = 12736;
 
+		private const uint AreaTriggerId_CrushingSingularity = 5632;
+
 		[EncounterHandler(44375, "Zeya", Mode = CallBehaviorMode.Proximity, BossRange = 40)]
 		[EncounterHandler(12736, "Je'neu Sancrea", Mode = CallBehaviorMode.Proximity, BossRange = 40)]
 		[EncounterHandler(44387, "Flaming Eradicator", Mode = CallBehaviorMode.Proximity, BossRange = 40)]
@@ -118,6 +129,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 		public Composite RootLogic()
 		{
 			var tankWaitSpotByPool = new WoWPoint(-299.8438f, 90.33894f, -51.45882f);
+			AddAvoidObject(15, o => o.Entry == AreaTriggerId_CrushingSingularity, ignoreIfBlocking: true);
 
 			return new PrioritySelector(
 				// don't drown..
@@ -285,6 +297,9 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 
 		private const int SpellId_Crush = 150660;
 		private const uint MobId_DeepTerror = 75172;
+
+		private HashSet<uint> MobIds_DeepTerror_Trash = new HashSet<uint> {75172, 74747, 75780, 75086,};
+
 		private const uint MobId_AkumaitheDevourer = 75155;
 		private const int MissileSpellId_FallingDebris = 152966;
 

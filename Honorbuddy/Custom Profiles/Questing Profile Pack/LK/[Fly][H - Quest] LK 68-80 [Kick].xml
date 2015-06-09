@@ -3843,52 +3843,56 @@
 				<PickUp QuestName="Ned, Lord of Rhinos..." QuestId="11884" GiverId="25812"
                         GiverName="Killinger the Den Watcher" />
 			</If>
+
+
 			<While Condition="HasQuest(11865) &amp;&amp; !IsQuestCompleted(11865)">
-				<CustomBehavior File="FlyTo" DestName="UseItem" X="3078.783" Y="5340.487" Z="58.12449" />
+				<CustomBehavior File="FlyTo" Land="true" DestName="Caribou Trap 1" X="3078.783" Y="5340.487" Z="58.12449" />
 				<CustomBehavior File="ForcedDismount" QuestId="11865" />
-				<UseItem QuestId="11865" ItemId="35127" X="3078.783" Y="5340.487" Z="58.12449" />
+				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:35127&quot;)" WaitTime="500" /> 
+				
 				<CustomBehavior File="WaitTimer" WaitTime="4000" QuestId="11865"
                                 GoalText="Waiting for item cd {TimeRemaining}" />
 
-				<CustomBehavior File="FlyTo" DestName="UseItem" X="3084.69" Y="5285.571" Z="59.72563" />
+				<CustomBehavior File="FlyTo" Land="true" DestName="Caribou Trap 2" X="3084.69" Y="5285.571" Z="59.72563" />
 				<CustomBehavior File="ForcedDismount" QuestId="11865" />
-				<UseItem QuestId="11865" ItemId="35127" X="3084.69" Y="5285.571" Z="59.72563" />
+				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:35127&quot;)" WaitTime="500" /> 
 				<CustomBehavior File="WaitTimer" WaitTime="4000" QuestId="11865"
                                 GoalText="Waiting for item cd {TimeRemaining}" />
 
-				<CustomBehavior File="FlyTo" DestName="UseItem" X="3116.929" Y="5249.898" Z="60.59465" />
+								
+				<CustomBehavior File="FlyTo" Land="true" DestName="Caribou Trap 3" X="3116.929" Y="5249.898" Z="60.59465" />
 				<CustomBehavior File="ForcedDismount" QuestId="11865" />
-				<UseItem QuestId="11865" ItemId="35127" X="3116.929" Y="5249.898" Z="60.59465" />
+				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:35127&quot;)" WaitTime="500" /> 
 				<CustomBehavior File="WaitTimer" WaitTime="4000" QuestId="11865"
                                 GoalText="Waiting for item cd {TimeRemaining}" />
 
-				<CustomBehavior File="FlyTo" DestName="UseItem" X="3062.281" Y="5237.495" Z="65.03194" />
+				<CustomBehavior File="FlyTo" Land="true" DestName="Caribou Trap 4" X="3062.281" Y="5237.495" Z="65.03194" />
 				<CustomBehavior File="ForcedDismount" QuestId="11865" />
-				<UseItem QuestId="11865" ItemId="35127" X="3062.281" Y="5237.495" Z="65.03194" />
+				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:35127&quot;)" WaitTime="500" /> 
 				<CustomBehavior File="WaitTimer" WaitTime="4000" QuestId="11865"
                                 GoalText="Waiting for item cd {TimeRemaining}" />
 
-				<CustomBehavior File="FlyTo" DestName="UseItem" X="3031.003" Y="5270.857" Z="61.49407" />
+				<CustomBehavior File="FlyTo" Land="true" DestName="Caribou Trap 5" X="3031.003" Y="5270.857" Z="61.49407" />
 				<CustomBehavior File="ForcedDismount" QuestId="11865" />
-				<UseItem QuestId="11865" ItemId="35127" X="3031.003" Y="5270.857" Z="61.49407" />
+				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:35127&quot;)" WaitTime="500" /> 
 				<CustomBehavior File="WaitTimer" WaitTime="4000" QuestId="11865"
                                 GoalText="Waiting for item cd {TimeRemaining}" />
 
-				<CustomBehavior File="FlyTo" DestName="UseItem" X="2975.476" Y="5288.088" Z="61.51498" />
+				<CustomBehavior File="FlyTo" Land="true" DestName="Caribou Trap 6" X="2975.476" Y="5288.088" Z="61.51498" />
 				<CustomBehavior File="ForcedDismount" QuestId="11865" />
-				<UseItem QuestId="11865" ItemId="35127" X="2975.476" Y="5288.088" Z="61.51498" />
+				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:35127&quot;)" WaitTime="500" /> 
 				<CustomBehavior File="WaitTimer" WaitTime="4000" QuestId="11865"
                                 GoalText="Waiting for item cd {TimeRemaining}" />
 
-				<CustomBehavior File="FlyTo" DestName="UseItem" X="2950.815" Y="5246.208" Z="60.9285" />
+				<CustomBehavior File="FlyTo" Land="true" DestName="Caribou Trap 7" X="2950.815" Y="5246.208" Z="60.9285" />
 				<CustomBehavior File="ForcedDismount" QuestId="11865" />
-				<UseItem QuestId="11865" ItemId="35127" X="2950.815" Y="5246.208" Z="60.9285" />
+				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:35127&quot;)" WaitTime="500" /> 
 				<CustomBehavior File="WaitTimer" WaitTime="4000" QuestId="11865"
                                 GoalText="Waiting for item cd {TimeRemaining}" />
 
-				<CustomBehavior File="FlyTo" DestName="UseItem" X="2893.797" Y="5260.6" Z="60.19304" />
+				<CustomBehavior File="FlyTo" Land="true" DestName="Caribou Trap 8" X="2893.797" Y="5260.6" Z="60.19304" />
 				<CustomBehavior File="ForcedDismount" QuestId="11865" />
-				<UseItem QuestId="11865" ItemId="35127" X="2893.797" Y="5260.6" Z="60.19304" />
+				<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:35127&quot;)" WaitTime="500" /> 
 				<CustomBehavior File="WaitTimer" WaitTime="4000" QuestId="11865"
                                 GoalText="Waiting for item cd {TimeRemaining}" />
 
@@ -4250,7 +4254,7 @@
 			<If Condition="HasQuest(11559) &amp;&amp; !IsQuestCompleted(11559)">
 				<!-- convert this to collect things behavior -->
 				<CustomBehavior File="FlyTo" DestName="Objective" X="4280.093" Y="6194.892" Z="0.6556662" />
-				<CustomBehavior File="InteractWith" QuestId="11559" MobId="187367" Range="8" PreInteractMountStrategy="Dismount" NumOfTimes="100" >
+				<CustomBehavior File="InteractWith" QuestId="11559" MobId="187367" PreInteractMountStrategy="Dismount" NumOfTimes="100" >
 					<HuntingGrounds WaypointVisitStrategy="InOrder" >
 						<Hotspot X="4189.774" Y="6162.767" Z="1.551716" />
 						<Hotspot X="4200.608" Y="6308.625" Z="13.19273" />
@@ -6776,8 +6780,9 @@
 			</If>
 			<While Condition="HasQuest(12032) &amp;&amp; !IsQuestCompleted(12032)">
 				<CustomBehavior File="FlyTo" DestName="Pearl of the Depths"  X="2456.485" Y="1721.061" Z="59.93475" />
+				<CustomBehavior File="ForcedDismount" />
 				<CustomBehavior File="InteractWith" QuestId="12032" MobId="188422" NonCompeteDistance="0" PreInteractMountStrategy="DismountOrCancelShapeshift" 
-                                 InteractBlacklistTimeInSeconds="2" NumOfTimes="3" Range="8" X="2456.661" Y="1719.555" Z="59.93533" />
+                                 InteractBlacklistTimeInSeconds="2" NumOfTimes="3" X="2456.661" Y="1719.555" Z="59.93533" />
 				<MoveTo X="2455.553" Y="1717.125" Z="59.9511" />
 				<CustomBehavior File="WaitTimer" WaitTime="55000" GoalText="Waiting for event {TimeRemaining}" />
 				<DisableBehavior Name="Combat" />

@@ -189,11 +189,25 @@
       </Points>
     </TubularIndoorArea>
     
-    <BoundingBoxIndoorArea Name="Lost City of the Tol'vir, Uldum">
-      <Entrance Dismount="False" Radius="5" X="-10672.53" Y="-1304.998" Z="24.04159" />
-      <Min X="-10695" Y="-1313" Z="10" />
-      <Max X="-10685" Y="-1304" Z="28" />
-    </BoundingBoxIndoorArea>
+
+
+		<CompositeIndoorArea Name="Lost City of the Tol'vir, Uldum">
+			<Entrance Dismount="False" Radius="5" X="-10672.53" Y="-1304.998" Z="24.04159" />
+			<IndoorAreas>
+				<BoundingBoxIndoorArea Name="Lost City of the Tol'vir, Uldum">
+					<Min X="-10695" Y="-1313" Z="10" />
+					<Max X="-10685" Y="-1304" Z="28" />
+				</BoundingBoxIndoorArea>
+				<PolygonIndoorArea MinZ=" 10" MaxZ="25" >
+					<Points>
+						<Point X="-10683.0762" Y="-1312.61536"/>
+						<Point X="-10686.8193" Y="-1305.30127"/>
+						<Point X="-10679.291" Y="-1302.04456" />
+						<Point X="-10676.5029" Y="-1311.20911" />
+					</Points>
+				</PolygonIndoorArea>
+			</IndoorAreas>
+		</CompositeIndoorArea>
 
   </IndoorAreas>
 </FlightorAnnotations>

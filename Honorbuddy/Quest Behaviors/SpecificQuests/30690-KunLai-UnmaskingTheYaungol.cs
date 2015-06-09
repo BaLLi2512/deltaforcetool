@@ -53,6 +53,7 @@ using Honorbuddy.QuestBehaviorCore;
 using Styx;
 using Styx.Common;
 using Styx.CommonBot;
+using Styx.CommonBot.Coroutines;
 using Styx.CommonBot.POI;
 using Styx.CommonBot.Profiles;
 using Styx.CommonBot.Routines;
@@ -126,8 +127,8 @@ namespace Honorbuddy.Quest_Behaviors.SpecificQuests.UnmaskingTheYaungol
 		public WoWPoint WaitPoint { get; private set; }
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: 30690-KunLai-UnmaskingTheYaungol.cs 1906 2014-12-22 21:18:26Z Dogan $"; } }
-		public override string SubversionRevision { get { return "$Rev: 1906 $"; } }
+		public override string SubversionId { get { return "$Id: 30690-KunLai-UnmaskingTheYaungol.cs 2059 2015-05-11 08:29:41Z Dogan $"; } }
+		public override string SubversionRevision { get { return "$Rev: 2059 $"; } }
 		#endregion
 
 
@@ -254,7 +255,7 @@ namespace Honorbuddy.Quest_Behaviors.SpecificQuests.UnmaskingTheYaungol
 						return await UtilityCoroutine.MoveTo(_combatContext.Kobai.Location, "Kobai", MovementByType.NavigatorOnly);
 
 					if (Me.IsMoving)
-						await UtilityCoroutine.MoveStop();
+						await CommonCoroutines.StopMoving();
 
 					if (!Me.IsSafelyFacing(_combatContext.Kobai))
 					{

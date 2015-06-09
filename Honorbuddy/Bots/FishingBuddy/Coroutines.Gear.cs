@@ -35,8 +35,8 @@ namespace Bots.FishingBuddy
 			var mainHand = StyxWoW.Me.Inventory.Equipped.MainHand;
 
 			WoWItem pole = Me.CarriedItems
-				.Where(i => i != null && i.IsValid 
-					&& i.ItemInfo.WeaponClass == WoWItemWeaponClass.FishingPole)
+				.Where(i => i != null && i.IsValid
+				   && i.ItemInfo.WeaponClass == WoWItemWeaponClass.FishingPole && Utility.HasRequiredSkillLevel(i.ItemInfo))
 				.OrderByDescending(Utility.GetBonusFishingSkillOnEquip)
 				.ThenByDescending(i => i.ItemInfo.Level)
 				.FirstOrDefault();

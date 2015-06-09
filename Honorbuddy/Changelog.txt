@@ -1,26 +1,10 @@
 Bug fixes:
 --------------
-  * BGBuddy
-    - BGBuddy: Fixed an InvalidCastException (HB-2357)
+  * Core
+    - Fixed a bug that caused HB to generate a lot of Lua errors (HB-2463)
 
-  * DungeonBuddy
-    - The Nexus:"Postponing the Inevitable" quest is now picked up and completed. (HB-780)
+    - Honorbuddy DE version should no longer be throwing errors about missing DISTANCE2D function (HB-2471)
 
-    - Shado Pan Monastery: Toons will now zone out and back in if they get stuck at the Sha of Violence exit door  (HB-2096)
-
-    - Grimrail Depot: Fixed an issue that caused toons to idle during the beginning of the Nitrogg encounter (HB-2126)
-
-    - Utgarde Keep: Toons will now go left at furnace room entrance if left wall is gone (HB-2286)
-
-  * GarrisonBuddy
-    - Fixed a missing implementation of a converter for the UI that would cause most checkboxes to throw exceptions (HB-2373)
-
-    - The bot will now move closer to shipments before picking them up. (HB-2375)
-
-    - Fixed Jewelcrafting building prequest turnin. It will now turn in the quest to the correct NPC (HB-2362)
-
-    - Fixed a bug that was causing ArgumentOutOfRange exceptions when trying to check archaeology solving (HB-2369)
-
-  * ProfessionBuddy
-    - CancelAction: Fixed an issue that caused all auctions to be searched rather then just the toon's (HB-2189)
+  * Questing
+    - Collect-form of <Objective> will now consider 'shared credit' mobs (HB-1615)
 

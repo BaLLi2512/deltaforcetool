@@ -7902,8 +7902,10 @@
 			</If>
 			<While Condition="HasQuest(12032) &amp;&amp; !IsQuestCompleted(12032)">
 				<CustomBehavior File="FlyTo" DestName="Pearl of the Depths" X="2457.292" Y="1723.715" Z="76.43291" />
-				<CustomBehavior File="InteractWith" QuestId="12032" MobId="188422" NonCompeteDistance="0" PreInteractMountStrategy="DismountOrCancelShapeshift" 
-                                 Range="8" X="2456.661" Y="1719.555" Z="59.93533" />
+				<CustomBehavior File="ForcedDismount" />
+				<MoveTo DestName="Pearl of the Depths" X="2455.299" Y="1722.563" Z="59.9094" />
+<CustomBehavior File="InteractWith" QuestId="12032" MobId="188422" NonCompeteDistance="0" PreInteractMountStrategy="DismountOrCancelShapeshift" 
+                                 InteractBlacklistTimeInSeconds="2" NumOfTimes="3" X="2456.661" Y="1719.555" Z="59.93533" />
 				<MoveTo X="2455.553" Y="1717.125" Z="59.9511" />
 				<CustomBehavior File="WaitTimer" WaitTime="55000" GoalText="Waiting for event {TimeRemaining}" />
 				<DisableBehavior Name="Combat" />
@@ -12948,7 +12950,7 @@
 		<If Condition="HasQuest(12805) &amp;&amp; !IsQuestCompleted(12805)" >
 			<CustomBehavior File="FlyTo" DestName="get Lifeblood Energy" X="5556.109" Y="3908.131" Z="-63.81953" />
 			<CustomBehavior File="ForcedDismount" />
-			<CustomBehavior File="InteractWith" QuestId="12805" MobId="29124" InteractByUsingItemId="40397" MobState="Dead" 
+			<CustomBehavior File="InteractWith" QuestId="12805" MobId="29124" InteractByUsingItemId="40397" MobState="Dead" WaitTime="6000" KeepTargetSelected="true" 
                                             NumOfTimes="30" Range="3" CollectionDistance="1000" PreInteractMountStrategy="DismountOrCancelShapeshift" >
 				<HuntingGrounds>
 					<Hotspot X="5686.143" Y="3658.059" Z="-26.07698" />

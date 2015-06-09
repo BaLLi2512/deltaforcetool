@@ -193,9 +193,15 @@
 	<Item Name="Fisherman's Feast" Id="33052" />
 	<Item Name="Fish Feast" Id="43015" />
 	<Item Name="Jillian's Gourmet Fish Feast" Id="45279" />
-	<Item Name="Savage Feast" Id="118576" />
-	<!-- available on PTR only -->
-
+	<Item Name="Savage Feast" Id="118576" />	<!-- available on PTR only -->
+	
+	<Item Name="Buttered Sturgeon" Id="122348" />
+    <Item Name="Jumbo Sea Dog" Id="122346" />
+    <Item Name="Pickled Eel" Id="122345" />
+    <Item Name="Salty Squid Roll" Id="122344" />
+    <Item Name="Sleeper Sushi" Id="122343" />
+    <Item Name="Whiptail Fillet" Id="122347" />
+	
 	<!-- Basic Items: Food  (ordered by level) -->
 	<!-- There are far too many food items to list them all, and most are never used.
          We only list the 'mainstream' items here, sorted by level.  If a "Stat food" is
@@ -296,6 +302,7 @@
 	<Item Name="Tanaan Sweetmelon" Id="115353" />
 	<Item Name="Telmor-Aruuna Hard Cheese" Id="115352" />
 
+	<!-- Garrison -->
     <!-- WoD Garrison Support -->
     <Item Name="Anguished Voodoo Doll" Id="113331" />
     <Item Name="Timber" Id="114781" />
@@ -1316,6 +1323,7 @@
 
 	<!-- Trade: Archaeology Items (alphabetical) -->
 	<Item Name="Draenei Tome" Id="64394" />
+	<Item Name="Draenor Clan Orator Cane" Id="108439" />
 	<Item Name="Dwarf Rune Stone" Id="52843" />
 	<Item Name="Highborne Scroll" Id="63127" />
 	<Item Name="Mantid Amber Sliver" Id="95373" />
@@ -1326,11 +1334,10 @@
 	<Item Name="Tol'vir Hieroglyphic" Id="64397" />
 	<Item Name="Troll Tablet" Id="63128" />
 	<Item Name="Vrykul Rune Stick" Id="64395" />
-	<Item Name="Draenor Clan Orator Cane" Id="108439" />
 
 	<!-- Trade: Blacksmithing Tools ( (alphabetical; also see Trade Tools: Multi-purpose) -->
-	<Item Name="Blacksmith Hammer" Id="5956" />
 	<Item Name="Battered Shield" Id="113321" />
+	<Item Name="Blacksmith Hammer" Id="5956" />
 	<Item Name="Secret of Draenor Blacksmithing" Id="118720" />
 
 	<!-- Trade: Cooking Tools (alphabetical)-->
@@ -1801,8 +1808,8 @@
 	
 	<!-- Trade: Engineering Tools (alphabetical) -->
 	<Item Name="Arclight Spanner" Id="6219" />
-	<Item Name="Gyromatic Micro-Adjustor" Id="10498" />
 	<Item Name="Gnomish Army Knife" Id="40772" />
+	<Item Name="Gyromatic Micro-Adjustor" Id="10498" />
 	<Item Name="Secret of Draenor Engineering" Id="119299" />
 
 	<!-- Trade: Engineering Items (alphabetical) -->
@@ -1874,6 +1881,7 @@
 	<!-- Trade: Fishing Tools (alphabetical) -->
 	<Item Name="Arcanite Fishing Pole" Id="19970" />
 	<Item Name="Big Iron Fishing Pole" Id="6367" />
+	<Item Name="Bladebone Hook" Id="122742" />
 	<Item Name="Bone Fishing Pole" Id="45991" />
 	<Item Name="Boots of the Bay" Id="50287" />
 	<Item Name="Captain Rumsey's Lager" Id="34832" />
@@ -1917,10 +1925,10 @@
 	<Item Name="Herbalist's Spade" Id="85663" />
 
 	<!-- Trade: Inscription Tools (alphabetical) -->
-	<Item Name="Virtuoso Inking Set" Id="39505" />
 	<Item Name="Light Parchment" Id="39354" />
 	<Item Name="Rough Parchment" Id="34647" />
 	<Item Name="Secret of Draenor Inscription" Id="119297" />
+	<Item Name="Virtuoso Inking Set" Id="39505" />
 	
 	<Item Name="Ashen Pigment" Id="61979" />
 	<Item Name="Alabaster Pigment" Id="39151" />
@@ -1967,13 +1975,13 @@
 	<Item Name="Tome of the Clear Mind" Id="79249" />
 
 	<!-- Trade: Jewelcrafting Tools (alphabetical) -->
-	<Item Name="Jeweler's Kit" Id="20815" />
 	<Item Name="Crumbling Statue" Id="113381" />
+	<Item Name="Jeweler's Kit" Id="20815" />
 	<Item Name="Secret of Draenor Jewelcrafting" Id="118723" />
 	
 	<!-- Trade: Leatherworking Tools (alphabetical) -->
 	<Item Name="Salt Shaker" Id="15846" />
-	<Item Name="Secret of Draenor Leatherworking" Id="118" />
+	<Item Name="Secret of Draenor Leatherworking" Id="118721" />
 
 	<!-- Trade: Leatherworking Items (alphabetical) -->
 	<Item Name="Lucky Charm" Id="5373" />
@@ -1986,8 +1994,10 @@
 	<Item Name="Cold Iron Pick" Id="1959" />
 	<Item Name="Digmaster 5000" Id="9465" />
 	<Item Name="Kobold Excavation Pick" Id="778" />
+	<Item Name="Miner's Coffee" Id="118897" />
 	<Item Name="Mining Pick" Id="2901" />
 	<Item Name="Peon's Mining Pick" Id="116913" />
+	<Item Name="Preserved Mining Pick" Id="118903" />
 	<Item Name="Tunnel Pick" Id="756" />
 	<Item Name="Mist-Piercing Goggles" Id="87213" />
 	<Item Name="Ancient Pandaren Mining Pick" Entry="85777" />

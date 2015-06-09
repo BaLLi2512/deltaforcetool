@@ -78,7 +78,7 @@ namespace Bots.FishingBuddy
 		{
 			foreach (var fishingHatId in FishingHatIds)
 			{
-				var hat = StyxWoW.Me.CarriedItems.FirstOrDefault(i => i.Entry == fishingHatId);
+				var hat = StyxWoW.Me.CarriedItems.FirstOrDefault(i => i.Entry == fishingHatId && HasRequiredSkillLevel(i.ItemInfo));
 
 				if (hat != null)
 					return hat;
@@ -171,6 +171,12 @@ namespace Bots.FishingBuddy
 				}
 			}
 			return 0;
+		}
+
+		public static bool HasRequiredSkillLevel(ItemInfo itemInfo)
+		{
+			return itemInfo.RequiredSkillId == 0
+				   || itemInfo.RequiredSkillLevel <= StyxWoW.Me.GetSkill(itemInfo.RequiredSkillId).CurrentValue;
 		}
 
 	}
