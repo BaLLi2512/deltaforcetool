@@ -1,0 +1,75 @@
+<HBProfile creator="Ross2000" version="1">
+   <Name>Savage Blood Farming</Name>
+   <MinLevel>100</MinLevel>
+   <MaxLevel>101</MaxLevel>
+   <MinDurability>0.4</MinDurability>
+   <MinFreeBagSlots>3</MinFreeBagSlots>
+   <MailGrey>false</MailGrey>
+   <MailWhite>true</MailWhite>
+   <MailGreen>true</MailGreen>
+   <MailBlue>true</MailBlue>
+   <MailPurple>true</MailPurple>
+   <SellGrey>true</SellGrey>
+   <SellWhite>false</SellWhite>
+   <SellGreen>false</SellGreen>
+   <SellBlue>false</SellBlue>
+   <SellPurple>false</SellPurple>
+   <TargetElites>true</TargetElites>	
+   
+   <Mailboxes>
+
+    <!--Riverside Post-->
+    <mailbox X="3131.704" Y="6540.816" Z="12.84294" />
+      
+   </Mailboxes>
+   
+   <Vendors>
+
+  <!--Riverside Post-->
+  <Vendor Name="Tai'tasi" Entry="82344" Type="Repair" X="3121.195" Y="6559.984" Z="12.77843" />
+       
+   </Vendors>
+
+<AvoidMobs>
+					<Mob Name="Marsh Anaconda" Entry="87039"  />
+					<Mob Name="Highmaul Enforcer" Entry="87222" />
+					<Mob Name="Venombore Hive Guard" Entry="86834" />
+					<Mob Name="Venombore Drone" Entry="86833" />
+					<Mob Name="Fel Reaver" Entry="18733" />
+					<Mob Name="Mud Jumper" Entry="18733" />
+					<Mob Name="Highmaul Guard" Entry="87221" />
+					<Mob Name="Fungal Destroyer" Entry="87227" />
+					<Mob Name="Highmaul Enforcer" Entry="87222" />
+					<Mob Name="Fungal Encroacher" Entry="87226" />
+					
+
+				</AvoidMobs>
+   <ProtectedItems>
+		
+	</ProtectedItems>
+			<GrindArea>
+				<RandomizeHotspots>false</RandomizeHotspots>
+				<Factions>16</Factions>
+				<MobIds>86932</MobIds> 
+				<Hotspots>
+					<Hotspot X="3754.998" Y="6977.25" Z="8.76128" />
+					<Hotspot X="3741.571" Y="7114.441" Z="5.870365" />
+					<Hotspot X="3666.26" Y="7137.528" Z="5.64148" />
+					<Hotspot X="3688.731" Y="6977.338" Z="4.275458" />
+					<Hotspot X="3723.486" Y="7065.414" Z="2.127218" />
+					
+
+
+
+
+
+
+				</Hotspots>
+				<BlackSpots>
+					<Blackspot X="3535.924" Y="7071.227" Z="4.084318" Radius="43.02451" />
+					<Blackspot X="3707.725" Y="7088.423" Z="2.686874" Radius="14.5231" />
+					
+				</BlackSpots>
+				
+			</GrindArea>    
+</HBProfile>

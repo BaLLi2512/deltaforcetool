@@ -1,10 +1,5 @@
 Bug fixes:
 --------------
-  * Core
-    - Fixed a bug that caused HB to generate a lot of Lua errors (HB-2463)
-
-    - Honorbuddy DE version should no longer be throwing errors about missing DISTANCE2D function (HB-2471)
-
-  * Questing
-    - Collect-form of <Objective> will now consider 'shared credit' mobs (HB-1615)
+  * DungeonBuddy
+    - Honorbuddy no-longer tries to open doors that require an item if player doesn't have item. (HB-2469)
 

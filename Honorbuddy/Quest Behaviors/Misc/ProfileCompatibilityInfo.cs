@@ -139,8 +139,8 @@ namespace Honorbuddy.Quest_Behaviors.ProfileCompatibilityInfo
 
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: ProfileCompatibilityInfo.cs 1869 2014-11-29 19:42:17Z highvoltz $"; } }
-		public override string SubversionRevision { get { return "$Rev: 1869 $"; } }
+		public override string SubversionId { get { return "$Id: ProfileCompatibilityInfo.cs 2066 2015-06-09 08:22:48Z aevitas $"; } }
+		public override string SubversionRevision { get { return "$Rev: 2066 $"; } }
 		#endregion
 
 
@@ -811,6 +811,7 @@ namespace Honorbuddy.Quest_Behaviors.ProfileCompatibilityInfo
                     IsProblemPlugIn =
                         _behaviorDatabase.ProblemPlugIns.PlugIns
                         .Any(o => Name.StartsWith(o.Name, true, CultureInfo.InvariantCulture));
+	                PluginAuthor = plugIn.Author ?? "unknown";
                     PlugInVersion = plugIn.Version;
                 }
 
@@ -819,6 +820,7 @@ namespace Honorbuddy.Quest_Behaviors.ProfileCompatibilityInfo
                 public readonly bool IsEnabled;
                 public readonly bool IsProblemPlugIn;
                 public readonly Version PlugInVersion;
+	            public readonly string PluginAuthor;
             };
 
             private readonly List<PlugInInfo> _plugIns;
@@ -854,11 +856,12 @@ namespace Honorbuddy.Quest_Behaviors.ProfileCompatibilityInfo
 
                 foreach (var plugIn in _plugIns.OrderBy(plugin => plugin.Name))
                 {
-                    builder.AppendFormat("{0}    {1}{2} v{3}: {4}",
+                    builder.AppendFormat("{0}    {1}{2} v{3} ({4}): {5}",
                                          linePrefix,
                                          ((plugIn.IsEnabled && plugIn.IsProblemPlugIn) ? "*** " : "    "),
                                          plugIn.Name,
                                          plugIn.PlugInVersion,
+										 plugIn.PluginAuthor,
                                          GetPlugInState(plugIn));
                     builder.AppendLine();
                 }

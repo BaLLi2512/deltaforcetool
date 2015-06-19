@@ -15,6 +15,9 @@ namespace Bots.FishingBuddy
 		// does nothing if no lures are in bag
 		public async static Task<bool> FilletFish()
 		{
+			if (!FishingBuddySettings.Instance.FilletFish)
+				return false;
+
 			if (!FilletTimer.IsFinished || Me.IsCasting)
 				return false;
 

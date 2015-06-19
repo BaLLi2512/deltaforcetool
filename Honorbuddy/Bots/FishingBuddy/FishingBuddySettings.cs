@@ -70,6 +70,9 @@ namespace Bots.FishingBuddy
 		[Setting, Styx.Helpers.DefaultValue(true), Description("If set to true bot will automatically apply fishing baits"),
 		Category("Fishing")]
 		public bool UseBait { get; set; }
+
+		[Setting, Styx.Helpers.DefaultValue(true), Description("If set to true bot will automatically fillet fish"), Category("Fishing")]
+		public bool FilletFish { get; set; }
 		#endregion
 
 		#region Advanced

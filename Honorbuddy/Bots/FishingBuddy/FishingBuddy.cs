@@ -366,6 +366,7 @@ namespace Bots.FishingBuddy
 	    {
 		    Debug("AvoidLava: {0}", FishingBuddySettings.Instance.AvoidLava);
 			Debug("Fly: {0}", FishingBuddySettings.Instance.Fly);
+			Debug("FilletFish: {0}", FishingBuddySettings.Instance.FilletFish);
 			Debug("LootNPCs: {0}", FishingBuddySettings.Instance.LootNPCs);
 			
 			Debug("Hat Id: {0}", FishingBuddySettings.Instance.Hat);
