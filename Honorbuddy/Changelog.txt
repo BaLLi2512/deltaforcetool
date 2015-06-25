@@ -1,5 +1,10 @@
+New features:
+--------------
+  * Core
+    - Protected Items updates: fishing gear, augment runes, crafting reagents (HB-2509)
+
 Bug fixes:
 --------------
-  * DungeonBuddy
-    - Honorbuddy no-longer tries to open doors that require an item if player doesn't have item. (HB-2469)
+  * Core
+    - Fps issues should be resolved (HB-2512)
 

@@ -269,7 +269,7 @@ namespace Bots.DungeonBuddy.Scenarios.WarlordsOfDraenor
 
 		private bool IsComplete(out string reason)
 		{
-			var avgItemLevel = Me.AverageItemLevelEquipped;
+			var avgItemLevel = Me.AverageItemLevel;
 
 			if (avgItemLevel < 595)
 			{
@@ -282,7 +282,7 @@ namespace Bots.DungeonBuddy.Scenarios.WarlordsOfDraenor
 					string.Format(
 						"All trials that can be done at current item level ({0}) are done. " +
 						"Increase your item level to 610 or more to do the next trial.",
-						Me.AverageItemLevelEquipped);
+						Me.AverageItemLevel);
 				return true;
 			}
 

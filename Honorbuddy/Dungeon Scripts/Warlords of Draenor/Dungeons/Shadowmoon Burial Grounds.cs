@@ -728,7 +728,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		private float AverageGroupItemLevel
 		{
-			get { return ScriptHelpers.GroupMembers.Where(g => g.Player!= null).Average(g => g.Player.AverageItemLevelTotal); }
+			get { return ScriptHelpers.GroupMembers.Where(g => g.Player!= null).Average(g => g.Player.AverageItemLevel); }
 		}
 
 

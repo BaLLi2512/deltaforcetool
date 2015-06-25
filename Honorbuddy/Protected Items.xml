@@ -474,7 +474,7 @@
 	<!-- iLevel:90 -->
 	<Item Name="Alchemist's Rejuvenation" Id="76094" />
 
-	<!-- Basic Items: Potions, Utility (ordered alphabetically) -->
+	<!-- Basic Items: Potions & Runes, Utility (ordered alphabetically) -->
 	<!-- iLevel: 15 -->
 	<Item Name="Swiftness Potion" Id="2459" />
 	<!-- iLevel:85 -->
@@ -520,7 +520,11 @@
 	<Item Name="Draenic Swiftness Potion" Id="116266" />
 	<Item Name="Draenic Swiftness Potion" Id="122452" />
 	<Item Name="Transmorphic Tincture" Id="112090" />
-
+	<!-- Runes -->
+    <Item Name="Focus Augment Rune" Id="118632" />
+	<Item Name="Hyper Augment Rune" Id="118630" />
+    <Item Name="Stout Augment Rune" Id="118631" />
+	
 	<!-- ========== Harvests (alphabetically) ========== -->
 	<!-- Harvests: Cloth & Spider's Silk (ordered by level) -->
 	<!-- Classic -->
@@ -1891,9 +1895,11 @@
 	<Item Name="Ephemeral Fishing Pole" Id="118381" />
 	<Item Name="Fishing Chair" Id="33223" />
 	<Item Name="Fishing Pole" Id="6256" />
+	<Item Name="Frostdeep Minnow" Id="112633" />  
 	<Item Name="High Test Eternium Fishing Line" Id="19971" />
 	<Item Name="Jeweled Fishing Pole" Id="45992" />
 	<Item Name="Lucky Fishing Hat" Id="19972" />
+	<Item Name="Lunarfall Carp" Id="116158" />
 	<Item Name="Mastercraft Kalu'ak Fishing Pole" Id="44050" />
 	<Item Name="Nat Pagle's Extreme Anglin' Boots" Id="19969" />
 	<Item Name="Nat's Lucky Coin" Id="117397" />
@@ -2073,6 +2079,9 @@
 	<!-- Mists of Panderia -->
 	<Item Name="Bolt of Windwool Cloth" Id="82441" />
 
+	<!-- ========== Crafting Reagents ========== -->
+	<Item Name="Abyssal Gulper Flesh" Id="109143" />
+	
 	<!-- ========== Valuable Trading Post Auction House Parts (alphabetical) ========== -->
 	<Item Name="Arcane Crystal Amplifier" Id="118346" />
 	<Item Name="Arcane Crystal Casing" Id="118344" />
