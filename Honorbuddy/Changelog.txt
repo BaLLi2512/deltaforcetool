@@ -1,10 +1,5 @@
 New features:
 --------------
-  * Core
-    - Protected Items updates: fishing gear, augment runes, crafting reagents (HB-2509)
-
-Bug fixes:
---------------
-  * Core
-    - Fps issues should be resolved (HB-2512)
+  * Other
+    - Updated for Patch 6.2.0.20182 (HB-2515)
 
