@@ -1,5 +1,4 @@
-New features:
+Api Changes:
 --------------
-  * Other
-    - Updated for Patch 6.2.0.20182 (HB-2515)
+    - ActionBar no-longer throws exceptions when accessing the button list (HB-2518)
 

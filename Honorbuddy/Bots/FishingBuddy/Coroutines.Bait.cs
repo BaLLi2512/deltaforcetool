@@ -22,6 +22,7 @@ namespace Bots.FishingBuddy
 																	   {110274, "Jawless Skulker Bait"},
 																	   {110292, "Sea Scorpion Bait"},
 																	   {116755, "Nat's Hookshot Bait"},
+                                                                       {128229, "Felmouth Frenzy Bait"},
 																   };
 
 		public async static Task<bool> ApplyBait()
