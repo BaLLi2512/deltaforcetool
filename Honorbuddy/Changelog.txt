@@ -1,4 +1,13 @@
-Api Changes:
+New features:
 --------------
-    - ActionBar no-longer throws exceptions when accessing the button list (HB-2518)
+  * Other
+    - Historical changelog of buddy products can now reached via http://updates.buddyauth.com/GetHistoricalChangelog?filter=Honorbuddy (HB-1020)
+
+Bug fixes:
+--------------
+  * GarrisonBuddy
+    - Garrison no longer incorrectly includes ships in the active follower list. (HB-2520)
+
+  * Navigation
+    - HB should no longer try to walk through the alliance engineering level 3 building. (HB-2295)
 
