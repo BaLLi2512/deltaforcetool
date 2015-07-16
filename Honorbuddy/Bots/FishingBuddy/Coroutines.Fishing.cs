@@ -83,7 +83,7 @@ namespace Bots.FishingBuddy
 			if (await EquipGear())
 				return true;
 
-			if (await Applylure() || await ApplyBait() || await FilletFish())
+			if (await ApplyLure() || await ApplyBait() || await FilletFish() || await Consume())
 				return true;
 
 			if (!FishingBuddySettings.Instance.Poolfishing 

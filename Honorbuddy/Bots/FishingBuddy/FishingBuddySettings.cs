@@ -71,6 +71,11 @@ namespace Bots.FishingBuddy
 		Category("Fishing")]
 		public bool UseBait { get; set; }
 
+        // Credits to the user 'anything'. https://www.thebuddyforum.com/archives/131036-hb-archives-fishingbuddy-delete-post1915079.html#post1915079
+        [Setting, Styx.Helpers.DefaultValue((uint)0), Description("Which bait to prefer (item id). If not found, other baits will be used."),
+        Category("Fishing")]
+        public uint UseBaitPreference { get; set; }
+
 		[Setting, Styx.Helpers.DefaultValue(true), Description("If set to true bot will automatically fillet fish"), Category("Fishing")]
 		public bool FilletFish { get; set; }
 		#endregion

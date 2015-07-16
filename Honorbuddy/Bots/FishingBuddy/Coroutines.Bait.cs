@@ -48,9 +48,18 @@ namespace Bots.FishingBuddy
 			return true;
 		}
 
-		public static IEnumerable<WoWItem> Baits { get { return StyxWoW.Me.BagItems.Where(i => BaitDictionary.ContainsKey(i.Entry)); } }
 
-		public static bool GotBaitOnPole
+	    public static IEnumerable<WoWItem> Baits
+	    {
+	        get
+	        {
+                // Order list so user-prefered baits are at the beginning. 
+	            return StyxWoW.Me.BagItems.Where(i => BaitDictionary.ContainsKey(i.Entry))
+	                .OrderBy(i => i.Entry != FishingBuddySettings.Instance.UseBaitPreference);
+	        }
+	    }
+
+	    public static bool GotBaitOnPole
 		{
 			get
 			{

@@ -53,6 +53,8 @@
 //      Command [optional; ONE OF: Disable, Enable, Remove, ShowActivities, Update; Default: Update]
 //          Determines the disposition of the activity that evaluates the item use, spell cast or a custom activity
 //          Please see the examples below, and the purpose will become clear.
+//      LogExecution [optional; Default: true]
+//          Logs when hook starts and stops executing. 
 //      StopMovingToConductActivity [optional; Default: false]
 //          Many items and spells do not require the toon to be motionless when performing the actions;
 //          however, some do.
@@ -127,7 +129,7 @@
 // At any time, to see the list of current DoWhen activities, use the "ShowActivities" Command:
 //      <CustomBehavior File="Hooks\DoWhen" Command="ShowActivities" />
 // Output will be generated to the log that looks like the following:
-//      [DoWhen-v$Rev: 2059 $(info)] DoWhenActivities in use (count:2):
+//      [DoWhen-v$Rev: 2082 $(info)] DoWhenActivities in use (count:2):
 //          SpellId(159)
 //              Used when: "Me.GotTarget && (Me.CurrentTarget.Entry == 43034)"
 //              Enabled=True
@@ -219,7 +221,8 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 				AllowUseInVehicle = GetAttributeAsNullable<bool>("AllowUseInVehicle", false, null, null) ?? false;
 				AllowUseWhileFlying = GetAttributeAsNullable<bool>("AllowUseWhileFlying", false, null, null) ?? false;
 				AllowUseWhileMounted = GetAttributeAsNullable<bool>("AllowUseWhileMounted", false, null, null) ?? false;
-				AllowExecutionWhileNotAlive = GetAttributeAsNullable<bool>("AllowExecutionWhileNotAlive", false, null, null) ?? false;
+                AllowExecutionWhileNotAlive = GetAttributeAsNullable<bool>("AllowExecutionWhileNotAlive", false, null, null) ?? false;
+                LogExecution = GetAttributeAsNullable<bool>("LogExecution", false, null, null) ?? true;
                 StopMovingToConductActivity = GetAttributeAsNullable<bool>("StopMovingToConductActivity", false, null, null) ?? false;
 				TreeHookName = GetAttributeAs<string>("TreeHookName", false, ConstrainAs.StringNonEmpty, null) ?? "Questbot_Main";
 				Nodes = OrderNodeCollection.FromXml(Element);
@@ -248,8 +251,9 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 		private bool AllowUseWhileFlying { get; set; }
 		private bool AllowUseWhileMounted { get; set; }
 		private CommandType Command { get; set; }
-        private bool StopMovingToConductActivity { get; set; }
 		private bool AllowExecutionWhileNotAlive { get; set; }
+        private bool LogExecution { get; set; }
+        private bool StopMovingToConductActivity { get; set; }
 		private string TreeHookName { get; set; }
         private TimeSpan UseAtInterval { get; set; }
 
@@ -343,8 +347,8 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 
 		#region Overrides of CustomForcedBehavior
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: DoWhen.cs 2059 2015-05-11 08:29:41Z Dogan $"; } }
-		public override string SubversionRevision { get { return "$Rev: 2059 $"; } }
+		public override string SubversionId { get { return "$Id: DoWhen.cs 2082 2015-07-10 16:32:19Z mainhaxor $"; } }
+		public override string SubversionRevision { get { return "$Rev: 2082 $"; } }
 
 
 		// CreateBehavior supplied by QuestBehaviorBase.
@@ -460,11 +464,11 @@ namespace Honorbuddy.Quest_Behaviors.DoWhen
 		#region Main Behaviors
 		private Composite CreateDoWhenHook()
 		{
-			return new ActionRunCoroutine(context => MainCoroutine(context));
+			return new ActionRunCoroutine(context => HookHelpers.ExecuteHook(this, MainCoroutine, ActivityKey_Name, LogExecution));
 		}
 
 
-		private async Task<bool> MainCoroutine(object context)
+		private async Task<bool> MainCoroutine()
 		{
 			// Ignore, while in non-actionable condition...
 			if (Me.IsDead && !AllowExecutionWhileNotAlive)

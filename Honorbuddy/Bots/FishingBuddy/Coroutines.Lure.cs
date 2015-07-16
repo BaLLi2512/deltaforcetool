@@ -32,7 +32,7 @@ namespace Bots.FishingBuddy
 													};
 
 		// does nothing if no lures are in bag
-		public async static Task<bool> Applylure()
+		public async static Task<bool> ApplyLure()
 		{
 			if (FishingBuddySettings.Instance.Poolfishing )
 				return false;

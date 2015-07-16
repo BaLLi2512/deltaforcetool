@@ -1,13 +1,18 @@
 New features:
 --------------
-  * Other
-    - Historical changelog of buddy products can now reached via http://updates.buddyauth.com/GetHistoricalChangelog?filter=Honorbuddy (HB-1020)
+  * FishingBuddy
+    - Added configuration for a preferred bait (HB-2161)
+
+    - The 'Captain Rumsey's Lager' drink is now consumed if it's found in bags.  (HB-2421)
+
+  * QuestBehaviour
+    - DoWhen will now by default log when hook starts/stops execution. This can be disabled by setting 'LogExecution' to false.  (HB-2301)
 
 Bug fixes:
 --------------
-  * GarrisonBuddy
-    - Garrison no longer incorrectly includes ships in the active follower list. (HB-2520)
+  * Core
+    - Fixed a bug that would cause a rare lua error to show up inside WoW. (HB-2539)
 
-  * Navigation
-    - HB should no longer try to walk through the alliance engineering level 3 building. (HB-2295)
+  * Plugin
+    - BuddyControlPanel now records the control positions on exit regardless of the control's "locked" status. (HB-2297)
 
