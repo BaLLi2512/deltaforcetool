@@ -7,6 +7,7 @@
 		<Talent Tier="4" Index="3" Name="Cold Snap" />
 		<Talent Tier="5" Index="3" Name="Frost Bomb" />
 		<Talent Tier="6" Index="3" Name="Incanter's Ward" />
+		<Talent Tier="7" Index="1" Name="Thermal Void" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>0.01</DamagePerSecond>

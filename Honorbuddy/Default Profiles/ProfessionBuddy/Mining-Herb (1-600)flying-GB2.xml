@@ -6,7 +6,7 @@
   <Setting DefaultValue="true" Type="Boolean" Name="Mining" Summary="Set to true if you want to level Mining" Category="Profile" Global="False" Hidden="False" />
   <Setting DefaultValue="false" Type="Boolean" Name="Ignore grey nodes" Summary="Ignores grey nodes, not fully working yet" Category="Profile" Global="False" Hidden="False" />
   <Define Code="bool mining,herb;" />
-  <Define Code="int MiningLevel,MiningMaxLevel,HerbLevel,HerbMaxLevel, LowestMinLevel;" />
+  <Define Code="int MiningLevel, MiningLevelWithBonus, MiningMaxLevel,HerbLevel, HerbLevelWithBonus, HerbMaxLevel, LowestMinLevel;" />
   <Define Code="int FreeBagSlots;" />
   <Custom Code="Log(Colors.Green,&quot;Mine/Herb 1-600: &quot;,Colors.LightGreen,&quot;Made by HighVoltz&quot;);" />
   <Custom Code="Log(Colors.Green,&quot;Mine/Herb 1-600: &quot;,Colors.LightGreen,&quot;Mining: {0}&quot;,Settings[&quot;Mining&quot;]);" />
@@ -26,7 +26,7 @@
   <!--HerbLevel = Herbalism.Level-->
   <Custom Code="HerbLevel = 0;" />
   <!--HerbMaxLevel = Herbalism.MaxLevel-->
-  <Custom Code="HerbMaxLevel = 0;" />
+  <Custom Code="HerbMaxLevel = 0; " />
   <!--LowestMinLevel = lowestMaxLevel-->
   <Custom Code="LowestMinLevel = 0;" />
   <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Alliance\(GB2 1-75)(Elwynn.Alliance)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
@@ -35,9 +35,9 @@
   </If>
   <While PulseSecondaryBot="True" Condition="true" IgnoreCanRun="True">
     <!--AppDomain.CurrentDomain.GetData values are used to 'fake' skill levels when debuging-->
-    <Custom Code="MiningLevel = AppDomain.CurrentDomain.GetData(&quot;MiningLevel&quot;) != null ? (int)AppDomain.CurrentDomain.GetData(&quot;MiningLevel&quot;) : (int)Mining.Level;" />
+    <Custom Code="var testMiningLevel = AppDomain.CurrentDomain.GetData(&quot;MiningLevel&quot;);&#xD;&#xA;if (testMiningLevel != null)&#xD;&#xA;{&#xD;&#xA;&#x9;MiningLevelWithBonus = MiningLevel = (int)testMiningLevel;&#xD;&#xA;}&#xD;&#xA;else&#xD;&#xA;{&#xD;&#xA;&#x9;MiningLevel = (int)Mining.Level;&#xD;&#xA;&#x9;MiningLevelWithBonus = (int)(Mining.Level + Mining.Bonus);&#xD;&#xA;}&#xD;&#xA;" />
     <Custom Code="MiningMaxLevel = AppDomain.CurrentDomain.GetData(&quot;MiningMaxLevel&quot;) != null ? (int)AppDomain.CurrentDomain.GetData(&quot;MiningMaxLevel&quot;) : (int)Mining.MaxLevel;" />
-    <Custom Code="HerbLevel = AppDomain.CurrentDomain.GetData(&quot;HerbLevel&quot;) != null ? (int)AppDomain.CurrentDomain.GetData(&quot;HerbLevel&quot;) : (int)Herbalism.Level;" />
+    <Custom Code="var testHerbLevel = AppDomain.CurrentDomain.GetData(&quot;HerbLevel&quot;);&#xD;&#xA;if (testHerbLevel != null)&#xD;&#xA;{&#xD;&#xA;&#x9;HerbLevelWithBonus = HerbLevel = (int)testHerbLevel;&#xD;&#xA;}&#xD;&#xA;else&#xD;&#xA;{&#xD;&#xA;&#x9;HerbLevel = (int)Herbalism.Level;&#xD;&#xA;&#x9;HerbLevelWithBonus = (int)(Herbalism.Level + Herbalism.Bonus);&#xD;&#xA;}&#xD;&#xA;" />
     <Custom Code="HerbMaxLevel = AppDomain.CurrentDomain.GetData(&quot;HerbMaxLevel&quot;) != null ? (int)AppDomain.CurrentDomain.GetData(&quot;HerbMaxLevel&quot;) : (int)Herbalism.MaxLevel;" />
     <!--disable gathering of mines-->
     <Custom Code="if (((bool)Settings[&quot;Mining&quot;] &amp;&amp;&#xD;&#xA;   (MiningLevel == MiningMaxLevel || ((bool)Settings[&quot;Herb&quot;] &amp;&amp; MiningMaxLevel &gt; HerbMaxLevel ))) ||&#xD;&#xA; !(bool)Settings[&quot;Mining&quot;])&#xD;&#xA;{&#xD;&#xA;    mining = Bots.Gatherbuddy.GatherbuddySettings.Instance.GatherMinerals = false;&#xD;&#xA;}" />
@@ -50,7 +50,7 @@
     <Custom Code="LowestMinLevel = (bool)Settings[&quot;Mining&quot;] &amp;&amp; (bool)Settings[&quot;Herb&quot;] ? (MiningMaxLevel &lt; HerbMaxLevel ? MiningMaxLevel : HerbMaxLevel):(bool)Settings[&quot;Mining&quot;] ? MiningMaxLevel :HerbMaxLevel;" />
     <Custom Code="FreeBagSlots = (int)Me.FreeNormalBagSlots;&#xD;&#xA;if(FreeBagSlots &lt; 4)&#xD;&#xA;  MyLog(&quot;FreeBagSlots: {0}&quot;,FreeBagSlots);" />
     <If Condition="(bool)Settings[&quot;Ignore grey nodes&quot;]" IgnoreCanRun="True">
-      <Custom Code="using (StyxWoW.Memory.AcquireFrame())&#xD;&#xA;{&#xD;&#xA;  foreach (var node in ObjectManager.GetObjectsOfType&lt;WoWGameObject&gt;().Where( g =&gt; (g.IsMineral &amp;&amp; (bool)Settings[&quot;Mining&quot;] || g.IsHerb &amp;&amp; (bool)Settings[&quot;Herb&quot;]) &amp;&amp; !Blacklist.Contains(g, BlacklistFlags.Node)))&#xD;&#xA;  {&#xD;&#xA;    int greySkillLevel;&#xD;&#xA;    if (!node.GetDataSlot(GameObjectDataSlot.GreySkillLevel, out greySkillLevel) || greySkillLevel &lt;=  0)&#xD;&#xA;      return;&#xD;&#xA;    var skillLevel =  node.IsHerb ? HerbLevel : MiningLevel;&#xD;&#xA;    if (greySkillLevel &lt; skillLevel)&#xD;&#xA;    {&#xD;&#xA;          Blacklist.Add(node, BlacklistFlags.Node, TimeSpan.FromDays(365));&#xD;&#xA;           MyLog(&quot;Blacklisting {0} because it's grey&quot;, node.Name);&#xD;&#xA;          MyLog(&quot;My Skill: {0}, Grey Skill: {1}&quot;,skillLevel , greySkillLevel );&#xD;&#xA;    } &#xD;&#xA;  }&#xD;&#xA;}" />
+      <Custom Code="using (StyxWoW.Memory.AcquireFrame())&#xD;&#xA;{&#xD;&#xA;  foreach (var node in ObjectManager.GetObjectsOfType&lt;WoWGameObject&gt;().Where( g =&gt; (g.IsMineral &amp;&amp; (bool)Settings[&quot;Mining&quot;] || g.IsHerb &amp;&amp; (bool)Settings[&quot;Herb&quot;]) &amp;&amp; !Blacklist.Contains(g, BlacklistFlags.Node)))&#xD;&#xA;  {&#xD;&#xA;    int greySkillLevel;&#xD;&#xA;    if (!node.GetDataSlot(GameObjectDataSlot.GreySkillLevel, out greySkillLevel) || greySkillLevel &lt;=  0)&#xD;&#xA;      return;&#xD;&#xA;    var skillLevel =  node.IsHerb ? HerbLevelWithBonus : MiningLevelWithBonus;&#xD;&#xA;    if (greySkillLevel &lt; skillLevel)&#xD;&#xA;    {&#xD;&#xA;          Blacklist.Add(node, BlacklistFlags.Node, TimeSpan.FromDays(365));&#xD;&#xA;           MyLog(&quot;Blacklisting {0} because it's grey&quot;, node.Name);&#xD;&#xA;          MyLog(&quot;My Skill: {0}, Grey Skill: {1}&quot;,skillLevel , greySkillLevel );&#xD;&#xA;    } &#xD;&#xA;  }&#xD;&#xA;}" />
     </If>
     <!--Herb/Mining 1-300-->
     <If Condition=" LowestMinLevel &lt;=300" IgnoreCanRun="True">
@@ -76,25 +76,25 @@
           <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Alliance\(GB2 75-120)(Duskwood.Alliance)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
         </If>
         <If Condition=" LowestMinLevel ==225" IgnoreCanRun="True">
-          <If Condition="(herb &amp;&amp; HerbLevel &lt; 160)" IgnoreCanRun="True">
+          <If Condition="(herb &amp;&amp; HerbLevelWithBonus &lt; 160)" IgnoreCanRun="True">
             <!--Mining 65-125 and Herb 120-160-->
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Alliance\(GB2 120-160)(StranglethornJungle.Alliance)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
-          <If Condition="(herb &amp;&amp; HerbLevel&gt;=160 &amp;&amp; HerbLevel &lt;200 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevel &lt;175 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevel &gt;=160 &amp;&amp; HerbLevel &lt; 200 ))" IgnoreCanRun="True">
+          <If Condition="(herb &amp;&amp; HerbLevelWithBonus&gt;=160 &amp;&amp; HerbLevelWithBonus &lt;200 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevelWithBonus &lt;175 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevelWithBonus &gt;=160 &amp;&amp; HerbLevelWithBonus &lt; 200 ))" IgnoreCanRun="True">
             <!--Mining 125-175 and Herb 160-200-->
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Alliance\(GB2 160-175)(TheCapeOfStranglethorn.Alliance)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
-          <If Condition="(mining &amp;&amp; MiningLevel &gt;=175  &amp;&amp; herb &amp;&amp; HerbLevel &gt;=200 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevel &gt;=175 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevel &gt;=200 ))" IgnoreCanRun="True">
+          <If Condition="(mining &amp;&amp; MiningLevelWithBonus &gt;=175  &amp;&amp; herb &amp;&amp; HerbLevelWithBonus &gt;=200 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevelWithBonus &gt;=175 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevelWithBonus &gt;=200 ))" IgnoreCanRun="True">
             <!--Mining 175-235 and Herb 200-260-->
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Alliance\(GB2 175-235)(Badlands.Alliance)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
         </If>
         <If Condition=" LowestMinLevel ==300" IgnoreCanRun="True">
-          <If Condition="(mining &amp;&amp; MiningLevel &lt; 235) || (herb &amp;&amp; HerbLevel &lt; 260)" IgnoreCanRun="True">
+          <If Condition="(mining &amp;&amp; MiningLevelWithBonus &lt; 235) || (herb &amp;&amp; HerbLevelWithBonus &lt; 260)" IgnoreCanRun="True">
             <!--Mining 175-235 and Herb 200-260-->
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Alliance\(GB2 175-235)(Badlands.Alliance)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
-          <If Condition="(mining &amp;&amp; MiningLevel &gt;=235  &amp;&amp; herb &amp;&amp; HerbLevel &gt;=260 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevel &gt;=235 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevel &gt;=260 ))" IgnoreCanRun="True">
+          <If Condition="(mining &amp;&amp; MiningLevelWithBonus &gt;=235  &amp;&amp; herb &amp;&amp; HerbLevelWithBonus &gt;=260 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevelWithBonus &gt;=235 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevelWithBonus &gt;=260 ))" IgnoreCanRun="True">
             <!--Mining 250-300 and Herb 260-300-->
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Alliance\(GB2 255-300)(SwampOfSorrows.Alliance)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
@@ -113,34 +113,34 @@
         </If>
         <If Condition=" LowestMinLevel == 150" IgnoreCanRun="True">
           <!--Mining 50-65 and Herb 50-75-->
-          <If Condition="(mining &amp;&amp; MiningLevel &lt; 65) || (herb &amp;&amp; HerbLevel &lt; 75)" IgnoreCanRun="True">
+          <If Condition="(mining &amp;&amp; MiningLevelWithBonus &lt; 65) || (herb &amp;&amp; HerbLevelWithBonus &lt; 75)" IgnoreCanRun="True">
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Horde\(GB2 50-120)(Barrens.Horde)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
           <!--Mining 65-125 and Herb 75-150-->
-          <If Condition="(mining &amp;&amp; MiningLevel &gt;=65  &amp;&amp; herb &amp;&amp; HerbLevel &gt;=75 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevel &gt;=65 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevel &gt;=75 ))" IgnoreCanRun="True">
+          <If Condition="(mining &amp;&amp; MiningLevelWithBonus &gt;=65  &amp;&amp; herb &amp;&amp; HerbLevelWithBonus &gt;=75 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevelWithBonus &gt;=65 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevelWithBonus &gt;=75 ))" IgnoreCanRun="True">
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Horde\(GB2 120-180)(Ashenvale.Horde)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
         </If>
         <If Condition=" LowestMinLevel == 225" IgnoreCanRun="True">
           <!--Mining 125-175 and Herb 150-225-->
-          <If Condition="(mining &amp;&amp; MiningLevel &lt; 175) || (herb &amp;&amp; HerbLevel &lt;225)" IgnoreCanRun="True">
+          <If Condition="(mining &amp;&amp; MiningLevelWithBonus &lt; 175) || (herb &amp;&amp; HerbLevelWithBonus &lt;225)" IgnoreCanRun="True">
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Horde\(GB2 180-225)(SouthernBarrens.Horde)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
           <!--Mining 175-235 and Herb 225-280-->
-          <If Condition="(mining &amp;&amp; MiningLevel &gt;=175  &amp;&amp; herb &amp;&amp; HerbLevel &gt;=225 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevel &gt;=175 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevel &gt;=225 ))" IgnoreCanRun="True">
+          <If Condition="(mining &amp;&amp; MiningLevelWithBonus &gt;=175  &amp;&amp; herb &amp;&amp; HerbLevelWithBonus &gt;=225 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevelWithBonus &gt;=175 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevelWithBonus &gt;=225 ))" IgnoreCanRun="True">
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Horde\(GB2 225-275)(Felwood.Horde)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
         </If>
         <If Condition=" LowestMinLevel == 300" IgnoreCanRun="True">
-          <If Condition="(herb &amp;&amp; HerbLevel &lt;225)" IgnoreCanRun="True">
+          <If Condition="(herb &amp;&amp; HerbLevelWithBonus &lt;225)" IgnoreCanRun="True">
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Horde\(GB2 180-225)(SouthernBarrens.Horde)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
           <!--Mining 175-235 and Herb 225-280-->
-          <If Condition="(herb &amp;&amp; HerbLevel&gt;=225 &amp;&amp; HerbLevel &lt;280 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevel &lt;235 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevel &gt;=225 &amp;&amp; HerbLevel &lt; 280))" IgnoreCanRun="True">
+          <If Condition="(herb &amp;&amp; HerbLevelWithBonus &gt;=225 &amp;&amp; HerbLevelWithBonus &lt;280 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevelWithBonus &lt;235 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevelWithBonus &gt;=225 &amp;&amp; HerbLevelWithBonus &lt; 280))" IgnoreCanRun="True">
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Horde\(GB2 225-275)(Felwood.Horde)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
           <!--Mining 235-300 and Herb 280-300-->
-          <If Condition="(mining &amp;&amp; MiningLevel &gt;=235 &amp;&amp; herb &amp;&amp; HerbLevel &gt;=280 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevel &gt;=235 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevel &gt;=280 ))" IgnoreCanRun="True">
+          <If Condition="(mining &amp;&amp; MiningLevelWithBonus &gt;=235 &amp;&amp; herb &amp;&amp; HerbLevelWithBonus &gt;=280 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevelWithBonus &gt;=235 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevelWithBonus &gt;=280 ))" IgnoreCanRun="True">
             <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Horde\(GB2 270-300)(Winterspring.Horde)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
           </If>
         </If>
@@ -151,7 +151,12 @@
     </If>
     <!--Herb/Mining 300-350-->
     <If Condition=" LowestMinLevel ==375" IgnoreCanRun="True">
-      <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Neutral\(GB2 300-350)(Outlands.Neutral)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
+      <If Condition="mining &amp;&amp; MiningLevelWithBonus &lt; 325" IgnoreCanRun="True">
+        <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Neutral\[GB 300-325] Hellfire Peninsula.xml" IsLocalOrFromStore="True" />
+      </If>
+      <If Condition="(mining &amp;&amp; MiningLevelWithBonus &gt;= 325) || (!mining  &amp;&amp; herb)" IgnoreCanRun="True">
+        <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Neutral\[GB 325-350] Terokkar Forest.xml" IsLocalOrFromStore="True" />
+      </If>
       <If Condition="FreeBagSlots &lt;=4" IgnoreCanRun="True">
         <Custom Code="Log(&quot;Bags are full, selling&quot;);" />
         <If Condition="Me.MapId == 530" IgnoreCanRun="True">
@@ -190,13 +195,11 @@
           </If>
           <Wait Condition="Me.MapId == 0" Timeout="25000" />
         </If>
-        <If Condition="Me.MapId ==0" IgnoreCanRun="True">
-          <If Condition="Me.IsAlliance" IgnoreCanRun="True">
-            <CallSubRoutine SubRoutineName="TrainInStormwind" />
-          </If>
-          <If Condition="Me.IsHorde" IgnoreCanRun="True">
-            <CallSubRoutine SubRoutineName="TrainInUndercity" />
-          </If>
+        <If Condition="Me.IsHorde &amp;&amp; Me.MapId == 1" IgnoreCanRun="True">
+          <CallSubRoutine SubRoutineName="TrainInOrg" />
+        </If>
+        <If Condition="Me.IsAlliance &amp;&amp; Me.MapId ==0" IgnoreCanRun="True">
+          <CallSubRoutine SubRoutineName="TrainInStormwind" />
         </If>
       </If>
       <If Condition="Me.MapId == 530" IgnoreCanRun="True">
@@ -227,10 +230,10 @@
           </If>
         </If>
       </If>
-      <If Condition="(mining &amp;&amp; MiningLevel &lt; 400) || (herb &amp;&amp; HerbLevel &lt; 400)" IgnoreCanRun="True">
+      <If Condition="(mining &amp;&amp; MiningLevelWithBonus &lt; 400) || (herb &amp;&amp; HerbLevelWithBonus &lt; 400)" IgnoreCanRun="True">
         <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Neutral\(GB2 350-400)(HowlingFjord.Neutral)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
       </If>
-      <If Condition="(mining &amp;&amp; MiningLevel &gt;=400 &amp;&amp; herb &amp;&amp; HerbLevel &gt;=400 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevel &gt;=400 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevel &gt;=400 ))" IgnoreCanRun="True">
+      <If Condition="(mining &amp;&amp; MiningLevelWithBonus &gt;=400 &amp;&amp; herb &amp;&amp; HerbLevelWithBonus &gt;=400 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevelWithBonus &gt;=400 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevelWithBonus &gt;=400 ))" IgnoreCanRun="True">
         <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Neutral\(GB2 400-450)(SholazarBasin.Neutral)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
       </If>
       <If Condition="Me.MapId == 0" IgnoreCanRun="True">
@@ -262,7 +265,7 @@
     <!--Herb/Mining 450-500-->
     <If Condition=" LowestMinLevel == 525" IgnoreCanRun="True">
       <!--Mount Hyjal 450 - 475-->
-      <If Condition="(mining &amp;&amp; MiningLevel &lt; 475) || (herb &amp;&amp; HerbLevel &lt; 475)" IgnoreCanRun="True">
+      <If Condition="(mining &amp;&amp; MiningLevelWithBonus &lt; 475) || (herb &amp;&amp; HerbLevelWithBonus &lt; 475)" IgnoreCanRun="True">
         <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Neutral\(GB2 450-475)(Hyjal.Neutral)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
         <If Condition="FreeBagSlots &lt;=4" IgnoreCanRun="True">
           <Custom Code="Log(&quot;Bags are full, selling&quot;);" />
@@ -283,7 +286,7 @@
         </If>
       </If>
       <!--Deepholm 475+-->
-      <If Condition="(mining &amp;&amp; MiningLevel &gt;=475 &amp;&amp; herb &amp;&amp; HerbLevel &gt;=475 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevel &gt;=475 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevel &gt;=475 ))" IgnoreCanRun="True">
+      <If Condition="(mining &amp;&amp; MiningLevelWithBonus &gt;=475 &amp;&amp; herb &amp;&amp; HerbLevelWithBonus &gt;=475 ) || ((mining &amp;&amp; !herb &amp;&amp; MiningLevelWithBonus &gt;=475 ) ^ (herb &amp;&amp; !mining &amp;&amp; HerbLevelWithBonus &gt;=475 ))" IgnoreCanRun="True">
         <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Neutral\(GB2 475-500)(Deepholm.Nuetral)Herb&amp;Mines.xml" IsLocalOrFromStore="True" />
         <If Condition="FreeBagSlots &lt;=4" IgnoreCanRun="True">
           <Custom Code="Log(&quot;Bags are full, selling&quot;);" />
@@ -599,10 +602,9 @@
         <Custom Code="await TakeTransport(&#xD;&#xA;    1, /* startMapId */&#xD;&#xA;    0, /* endMapId */&#xD;&#xA;    176231, /* transportId */&#xD;&#xA;    new WoWPoint(-4016.39, -4740.588, -0.03624965), /* transportStartLoc */&#xD;&#xA;    new WoWPoint(-3872.35, -639.944, -0.02897106), /* transportEndLoc */&#xD;&#xA;    new WoWPoint(-4003.641, -4728.91, 4.584957), /* transportStartWaitLoc */&#xD;&#xA;    new WoWPoint(-4008.761, -4734.658, 6.110915), /* transportStartBoardLoc */&#xD;&#xA;    new WoWPoint(-3862.292, -653.7484, 5.397657) /* transportEndExitLoc */ ); " />
       </If>
       <If Condition="Me.IsHorde" IgnoreCanRun="True">
-        <FlyTo Dismount="True" Location="1756.46, -4211.393, 46.52722" />
-        <MoveTo Location="1790.162, -4331.615, -10.44903" MoveType="Location" Pathing="Navigator" Entry="0" />
+        <FlyTo Dismount="True" Location="1770.384, -4327.421, -8.301734" />
         <Wait Condition="false" Timeout="2000" />
-        <Interact InteractType="GameObject" Entry="195142" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
+        <Interact InteractType="GameObject" Entry="235877" InteractDelay="2000" GameObjectType="Transport" SpellFocus="Anvil" WaitForObject="True" />
         <Wait Condition="Me.MapId == 0" Timeout="20000" />
       </If>
     </If>

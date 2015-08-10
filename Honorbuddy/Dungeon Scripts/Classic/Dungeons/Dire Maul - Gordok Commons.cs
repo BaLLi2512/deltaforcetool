@@ -12,6 +12,8 @@ using Styx.TreeSharp;
 
 using Bots.DungeonBuddy.Attributes;
 using Bots.DungeonBuddy.Helpers;
+using Styx.Helpers;
+
 namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 {
 	public class DireMaulGordokCommons : Dungeon
@@ -69,9 +71,128 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 			}
 		}
 
-		#endregion
+        private List<DynamicBlackspot> _dynamicBlackspots;
+        public override void OnEnter()
+	    {
+            if (Me.IsFollower())
+            {
+                _dynamicBlackspots = GetEntranceTrashBlackspots().ToList();
+                DynamicBlackspotManager.AddBlackspots(_dynamicBlackspots);
+            }
+        }
 
-		private LocalPlayer Me
+        public override void OnExit()
+        {
+            if (_dynamicBlackspots != null)
+            {
+                DynamicBlackspotManager.RemoveBlackspots(_dynamicBlackspots);
+                _dynamicBlackspots = null;
+            }
+        }
+
+        private static readonly WoWPoint LeftEntranceTrashLoc = new WoWPoint(298.3713, 38.06606, -3.957795);
+        private static readonly WoWPoint RightEntranceTrashLoc = new WoWPoint(354.2512, -108.8843, -3.886184);
+        private static readonly WoWPoint RightArchTrashLoc = new WoWPoint(445.1893, 143.155, -0.07393706);
+        private static readonly WoWPoint CenterArchTrashLoc = new WoWPoint(445.1893, 143.155, -0.07393706);
+        private static readonly WoWPoint LeftArchTrashLoc = new WoWPoint(445.1893, 143.155, -0.07393706);
+        private static readonly WoWPoint MoldarTrashLoc = new WoWPoint(358.8067, 4.972275, -24.7655);
+
+        private static readonly TimeCachedValue<bool> ShouldAvoidRightEntranceSide = new TimeCachedValue<bool>(
+            TimeSpan.FromSeconds(5),
+            () => ScriptHelpers.GetUnfriendlyNpsAtLocation(
+                RightEntranceTrashLoc,
+                20,
+                unit => unit.IsHostile && Math.Abs(unit.Z - RightEntranceTrashLoc.Z) < 8).Any());
+
+        private static readonly TimeCachedValue<bool> ShouldAvoidLeftEntranceSide = new TimeCachedValue<bool>(
+            TimeSpan.FromSeconds(5),
+            () => ScriptHelpers.GetUnfriendlyNpsAtLocation(
+                LeftEntranceTrashLoc,
+                20,
+                unit => unit.IsHostile && Math.Abs(unit.Z - RightEntranceTrashLoc.Z) < 8).Any());
+
+        private static readonly TimeCachedValue<bool> ShouldAvoidRightArch = new TimeCachedValue<bool>(
+            TimeSpan.FromSeconds(5),
+            () => ScriptHelpers.GetUnfriendlyNpsAtLocation(
+                LeftEntranceTrashLoc,
+                10,
+                unit => unit.IsHostile && Math.Abs(unit.Z - RightArchTrashLoc.Z) < 8).Any());
+
+        private static readonly TimeCachedValue<bool> ShouldAvoidCenterArch = new TimeCachedValue<bool>(
+            TimeSpan.FromSeconds(5),
+            () => ScriptHelpers.GetUnfriendlyNpsAtLocation(
+                LeftEntranceTrashLoc,
+                10,
+                unit => unit.IsHostile && Math.Abs(unit.Z - CenterArchTrashLoc.Z) < 8).Any());
+
+        private static readonly TimeCachedValue<bool> ShouldAvoidLeftArch = new TimeCachedValue<bool>(
+            TimeSpan.FromSeconds(5),
+            () => ScriptHelpers.GetUnfriendlyNpsAtLocation(
+                LeftEntranceTrashLoc,
+                10,
+                unit => unit.IsHostile && Math.Abs(unit.Z - LeftArchTrashLoc.Z) < 8).Any());
+
+        private static readonly TimeCachedValue<bool> ShouldAvoidMoldarTrash = new TimeCachedValue<bool>(
+            TimeSpan.FromSeconds(5),
+            () => ScriptHelpers.GetUnfriendlyNpsAtLocation(
+                LeftEntranceTrashLoc,
+                10,
+                unit => unit.IsHostile && Math.Abs(unit.Z - LeftArchTrashLoc.Z) < 8).Any());
+
+        private IEnumerable<DynamicBlackspot> GetEntranceTrashBlackspots()
+        {
+            yield return new DynamicBlackspot(
+                () => ShouldAvoidRightEntranceSide,
+                () => RightEntranceTrashLoc,
+                LfgDungeon.MapId,
+                30,
+                10,
+                "Right Entrance Trash group");
+
+            yield return new DynamicBlackspot(
+                () => ShouldAvoidLeftEntranceSide,
+                () => LeftEntranceTrashLoc,
+                LfgDungeon.MapId,
+                30,
+                10,
+                "Left Entrance Trash group");
+
+            yield return new DynamicBlackspot(
+                () => ShouldAvoidRightArch,
+                () => RightArchTrashLoc,
+                LfgDungeon.MapId,
+                15,
+                10,
+                "Right Arch Trash group");
+
+            yield return new DynamicBlackspot(
+                () => ShouldAvoidCenterArch,
+                () => CenterArchTrashLoc,
+                LfgDungeon.MapId,
+                15,
+                10,
+                "Center Arch Trash group");
+
+            yield return new DynamicBlackspot(
+                () => ShouldAvoidLeftArch,
+                () => LeftArchTrashLoc,
+                LfgDungeon.MapId,
+                15,
+                10,
+                "Left Arch Trash group");
+
+            yield return new DynamicBlackspot(
+                () => ShouldAvoidMoldarTrash,
+                () => MoldarTrashLoc,
+                LfgDungeon.MapId,
+                30,
+                20,
+                "Moldar Trash group");
+        }
+
+        #endregion
+
+        private LocalPlayer Me
 		{
 			get { return StyxWoW.Me; }
 		}

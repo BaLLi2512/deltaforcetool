@@ -267,11 +267,12 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 
 		#region Instructor Galford
 
+        private const uint MobId_InstructorGalford = 10811;
 		[EncounterHandler(10811, "Instructor Galford")]
 		public Composite InstructorGalfordFight()
 		{
 			WoWUnit boss = null;
-			AddAvoidObject(ctx => Me.IsRange() && !Me.IsCasting, 10, o => o == boss && boss.CurrentTargetGuid != Me.Guid && boss.IsAlive);
+            AddAvoidObject(ctx => Me.IsRange() && !Me.IsCasting, 10, o => o.Entry == MobId_InstructorGalford && o.ToUnit().CurrentTargetGuid != Me.Guid && o.ToUnit().IsAlive);
 			return new PrioritySelector(ctx => boss = ctx as WoWUnit, ScriptHelpers.CreateDispelGroup("Burning Winds", ScriptHelpers.PartyDispelType.Magic));
 		}
 

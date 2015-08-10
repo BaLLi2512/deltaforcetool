@@ -3,10 +3,11 @@
 	<TalentTree>
 		<Talent Tier="1" Index="2" Name="Double Time" />
 		<Talent Tier="2" Index="2" Name="Second Wind" />
-		<Talent Tier="3" Index="3" Name="Disrupting Shout" />
-		<Talent Tier="4" Index="1" Name="Bladestorm" />
+		<Talent Tier="3" Index="2" Name="Sudden Death" />
+		<Talent Tier="4" Index="1" Name="Storm Bolt" />
 		<Talent Tier="5" Index="2" Name="Safeguard" />
-		<Talent Tier="6" Index="1" Name="Avatar" />
+		<Talent Tier="6" Index="3" Name="Bladestorm" />
+		<Talent Tier="7" Index="2" Name="Ravager" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>22</DamagePerSecond>

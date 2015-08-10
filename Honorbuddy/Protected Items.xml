@@ -526,6 +526,9 @@
     <Item Name="Stout Augment Rune" Id="118631" />
 	
 	<!-- ========== Harvests (alphabetically) ========== -->
+	<!-- Harvests: General -->
+	<Item Name="Felblight" Id="127759" />
+	
 	<!-- Harvests: Cloth & Spider's Silk (ordered by level) -->
 	<!-- Classic -->
 	<Item Name="Linen Cloth" Id="2589" />

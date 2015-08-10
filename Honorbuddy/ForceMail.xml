@@ -549,15 +549,19 @@
 	<Item Name="Spectral Tiger Cub" Entry="90953" />
 
 	<!-- ========== Fish (alphabetical) ========== -->
+    <Item Name="Abyssal Gulper Eel Flesh" Entry="109143" />
 	<Item Name="Albino Cavefish" Entry="53065" />
 	<Item Name="Algaefin Rockfish" Entry="53071" />
 	<Item Name="Ashen Pigment" Entry="61979" />
 	<Item Name="Barbed Gill Trout" Entry="27422" />
 	<Item Name="Barrelhead Goby" Entry="41812" />
 	<Item Name="Blackbelly Mudfish" Entry="53066" />
+    <Item Name="Blackwater Whiptail Flesh" Entry="109143" />
+    <Item Name="Blind Lake Sturgeon Flesh" Entry="109140" />
 	<Item Name="Bloodfin Catfish" Entry="33823" />
 	<Item Name="Bonescale Snapper" Entry="41808" />
 	<Item Name="Borean Man O' War" Entry="41805" />
+	<Item Name="Crescent Saberfish Flesh" Entry="109137" />
 	<Item Name="Crescent-Tail Skullfish" Entry="33824" />
 	<Item Name="Crocolisk Meat" Entry="2924" />
 	<Item Name="Darkclaw Lobster" Entry="13888" />
@@ -568,8 +572,10 @@
 	<Item Name="Emperor Salmon" Entry="74859" />
 	<Item Name="Enormous Barbed Gill Trout" Entry="27516" />
 	<Item Name="Fangtooth Herring" Entry="41810" />
+    <Item Name="Fat Sleeper Flesh" Entry="109139" />
 	<Item Name="Fathom Eel" Entry="53070" />
 	<Item Name="Figluster's Mudfish" Entry="27435" />
+    <Item Name="Fire Ammonite Tentacle" Entry="109141" />
 	<Item Name="Firefin Snapper" Entry="6359" />
 	<Item Name="Furious Crawdad" Entry="27439" />
 	<Item Name="Giant Mantis Shrimp" Entry="74857" />
@@ -582,6 +588,7 @@
 	<Item Name="Icefin Bluefish" Entry="27437" />
 	<Item Name="Imperial Manta Ray" Entry="41802" />
 	<Item Name="Jade Lungfish" Entry="74856" />
+    <Item Name="Jawless Skulker Flesh" Entry="109138" />
 	<Item Name="Jewel Danio" Entry="74863" />
 	<Item Name="Krasarang Paddlefish" Entry="74865" />
 	<Item Name="Large Raw Mightfish" Entry="13893" />
@@ -615,6 +622,7 @@
 	<Item Name="Redbelly Mandarin" Entry="74860" />
 	<Item Name="Reef Octopus" Entry="74864" />
 	<Item Name="Rockfin Grouper" Entry="41803" />
+    <Item Name="Sea Scorpion Segment" Entry="109142" />
 	<Item Name="Sharptooth" Entry="53062" />
 	<Item Name="Spinefish" Entry="83064" />
 	<Item Name="Spotted Feltail" Entry="27425" />

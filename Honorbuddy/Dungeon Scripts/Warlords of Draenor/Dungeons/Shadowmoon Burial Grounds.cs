@@ -39,9 +39,11 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		public override uint DungeonId { get { return 783; } }
 
-		public override WoWPoint ExitLocation { get { return new WoWPoint(1712.285, 254.3997, 328.5056); } }
+        public override WoWPoint Entrance { get { return new WoWPoint(754.8368, 137.9774, 8.418164); } }
 
-		public override void RemoveTargetsFilter(List<WoWObject> units)
+        public override WoWPoint ExitLocation { get { return new WoWPoint(1712.285, 254.3997, 328.5056); } }
+
+	    public override void RemoveTargetsFilter(List<WoWObject> units)
 		{
 			var isTank = Me.IsTank();
 
@@ -145,10 +147,14 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			if (myLoc.DistanceSqr(_nerzhulRoomCenterLoc) < 75*75 && !destinationInNerzhulsRoom)
 				return true;
 
-			if (location.DistanceSqr(_bonemawLoc) < 3*3)
-				return (await CommonCoroutines.MoveTo(_bonemawMoveToLoc)).IsSuccessful();
+            if (location.DistanceSqr(_bonemawLoc) < 3 * 3)
+            {
+                var firstUnit = Targeting.Instance.FirstUnit;
+                if (firstUnit != null && firstUnit.Entry == MobId_Bonemaw)
+		            return (await CommonCoroutines.MoveTo(_bonemawMoveToLoc)).IsSuccessful();
+		    }
 
-			return false;
+		    return false;
 		}
 
 		public override bool CanNavigateFully(WoWPoint @from, WoWPoint to)

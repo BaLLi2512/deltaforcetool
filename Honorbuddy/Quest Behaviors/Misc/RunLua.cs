@@ -62,6 +62,8 @@ namespace Honorbuddy.Quest_Behaviors.RunLua
 				QuestRequirementComplete = GetAttributeAsNullable<QuestCompleteRequirement>("QuestCompleteRequirement", false, null, null) ?? QuestCompleteRequirement.NotComplete;
 				QuestRequirementInLog = GetAttributeAsNullable<QuestInLogRequirement>("QuestInLogRequirement", false, null, null) ?? QuestInLogRequirement.InLog;
 				WaitTime = GetAttributeAsNullable<int>("WaitTime", false, ConstrainAs.Milliseconds, null) ?? 0;
+
+				GoalText = GetAttributeAs("GoalText", false, ConstrainAs.StringNonEmpty, null) ?? "Running Lua";
 			}
 
 			catch (Exception except)
@@ -79,6 +81,7 @@ namespace Honorbuddy.Quest_Behaviors.RunLua
 
 		// Attributes provided by caller
 		private string LuaCommand { get; set; }
+		public string GoalText { get; set; }
 		private int NumOfTimes { get; set; }
 		private int QuestId { get; set; }
 		private QuestCompleteRequirement QuestRequirementComplete { get; set; }
@@ -92,8 +95,8 @@ namespace Honorbuddy.Quest_Behaviors.RunLua
 		private readonly WaitTimer _waitTimer = new WaitTimer(TimeSpan.Zero);
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: RunLua.cs 1728 2014-10-13 23:25:24Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1728 $"); } }
+		public override string SubversionId { get { return ("$Id: RunLua.cs 2097 2015-08-02 14:56:55Z Dogan $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2097 $"); } }
 
 		#region Overrides of CustomForcedBehavior
 
@@ -119,12 +122,12 @@ namespace Honorbuddy.Quest_Behaviors.RunLua
 			);
 		}
 
-        public override void OnFinished()
-        {
-            TreeRoot.GoalText = string.Empty;
-            TreeRoot.StatusText = string.Empty;
-            base.OnFinished();
-        }
+		public override void OnFinished()
+		{
+			TreeRoot.GoalText = string.Empty;
+			TreeRoot.StatusText = string.Empty;
+			base.OnFinished();
+		}
 
 		public override bool IsDone
 		{
@@ -142,6 +145,8 @@ namespace Honorbuddy.Quest_Behaviors.RunLua
 			// We had to defer this action, as the 'profile line number' is not available during the element's
 			// constructor call.
 			OnStart_HandleAttributeProblem();
+
+			this.UpdateGoalText(QuestId, GoalText);
 
 			// If the quest is complete, this behavior is already done...
 			// So we don't want to falsely inform the user of things that will be skipped.

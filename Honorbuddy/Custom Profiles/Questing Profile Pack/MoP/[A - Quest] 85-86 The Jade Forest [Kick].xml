@@ -1286,9 +1286,9 @@
                     X="-156.0701" Y="-2658.927" Z="0.9811339" />
 			<CustomBehavior File="WaitTimer" WaitTime="56000" />
 		</If>
-		<If Condition="HasQuest(29725) &amp;&amp; !IsQuestCompleted(29725)">
+		<While Condition="HasQuest(29725) &amp;&amp; !IsQuestCompleted(29725)">
 			<CustomBehavior File="SpecificQuests\29725-JadeForest-SI7ReportFireFromtheSky" />
-		</If>
+		</While>
 		<TurnIn QuestName="SI:7 Report: Fire From the Sky" QuestId="29725"
                 TurnInName="Sully &quot;The Pickle&quot; McLeary" TurnInId="55282"
                 X="-156.0701" Y="-2658.927" Z="0.9811339" />
@@ -1331,9 +1331,9 @@
                 X="-159.2535" Y="-2672.84" Z="1.058113" />
 		<PickUp QuestName="SI:7 Report: Take No Prisoners" QuestId="29727" GiverName="Amber Kearnen" GiverId="55283"
                 X="-161.1372" Y="-2663.21" Z="1.14709" />
-		<If Condition="HasQuest(29727) &amp;&amp; !IsQuestCompleted(29727)">
+		<While Condition="HasQuest(29727) &amp;&amp; !IsQuestCompleted(29727)">
 			<CustomBehavior File="SpecificQuests\29727-JadeForest-TakeNoPrisoners" />
-		</If>
+		</While>
 		<TurnIn QuestName="SI:7 Report: Take No Prisoners" QuestId="29727" TurnInName="Amber Kearnen" TurnInId="55283"
                 X="-161.1372" Y="-2663.21" Z="1.14709" />
 		<PickUp QuestName="A Perfect Match" QuestId="29903" GiverName="Admiral Taylor" GiverId="60970"
@@ -1470,11 +1470,11 @@
                 X="-566.1215" Y="-2303.628" Z="18.45896" />
 		<PickUp QuestName="Finding Your Center" QuestId="29890" GiverName="Lorewalker Cho" GiverId="56287"
                 X="-566.1215" Y="-2303.628" Z="18.45896" />
-		<If Condition="HasQuest(29890) &amp;&amp; !IsQuestCompleted(29890)">
+		<While Condition="HasQuest(29890) &amp;&amp; !IsQuestCompleted(29890)">
 			<MoveTo X="-630.2978" Y="-2364.32" Z="22.86646" />
 			<CustomBehavior File="SpecificQuests\29890-JadeForest-FindingYourCenter" />
 			<CustomBehavior File="WaitTimer" WaitTime="5000" GoalText="Waiting for quest to complete {TimeRemaining}" />
-		</If>
+		</While>
 		<If Condition="HasQuest(29890) &amp;&amp; IsQuestCompleted(29890)">
 			<DisableBehavior Name="Pull" />
 			<TurnIn QuestName="Finding Your Center" QuestId="29890" TurnInName="Anduin Wrynn" TurnInId="56434"
@@ -2398,8 +2398,10 @@
                             InteractByGossipOptions="1" X="-121.3646" Y="-2656.535" Z="2.664594" />
 			<CustomBehavior File="WaitTimer" WaitTime="3000" />
 			<MoveTo X="535.8745" Y="-1656.537" Z="200.7" />
-			<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:80071&quot;)" />
-			<CustomBehavior File="WaitTimer" WaitTime="115000" />
+			<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:80071&quot;)" WaitTime="5000" />
+			<CustomBehavior File="Misc\RunLua" Lua="if MovieFrame and MovieFrame:IsVisible() then MovieFrame:StopMovie() elseif CinematicFrame and CinematicFrame:IsVisible() then CinematicFrame_CancelCinematic() end" WaitTime="1000" />
+			<CustomBehavior File="WaitTimer" WaitTime="4000" GoalText="Waiting for cutscene to end {TimeRemaining}" />
+			<CustomBehavior File="WaitTimer" QuestId="31362" WaitTime="115000" />
 		</If>
 		<While Condition="HasQuest(31362) &amp;&amp; !IsQuestCompleted(31362)">
 			<MoveTo X="-121.3646" Y="-2656.535" Z="2.664594" />
@@ -2407,8 +2409,10 @@
                             InteractByGossipOptions="1" X="-121.3646" Y="-2656.535" Z="2.664594" />
 			<CustomBehavior File="WaitTimer" WaitTime="3000" />
 			<MoveTo X="535.8745" Y="-1656.537" Z="200.7" />
-			<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:80071&quot;)" />
-			<CustomBehavior File="WaitTimer" WaitTime="115000" />
+			<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:80071&quot;)" WaitTime="5000" />
+			<CustomBehavior File="Misc\RunLua" Lua="if MovieFrame and MovieFrame:IsVisible() then MovieFrame:StopMovie() elseif CinematicFrame and CinematicFrame:IsVisible() then CinematicFrame_CancelCinematic() end" WaitTime="1000" />
+			<CustomBehavior File="WaitTimer" WaitTime="4000" GoalText="Waiting for cutscene to end {TimeRemaining}" />
+			<CustomBehavior File="WaitTimer" QuestId="31362" WaitTime="115000" />
 		</While>
 		<TurnIn QuestName="Last Piece of the Puzzle" QuestId="31362" TurnInName="Lorewalker Cho" TurnInId="59411"
                 X="529.7031" Y="-1674.799" Z="198.8996" />

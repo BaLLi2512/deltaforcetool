@@ -85,7 +85,10 @@
 	</CompositeIndoorArea>
 
     <BoundingBoxIndoorArea Name="Shadowfang Keep, Silverpine Forest">
-      <Entrance Dismount="False" Radius="2" X="-234.6091" Y="1563.727" Z="79.13452" />
+      <EntrancePath >
+        <Waypoint Dismount="False" Radius="2" X="-239.3412" Y="1549.838" Z="79.20786" />
+        <Waypoint Dismount="False" Radius="2" X="-234.6091" Y="1563.727" Z="79.13452" />
+      </EntrancePath>
       <Min X="-236" Y="1567" Z="75"/>
       <Max X="-228" Y="1573" Z="83"/>
     </BoundingBoxIndoorArea>

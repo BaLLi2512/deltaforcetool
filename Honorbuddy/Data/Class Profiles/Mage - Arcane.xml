@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassProfile Class="Mage" Specialization="1" Name="Mage - Arcane">
 	<TalentTree>
-		<Talent Tier="1" Index="1" Name="Presence of Mind" />
+		<Talent Tier="1" Index="1" Name="Evanesce" />
 		<Talent Tier="2" Index="3" Name="Ice Barrier" />
 		<Talent Tier="3" Index="2" Name="Ice Ward" />
 		<Talent Tier="4" Index="3" Name="Cold Snap" />
 		<Talent Tier="5" Index="1" Name="Nether Tempest" />
 		<Talent Tier="6" Index="3" Name="Incanter's Ward" />
+		<Talent Tier="7" Index="1" Name="Overpowered" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>0.01</DamagePerSecond>

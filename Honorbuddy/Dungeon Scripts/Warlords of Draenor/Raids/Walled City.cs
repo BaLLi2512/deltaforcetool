@@ -31,16 +31,45 @@ namespace Bots.DungeonBuddy.Raids.WarlordsOfDraenor
 			get { return StyxWoW.Me; }
 		}
 
-		[EncounterHandler(0, "Root Handler")]
-		public virtual Func<WoWUnit, Task<bool>> RootBehavior()
-		{
-			return async npc =>
-			{
-				if (await ScriptHelpers.CancelCinematicIfPlaying())
-					return true;
+        public override void OnEnter()
+        {
+            if (Me.IsTank())
+            {
+                Alert.Show(
+                    "Tanking Not Supported",
+                    string.Format(
+                        "Tanking is not supported in the {0} script. If you wish to stay in raid and play manually then press 'Continue'. Otherwise you will automatically leave raid.",
+                        Name),
+                    30,
+                    true,
+                    true,
+                    null,
+                    () => Lua.DoString("LeaveParty()"),
+                    "Continue",
+                    "Leave");
+            }
+            else
+            {
+                Alert.Show(
+                    "Do Not AFK",
+                    "It is highly recommended you do not afk while in a raid and be prepared to intervene if needed in the event something goes wrong or you're asked to perform a certain task.",
+                    20,
+                    true,
+                    false,
+                    null,
+                    null,
+                    "Ok");
+            }
+            base.OnEnter();
+        }
 
-				return false;
-			};
+        [EncounterHandler(0, "Root Handler")]
+		public virtual async Task<bool> RootBehavior(WoWUnit npc)
+		{
+			if (await ScriptHelpers.CancelCinematicIfPlaying())
+				return true;
+
+			return false;
 		}
 
 	}

@@ -7,6 +7,7 @@
 		<Talent Tier="4" Index="3" Name="Clemency" />
 		<Talent Tier="5" Index="3" Name="Divine Purpose" />
 		<Talent Tier="6" Index="1" Name="Holy Prism" />
+		<Talent Tier="7" Index="1" Name="Beacon of Faith" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>0.01</DamagePerSecond>

@@ -7,6 +7,7 @@
 		<Talent Tier="4" Index="3" Name="Thrill of the Hunt" />
 		<Talent Tier="5" Index="2" Name="Blink Strikes" />
 		<Talent Tier="6" Index="1" Name="Glaive Toss" />
+		<Talent Tier="7" Index="3" Name="Adaptation" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>22</DamagePerSecond>

@@ -7,6 +7,7 @@
 		<Talent Tier="4" Index="1" Name="Cloak and Dagger" />
 		<Talent Tier="5" Index="3" Name="Dirty Tricks" />
 		<Talent Tier="6" Index="3" Name="Anticipation" />
+		<Talent Tier="7" Index="1" Name="Venom Rush" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>22</DamagePerSecond>

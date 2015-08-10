@@ -21,8 +21,7 @@
 // TargetId, TargetId2, ...TargetIdN: Mob of the actual Vehicle, sometimes it will be the some but sometimes it will not be.
 // SpellIndex: Button bar Number starting from 1 
 // OftenToUse: This is used for a few quests that the mob is flying but respawns fast, So the bot can fire in the same spot over and over.
-// TimesToUse: Where you want to be at when you fire.
-// TypeId: Where you want to aim.
+// TimesToUse: The amount of times you want to use the spell index spell.
 // PreviousFireLocation Coords: This should only be used if you are already inside of the vehicle when you call the behaviors again, and
 //                                 should be the same coords as FireLocation on the call before it, Check the Wiki for more info or examples.
 //
@@ -187,8 +186,8 @@ namespace Honorbuddy.Quest_Behaviors.NoControlVehicle
 		}
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: NoControlVehicle.cs 2022 2015-04-02 23:55:40Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 2022 $"); } }
+		public override string SubversionId { get { return ("$Id: NoControlVehicle.cs 2097 2015-08-02 14:56:55Z Dogan $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2097 $"); } }
 
 		#region Overrides of CustomForcedBehavior
 

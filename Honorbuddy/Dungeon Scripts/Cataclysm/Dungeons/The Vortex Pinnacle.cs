@@ -55,17 +55,15 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Cataclysm
                             }
                             return true;
                         }
-                        // remove howling gale if the knockback aura is disabled.
-                        if (unit.Entry == HowlingGale &&
-                            (WoWMissile.InFlightMissiles.All(m => m.CasterGuid != ret.Guid) ||
-                             (unit.X >= Me.X + 5 && unit.Y <= Me.Y + 5)))
+
+                        // Remove Howling gale from targeting if the knockback aura is disabled or bot has passed it. 
+                        if (unit.Entry == HowlingGale && !ShouldAttackHowlingGale(unit))
                         {
                             if (StyxWoW.Me.GotAlivePet && Me.Pet.CurrentTarget == ret)
-                            {
                                 Lua.DoString("PetFollow()");
-                            }
                             return true;
                         }
+
                         if (unit.Entry == GrandVizierErtanId && _ignoreErtan)
                             return true;
                     }
@@ -73,6 +71,18 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Cataclysm
                 });
         }
 
+        private bool ShouldAttackHowlingGale(WoWUnit howlingGale)
+        {
+            if (howlingGale.DistanceSqr > 30 * 30)
+                return false;
+
+            // Ignore if bot passed the howling Gale.
+            if (howlingGale.X >= Me.X + 5 && howlingGale.Y <= Me.Y + 5)
+                return false;
+
+            var knockbackActive = WoWMissile.InFlightMissiles.Any(m => m.CasterGuid == howlingGale.Guid);
+            return knockbackActive;
+        }
 
         public override void IncludeTargetsFilter(List<WoWObject> incomingunits, HashSet<WoWObject> outgoingunits)
         {
@@ -81,9 +91,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Cataclysm
                 var unit = obj as WoWUnit;
                 if (unit != null)
                 {
-                    if (unit.Entry == HowlingGale && unit.Distance <= 30 &&
-                        WoWMissile.InFlightMissiles.Any(m => m.CasterGuid == unit.Guid) &&
-                        (unit.X < Me.X + 5 || unit.Y > Me.Y + 5))
+                    if (unit.Entry == HowlingGale && ShouldAttackHowlingGale(unit))
                         outgoingunits.Add(unit);
 
                     if (unit.Entry == SkyfallStarId && unit.Combat && unit.DistanceSqr <= 40*40)

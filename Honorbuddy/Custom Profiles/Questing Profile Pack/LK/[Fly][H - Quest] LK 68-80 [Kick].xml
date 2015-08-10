@@ -62,6 +62,7 @@
 	<Blacklist>
 		<!-- Buried in walls and block Throwing Down -->
 		<Mob Name="Hath'ar Broodmaster" Id="28412" Flags="Pull" />
+		<Mob Name="Runed Giant" Id="26417" Flags="Pull" /> <!-- Bot will farm these instead of doing the quest 12070. -->
 	</Blacklist>
 
 
@@ -2393,9 +2394,14 @@
 			<If Condition="HasQuest(11961) &amp;&amp; !IsQuestCompleted(11961)">
 				<CustomBehavior File="FlyTo" DestName="Objective 'Spirits Watch Over Us'" X="2957.734" Y="4670.674"
                                 Z="2.674987" />
-				<!-- <CustomBehavior File="ForcedDismount" /> -->
-				<CustomBehavior File="RunMacro"
-                                Macro="/dismount\n/cancelaura Flight Form\n/cancelaura Swift Flight Form" />
+				<CustomBehavior File="ForcedDismount" />
+				<!-- Remove Form: Cat, Travel, Bear, SWolf, Moonkin -->
+				<CustomBehavior File="RunCode" >
+					<![CDATA[ 
+						foreach (var aura in new[]{768,783,5487,2645,24858}.Select(id =>Me.GetAuraById(id)).Where(a => a != null)) 
+						aura.TryCancelAura();
+					]]>
+				</CustomBehavior>
 				<CustomBehavior File="MyCTM" X="2960.394" Y="4671.321" Z="-32.58078" />
 				<CustomBehavior File="InteractWith" QuestId="11961" MobId="26219" MovementBy="ClickToMoveOnly"
                                 InteractByGossipOptions="1" 
@@ -3053,7 +3059,7 @@
 				<CustomBehavior File="ForcedDismount" />
 				<While Condition="HasQuest(11899) &amp;&amp; !IsQuestCompleted(11899)">
 					<CustomBehavior File="InteractWith" QuestId="11899" MobId="25814" InteractByUsingItemId="35401"
-                                    MobState="Dead" NumOfTimes="12" NonCompeteDistance="0" WaitTime="500" Range="10"
+                                    MobState="Dead" NumOfTimes="12" NonCompeteDistance="0" WaitTime="500" Range="4"
                                     MovementBy="NavigatorPreferred" PreInteractMountStrategy="DismountOrCancelShapeshift"
                                     CollectionDistance="30">
 						<HuntingGrounds>
@@ -3440,8 +3446,8 @@
 				<Objective QuestName="Prison Break" QuestId="11587" Type="CollectItem" CollectCount="1"
                            ItemId="34688" Nav="Fly" />
 				<CustomBehavior File="InteractWith" QuestId="11587" MobId="187561"
-                                CollectionDistance="200"  X="3485.393" Y="6115.292"
-                                Z="70.96796" />
+                                CollectionDistance="200" PreInteractMountStrategy="Dismount"
+                                X="3485.393" Y="6115.292" Z="70.96796" />
 				<CustomBehavior File="WaitTimer" WaitTime="8000" GoalText="Waiting for agro {TimeRemaining}" />
 			</While>
 			<If Condition="HasQuest(11587) &amp;&amp; IsQuestCompleted(11587)">
@@ -4640,20 +4646,21 @@
 				<MoveTo X="3576.688" Y="6653.484" Z="195.2788" />
 			</If>
 			<PickUp QuestName="Drake Hunt" QuestId="11919" GiverName="Raelorasz" GiverId="26117" Nav="Fly" />
-			<While Condition="HasQuest(11919) &amp;&amp; !IsQuestCompleted(11919) &amp;&amp; !Me.HasAura(46674)">
-				<CustomBehavior File="FlyTo" DestName="get a drake" X="4066.958" Y="7071.041" Z="167.2539" />
+			<While Condition="HasQuest(11919) &amp;&amp; !IsQuestCompleted(11919) &amp;&amp; !Me.HasAura(46691)">
+				<CustomBehavior File="FlyTo" DestName="get a drake" X="3989.713" Y="7300.822" Z="256.5251" />
 				<CustomBehavior File="ForcedDismount" />
+				<DisableBehavior Name="Combat" />
+				<CustomBehavior File="Misc\RunLua" Lua="PetPassiveMode();" />
 				<CustomBehavior File="InteractWith" QuestId="11919" MobId="26127" InteractByUsingItemId="35506"
-                                WaitForNpcs="true" WaitTime="5000" Range="100" CollectionDistance="50"
-                                PreInteractMountStrategy="DismountOrCancelShapeshift" X="4066.958" Y="7071.041" Z="167.2539" />
+                                Range="80" CollectionDistance="80" TerminateWhen="Me.HasAura(46691)" MobState="Alive"
+                                PreInteractMountStrategy="DismountOrCancelShapeshift" X="3989.713" Y="7300.822" Z="256.5251" />
+				<CustomBehavior File="WaitTimer" WaitTime="15000" TerminateWhen="!Me.Combat" />
+				<EnableBehavior Name="Combat" />
+				<If Condition="Me.HasAura(46691)" >
+					<CustomBehavior File="FlyTo" DestName="Turnin Quest" X="3573.125" Y="6651.071" Z="195.1808" />
+					<CustomBehavior File="WaitTimer" WaitTime="5000" TerminateWhen="IsQuestCompleted(11919)" />
+				</If>
 			</While>
-			<While Condition="HasQuest(11919) &amp;&amp; Me.HasAura(46674)">
-				<CustomBehavior File="FlyTo" DestName="Transitus Shield" X="3572.097" Y="6650.867" Z="195.1819" />
-				<CustomBehavior File="ForcedDismount" />
-				<CustomBehavior File="WaitTimer" WaitTime="5000"
-                                GoalText="Waiting for quest to complete {TimeRemaining}" />
-			</While>
-
 			<If Condition="HasQuest(11919) &amp;&amp; IsQuestCompleted(11919)">
 				<CustomBehavior File="FlyTo" DestName="Turnin Quest" X="3578.918" Y="6655.438" Z="195.3858" />
 				<CustomBehavior File="ForcedDismount" />
@@ -6226,14 +6233,14 @@
 
 				<While Condition="HasQuest(11999) &amp;&amp; !IsQuestCompleted(11999)">
 					<If Condition="!HasItem(35792)">
+					<CustomBehavior File="ForcedDismount" />
 						<CustomBehavior File="InteractWith" MobId="26477" PreInteractMountStrategy="DismountOrCancelShapeshift" >
 							<HuntingGrounds>
-								<Hotspot Name="Dead Mage Hunter 0" Entry="26477" X="3402.501" Y="2291.558" Z="30.3925" />
-								<Hotspot Name="Dead Mage Hunter 1" Entry="26477" X="3542.876" Y="2281.21" Z="52.21883" />
-								<Hotspot Name="Dead Mage Hunter 2" Entry="26477" X="3519.218" Y="2240.689" Z="49.47591" />
+								<Hotspot Name="Dead Mage Hunter 0" X="3402.501" Y="2291.558" Z="30.3925" />
+								<Hotspot Name="Dead Mage Hunter 1" X="3542.876" Y="2281.21" Z="52.21883" />
+								<Hotspot Name="Dead Mage Hunter 2" X="3519.218" Y="2240.689" Z="49.47591" />
 							</HuntingGrounds>
 						</CustomBehavior>
-
 					</If>
 					<CustomBehavior File="Misc\RunLua" Lua="UseItemByName(&quot;item:35792&quot;)" />
 				</While>
@@ -6735,8 +6742,13 @@
 			<While Condition="HasQuest(12028) &amp;&amp; !IsQuestCompleted(12028)">
 				<MoveTo X="2740.105" Y="881.537" Z="6.693972" />
 				<CustomBehavior File="ForcedDismount" />
-				<CustomBehavior File="RunMacro"
-                                Macro="/cancelaura cat form\n/cancelaura bear form\n/cancelaura travel form\n/cancelaura ghost wolf" />
+				<!-- Remove Form: Cat, Travel, Bear, SWolf, Moonkin -->
+				<CustomBehavior File="RunCode" >
+					<![CDATA[ 
+						foreach (var aura in new[]{768,783,5487,2645,24858}.Select(id =>Me.GetAuraById(id)).Where(a => a != null)) 
+						aura.TryCancelAura();
+					]]>
+				</CustomBehavior>
 				<UseItem QuestId="12028" ItemId="35907" X="2740.105" Y="881.537" Z="6.693972" />
 				<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for  {TimeRemaining}" />
 			</While>
@@ -8480,12 +8492,17 @@
                     X="4894.704" Y="-4564.427" Z="350.8008" Nav="Fly" />
 			<PickUp QuestName="Rallying the Troops" QuestId="12070" GiverName="Kurun" GiverId="26260" />
 			<While Condition="HasQuest(12070) &amp;&amp; !IsQuestCompleted(12070)">
-				<CustomBehavior File="FlyTo" X="5207.989" Y="-4770.211" Z="294.0534" />
+				<CustomBehavior File="FlyTo" X="5361.229" Y="-4778.098" Z="304.156" />
 				<CustomBehavior File="ForcedDismount" />
 				<CustomBehavior File="InteractWith" QuestId="12070" MobId="26261"
                                 InteractByUsingItemId="36764" PreInteractMountStrategy="DismountOrCancelShapeshift"
-                                NumOfTimes="5" AuraIdOnMob="49718" WaitTime="8000" X="5207.989"
-                                Y="-4770.211" Z="294.0534" />
+                                AuraIdMissingFromMob="47394" WaitTime="6000" >
+							<HuntingGrounds>
+								<Hotspot X="5371.013" Y="-4790.605" Z="303.8039" />
+								<Hotspot X="5269.767" Y="-4808.083" Z="298.5135" />
+							</HuntingGrounds>
+				</CustomBehavior>
+				<CustomBehavior File="InteractWith" QuestId="12070" MobId="26786" WaitForNpcs="false" MobState="Alive" />
 			</While>
 			<If Condition="HasQuest(12070) &amp;&amp; IsQuestCompleted(12070)">
 				<CustomBehavior File="FlyTo" X="4902.715" Y="-4565.545" Z="347.9578" />
@@ -11584,7 +11601,7 @@
 			<CustomBehavior File="FlyTo" DestName="get Lifeblood Energy" X="5556.109" Y="3908.131" Z="-63.81953" />
 			<CustomBehavior File="ForcedDismount" />
 			<CustomBehavior File="InteractWith" QuestId="12805" MobId="29124" InteractByUsingItemId="40397" MobState="Dead" 
-                                            NumOfTimes="30" Range="3"  >
+                                            NumOfTimes="30" Range="3" WaitTime="5000" KeepTargetSelected="true" PreInteractMountStrategy="DismountOrCancelShapeshift" >
 				<HuntingGrounds>
 					<Hotspot X="5686.143" Y="3658.059" Z="-26.07698" />
 					<Hotspot X="5630.897" Y="3665.229" Z="-25.46609" />

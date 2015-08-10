@@ -6,7 +6,8 @@
 		<Talent Tier="3" Index="1" Name="Call of the Elements" />
 		<Talent Tier="4" Index="2" Name="Ancestral Swiftness" />
 		<Talent Tier="5" Index="2" Name="Ancestral Guidance" />
-		<Talent Tier="6" Index="2" Name="Prime Elementalist" />
+		<Talent Tier="6" Index="2" Name="Primal Elementalist" />
+		<Talent Tier="7" Index="3" Name="High Tide" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>0.01</DamagePerSecond>

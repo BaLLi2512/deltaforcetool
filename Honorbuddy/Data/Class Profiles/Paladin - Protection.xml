@@ -7,6 +7,7 @@
 		<Talent Tier="4" Index="3" Name="Clemency" />
 		<Talent Tier="5" Index="2" Name="Sanctified Wrath" />
 		<Talent Tier="6" Index="1" Name="Holy Prism" />
+		<Talent Tier="7" Index="3" Name="Holy Shield" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>22</DamagePerSecond>

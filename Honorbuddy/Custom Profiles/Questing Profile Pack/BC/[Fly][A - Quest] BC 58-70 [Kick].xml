@@ -2048,6 +2048,23 @@
 			</Hotspots>
 		</Objective>
 	</Quest>
+	
+	<Quest Id="9923" Name="HELP!">
+		<Objective Type="CollectItem" ItemId="25490" CollectCount="1">
+			<Hotspots>
+				<Hotspot X="-2540.35" Y="6318.238" Z="61.29235" />
+				<Hotspot X="-2481.114" Y="6258.598" Z="30.88442" />
+				<Hotspot X="-2578.404" Y="6219.333" Z="17.88754" />
+				<Hotspot X="-2586.317" Y="6185.263" Z="21.29794" />
+				<Hotspot X="-2620.229" Y="6196.828" Z="27.23633" />
+				<Hotspot X="-2546.349" Y="6270.877" Z="14.96483" />
+				<Hotspot X="-2487.875" Y="6328.693" Z="23.59542" />
+				<Hotspot X="-2464.178" Y="6258.687" Z="30.98162" />
+				<Hotspot X="-2506.254" Y="6172.781" Z="59.94055" />
+				<Hotspot X="-2492.286" Y="6115.084" Z="92.1097" />
+			</Hotspots>
+		</Objective>
+	</Quest>	
 	<!-- END: Quest Overrides -->
 
 
@@ -3014,7 +3031,7 @@
 			<MoveTo X="-206.086" Y="2058.6" Z="94.26027" />
 			<!-- <Objective QuestName="The Path of Glory" QuestId="10047" Type="UseObject" ObjectName="Trampled Skeleton" ObjectId="182789" UseCount="8" /> -->
 
-			<CustomBehavior File="InteractWith" QuestId="10047" MobId="182789" MobType="GameObject" NumOfTimes="20" Range="4" TerminateWhen="IsObjectiveComplete(1, 10047)"
+			<CustomBehavior File="InteractWith" QuestId="10047" MobId="182789" NumOfTimes="20" Range="4" TerminateWhen="IsObjectiveComplete(1, 10047)"
 											CollectionDistance="1000" NonCompeteDistance="0" PreInteractMountStrategy="DismountOrCancelShapeshift" >
 				<HuntingGrounds>
 					<Hotspot X="-204.5796" Y="2032.297" Z="96.38742" />
@@ -3924,8 +3941,13 @@
                 X="-143.4519" Y="5533.816" Z="31.06601" />
 		<If Condition="HasQuest(9718) &amp;&amp; !IsQuestCompleted(9718)">
 			<MoveTo X="-147.7943" Y="5531.749" Z="30.71602" />
-			<CustomBehavior File="RunMacro" QuestId="9718"
-                            Macro="/cancelaura cat form\n/cancelaura bear form\n/cancelaura travel form\n/cancelaura ghost wolf" />
+				<!-- Remove Form: Cat, Travel, Bear, SWolf, Moonkin -->
+				<CustomBehavior File="RunCode" QuestId="9718">
+					<![CDATA[ 
+						foreach (var aura in new[]{768,783,5487,2645,24858}.Select(id =>Me.GetAuraById(id)).Where(a => a != null)) 
+						aura.TryCancelAura();
+					]]>
+				</CustomBehavior>
 			<UseItem QuestName="As the Crow Flies" QuestId="9718" ItemId="25465" ItemName="Stormcrow Amulet"
                      X="-147.7943" Y="5531.749" Z="30.71602" />
 		</If>
@@ -5301,7 +5323,7 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 			<CustomBehavior File="FlyTo" X="-2126.341" Y="4212.234" Z="5.024042" />
 			<CustomBehavior File="ForcedDismount" />
 
-			<CustomBehavior File="InteractWith" QuestId="10028" MobId="182581" MobId2="182582" MobId3="182583" MobType="GameObject" NumOfTimes="20" Range="8" 
+			<CustomBehavior File="InteractWith" QuestId="10028" MobId="182581" MobId2="182582" MobId3="182583" NumOfTimes="20" Range="8" 
 											CollectionDistance="1000" InteractByLooting="True" PreInteractMountStrategy="DismountOrCancelShapeshift" TerminateWhen="IsObjectiveComplete(1, 10028)" >
 				<HuntingGrounds>
 					<Hotspot X="-2162.64" Y="4181.772" Z="8.148383" />
@@ -6078,31 +6100,29 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 				<PickUp QuestName="HELP!" QuestId="9923" GiverName="Corki" GiverId="18369"
                         X="-2563.891" Y="6288.289" Z="15.21196" />
 			</If>
+			<Objective QuestName="The Ruins of Burning Blade" QuestId="9921" Type="KillMob" KillCount="8"
+                       MobId="17134" />
+			<Objective QuestName="The Ruins of Burning Blade" QuestId="9921" Type="KillMob" KillCount="8"
+                       MobId="17135" />
 			<While Condition="HasQuest(9923) &amp;&amp; !IsQuestCompleted(9923)"> <!-- HELP! -->
 				<If Condition="!HasItem(25490)">
 					<CustomBehavior File="FlyTo" DestName="Get Corki's Key" X="-2491.293" Y="6270.426" Z="29.48686" />
-					<!--<Objective QuestName="HELP!" QuestId="9923" Type="CollectItem" ItemId="25490" CollectCount="1" />-->
-					<CustomBehavior File="KillUntilComplete" QuestId="9923" TerminateWhen="HasItem(25490)" MobId="17134" MobId2="17135" NonCompeteDistance="0" >
+					<CustomBehavior File="ForcedDismount" />
+					<Objective QuestName="HELP!" QuestId="9923" Type="CollectItem" ItemId="25490" CollectCount="1" />
+					<!--<CustomBehavior File="KillUntilComplete" QuestId="9923" TerminateWhen="HasItem(25490)" MobId="17134" MobId2="17135" NonCompeteDistance="0" >
 						<HuntingGrounds>
-							<Hotspot X="2640.173" Y="6215.435" Z="8.705751" />
-							<Hotspot X="2611.62" Y="6232.532" Z="11.15716" />
-							<Hotspot X="2570.565" Y="6249.515" Z="11.73398" />
-							<Hotspot X="2529.351" Y="6281.611" Z="13.6255" />
-							<Hotspot X="2442.482" Y="6329.781" Z="10.67388" />
-							<Hotspot X="2523.727" Y="6340.905" Z="2.166779" />
-							<Hotspot X="2500.027" Y="6470.685" Z="-7.90773" />
-							<Hotspot X="2502.483" Y="6531.58" Z="-2.205939" />
-							<Hotspot X="2499.595" Y="6534.091" Z="-1.816762" />
-							<Hotspot X="2504.125" Y="6535.934" Z="-1.591759" />
-							<Hotspot X="2504.436" Y="6578.505" Z="0.4353044" />
-							<Hotspot X="2453.912" Y="6575.258" Z="1.140793" />
-							<Hotspot X="2382.032" Y="6556.487" Z="3.37904" />
-							<Hotspot X="2359.255" Y="6669.567" Z="16.73465" />
-							<Hotspot X="2502.394" Y="6663.218" Z="3.48747" />
-							<Hotspot X="2570.757" Y="6565.774" Z="2.491154" />
-							<Hotspot X="2642.989" Y="6529.862" Z="0.8357096" />
+							<Hotspot X="-2540.35" Y="6318.238" Z="61.29235" />
+							<Hotspot X="-2481.114" Y="6258.598" Z="30.88442" />
+							<Hotspot X="-2578.404" Y="6219.333" Z="17.88754" />
+							<Hotspot X="-2586.317" Y="6185.263" Z="21.29794" />
+							<Hotspot X="-2620.229" Y="6196.828" Z="27.23633" />
+							<Hotspot X="-2546.349" Y="6270.877" Z="14.96483" />
+							<Hotspot X="-2487.875" Y="6328.693" Z="23.59542" />
+							<Hotspot X="-2464.178" Y="6258.687" Z="30.98162" />
+							<Hotspot X="-2506.254" Y="6172.781" Z="59.94055" />
+							<Hotspot X="-2492.286" Y="6115.084" Z="92.1097" />
 						</HuntingGrounds>
-					</CustomBehavior>
+					</CustomBehavior>-->
 					<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for quest to update - HELP! Save Corki! {TimeRemaining}" />
 				</If>
 				<If Condition="HasItem(25490)">
@@ -6111,10 +6131,6 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 					<CustomBehavior File="WaitTimer" WaitTime="12000" GoalText="Waiting for quest to complete - HELP! Save Corki! {TimeRemaining}" />
 				</If>
 			</While>
-			<Objective QuestName="The Ruins of Burning Blade" QuestId="9921" Type="KillMob" KillCount="8"
-                       MobId="17134" />
-			<Objective QuestName="The Ruins of Burning Blade" QuestId="9921" Type="KillMob" KillCount="8"
-                       MobId="17135" />
 			<If Condition="HasQuest(9923) &amp;&amp; IsQuestCompleted(9923)">
 				<CustomBehavior File="FlyTo" X="-2563.329" Y="7261.376" Z="14.54596" />
 				<CustomBehavior File="ForcedDismount" />
@@ -6449,7 +6465,7 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 				<CustomBehavior File="FlyTo" X="-2716.035" Y="6413.419" Z="39.82007" />
 				<CustomBehavior File="ForcedDismount" />
 				<While Condition="HasQuest(9927) &amp;&amp; !IsQuestCompleted(9927)">
-					<CustomBehavior File="InteractWith" QuestId="9927" MobId="17146" MobId2="17147" MobId3="171483"
+					<CustomBehavior File="InteractWith" QuestId="9927" MobId="17146" MobId2="17147" MobId3="17148"
                                     MobState="Dead" InteractByUsingItemId="25552"
                                     PreInteractMountStrategy="DismountOrCancelShapeshift" NumOfTimes="10" WaitTime="5000"
                                     CollectionDistance="300" X="-2855.058" Y="6393.893" Z="79.41189" />
@@ -6499,7 +6515,20 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
                                 InteractByUsingItemId="25555"
                                 PreInteractMountStrategy="DismountOrCancelShapeshift"
                                 NumOfTimes="10" WaitTime="5000"
-                                CollectionDistance="300" X="-831.4334" Y="7755.943" Z="34.49262" />
+                                CollectionDistance="300" >
+					<HuntingGrounds>
+						<Hotspot X="-775.929" Y="7917.153" Z="60.20796" />
+						<Hotspot X="-765.8987" Y="7861.771" Z="48.15092" />
+						<Hotspot X="-740.5052" Y="7820.99" Z="50.96048" />
+						<Hotspot X="-805.9776" Y="7806.1" Z="37.91041" />
+						<Hotspot X="-830.1581" Y="7751.113" Z="34.94439" />
+						<Hotspot X="-807.9789" Y="7706.229" Z="43.41091" />
+						<Hotspot X="-821.1435" Y="7635.464" Z="44.56303" />
+						<Hotspot X="-784.0215" Y="7582.033" Z="52.18543" />
+						<Hotspot X="-684.3365" Y="7748.234" Z="83.51424" />
+						<Hotspot X="-789.9651" Y="7797.278" Z="36.88873" />
+					</HuntingGrounds>
+				</CustomBehavior>
 			</While>
 			<If Condition="HasQuest(9956) &amp;&amp; !IsQuestCompleted(9956)">
 				<CustomBehavior File="FlyTo" X="-1086.894" Y="8869.514" Z="102.3005" />
@@ -8077,16 +8106,19 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
                          Z="141.3133" />
 			</While>
 			<While Condition="HasQuest(10855) &amp;&amp; !IsQuestCompleted(10855)">
-				<CustomBehavior File="FlyTo" QuestId="10855" X="4501.383" Y="3367.621" Z="156.7108" />
-				<CustomBehavior File="ForcedDismount" QuestId="10855" />
-				<Objective QuestName="Fel Reavers, No Thanks!" QuestId="10855" Type="CollectItem" ItemId="31653"
-                           CollectCount="5" />
-				<CustomBehavior File="InteractWith" MobId="22293"
-                                CollectionDistance="100" X="4501.383" Y="3367.621" Z="156.7108" />
-				<CustomBehavior File="Misc\RunLua" Lua="CompleteQuest();" />
-				<CustomBehavior File="WaitTimer" WaitTime="2000" />
-				<CustomBehavior File="RunMacro" Macro="/click QuestFrameCompleteQuestButton" />
-				<!-- <TurnIn QuestId="10855" /> -->
+				<If Condition="(GetItemCount(31653) &lt; 5) &amp;&amp; !IsObjectiveComplete(1, 10855)" >
+					<CustomBehavior File="FlyTo" QuestId="10855" X="4501.383" Y="3367.621" Z="156.7108" />
+					<CustomBehavior File="ForcedDismount" QuestId="10855" />
+					<Objective QuestName="Fel Reavers, No Thanks!" QuestId="10855" Type="CollectItem" ItemId="31653" CollectCount="5" />
+				</If>
+					<MoveTo X="4501.383" Y="3367.621" Z="156.7108" />
+					<CustomBehavior File="WaitTimer" WaitTime="2000" />
+					<MoveTo X="4501.383" Y="3367.621" Z="156.7108" />
+					<CustomBehavior File="InteractWith" MobId="22293" CollectionDistance="100" X="4501.383" Y="3367.621" Z="156.7108" />
+					<CustomBehavior File="Misc\RunLua" Lua="CompleteQuest();" />
+					<CustomBehavior File="WaitTimer" WaitTime="2000" />
+					<CustomBehavior File="RunMacro" Macro="/click QuestFrameCompleteQuestButton" />
+					<CustomBehavior File="WaitTimer" WaitTime="5000" />
 			</While>
 			<If Condition="HasQuest(10435) &amp;&amp; !IsQuestCompleted(10435)">
 				<CustomBehavior File="FlyTo" X="4936.661" Y="3035.986" Z="98.94111" />

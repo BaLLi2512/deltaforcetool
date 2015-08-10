@@ -89,8 +89,8 @@ namespace Honorbuddy.Quest_Behaviors.RunMacro
 		private bool _isBehaviorDone;
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: RunMacro.cs 1728 2014-10-13 23:25:24Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 1728 $"); } }
+		public override string SubversionId { get { return ("$Id: RunMacro.cs 2097 2015-08-02 14:56:55Z Dogan $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2097 $"); } }
 
 
 		#region Overrides of CustomForcedBehavior
@@ -118,6 +118,8 @@ namespace Honorbuddy.Quest_Behaviors.RunMacro
 			// We had to defer this action, as the 'profile line number' is not available during the element's
 			// constructor call.
 			OnStart_HandleAttributeProblem();
+
+			this.UpdateGoalText(QuestId, GoalText);
 		}
 
 	    private Composite _root;

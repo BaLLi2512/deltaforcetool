@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Bots.DungeonBuddy.Behaviors;
@@ -25,7 +26,9 @@ using Tripper.Tools.Math;
 using Action = Styx.TreeSharp.Action;
 using Bots.DungeonBuddy.Profiles;
 using Bots.DungeonBuddy.Attributes;
+using Bots.DungeonBuddy.Enums;
 using Bots.DungeonBuddy.Helpers;
+using Styx.CommonBot.Routines;
 using AvoidanceManager = Bots.DungeonBuddy.Avoidance.AvoidanceManager;
 namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 {
@@ -71,12 +74,12 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
             get { return 631; }
         }
 
-        //public override WoWPoint Entrance
-        //{
-        //	get { return new WoWPoint(699.101, 2080.291, 374.6979); }
-        //}
+        public override WoWPoint Entrance
+        {
+            get { return new WoWPoint(699.101, 2080.291, 374.6979); }
+        }
 
-	    public override WoWPoint ExitLocation
+        public override WoWPoint ExitLocation
 	    {
 		    get
 		    {
@@ -92,11 +95,12 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 																		new WoWPoint(639.6627f, 2082.097f, 384.1649f),
 																		new WoWPoint(699.101, 2080.291, 374.6979)
 																	};
-        public override CircularQueue<WoWPoint> CorpseRunBreadCrumb { get { return _corpseRunBreadCrumb; } }
+        public override CircularQueue<WoWPoint> CorpseRunBreadCrumb { get { return Me.IsGhost ? _corpseRunBreadCrumb : base.CorpseRunBreadCrumb; } }
 
         private bool GreatDoorBroken { get { return !ScriptHelpers.IsBossAlive("Commander Ri'mok"); } }
 
         private float _originalFarclip;
+
         public override void OnEnter()
         {
             _wallScalingPackTimer = null;
@@ -114,6 +118,8 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
         {
             var tank = ScriptHelpers.Tank;
             var tankTransport = tank != null ? tank.Transport : null;
+            var isSolo = !Me.GroupInfo.IsInParty;
+            var isRange = Me.IsRange();
 
             units.RemoveAll(
                 ret =>
@@ -121,6 +127,13 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                     var unit = ret.ToUnit();
                     if (unit != null)
                     {
+                        // If solo farming then don't bother with trash unless in combat with them. 
+                        if (isSolo && unit.Entry != WeakSpotId && unit.ThreatInfo.ThreatStatus == ThreatStatus.UnitNotInThreatTable
+                            && ProfileManager.CurrentProfile.BossEncounters.All(b => b.Entry != unit.Entry))
+                        {
+                            return true;
+                        }
+
                         // remove targets that being kited by group members.
                         if (unit.Combat && _kitedMobs.Contains(unit.Entry))
                         {
@@ -142,12 +155,12 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                             if (unit.ZDiff > 15)
                                 return true;
                         }
-                        if (_inCombatMobs.Contains(unit.Entry) && unit.Combat && Me.Combat && !unit.IsTargetingMeOrPet && !unit.IsTargetingMyPartyMember && !unit.TaggedByMe)
+                        if (tank != StyxWoW.Me && _inCombatMobs.Contains(unit.Entry) && unit.ThreatInfo.ThreatStatus == ThreatStatus.UnitNotInThreatTable)
                             return true;
                         if (unit.Entry == KrikthikEngulferId && (Me.IsMelee() || unit.Distance > 35 || Me.InVehicle))
                             return true;
-                        // ignore Striker Gadok if he's on a strafing run  (unless you're healer since some healer routines won't heal if theres nothing it Targeting)
-                        if (unit.Entry == StrikerGadokId && unit.Z > StrikerGadokStrafeZ && !Me.IsHealer())
+                        // ignore Striker Gadok if he's on a strafing run and toon isn't a solo ranged class
+                        if (unit.Entry == StrikerGadokId && (!isRange || !isSolo) && unit.Z > StrikerGadokStrafeZ )
                             return true;
                         // force tank to get off elevator before calling CR pull behavior and getting stuck due to CR blacklisting because boss can't be navigated to from elevator.
                         if (unit.Entry == StrikerGadokId && Me.IsTank() && Me.TransportGuid.IsValid && !Me.Combat)
@@ -193,6 +206,10 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                 var unit = priority.Object as WoWUnit;
                 if (unit != null)
                 {
+                    // Only attack Striker Gadok when there's nothing else to attack if he's on a strafing run
+                    if (unit.Entry == StrikerGadokId && unit.Z > StrikerGadokStrafeZ)
+                        priority.Score -= 5000;
+
                     if (unit.Entry == WeakSpotId)
                         priority.Score += 5000;
 
@@ -209,8 +226,24 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
             }
         }
 
+        public override void IncludeLootTargetsFilter(List<WoWObject> incomingObjects, HashSet<WoWObject> outgoingObjects)
+        {
+            foreach (var obj in incomingObjects)
+            {
+                var unit = obj as WoWUnit;
+                if (unit != null)
+                {
+                    // Sometimes these bosses are not looted because toon is stuck in combat and default filters don't include targets while in combat.
+                    if ((unit.Entry == StrikerGadokId || unit.Entry == MobId_Raigonn) && DungeonBuddySettings.Instance.LootMode != LootMode.Off)
+                        outgoingObjects.Add(unit);
+                }
+            }
+        }
+
+        private WoWPoint _destination;
         public override async Task<bool> HandleMovement(WoWPoint location)
         {
+            _destination = location;
             if (Me.IsGhost)
             {
                 // sometime bot gets dismounted while flying to entrance and false down off wall where it can't get to entrance
@@ -298,8 +331,8 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                         }
                     }
                 }
-                // jump down a hole through floor to get down from north side.
-                else
+                // jump down a hole through floor to get down from north side
+                else 
                 {
                     if (myLoc.Z > 375)
                     {
@@ -307,9 +340,13 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                             return (await CommonCoroutines.MoveTo(_northTopToBottomStepOnePoint)).IsSuccessful();
                         Navigator.PlayerMover.MoveTowards(_northTopToBottomStepTwoPoint);
                     }
-                    else if (myLoc.Z > 350)
+                    else if (myLoc.Z > 350 )
                     {
-                        Navigator.PlayerMover.MoveTowards(_northTopToBottomStepThreePoint);
+                        // Only jump doen the ledge if it's not suicide and we have a healer in group.
+                        if ((Me.IsHealer() || ScriptHelpers.GroupMembers.Any(g => g.IsHealer)) && Me.HealthPercent > 70)
+                            Navigator.PlayerMover.MoveTowards(_northTopToBottomLedgePoint);
+                        else
+                            Navigator.PlayerMover.MoveTowards(_northTopToBottomInsideHallwayPoint);
                     }
                 }
                 return true;
@@ -330,20 +367,13 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
             return false;
         }
 
-
-        [EncounterHandler(64710, "Rope", Mode = CallBehaviorMode.Proximity, BossRange = 10000)]
-        public Composite RopeEncounter()
-        {
-            return
-                new PrioritySelector(new Decorator(ctx => ScriptHelpers.IsBossAlive("Commander Ri'mok"), new Action(ctx => ScriptHelpers.MarkBossAsDead("Commander Ri'mok"))));
-        }
-
         #endregion
 
         private const uint KrikthikInfiltratorId = 56890;
         private const uint KrikthikInfiltrator2Id = 58108;
         private const uint KrikthikWindShaperId = 59801;
         private const uint KrikthikRagerId = 59800;
+        private const uint KrikthikDemolisherId = 56875;
         private const uint VolatileMunitionsId = 56896;
         private const uint StableMunitionsId = 56917;
         private const uint LeverId = 211284;
@@ -368,17 +398,19 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 			KrikthikInfiltratorId,
 			KrikthikInfiltrator2Id,
 			KrikthikWindShaperId,
-			KrikthikRagerId
+			KrikthikRagerId,
+            KrikthikDemolisherId
 		};
 
         private const uint ElevatorId = 211013;
         private readonly WoWPoint _artillerySouthLoc = new WoWPoint(866.2046, 2225.777, 311.2762);
 
-        private readonly uint[] _inCombatMobs = new[] { KrikthikInfiltratorId, KrikthikInfiltrator2Id, KrikthikWindShaperId, KrikthikRagerId };
+        private readonly uint[] _inCombatMobs = { KrikthikInfiltratorId, KrikthikInfiltrator2Id, KrikthikWindShaperId, KrikthikRagerId, KrikthikDemolisherId };
 
         private readonly uint[] _mantidMunitionsIds = new uint[] { 56911, 56918, 56919, 56920, 59205, 59206, 59207, 59208 };
         private readonly WoWPoint _northTopToBottomStepOnePoint = new WoWPoint(1096.306, 2309.375, 381.5589);
-        private readonly WoWPoint _northTopToBottomStepThreePoint = new WoWPoint(1060.086, 2297.707, 344.1955);
+        private readonly WoWPoint _northTopToBottomLedgePoint = new WoWPoint(1060.086, 2297.707, 344.1955);
+        private readonly WoWPoint _northTopToBottomInsideHallwayPoint = new WoWPoint(1092.577, 2313.916, 331.0854);
         private readonly WoWPoint _northTopToBottomStepTwoPoint = new WoWPoint(1081.378, 2299.337, 364.1641);
 
         private WoWPoint _artilleryNorthLoc = new WoWPoint(1051.559, 2224.952, 311.2657);
@@ -401,13 +433,13 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
         }
 
         [EncounterHandler(0)]
-        public Composite RootEncounter()
+        public Func<WoWUnit,Task<bool>> RootHandler()
         {
-            AddAvoidObject(ctx => true, 5, VolatileMunitionsId);
+            AddAvoidObject(ctx => Me.GroupInfo.IsInParty, 5, VolatileMunitionsId);
             // AddAvoidObject(ctx => Me.TransportGuid == 0, 2f, LeverId);
             // run from the Munitations explosions.
             AddAvoidObject(
-                ctx => true,
+                ctx => Me.GroupInfo.IsInParty,
                 3,
                 u => _mantidMunitionsIds.Contains(u.Entry),
                 u =>
@@ -415,12 +447,18 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                     var start = u.Location;
                     return Me.Location.GetNearestPointOnSegment(start, start.RayCast(WoWMathHelper.NormalizeRadian(u.Rotation), 20));
                 });
-            return new PrioritySelector(
-                new Decorator(ctx => Me.IsFalling, new ActionAlwaysSucceed()),
-                CreateFollowerElevatorBehavior(),
-                ScriptHelpers.CreateRunToTankIfAggroed(),
-                ScriptHelpers.CreateCancelCinematicIfPlaying()
-                );
+
+            return async npc =>
+            {
+                if (Me.IsFalling)
+                    return true;
+
+                if (await HandleSoloSpeedBuff())
+                    return true;
+
+                return await FollowerElevatorBehavior() || await ScriptHelpers.RunToTankIfAttacked() ||
+                       await ScriptHelpers.CancelCinematicIfPlaying();
+            };
         }
 
         [LocationHandler(830.1323f, 2312.181f, 381.2352f, 20, "Wait For wall scaling pack")]
@@ -436,7 +474,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                             _wallScalingPackTimer.Reset();
                         })),
                 new Decorator(
-                    ctx => !_wallScalingPackTimer.IsFinished && Me.IsTank() && Targeting.Instance.IsEmpty(),
+                    ctx => Me.GroupInfo.IsInParty && !_wallScalingPackTimer.IsFinished && Me.IsTank() && Targeting.Instance.IsEmpty(),
                     new PrioritySelector(
                         new Decorator(ctx => Me.IsMoving, new Action(ctx => WoWMovement.MoveStop())),
                         new ActionAlwaysSucceed())));
@@ -478,68 +516,56 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 			};
 	    }
 
+        private async Task<bool> HandleSoloSpeedBuff()
+        {
+            if (Me.Mounted || !Me.IsMoving || Me.Location.DistanceSqr(_destination) <= 50 * 50)
+                return false;
+
+            switch (Me.Class)
+            {
+                case WoWClass.Shaman:
+                    if (Me.HasAura("Ghost Wolf") )
+                        return false;
+                    SpellManager.Cast("Ghost Wolf");
+                    return true;
+            }
+            return false;
+        }
+
         #endregion
 
 
         #region Saboteur Kip'tilak
 
-        readonly WoWPoint _saboteurKiptilakLoc = new WoWPoint(722.2803, 2318.485, 391.0808);
-        private const uint SaboteurKiptilakExitGateId = 212983;
+        WoWPoint KiptilakLeftDoorEdge = new WoWPoint(719.3694, 2277.764, 388.5826);
+        WoWPoint KiptilakRightDoorEdge = new WoWPoint(724.2429, 2277.849, 388.3888);
 
-        [EncounterHandler(56906, "Saboteur Kip'tilak", Mode = CallBehaviorMode.CurrentBoss)]
-        public Composite SaboteurKiptilakSpawnBehavior()
-        {
-            return new Action(
-                ctx =>
-                {
-                    var boss = ctx as WoWUnit;
-                    if (boss == null && Me.IsTank()
-                        && !IsSaboteurKiptilakExitGateOpen
-                        && Targeting.Instance.IsEmpty()
-                        && Me.Location.DistanceSqr(_saboteurKiptilakLoc) < 20 * 20)
-                    {
-                        return RunStatus.Success;
-                    }
-                    return RunStatus.Failure;
-                });
-        }
-
-        private bool IsSaboteurKiptilakExitGateOpen
-        {
-            get
-            {
-                return ObjectManager.GetObjectsOfTypeFast<WoWGameObject>()
-                    .Any(g => g.Entry == SaboteurKiptilakExitGateId && g.State == WoWGameObjectState.Active);
-            }
-        }
+        private const uint MobId_SaboteurKiptilak = 56906;
 
         [EncounterHandler(56906, "Saboteur Kip'tilak", Mode = CallBehaviorMode.Proximity, BossRange = 100)]
-        public Composite SaboteurKiptilakEncounter()
+        public Func<WoWUnit, Task<bool>> SaboteurKiptilakEncounter()
         {
-            WoWUnit boss = null;
-            var insideDoorLoc = new WoWPoint(722.3629, 2281.56, 387.9894);
             AddAvoidObject(
-                ctx => Me.RaidMembers.Any(u => u.HasAura("Sabotage")),
+                ctx => Me.GroupInfo.IsInParty && Me.RaidMembers.Any(u => u.HasAura("Sabotage")),
                 8,
                 u =>
                     u.Entry == StableMunitionsId &&
                     Me.RaidMembers.Any(
                         p =>
-                            p.HasAura("Sabotage") && (Math.Abs(u.X - p.X) < 4 || Math.Abs(u.Y - p.Y) < 4) && u.Location.Distance(p.Location) < 20));
+                            p.HasAura("Sabotage") && (Math.Abs(u.X - p.X) < 4 || Math.Abs(u.Y - p.Y) < 4) &&
+                            u.Location.Distance(p.Location) < 20));
             AddAvoidObject(ctx => true, 8, u => u is WoWPlayer && u != Me && u.ToPlayer().HasAura("Sabotage"));
             // run away from any stable munitions that are aligned north/south or east/west with a group member with Sabotage debuf.
             AddAvoidObject(ctx => Me.HasAura("Sabotage"), 8, u => u is WoWPlayer && u != Me);
-            return new PrioritySelector(
-                ctx => boss = ctx as WoWUnit,
-                new Decorator(
-                    ctx => Me.IsTank() && !Me.Combat && Me.Y >= 2270 && !ScriptHelpers.GroupMembers.All(g => g.Location.Y >= 2270),
-                    new PrioritySelector(new ActionSetActivity("Waiting for group members to get inside room"), new ActionAlwaysSucceed())),
-                // get foot inside room before door closes
-                new PrioritySelector(
-                    ctx => ScriptHelpers.Tank,
-                    new Decorator<WoWUnit>(
-                        tank => Me.Y < 2281 && Targeting.Instance.IsEmpty() && (tank.IsMe || tank.Y >= 2270),
-                        new Action(ctx => Navigator.MoveTo(insideDoorLoc)))));
+
+            var randomPointInsideDoor = WoWMathHelper.GetRandomPointInCircle(new WoWPoint(721.9365, 2282.52, 387.9936), 1.5f);
+
+            return async boss => await ScriptHelpers.MoveInsideBossRoom(boss, KiptilakLeftDoorEdge, KiptilakRightDoorEdge, randomPointInsideDoor);
+        }
+
+        private bool InsideKiptilakRoom
+        {
+            get { return Me.Location.IsPointLeftOfLine(KiptilakLeftDoorEdge, KiptilakRightDoorEdge); }
         }
 
         #endregion
@@ -597,8 +623,8 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 
             var shouldHandleStrafe =
                 new Func<WoWUnit, bool>(
-                    unit =>
-                        ScriptHelpers.IsViable(unit) && unit.Z > StrikerGadokStrafeZ &&
+                    unit => (Me.Level < 95 || Me.IsMelee())
+                        && ScriptHelpers.IsViable(unit) && unit.Z > StrikerGadokStrafeZ &&
                         (Me.IsTank() && Targeting.Instance.TargetList.All(t => t.IsTargetingMeOrPet) || !Me.IsTank()));
 
             return async boss =>
@@ -620,17 +646,16 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 
 
         [EncounterHandler(60415, "Flak Cannon", Mode = CallBehaviorMode.Proximity, BossRange = 100)]
-        public Composite FlakCannonEncounter()
+        public Func<WoWUnit, Task<bool>> FlakCannonHandler()
         {
-            WoWUnit boss = null;
             const int lootSparkleId = 92406;
-            return new PrioritySelector(
-                ctx => boss = ctx as WoWUnit,
-                new Decorator(
-                    ctx =>
-                        boss.HasAura(lootSparkleId) &&
-                        ObjectManager.GetObjectsOfType<WoWUnit>().Any(u => u.Entry == KrikthikBombardierId && u.IsAlive),
-                    ScriptHelpers.CreateInteractWithObject(ctx => boss)));
+            return async cannon =>
+            {
+                return cannon.HasAura(lootSparkleId)
+                       &&
+                       ObjectManager.GetObjectsOfType<WoWUnit>().Any(u => u.Entry == KrikthikBombardierId && u.IsAlive)
+                       && await ScriptHelpers.InteractWithObject(cannon, ignoreCombat: true);
+            };
         }
 
         #endregion
@@ -656,11 +681,11 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                     boss.HasAura("Viscous Fluid") &&
                     boss.Auras["Viscous Fluid"].StackCount >= 3);
 
-            AddAvoidObject(ctx => Me.IsRangeDps(), 7, viscosFluidStalkerId);
+            AddAvoidObject(ctx => Me.IsRangeDps() && Me.Level < 95, 7, viscosFluidStalkerId);
 
             // ranged should stay away from the boss to avoid the frenzy attack.. 
             // note I'm making avoid radius higher while moving so range don't take tiny baby steps everytime boss moves a little whenever standing just outside the avoidance radius
-            AddAvoidObject(ctx => Me.IsRange(), o => Me.IsMoving ? 14 : 12, o => o.Entry == CommanderRimokId && o.ToUnit().IsAlive);
+            AddAvoidObject(ctx => Me.IsRange() && Me.Level < 95, o => Me.IsMoving ? 14 : 12, o => o.Entry == CommanderRimokId && o.ToUnit().IsAlive);
 
 
             return new PrioritySelector(
@@ -671,7 +696,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                     return boss = ctx as WoWUnit;
                 },
                 new Decorator(
-                    ctx => Me.IsTank() && boss.CastingSpellId == frenziedAssaultId,
+                    ctx => Me.IsTank() && boss.CastingSpellId == frenziedAssaultId && Me.Level < 95,
                     new PrioritySelector(
                 // back away from boss so he kills the adds with his frontal attack.
                         new Decorator(
@@ -689,7 +714,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                             ctx => boss,
                             new ScriptHelpers.AngleSpan(0, 180)))),
                 ScriptHelpers.CreateAvoidUnitAnglesBehavior(
-                    ctx => Me.IsMeleeDps() && boss.Distance < 12,
+                    ctx => Me.IsMeleeDps() && boss.Distance < 12 && boss.CurrentTargetGuid != Me.Guid,
                     ctx => boss,
                     new ScriptHelpers.AngleSpan(0, 180)));
         }
@@ -720,10 +745,12 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
         private readonly WoWPoint _rightSeatLoc = new WoWPoint(1.5, -3, 0.25);
         private readonly WoWPoint _leftSeatLoc = new WoWPoint(1.5, 3, 0.25);
         private WoWPoint _raigonnDropLocation = new WoWPoint(1098.698, 2305.023, 381.2352);
+        private const uint MobId_Raigonn = 56877;
 
-        [EncounterHandler(56877, "Raigonn", BossRange = 200)]
+        [EncounterHandler((int)MobId_Raigonn, "Raigonn", BossRange = 200)]
         public Func<WoWUnit, Task<bool>> RaigonnEncounter()
         {
+            var capabilityHandle = CapabilityManager.Instance.CreateNewHandle();
             var isMovingTimer = new WaitTimer(TimeSpan.FromSeconds(1));
             const uint artilleryId = 59819;
             const uint engulfingWindsId = 56928;
@@ -732,8 +759,8 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
             var roomCenterLoc = new WoWPoint(956.2532, 2275.753, 296.1056);
             var gateLoc = new WoWPoint(959.0933, 2227.044, 296.1056);
 
-            AddAvoidObject(ctx => Me.HasAura("Fixate"), () => roomCenterLoc, 80, 40, RaigonnId);
-            AddAvoidObject(ctx => !Me.TransportGuid.IsValid,
+            AddAvoidObject(ctx => Me.GroupInfo.IsInParty && Me.HasAura("Fixate"), () => roomCenterLoc, 80, 40, RaigonnId);
+            AddAvoidObject(ctx => Me.GroupInfo.IsInParty && !Me.TransportGuid.IsValid,
                 o =>
                 {
                     if (Me.IsMoving)
@@ -743,7 +770,9 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 
             return async boss =>
             {
-                var shouldAttackWeakSpot = boss.HasAura("Impervious Carapace") && Me.IsDps()
+                CapabilityManager.Instance.Update(capabilityHandle, CapabilityFlags.Facing, () => Me.HasAura(FactionOverrideId));
+
+                var shouldAttackWeakSpot = boss.HasAura("Impervious Carapace") && (Me.IsDps() || !Me.GroupInfo.IsInParty)
                     && Me.TransportGuid != boss.Guid && Me.PartyMembers.Count(p => p.TransportGuid == boss.Guid) < 2
                     && (boss.Location.DistanceSqr(gateLoc) <= 50 * 50 || Targeting.Instance.IsEmpty())
                     && ObjectManager.GetObjectsOfType<WoWUnit>().Any(u => u.Entry == WeakSpotId && u.HasAura(vulnerabilityId));
@@ -782,7 +811,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                 if (currentTarget != null && currentTarget.Entry == WeakSpotId && !Me.IsSafelyFacing(currentTarget, 60))
                 {
                     Logging.Write("Facing the WeakSpot");
-                    FaceWeakSpot();
+                    await FaceWeakSpot(currentTarget);
                 }
 
                 return false;
@@ -790,16 +819,44 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
         }
 
         // hackish method of getting bot to face weakspot 
-        private void FaceWeakSpot()
+        private async Task FaceWeakSpot(WoWUnit weakSpot)
         {
-            var myRelativeLoc = Me.RelativeLocation;
-            if (myRelativeLoc == _leftSeatLoc)
+            var rotationStep = Math.PI/4;
+
+            var targetLoc = weakSpot.Location;
+            var myLoc = Me.Location;
+            // rotation in radians clamped at (-PI, PI)
+            var targetRotation = (float)Math.Atan2(targetLoc.Y - myLoc.Y, targetLoc.X - myLoc.X);
+            WoWMovement.MovementDirection moveDir = WoWMovement.MovementDirection.None;
+            try
             {
-                Me.SetFacing(WoWMathHelper.NormalizeRadian(LeftSeatCorrectFacing + WeakSpotFacingErrorAmount));
+                while (weakSpot.IsValid && Me.HasAura(FactionOverrideId))
+                {
+                    // Me.Rotation returns (-PI, PI)
+                    var myRotation = Me.Rotation;
+                    var angleDiff = targetRotation - myRotation;
+
+                    if (Math.Abs(angleDiff) <= WoWMathHelper.DegreesToRadians(30))
+                        break;
+
+                    if (moveDir != WoWMovement.MovementDirection.None)
+                    {
+                        WoWMovement.MoveStop(moveDir);
+                        await Coroutine.Sleep(100);
+                    }
+                    moveDir = angleDiff > 0 ? WoWMovement.MovementDirection.TurnLeft : WoWMovement.MovementDirection.TurnRight;
+                    var needToMove = moveDir == WoWMovement.MovementDirection.TurnLeft ? !Me.MovementInfo.MovingTurnLeft : !Me.MovementInfo.MovingTurnRight;
+                    if (needToMove)
+                    {
+                        WoWMovement.Move(moveDir);
+                        await Coroutine.Sleep(100);
+                    }
+                }
             }
-            else if (myRelativeLoc == _rightSeatLoc)
+            finally
             {
-                Me.SetFacing(WoWMathHelper.NormalizeRadian(RightSeatCorrectFacing + WeakSpotFacingErrorAmount));
+                if (moveDir != WoWMovement.MovementDirection.None)
+                    WoWMovement.MoveStop(moveDir);
             }
         }
 
@@ -807,58 +864,54 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 
         #region Elevator
 
-        private Composite CreateFollowerElevatorBehavior()
+        private async Task<bool> FollowerElevatorBehavior()
         {
-            return new Decorator(
-                ctx => !StyxWoW.Me.IsTank(),
-                new Action(
-                    ctx =>
+            if (Me.IsTank())
+                return false;
+
+            var tankI = StyxWoW.Me.GroupInfo.RaidMembers.FirstOrDefault(p => p.HasRole(WoWPartyMember.GroupRole.Tank));
+            if (tankI != null)
+            {
+                var tank = tankI.ToPlayer();
+                var myFloorLevel = FloorLevel(Me.Location);
+                var tankLoc = tank != null ? tank.Location : tankI.Location3D;
+                var tankLevel = FloorLevel(tankLoc);
+                var elevatorRestingZ = myFloorLevel == 1 ? ElevatorBottomZ : ElevatorTopZ;
+                var elevatorBoardLoc = myFloorLevel == 2 ? _elevatorTopBoardLoc : _elevatorBottomBoardLoc;
+                var elevatorWaitLoc = myFloorLevel == 2 ? _elevatorTopWaitLoc : _elevatorBottomWaitLoc;
+
+                // do we need to get on a lift?
+                if (IsOnLift(tank) && (!IsOnLift(Me) || Me.Location.DistanceSqr(elevatorBoardLoc) > 3 * 3) && tankLevel == myFloorLevel)
+                {
+                    var ele = ObjectManager.GetObjectsOfType<WoWGameObject>().FirstOrDefault(g => g.Entry == ElevatorId);
+                    bool elevatorIsReadyToBoard = ele != null && Math.Abs(ele.Z - elevatorRestingZ) <= 0.5f;
+                    if (elevatorIsReadyToBoard)
                     {
-                        var tankI = StyxWoW.Me.GroupInfo.RaidMembers.FirstOrDefault(p => p.HasRole(WoWPartyMember.GroupRole.Tank));
-
-                        if (tankI != null)
+                        if (Me.Location.DistanceSqr(elevatorBoardLoc) > 3 * 3)
                         {
-                            var tank = tankI.ToPlayer();
-                            var myFloorLevel = FloorLevel(Me.Location);
-                            var tankLoc = tank != null ? tank.Location : tankI.Location3D;
-                            var tankLevel = FloorLevel(tankLoc);
-                            var elevatorRestingZ = myFloorLevel == 1 ? ElevatorBottomZ : ElevatorTopZ;
-                            var elevatorBoardLoc = myFloorLevel == 2 ? _elevatorTopBoardLoc : _elevatorBottomBoardLoc;
-                            var elevatorWaitLoc = myFloorLevel == 2 ? _elevatorTopWaitLoc : _elevatorBottomWaitLoc;
-
-                            // do we need to get on a lift?
-                            if (IsOnLift(tank) && (!IsOnLift(Me) || Me.Location.DistanceSqr(elevatorBoardLoc) > 3 * 3) && tankLevel == myFloorLevel)
-                            {
-                                var ele = ObjectManager.GetObjectsOfType<WoWGameObject>().FirstOrDefault(g => g.Entry == ElevatorId);
-                                bool elevatorIsReadyToBoard = ele != null && Math.Abs(ele.Z - elevatorRestingZ) <= 0.5f;
-                                if (elevatorIsReadyToBoard)
-                                {
-                                    if (Me.Location.DistanceSqr(elevatorBoardLoc) > 3 * 3)
-                                    {
-                                        Logger.Write("[Elevator Manager] Boarding Elevator");
-                                        Navigator.MoveTo(elevatorBoardLoc);
-                                    }
-                                    else
-                                    {
-                                        Logger.Write("[Elevator Manager] Jumping");
-                                        WoWMovement.Move(WoWMovement.MovementDirection.JumpAscend);
-                                        WoWMovement.MoveStop(WoWMovement.MovementDirection.JumpAscend);
-                                    }
-                                }
-                                return RunStatus.Success;
-                            }
-
-                            // do we need to get off lift?
-                            if (IsOnLift(Me))
-                            {
-                                var ele = ObjectManager.GetObjectsOfType<WoWGameObject>().FirstOrDefault(g => g.Entry == ElevatorId);
-                                bool elevatorInUse = ele != null && Math.Abs(ele.Z - ElevatorBottomZ) > 0.5 && Math.Abs(ele.Z - ElevatorTopZ) > 0.5;
-                                if (elevatorInUse)
-                                    return RunStatus.Success;
-                            }
+                            Logger.Write("[Elevator Manager] Boarding Elevator");
+                            Navigator.MoveTo(elevatorBoardLoc);
                         }
-                        return RunStatus.Failure;
-                    }));
+                        else
+                        {
+                            Logger.Write("[Elevator Manager] Jumping");
+                            WoWMovement.Move(WoWMovement.MovementDirection.JumpAscend);
+                            WoWMovement.MoveStop(WoWMovement.MovementDirection.JumpAscend);
+                        }
+                    }
+                    return true;
+                }
+
+                // do we need to get off lift?
+                if (IsOnLift(Me))
+                {
+                    var ele = ObjectManager.GetObjectsOfType<WoWGameObject>().FirstOrDefault(g => g.Entry == ElevatorId);
+                    bool elevatorInUse = ele != null && Math.Abs(ele.Z - ElevatorBottomZ) > 0.5 && Math.Abs(ele.Z - ElevatorTopZ) > 0.5;
+                    if (elevatorInUse)
+                        return true;
+                }
+            }
+            return false;
         }
 
         public async Task<bool> ElevatorBehavior(WoWPoint destination)
@@ -917,14 +970,17 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
                     WoWMovement.Move(WoWMovement.MovementDirection.JumpAscend);
                     WoWMovement.MoveStop(WoWMovement.MovementDirection.JumpAscend);
                 }
+
                 if (elevatorIsReadyToBoard && Me.TransportGuid == ele.Guid
                     && Me.RaidMembers.Where(r => FloorLevel(r.Location) == myFloorLevel).All(r => r.TransportGuid == ele.Guid)
                     && lever != null && lever.CanUse())
                 {
                     if (!lever.CanUseNow())
-                        Navigator.MoveTo(WoWMathHelper.CalculatePointFrom(Me.Location, lever.Location, lever.InteractRange - 1));
-                    else if (Me.IsMoving)
-                        WoWMovement.MoveStop();
+                        return (await CommonCoroutines.MoveTo(WoWMathHelper.CalculatePointFrom(Me.Location, lever.Location, lever.InteractRange - 1))).IsSuccessful();
+
+                    if (Me.IsMoving && myloc.DistanceSqr(elevatorBoardLoc) <= 3 * 3)
+                        return await CommonCoroutines.StopMoving();
+
                     Logger.Write("[Elevator Manager] Using Lever");
                     lever.Interact();
                 }

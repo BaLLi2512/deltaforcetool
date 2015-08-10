@@ -7,6 +7,7 @@
 		<Talent Tier="4" Index="3" Name="Force of Nature" />
 		<Talent Tier="5" Index="3" Name="Mighty Bash" />
 		<Talent Tier="6" Index="3" Name="Nature's Vigil" />
+		<Talent Tier="7" Index="1" Name="Lunar Inspiration" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>22</DamagePerSecond>

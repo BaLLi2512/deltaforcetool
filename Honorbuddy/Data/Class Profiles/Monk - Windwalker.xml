@@ -6,7 +6,8 @@
 		<Talent Tier="3" Index="2" Name="Ascension" />
 		<Talent Tier="4" Index="3" Name="Leg Sweep" />
 		<Talent Tier="5" Index="3" Name="Diffuse Magic" />
-		<Talent Tier="6" Index="2" Name="Invoke Xuen,the White Tiger" />
+		<Talent Tier="6" Index="2" Name="Invoke Xuen, the White Tiger" />
+		<Talent Tier="7" Index="3" Name="Serenity" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>22</DamagePerSecond>

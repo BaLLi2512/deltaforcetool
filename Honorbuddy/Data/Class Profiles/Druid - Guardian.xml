@@ -7,6 +7,7 @@
 		<Talent Tier="4" Index="3" Name="Force of Nature" />
 		<Talent Tier="5" Index="3" Name="Mighty Bash" />
 		<Talent Tier="6" Index="1" Name="Heart of the Wild" />
+		<Talent Tier="7" Index="2" Name="Pulverize" />
 	</TalentTree>
 	<WeightSet>
 		<DamagePerSecond>22</DamagePerSecond>

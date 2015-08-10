@@ -269,14 +269,12 @@ namespace Bots.DungeonBuddy.Scenarios.WarlordsOfDraenor
 
 		private bool IsComplete(out string reason)
 		{
-			var avgItemLevel = Me.AverageItemLevel;
-
-			if (avgItemLevel < 595)
+			if (Me.Level < 90)
 			{
-				reason = "Item level must be >= 595 do proving grounds";
+				reason = "Player must be level 90 or higher to do proving grounds";
 				return true;
 			}
-			if (avgItemLevel < 610 && IsBronzeTrialDone)
+			if (Me.AverageItemLevel < 610 && IsBronzeTrialDone)
 			{
 				reason =
 					string.Format(

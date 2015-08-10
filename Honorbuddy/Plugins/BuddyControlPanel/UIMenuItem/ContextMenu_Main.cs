@@ -198,22 +198,19 @@ namespace BuddyControlPanel
 		{
 			var mousePosition = Utility.GetStartLocation(this);
 
-			Utility.InvokeOnSpecificDispatcher(Application.Current.Dispatcher, () =>
+			var exitConfirmationDialog = new Dialog_General(SystemIcons.Question,
+				BCPGlobalization.Title_ExitConfirmation,
+				_exitActionConfirmationQuestion,
+				MessageBoxButton.OKCancel)
 			{
-				var exitConfirmationDialog = new Dialog_General(SystemIcons.Question,
-					BCPGlobalization.Title_ExitConfirmation,
-					_exitActionConfirmationQuestion,
-					MessageBoxButton.OKCancel)
-				{
-					WindowStartupLocation = WindowStartupLocation.Manual,
-					Left = mousePosition.X,
-					Top = mousePosition.Y
-				};
+				WindowStartupLocation = WindowStartupLocation.Manual,
+				Left = mousePosition.X,
+				Top = mousePosition.Y
+			};
 
-				var messageBoxResult = exitConfirmationDialog.ShowDialog();
-				if (messageBoxResult.HasValue && messageBoxResult.Value)
-					DoExitAction();
-			});
+			var messageBoxResult = exitConfirmationDialog.ShowDialog();
+			if (messageBoxResult.HasValue && messageBoxResult.Value)
+				DoExitAction();
 
 			base.OnClick();
 		}

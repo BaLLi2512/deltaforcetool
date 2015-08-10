@@ -3038,14 +3038,12 @@
 		<PickUp QuestName="The Great Fissure" QuestId="9340" GiverName="Ranger Captain Venn'ren"
                     GiverId="16789" />
 
-		<If Condition="!HasQuest(10103) &amp;&amp; !IsQuestCompleted(10103) &amp;&amp; ( Me.Z &gt;= 140 )">
+		<If Condition="!HasQuest(10103) &amp;&amp; !IsQuestCompleted(10103) &amp;&amp; ( Me.Z &gt;= 140 ) &amp;&amp; Me.Level &gt;= 61">
 			<PickUp QuestName="Report to Zurai" QuestId="10103" GiverName="Ranger Captain Venn'ren"
                         GiverId="16789" />
-			<CustomBehavior File="MyCTM" X="-587.4887" Y="4069.858" Z="143.2581" />
-			<CustomBehavior File="MyCTM" X="-585.7033" Y="4076.605" Z="143.2581" />
-			<CustomBehavior File="MyCTM" X="-589.981" Y="4078.174" Z="143.2581" />
-			<CustomBehavior File="WaitTimer" WaitTime="2000" />
-
+		</If>
+		<If Condition="Me.Z &gt;= 140" >
+			<CustomBehavior File="MyCTM" X="-591.9251" Y="4072.708" Z="143.6378" />
 			<CustomBehavior File="InteractWith" NonCompeteDistance="0"  MobId="184500" Range="8" WaitTime="7000"
                                 CollectionDistance="1000" X="-589.981" Y="4078.174" Z="143.2581" />
 		</If>
@@ -3879,7 +3877,13 @@
                     GiverId="17841" X="-143.4519" Y="5533.816" Z="31.06601" />
 		<If Condition="HasQuest(9718) &amp;&amp; !IsQuestCompleted(9718)" >
 			<MoveTo X="-147.7943" Y="5531.749" Z="30.71602" />
-			<CustomBehavior File="RunMacro" QuestId="9718" Macro="/cancelaura cat form\n/cancelaura bear form\n/cancelaura travel form\n/cancelaura ghost wolf" />
+				<!-- Remove Form: Cat, Travel, Bear, SWolf, Moonkin -->
+				<CustomBehavior File="RunCode" QuestId="9718">
+					<![CDATA[ 
+						foreach (var aura in new[]{768,783,5487,2645,24858}.Select(id =>Me.GetAuraById(id)).Where(a => a != null)) 
+						aura.TryCancelAura();
+					]]>
+				</CustomBehavior>
 			<UseItem QuestId="9718" ItemId="25465" X="-147.7943" Y="5531.749" Z="30.71602" />
 		</If>
 		<TurnIn Nav="Fly" QuestName="As the Crow Flies" QuestId="9718" TurnInName="Ysiel Windsinger"
@@ -4259,9 +4263,15 @@
                     X="280.6577" Y="7866.091" Z="24.11374" />
 		<PickUp Nav="Fly" QuestName="Stinging the Stingers" QuestId="9841"
                     GiverName="Gambarinka" GiverId="18015" X="272.2314" Y="7848.35" Z="23.95657"   />
-		<TurnIn Nav="Fly" QuestName="Report to Shadow Hunter Denjai"
-                    QuestId="9775" TurnInName="Shadow Hunter Denjai" TurnInId="18013"
-                    X="276.875" Y="7849.026" Z="23.77924"  />
+
+        <If Condition="HasQuest(9775)" >
+        	<CustomBehavior File="FlyTo" X="247.4017" Y="7886.354" Z="23.17599" />
+        	<CustomBehavior File="ForcedDismount" />
+        	<RunTo X="228.9375" Y="7931.1" Z="41.11261" />
+			<TurnIn QuestName="Report to Shadow Hunter Denjai"
+	                    QuestId="9775" TurnInName="Shadow Hunter Denjai" TurnInId="18013"
+	                    X="276.875" Y="7849.026" Z="23.77924"  />
+	    </If>
 
 		<PickUp Nav="Fly" QuestName="Spirits of the Feralfen" QuestId="9846"
                     GiverName="Seer Janidi" GiverId="18017" X="276.875" Y="7849.026" Z="23.77924"  />
@@ -4697,8 +4707,6 @@
 			<CustomBehavior File="ForceSetVendor" DoSell="true" DoRepair="true" DoMail="true" />
 		</If>
 		<PickUp Nav="Fly" QuestName="Rather Be Fishin'" QuestId="10037" GiverName="Seth" GiverId="18653" X="-1619.308" Y="5300.907" Z="-40.20843" />
-		<PickUp Nav="Fly" QuestName="The Eyes of Skettis" QuestId="10847"
-                    GiverName="Rilak the Redeemed" GiverId="22292" X="-1654.105" Y="5446.75" Z="-40.40615" />
 		<If Condition="HasQuest(10037) &amp;&amp; !IsQuestCompleted(10037)" >
 			<CustomBehavior File="FlyTo" DestName="Flying to Hotspot area (Quest = Rather Be Fishin')."
                                 X="-1468.12" Y="4995.282" Z="-8.150277" />
@@ -4788,8 +4796,8 @@
 			<TurnIn Nav="Fly" QuestName="City of Light" QuestId="10211" TurnInName="Khadgar" TurnInId="18166" />
 		</If>
 
-
-
+		<PickUp Nav="Fly" QuestName="The Eyes of Skettis" QuestId="10847"
+                    GiverName="Rilak the Redeemed" GiverId="22292" X="-1654.105" Y="5446.75" Z="-40.40615" />
 
 
 		<If Condition="HasQuest(9796)">

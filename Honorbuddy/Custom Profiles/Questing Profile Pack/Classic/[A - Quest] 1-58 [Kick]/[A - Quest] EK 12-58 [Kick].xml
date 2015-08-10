@@ -6237,7 +6237,7 @@
 			<Objective QuestName="Grubby Little Paws" QuestId="26605" Type="CollectItem" ItemId="59059" CollectCount="1" />
 			<Objective QuestName="Grubby Little Paws" QuestId="26605" Type="CollectItem" ItemId="59060" CollectCount="1" />
 			<TurnIn QuestName="Grubby Little Paws" QuestId="26605" TurnInName="Princess Poobah" TurnInId="2634"
-                    X="-14596.72" Y="-237.9673" Z="24.79275" />
+                    X="-14596.72" Y="-237.9673" Z="24.79353" />
 			<PickUp QuestName="Mukla's Demise" QuestId="26606" GiverName="Princess Poobah" GiverId="2634"
                     X="-14596.72" Y="-237.9673" Z="24.79275" />
 			<Objective QuestName="Mukla's Demise" QuestId="26606" Type="CollectItem" ItemId="4103" CollectCount="1" />
@@ -6290,17 +6290,18 @@
                         GiverId="2487" X="-14444.71" Y="486.8144" Z="28.72312" />
 				<While Condition="HasQuest(26630) &amp;&amp; !IsQuestCompleted(26630)">
 
-					<If Condition="!IsObjectiveComplete(2, 26630)">
+					<While Condition="!IsObjectiveComplete(2, 26630)">
 						<MoveTo X="-14334.84" Y="425.6806" Z="6.627357" />
-						<CustomBehavior File="InteractWith" QuestId="26630" MobId="2663" InteractByGossipOptions="1"  
+						<CustomBehavior File="InteractWith" QuestId="26630" MobId="2663" Range="5" InteractByGossipOptions="1" WaitTime="5000"
                                         CollectionDistance="50" X="-14334.84" Y="425.6806" Z="6.627357" />
-					</If>
-					<If Condition="!IsObjectiveComplete(3, 26630)">
+					</While>
+					<While Condition="!IsObjectiveComplete(3, 26630)">
 						<MoveTo X="-14402.9" Y="399.231" Z="27.93369" />
-						<CustomBehavior File="InteractWith" QuestId="26630" MobId="43505"
-                                        InteractByGossipOptions="1,1" CollectionDistance="50"
+						<CustomBehavior File="InteractWith" QuestId="26630" MobId="43505" Range="5" 
+                                        InteractByGossipOptions="1,1,1" CollectionDistance="50" WaitTime="5000"
                                         X="-14402.9" Y="399.231" Z="27.93369" />
-					</If>
+						<CustomBehavior File="WaitTimer" WaitTime="3000" GoalText=" {TimeRemaining}" />
+					</While>
 					<MoveTo X="-14442.21" Y="488.1054" Z="28.74082" />
 					<CustomBehavior File="InteractWith" QuestId="26630" MobId="2487"
                                     InteractByGossipOptions="1,1" CollectionDistance="50"
@@ -6443,18 +6444,18 @@
 		<TurnIn QuestName="Seeking Seahorn" QuestId="26698" TurnInName="Fleet Master Seahorn" TurnInId="2487" X="-14444.75" Y="486.8125" Z="28.72268" />
 		<PickUp QuestName="Turning the Brashtide" QuestId="26699" GiverName="Fleet Master Seahorn" GiverId="2487" X="-14444.75" Y="486.8125" Z="28.72268" />
 		<PickUp QuestName="The Damsel's (Bad) Luck" QuestId="26700" GiverName="Fleet Master Seahorn" GiverId="2487" X="-14444.75" Y="486.8125" Z="28.72268" />
-		<SetGrindArea>
-			<GrindArea>
-				<Name>Pirate Ship in BootyBay Harbor</Name>
-				<MobIds>43726</MobIds>
-				<Hotspots>
-					<Hotspot X="-14381.1" Y="480.9642" Z="13.09807" />
-					<Hotspot X="-14381" Y="482.3469" Z="7.613095" />
-					<Hotspot X="-14400.93" Y="472.2835" Z="0.2887615" />
-				</Hotspots>
-			</GrindArea>
-		</SetGrindArea>
 		<While Condition="HasQuest(26700) &amp;&amp; !IsQuestCompleted(26700)">
+			<SetGrindArea>
+				<GrindArea>
+					<Name>Pirate Ship in BootyBay Harbor</Name>
+					<MobIds>43726</MobIds>
+					<Hotspots>
+						<Hotspot X="-14381.1" Y="480.9642" Z="13.09807" />
+						<Hotspot X="-14381" Y="482.3469" Z="7.613095" />
+						<Hotspot X="-14400.93" Y="472.2835" Z="0.2887615" />
+					</Hotspots>
+				</GrindArea>
+			</SetGrindArea>
 			<!-- CJ: Use rope to swing across to pirate boat -->
 			<If Condition="Navigator.CanNavigateFully(Me.Location, new WoWPoint(-14441.81, 469.915, 15.32084))">
 				<CustomBehavior File="InteractWith" QuestId="26700" MobId="204585" CollectionDistance="50"
@@ -6471,7 +6472,9 @@
                             X="-14383.84" Y="487.1568" Z="12.94241" />
 		</If>
 		<TurnIn QuestName="The Damsel's (Bad) Luck" QuestId="26700" TurnInName="Baron Revilgaz" TurnInId="2496" />
-		<Objective QuestName="Prepare for Takeoff" QuestId="26695" Type="CollectItem" ItemId="59524" CollectCount="1" />
+		<While Condition="HasQuest(26695) &amp;&amp; !IsQuestCompleted(26695)"> <!-- Prepare for Takeoff -->
+			<CustomBehavior File="InteractWith" QuestId="26695" MobId="204587" Range="5" X="-14334.79" Y="426.1215" Z="6.626159" />
+		</While>
 		<Objective QuestName="Turning the Brashtide" QuestId="26699" Type="KillMob" MobId="43716" KillCount="10" />
 		<TurnIn QuestName="Turning the Brashtide" QuestId="26699" TurnInName="Baron Revilgaz" TurnInId="2496" />
 		<TurnIn QuestName="Prepare for Takeoff" QuestId="26695" TurnInName="Baron Revilgaz" TurnInId="2496" />
@@ -7350,15 +7353,16 @@
 
 			<PickUp QuestName="The Trek Continues" QuestId="27448" GiverName="Fiona" GiverId="45417"
                     X="1845.88" Y="-3692.61" Z="158.7099" />
-			<If Condition="HasQuest(27448) &amp;&amp; !IsQuestCompleted(27448)">
+			<While Condition="HasQuest(27448) &amp;&amp; !IsQuestCompleted(27448)">
+				<MoveTo X="1842.149" Y="-3698.729" Z="158.7519" />
 				<CustomBehavior File="InteractWith" QuestId="27448" MobId="45400"
                                 InteractByGossipOptions="1" CollectionDistance="50"
                                 X="1842.149" Y="-3698.729" Z="158.7519" />
-				<CustomBehavior File="WaitTimer" WaitTime="120000" />
-			</If>
-			<TurnIn QuestName="The Trek Continues" QuestId="27448" TurnInName="Fiona" TurnInId="45417" />
-			<PickUp QuestName="Boys Will Be Boys" QuestId="27455" GiverName="Fiona" GiverId="45417"
-                    X="2278.03" Y="-4420.79" Z="111.7495" />
+				<CustomBehavior File="WaitTimer" QuestId="27448" WaitTime="120000" />
+				<CustomBehavior File="WaitTimer" WaitTime="3000" />
+			</While>
+			<TurnIn QuestName="The Trek Continues" QuestId="27448" TurnInName="Fiona" TurnInId="45417" X="2278.03" Y="-4420.79" Z="111.7498" />
+			<PickUp QuestName="Boys Will Be Boys" QuestId="27455" GiverName="Fiona" GiverId="45417" X="2278.03" Y="-4420.79" Z="111.7495" />
 
 			<!-- <PickUp QuestName="To Kill With Purpose" QuestId="27451" GiverName="Betina Bigglezink" GiverId="11035" /> -->
 			<!-- <PickUp QuestName="Dark Garb" QuestId="27452" GiverName="Betina Bigglezink" GiverId="11035" -->
@@ -10447,7 +10451,7 @@
 				<MoveTo X="-12238.83" Y="-2464.189" Z="38.91131" />
 				<MoveTo X="-12238.83" Y="-2464.189" Z="38.91131" />
 				<CustomBehavior File="WaitTimer" WaitTime="2000" />
-				<CustomBehavior File="UseItemTargetLocation" QuestId="26187" ItemId="57185" UseType="ToObject" WaitTime="4000"
+				<CustomBehavior File="UseItemTargetLocation" QuestId="26187" ItemId="57185" UseType="ToObject" WaitTime="4000" 
                                 NumOfTimes="10" MobId="42334" MinRange="2" Range="6" X="-12238.83" Y="-2464.189" Z="38.91131" />
 				<CustomBehavior File="WaitTimer" WaitTime="10000" />
 			</While>
