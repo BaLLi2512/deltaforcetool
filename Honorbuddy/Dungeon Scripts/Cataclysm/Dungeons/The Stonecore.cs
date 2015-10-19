@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Bots.DungeonBuddy.Enums;
 using Bots.DungeonBuddy.Profiles.Handlers;
 using CommonBehaviors.Actions;
@@ -17,6 +18,8 @@ using Styx.TreeSharp;
 using Action = Styx.TreeSharp.Action;
 using Bots.DungeonBuddy.Attributes;
 using Bots.DungeonBuddy.Helpers;
+using Styx.CommonBot.Coroutines;
+
 namespace Bots.DungeonBuddy.Dungeons.Cataclysm
 {
 	public class Stonecore : Dungeon
@@ -265,13 +268,13 @@ namespace Bots.DungeonBuddy.Dungeons.Cataclysm
 				ScriptHelpers.CreateTankFaceAwayGroupUnit(20));
 		}
 
-		public override MoveResult MoveTo(WoWPoint location)
+		public override async Task<bool> HandleMovement(WoWPoint location)
 		{
 			// wait 2 seconds after porting and clear navigation path.
 			if (!_teleportTimer.IsFinished && _teleportTimer.TimeLeft > TimeSpan.FromSeconds(8))
 			{
 				Navigator.NavigationProvider.Clear();
-				return MoveResult.Moved;
+				return true;
 			}
 			// use entrance portal.
 			if ((StyxWoW.Me.X < 900 && location.X > 1200 || StyxWoW.Me.Y > 1200 && location.Y < 900) && _teleportTimer.IsFinished)
@@ -280,13 +283,14 @@ namespace Bots.DungeonBuddy.Dungeons.Cataclysm
 				if (teleporter != null)
 				{
 					if (!teleporter.WithinInteractRange)
-						return Navigator.MoveTo(teleporter.Location);
+						return (await CommonCoroutines.MoveTo(teleporter.Location, teleporter.SafeName)).IsSuccessful();
 					teleporter.Interact();
+					await CommonCoroutines.SleepForLagDuration();
 					_teleportTimer.Reset();
-					return MoveResult.Moved;
+					return true;
 				}
 			}
-			return MoveResult.Failed;
+			return false;
 		}
 
 		#region Slabhide
@@ -354,17 +358,14 @@ namespace Bots.DungeonBuddy.Dungeons.Cataclysm
 
 		[LocationHandler(1532.957, 1163.717, 217.889, 50, "West Side")]
 		[LocationHandler(1538.305, 1122.397, 216.3325, 50, "East Side")]
-		public Composite CamberOfFanaticsBehavior()
+
+		public Func<WoWPoint, Task<bool>> CamberOfFanaticsHandler()
 		{
-			List<WoWUnit> trash = null;
-			return new PrioritySelector(
-				ctx =>
-				{
-					var point = (WoWPoint)ctx;
-					trash = ScriptHelpers.GetUnfriendlyNpsAtLocation(point, 50);
-					return point;
-				},
-				ScriptHelpers.CreatePullNpcToLocation(ctx => trash.Any(), ctx => trash.First(), ctx => Me.Location, 5));
+			return async point =>
+			{
+				List<WoWUnit> trash = ScriptHelpers.GetUnfriendlyNpsAtLocation(point, 50);
+				return await ScriptHelpers.PullNpcToLocation(() => trash.Any(), trash.First(), Me.Location,0);
+			};
 		}
 
 		[EncounterHandler(42188, "Ozruk", Mode = CallBehaviorMode.Proximity)]

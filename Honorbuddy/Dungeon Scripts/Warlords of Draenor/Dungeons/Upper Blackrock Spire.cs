@@ -134,9 +134,8 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		public override async Task<bool> HandleMovement(WoWPoint location)
 		{
-			if (location.DistanceSqr(RagewingPhaseOneLoc) < 3*3)
+			if (location.DistanceSqr(RagewingPhaseOneLoc) < 3*3 || location.DistanceSqr(RageWingOOCLoc) <= 3 * 3)
 				return (await CommonCoroutines.MoveTo(RagewingBridgeCenter)).IsSuccessful();
-
 			return false;
 		}
 
@@ -775,7 +774,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		#endregion
 
-
+		readonly WoWPoint RageWingOOCLoc = new WoWPoint(34.52922, -391.3831, 51.63854);
 		readonly WoWPoint RagewingPhaseOneLoc = new WoWPoint(20.56284,-404.3033,113.1969);
 		readonly WoWPoint RagewingBridgeCenter = new WoWPoint(30.37753, -404.645, 110.7197);
 
@@ -839,8 +838,13 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			return async boss =>
 			{
 				_ragewing = boss;
+
+				// Don't run if not on the floor level that boss is on. 
+				if (Me.Z < 100)
+					return false;
+
 				// Get onto the bridge before door closes.
-				if (await ScriptHelpers.MoveInsideBossRoom(boss, leftDoorEdge, rightDoorEdge, randomPointOnBridge))
+				if (await ScriptHelpers.MoveInsideBossRoom(boss, leftDoorEdge, rightDoorEdge, randomPointOnBridge, p => p.X < 50 && p.X > 20))
 					return true;
 				
 				// Hero if available. 
@@ -979,6 +983,9 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			return async npc =>
 			{
 				boss = npc;
+
+				if (ScriptHelpers.IsBossAlive("Ragewing the Untamed"))
+					return false;
 
 				// Get onto the bridge before door closes.
 				if (await ScriptHelpers.MoveInsideBossRoom(boss, leftDoorEdge, rightDoorEdge, randomPointOnBridge))

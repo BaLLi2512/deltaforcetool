@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile xsi:noNamespaceSchemaLocation="../../DungeonbuddyProfile.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Blackhands Crucible</Name>
+  <DungeonId>823</DungeonId>
+  <BossEncounters>
+		<Boss isFinal="false" entry="77325" name="Blackhand" killOrder="1" stage="0" step="1" optional="false" X="539.0167" Y="3516.294" Z="741.7354"/>
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

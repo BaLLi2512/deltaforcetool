@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile xsi:noNamespaceSchemaLocation="../../DungeonbuddyProfile.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>The Black Forge</Name>
+  <DungeonId>846</DungeonId>
+  <BossEncounters>
+
+		<Boss isFinal="false" entry="76974" name="Franzok" killOrder="1" optional="false" X="102.6545" Y="3465.035" Z="130.4374"/>
+		<Boss isFinal="false" entry="76973" name="Hans'gar" killOrder="1"  optional="false" X="103.434" Y="3517.066" Z="130.4371"/>
+
+		<Boss isFinal="false" entry="76814" name="Flamebender Ka'graz" killOrder="2" optional="false" X="131.0573" Y="3760.366" Z="105.6399"/>
+
+		<Boss isFinal="true" entry="77692" name="Kromog" killOrder="3" optional="false" X="369.026" Y="3625.134" Z="104.7347"/>
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

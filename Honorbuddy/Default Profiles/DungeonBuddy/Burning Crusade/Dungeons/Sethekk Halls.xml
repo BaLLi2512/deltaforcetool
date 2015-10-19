@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DungeonBuddyProfile>
+<DungeonBuddyProfile xsi:noNamespaceSchemaLocation="../../DungeonbuddyProfile.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>Sethekk Halls</Name>
   <DungeonId>150</DungeonId>
   <BossEncounters>

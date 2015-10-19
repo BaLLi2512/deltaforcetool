@@ -36,7 +36,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 	    public override WoWPoint Entrance
 	    {
-            get { return new WoWPoint(7111.703, 195.8656, 144.6757); }
+            get { return new WoWPoint(7098.941, 195.44, 144.6566); }
 	    }
 
 	    public override WoWPoint ExitLocation
@@ -51,7 +51,6 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 		public override void RemoveTargetsFilter(List<WoWObject> units)
 		{
-
 			units.RemoveAll(
 				obj =>
 				{

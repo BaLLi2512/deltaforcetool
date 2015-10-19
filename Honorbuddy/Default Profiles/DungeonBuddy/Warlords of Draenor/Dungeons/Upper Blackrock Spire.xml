@@ -5,7 +5,7 @@
 	<BossEncounters>
 		<!-- Clear all trash in the first hallway to the left to open door -->
 		<Boss isFinal="false" entry="76413" name="Orebender Gor'ashan" 
-			  killOrder="1" stage="2" step="1" optional="false" X="144.5426" Y="-258.0315" Z="96.32333" />
+			  killOrder="1" stage="2" step="5" optional="false" X="144.5426" Y="-258.0315" Z="96.32333" />
 		
 		<Boss isFinal="false" entry="76021" name="Kyrak"
 			  killOrder="2" optional="false" stage="2" step="2" X="77.59349" Y="-330.6225" Z="91.46045" />
@@ -21,7 +21,7 @@
 			  killOrder="4" stage="2" step="4" optional="false" X="20.56284" Y="-404.3033" Z="113.1969"/>
 
 		<Boss isFinal="true" entry="77120" name="Warlord Zaela" 
-			  killOrder="5" stage="2" step="5" optional="false" X="22.10945" Y="-103.0591" Z="97.513"/>
+			  killOrder="5" stage="2" step="1" optional="false" X="22.10945" Y="-103.0591" Z="97.513"/>
 		
 	</BossEncounters>
 	

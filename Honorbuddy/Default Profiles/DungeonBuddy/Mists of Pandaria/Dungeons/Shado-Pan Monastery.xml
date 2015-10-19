@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<DungeonBuddyProfile>
+<DungeonBuddyProfile xsi:noNamespaceSchemaLocation="../../DungeonbuddyProfile.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>Shado-Pan Monastery</Name>
   <DungeonId>466</DungeonId>
+  <Vendors>
+    <Vendor name="Supplier Xin" id="62737" type="Repair" nav="Fly" faction="Both" X="2419.361" Y="3007.01" Z="417.3718" />
+  </Vendors>
   <BossEncounters>
 	  <Boss isFinal="false" entry="56747" name="Gu Cloudstrike"
 		  killOrder="1" step="1" optional="false" X="3722.51" Y="2674.14" Z="768.0359"/>

@@ -68,7 +68,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
         public override WoWPoint Entrance
         {
-            get { return new WoWPoint(1491.402, 3071.209, 110.1424); }
+            get { return new WoWPoint(1494.275, 3064.653, 110.5267); }
         }
 
         public override WoWPoint ExitLocation
@@ -268,6 +268,13 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 return false;
             };
         }
+
+		// Tackling Teron'gor, legendary quest line. Contributed by Aion.
+		[ObjectHandler(237542, "Corrupted Blood", ObjectRange = 55)]
+		public async Task<bool> CorruptedBloodHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 65);
+		}
 
 		#endregion
 

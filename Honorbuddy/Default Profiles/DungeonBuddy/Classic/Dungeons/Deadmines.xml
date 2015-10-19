@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<DungeonBuddyProfile>
+<DungeonBuddyProfile xsi:noNamespaceSchemaLocation="../../DungeonbuddyProfile.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>Deadmines</Name>
   <DungeonId>6</DungeonId>
   <BossEncounters>
@@ -7,11 +7,11 @@
           optional="false" X="-192.509" Y="-447.4075" Z="54.39291"/>
     <Boss isFinal="false" entry="47296" name="Helix Gearbreaker" killOrder="2" step="2"
           optional="false" X="-301.1495" Y="-515.7927" Z="51.39309"/>
-    <Boss isFinal="false" entry="43778" name="Foe Reaper 5000" killOrder="3" step="3"
+    <Boss isFinal="false" entry="43778" name="Foe Reaper 5000" killOrder="3" step="5"
           optional="false" X="-209.837" Y="-568.622" Z="20.97682"/>
-    <Boss isFinal="false" entry="47626" name="Admiral Ripsnarl" killOrder="4" step="4"
+    <Boss isFinal="false" entry="47626" name="Admiral Ripsnarl" killOrder="4" step="3"
           optional="false" X="-66.7813" Y="-837.863" Z="40.97976"/>
-    <Boss isFinal="true" entry="47739" name="Captain Cookie" killOrder="5" step="5"
+    <Boss isFinal="true" entry="47739" name="Captain Cookie" killOrder="5" step="4"
           optional="false" X="-82.6318" Y="-819.8193" Z="39.56989"/>
     
   </BossEncounters>

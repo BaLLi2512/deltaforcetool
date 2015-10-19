@@ -9,7 +9,7 @@
     </SphericalIndoorArea>
 
     <PolygonIndoorArea Name="Hellfire Ramparts Entrance, Hellfire Peninsula" MinZ="-16" MaxZ="-8" >
-      <Entrance Dismount="False" Radius="2" X="-360.1551" Y="3066.122" Z="-11.52197" />
+      <Entrance Dismount="True" Radius="2" X="-360.1551" Y="3066.122" Z="-11.52197" />
       <Points>
         <Point X="-368.4962" Y="3096.953"/>
         <Point X="-362.0441" Y="3095.454" />
@@ -19,7 +19,7 @@
     </PolygonIndoorArea>
 
     <PolygonIndoorArea Name="Blood Furnace Entrance, Hellfire Peninsula" MinZ="20" MaxZ="40" >
-      <Entrance Dismount="False" Radius="2" X="-293.0967" Y="3149.353" Z="38.67595" />
+      <Entrance Dismount="False" Radius="1" X="-362.7776" Y="3077.334" Z="-15.01587" />
       <Points> 
         <Point X="-305.8382" Y="3160.605" />
         <Point X="-333.1713" Y="3198.156" />

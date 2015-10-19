@@ -67,6 +67,10 @@
           <Min  X="-7530" Y="-1420" Z="250"/>
           <Max X="-7475" Y="-1240" Z="330" />
         </BoundingBoxIndoorArea>
+        <BoundingBoxIndoorArea Name="Rooms leading to Blackrock Caverns">
+          <Min  X="-7593" Y="-1355" Z="231"/>
+          <Max X="-7447" Y="-1202" Z="349" />
+        </BoundingBoxIndoorArea>
       </IndoorAreas>
     </CompositeIndoorArea>
 

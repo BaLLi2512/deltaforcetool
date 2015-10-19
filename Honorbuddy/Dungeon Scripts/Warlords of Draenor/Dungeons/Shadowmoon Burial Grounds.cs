@@ -619,20 +619,20 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					bodySlamAvoidLineWidth/2).OfType<object>());
 
 			AddAvoidLocation(
-				ctx => !isInhaling,
+				ctx => !isInhaling && !Me.IsSwimming,
 				4.5f,
 				o => ((WoWMissile) o).ImpactPosition,
 				() => WoWMissile.InFlightMissiles.Where(m => m.SpellId == MissileSpellId_NecroticPitch));
 
 			AddAvoidObject(
-				ctx => !isInhaling,
+				ctx => !isInhaling && !Me.IsSwimming,
 				4.5f,
 				AreaTriggerId_NecroticPitch);
 
 			// Avoids running into the barrier at room entrance while running from something else.
 			AddAvoidLocation(
-				ctx => isDoorClosed,
-				doorAvoidLineWidth*1.33f,
+				ctx => isDoorClosed && !Me.IsSwimming,
+				doorAvoidLineWidth *1.33f,
 				o => (WoWPoint) o,
 				() => ScriptHelpers.GetPointsAlongLineSegment(
 					leftDoorEdge,
@@ -640,7 +640,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 					doorAvoidLineWidth/2).OfType<object>());
 
 			// Range need to stay away from boss so the necrotic pitch isn't placed near boss.
-			AddAvoidObject(ctx => Me.IsRange() && !isInhaling, 30, o => o.Entry == MobId_Bonemaw && o.ToUnit().IsAlive);
+			AddAvoidObject(ctx => !Me.IsSwimming && Me.IsRange() && !isInhaling, 30, o => o.Entry == MobId_Bonemaw && o.ToUnit().IsAlive);
 
 			var noMovebehind =CapabilityManager.Instance.CreateNewHandle();
 			

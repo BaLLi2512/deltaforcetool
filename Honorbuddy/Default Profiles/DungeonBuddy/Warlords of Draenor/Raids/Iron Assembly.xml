@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<DungeonBuddyProfile xsi:noNamespaceSchemaLocation="../../DungeonbuddyProfile.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Iron Assembly</Name>
+  <DungeonId>848</DungeonId>
+  <BossEncounters>
+		<Boss isFinal="false" entry="76865" name="Beastlord Darmac" killOrder="1" 
+					optional="false" X="337.3847" Y="3203.596" Z="307.447"/>
+
+
+		<Boss isFinal="false" entry="76906" name="Operator Thogar" killOrder="2"
+					X="561.7213" Y="3320.49" Z="299.0576"/>
+
+		<Boss isFinal="false" entry="77231" name="Enforcer Sorka" killOrder="3" optional="false" X="425.965" Y="3138.43" Z="135.219"/>
+		<Boss isFinal="false" entry="77557" name="Admiral Gar'an" killOrder="3" optional="false" X="434.941" Y="3141.66" Z="135.2191"/>
+		<Boss isFinal="false" entry="77477" name="Marak the Blooded" killOrder="3" optional="false" X="442.4539" Y="3136.965" Z="135.5059"/>
+	
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

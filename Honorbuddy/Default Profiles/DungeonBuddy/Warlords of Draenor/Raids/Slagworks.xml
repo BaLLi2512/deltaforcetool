@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<DungeonBuddyProfile xsi:noNamespaceSchemaLocation="../../DungeonbuddyProfile.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Slagworks</Name>
+  <DungeonId>847</DungeonId>
+  <BossEncounters>
+    <Boss entry="77182" name="Oregorger" optional="false" isFinal="false" 
+          killOrder="1" X="52.8958" Y="3617.03" Z="280.930969" />
+
+    <Boss entry="76877" name="Gruul" optional="false" isFinal="false" 
+          killOrder="2" X="373.618073" Y="3583.09814" Z="279.671661" />
+
+    <Boss entry="76806" name="Heart of the Mountain" optional="false" isFinal="true"
+          killOrder="3"  X="229.5967" Y="3508.785" Z="218.4702" />
+    
+  </BossEncounters>
+  <Blackspots>
+  </Blackspots>
+  <PullBlackspots>
+  </PullBlackspots>
+</DungeonBuddyProfile>

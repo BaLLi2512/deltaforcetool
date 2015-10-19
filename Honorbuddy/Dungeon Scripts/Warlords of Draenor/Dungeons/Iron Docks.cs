@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bots.DungeonBuddy.Attributes;
 using Bots.DungeonBuddy.Helpers;
+using Buddy.Coroutines;
 using Styx;
 using Styx.Common;
 using Styx.Common.Helpers;
@@ -34,9 +35,14 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
         public override WoWPoint ExitLocation { get { return new WoWPoint(6749.356, -538.567, 4.925448); } }
 
+
         public override void RemoveTargetsFilter(List<WoWObject> units)
         {
-            units.RemoveAll(
+			var tank = ScriptHelpers.Tank;
+
+	        var ignoreTrashWhileKiting = ScriptHelpers.IsBossAlive("Makogg Emberblade") && !ScriptHelpers.IsBossAlive("Fleshrender Nok'gar");
+
+			units.RemoveAll(
                 ret =>
                 {
                     var unit = ret as WoWUnit;
@@ -57,7 +63,19 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                     if (unit.Entry == MobId_Bombsquad)
                         return true;
 
-                    return false;
+					if (ignoreTrashWhileKiting && unit.Combat && unit.IsTargetingMyPartyMember && (tank == null || !tank.IsMe))
+					{
+						if (tank == null || _shouldIgnoreTrash)
+							return true;
+
+						if (!tank.IsMe)
+						{
+							var meleeRange = unit.MeleeRange();
+							if (tank.Location.DistanceSqr(unit.Location) > meleeRange * meleeRange)
+								return true;
+						}
+					}
+					return false;
                 });
         }
 
@@ -72,7 +90,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
         public override void WeighTargetsFilter(List<Targeting.TargetPriority> units)
         {
-            var isDps = Me.IsDps();
+            var isDps = Me.IsDps;
             var isRangeDps = isDps && Me.IsRange();
             var isMeleeDps = isDps && !isRangeDps;
 
@@ -112,13 +130,47 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             }
         }
 
+		public override void RemoveHealTargetsFilter(List<WoWObject> objects)
+		{
+			objects.RemoveAll(
+				ret =>
+				{
+					// Don't heal anyone while ignoring trash inorder to avoid getting aggro.
+					if (_shouldIgnoreTrash)
+						return true;
+					return false;
+				});
+		}
 
-        #endregion
+		#endregion
 
-        private static LocalPlayer Me { get { return StyxWoW.Me; } }
+
+		private readonly PerFrameCachedValue<bool> _shouldIgnoreTrash = new PerFrameCachedValue<bool>(() =>
+		{
+			var tank = ScriptHelpers.Tank;
+			return tank != null && (tank.Mounted ||
+									tank.TransportGuid.IsValid && tank.Transport.Entry == MobId_IronStar);
+		});
+
+		private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         #region Root
 
+		[EncounterHandler(0, "Root Handler")]
+		public Func<WoWUnit, Task<bool>> RootHandler()
+		{
+			return async npc =>
+			{
+				// mount up whenever group members are mounted.
+				if (!Me.Mounted && Mount.CanMount() && Me.PartyMembers.Any(p => p.Mounted))
+				{
+					// Add a random pause to prevent all bots in dungeon to simultaneously mount up.
+					await Coroutine.Sleep(StyxWoW.Random.Next(0, 3000));
+					return await CommonCoroutines.SummonGroundMount(WoWPoint.Zero);
+				}
+				return false;
+			};
+		}
 
         #endregion
 
@@ -228,7 +280,8 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             return async npc => false;
         }
 
-	    [EncounterHandler(81247, "Iron Star", Mode = CallBehaviorMode.Proximity, BossRange = 100)]
+		private const uint MobId_IronStar = 81247;
+		[EncounterHandler(MobId_IronStar, "Iron Star", Mode = CallBehaviorMode.Proximity, BossRange = 100)]
 	    public Func<WoWUnit, Task<bool>> IronStarEncounter()
 	    {
 	        return async ironStar =>
@@ -245,13 +298,18 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 	                return false;
 	            }
 
-	            if (!Me.IsTank())
-	                return false;
+		        if (Me.PartyMembers.Any(p => !p.IsMe && p.TransportGuid == ironStar.Guid))
+			        return false;
 
-	            if (ironStar.DistanceSqr < 40*40 && await ScriptHelpers.InteractWithObject(ironStar))
+				// if I'm not in combat but group is, let the group interact with Iron Star to cause combat to drop.
+		        var groupInCombat = Me.PartyMembers.Any(p => p.Combat);
+		        if (!Me.Combat && (groupInCombat || !Me.IsTank()))
+			        return false;
+
+	            if ((Me.Combat || ironStar.DistanceSqr < 40*40) && await ScriptHelpers.InteractWithObject(ironStar, ignoreCombat:true))
 	                return true;
-                ScriptHelpers.SetLeaderMoveToPoi(ironStar.Location);
 
+                ScriptHelpers.SetLeaderMoveToPoi(ironStar.Location);
 	            return false;
 	        };
 	    }

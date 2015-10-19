@@ -1,71 +1,17 @@
 New features:
 --------------
   * Core
-    - Updates to Protected Items: Felblight (HB-2569)
-
-    - Added to ForceMail: Abyssal Gulper Eel Flesh, Blackwater Whiptail Flesh, Blind Lake Sturgen Flesh, Crescent Saberfish Flesh, Fat Sleeper Fleh, Fire Ammonite Tentacle, Jawless Skulker Flesh, Sea Scorpion Segment (HB-2570)
-
-  * QuestBehaviour
-    - RunLua now supports GoalText in a similar fashion to RunMacro (HB-2255)
-
-Api Changes:
---------------
-    - Add WoWSpell.GetChargeInfo (HB-1695)
-
-    - Added WoWSpell.RuneCosts, WoWSpell.GetPowerCost, WoWSpell.GetPowerCostPerSecond and WoWSpell.GetDetailedPowerCosts (HB-1475)
-
-    - Added missing quest objective types. (HB-1257)
-
-    - Old glyph APIs have been obsoleted and a new GetGlyphSockets API has been added to replace them. (HB-1719)
+    - Honorbuddy's compiler now supports C# 6.0 features. (HB-2627)
 
 Bug fixes:
 --------------
-  * ARelog
-    - ARelog now takes trial account status into account (HB-2110)
-
-  * Character Manager
-    - Auto Equip will no longer consider tournament gear (HB-1629)
-
-    - All default class profiles now include tier 7 talents. This means level 100 talents will now be selected automatically, when Select Talents is enabled. (HB-1863)
-
-  * Core
-    - Skinning should be properly working now when there is more then two mobs to skin. This also fixes the issue of pulling more mobs when there are still skinnables around. (HB-1592)
-
   * DungeonBuddy
-    - Fixed a bug that sometimes caused toon to get stuck at the Shadowfang Keep entrance (HB-2446)
+    - The number of deaths is now updated in the Info tab (HB-2637)
 
-    - Dire Maul - Gordok Commons: Bot will now take cleared path at entrance when joining up with group members (HB-2508)
+    - ScriptHelpers.MoveInsideBossRoom has tank no longer wait for group members to enter room if they are busy dealing with aggro. (HB-2636)
 
-  * GarrisonBuddy
-    - Updated to work with changes from WoW 6.2 (HB-2531)
-
-  * Gatherbuddy
-    - Fixed a rare bug where GB might stop running randomly while moving to next hotspot (HB-2576)
-
-  * Navigation
-    - Bot will now path around the center part of Ashran when navigating from Warspear to mainland Draenor. (HB-2214)
-
-    - Taxi rides now works from Tanaan Jungle to other Draenor zones. (HB-2537)
-
-    - Fixed an issue where the garrion navigator was used while not on a map with a garrion. This bug reared its ugly head whenever bot zoned into Shadowmoon Burial Grounds after accepting a queue while in a garrison. (HB-2572)
-
-  * Plugin
-    - BuddyControlPanel: Fixed a deadlock that occurred when executing the 'Game Client Logout' menu option. (HB-2397)
-
-  * Profile
-    - Bot should now check the player's Z coordinate before attempting to rappel off the Horde gunship for the quest Touching Ground(31766) (HB-1331)
-
-    - Bot should no longer attempt to vend to Thaelin Darkanvil if the player has chosen the Lumbermill. (HB-2386)
-
-    - For the quest The Pools of Youth(30128), the bot should now wait to interact with Na Lek if the event has been completed prior to the bot arriving to the location.  (HB-2492)
-
-    - Applied Cloudys contributions to the 86-87 Valley of the Four Winds profile. (HB-2571)
-
-  * QuestBehaviour
-    - Fixed an IndexOutOfRange exception in the Blastranaar Quest Behaviour (HB-2526)
-
-    - Fixed quest Mr. D's Wild Ride's quest behaviour (HB-2511)
+    - Fixed the boss step orders for all dungeons whose step order changed in WoW 6.2.2 (HB-2622)
 
   * Questing
-    - CombatRoutine Capabilities are now reset whenever bot is stopped or new profile is loaded (HB-1637)
+    - Garrison Missive type repeatable quests' completion status are no longer cached. (HB-2630)
 

@@ -39,7 +39,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 	    public override WoWPoint Entrance
 	    {
-            get { return new WoWPoint(7882.053, 565.3205, 123.8254); }
+            get { return new WoWPoint(7896.528, 570.6317, 123.8121); }
 	    }
 
 	    public override void RemoveTargetsFilter(List<WoWObject> units)
@@ -393,15 +393,19 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
                 && (o.ToPlayer().HasAura("Lava Wreath") || Me.HasAura("Lava Wreath")));
 	        return async boss => false;
 	    }
-        
-        [ScenarioStage(2, "Board the Grimrail", 1)]
-        public Func<ScenarioStage, Task<bool>> BoardLogicGrimrailLogic()
-        {
-            var stageLoc = new WoWPoint(1680.294f, 1561.311f, 54.72749f);
-            return async boss => ScriptHelpers.SetLeaderMoveToPoi(stageLoc);
-        }
 
-	    #endregion
+
+		[EncounterHandler((int) MobId_NitroggThundertower, "Nitrogg Thundertower", Mode = CallBehaviorMode.CurrentBoss)]
+		public Func<WoWUnit, Task<bool>> MoveToNitroggThundertowerEncounter()
+		{
+			var stageLoc = new WoWPoint(1680.294f, 1561.311f, 54.72749f);
+			return
+				async boss =>
+					ScenarioInfo.Current.CurrentStageNumber == 2 && !ScenarioInfo.Current.CurrentStage.GetCriteria(3).IsComplete &&
+					ScriptHelpers.SetLeaderMoveToPoi(stageLoc);
+		}
+
+		#endregion
 
 		private readonly HashSet<uint> _nitgroggTrash = new HashSet<uint>()
 											  {
@@ -964,9 +968,16 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
             };
         }
 
-        #endregion
+		// Core of Iron. Contributed by Aion
+		[ObjectHandler(233775, "Engine Access", ObjectRange = 50)]
+		public async Task<bool> EngineAccessHandler(WoWGameObject gObj)
+		{
+			return await SafeInteractWithGameObject(gObj, 35);
+		}
 
-    }
+		#endregion
+
+	}
 
 	#endregion
 

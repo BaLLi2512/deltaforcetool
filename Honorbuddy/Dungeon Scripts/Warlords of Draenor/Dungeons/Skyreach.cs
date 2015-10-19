@@ -40,7 +40,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 
 	    public override WoWPoint Entrance
 	    {
-            get { return new WoWPoint(28.13581, 2526.396, 103.606); }
+            get { return new WoWPoint(22.00776, 2522.445, 104.4983); }
 	    }
 
         // Must talk to Shadow-Sage Iskar (Id: 82376) and click the confirmation popup to exit. 

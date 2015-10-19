@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<DungeonBuddyProfile>
+<DungeonBuddyProfile xsi:noNamespaceSchemaLocation="../../DungeonbuddyProfile.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>The Crown Chemical Co</Name>
   <DungeonId>288</DungeonId>
   <BossEncounters>
