@@ -387,14 +387,15 @@
                        ItemId="58501" />
 		</If>
 		<If Condition="HasQuest(26410) &amp;&amp; IsQuestCompleted(26410)">
-			<CustomBehavior File="FlyTo" X="846.4485" Y="676.6024" Z="-69.31956" />
+			<CustomBehavior File="FlyTo" Land="true" X="846.4485" Y="676.6024" Z="-69.31956" />
 		</If>
 		<TurnIn QuestName="Explosive Bonding Compound" TurnInName="Initiate Goldmine" QuestId="26410" TurnInId="42574" />
 		<TurnIn QuestName="Something that Burns" TurnInName="Initiate Goldmine" QuestId="27135" TurnInId="42574" />
 		<PickUp QuestName="Apply and Flash Dry" GiverName="Initiate Goldmine" QuestId="26411" GiverId="42574" />
 		<While Condition="HasQuest(26411) &amp;&amp; !IsQuestCompleted(26411)">
+			<CustomBehavior File="FlyTo" Land="true" X="846.4485" Y="676.6024" Z="-69.31956" />
 			<CustomBehavior File="ForcedDismount" />
-			<CustomBehavior File="InteractWith" QuestId="26411" MobId="43036" InteractByUsingItemId="58502"
+			<CustomBehavior File="InteractWith" QuestId="26411" MobId="43036" InteractByUsingItemId="58502" PreInteractMountStrategy="DismountOrCancelShapeshift" 
                             CollectionDistance="50" X="845.4846" Y="677.6641" Z="-69.33977" />
 		</While>
 		<TurnIn QuestName="Apply and Flash Dry" TurnInName="Initiate Goldmine" QuestId="26411" TurnInId="42574" />
@@ -1382,17 +1383,20 @@
 		</If>
 		<TurnIn QuestName="Stonefather's Boon" TurnInName="Crag Rockcrusher" QuestId="26499" TurnInId="43071"
                 X="459.53" Y="1628.21" Z="352.1236" />
-		<PickUp QuestName="Sealing the Way" GiverName="Crag Rockcrusher" QuestId="26501" GiverId="43071"
+		<PickUp Nav="Fly" QuestName="Sealing the Way" GiverName="Crag Rockcrusher" QuestId="26501" GiverId="43071"
                 X="459.53" Y="1628.21" Z="352.1236" />
 		<TurnIn QuestName="We're Surrounded" TurnInName="Earthbreaker Dolomite" QuestId="26500" TurnInId="43160"
                 X="428.764" Y="1613.22" Z="360.7727" />
 		<PickUp QuestName="Thunder Stones" GiverName="Earthbreaker Dolomite" QuestId="26502" GiverId="43160" />
 		<Objective QuestName="Thunder Stones" QuestId="26502" Type="CollectItem" CollectCount="12" ItemId="58886" />
 		<DisableBehavior Name="Loot" />
-		<If Condition="HasQuest(26501) &amp;&amp; !IsQuestCompleted(26501)">
-			<MoveTo X="454.4053" Y="1633.561" Z="350.9009" />
+		<While Condition="HasQuest(26501) &amp;&amp; !IsQuestCompleted(26501)">
+			<CustomBehavior File="FlyTo" Land="true" DestName="Sealing the Way" X="459.53" Y="1628.21" Z="352.1236" />
+			<CustomBehavior File="ForcedDismount" />
+			<UseMount Value="false" />
 			<CustomBehavior File="SpecificQuests\26501-Deepholm-SealingTheWay" />
-		</If>
+		</While>
+		<UseMount Value="true" />
 		<If Condition="HasQuest(26502) &amp;&amp; IsQuestCompleted(26502)">
 			<CustomBehavior File="FlyTo" X="687.361" Y="1795.531" Z="333.4402" />
 			<CustomBehavior File="ForcedDismount" />
@@ -2166,7 +2170,7 @@
 				<CustomBehavior File="FlyTo" Land="true" X="419.754" Y="950.9629" Z="72.1451" />
 				<While Condition="!IsQuestCompleted(27040)">
 					<CustomBehavior File="InteractWith" QuestId="27040" MobId="205145" Range="7"
-                                    NonCompeteDistance="5" PreInteractMountStrategy="Dismount"
+                                    NonCompeteDistance="5" CollectionDistance="200" PreInteractMountStrategy="Dismount"
                                     X="419.754" Y="950.9629" Z="72.1451" />
 				</While>
 			</If>
@@ -2187,8 +2191,8 @@
 				</While>
 
 				<While Condition="!IsObjectiveComplete(2,27042)">
-					<CustomBehavior File="FlyTo" Land="true" X="537.2458" Y="976.4224" Z="78.05692" />
-					<CustomBehavior File="InteractWith" QuestId="27042" WaitForNpcs="false" MobId="44886" Range="10"
+					<CustomBehavior File="FlyTo" Land="true" DestName="Bound Water Elemental" X="537.3099" Y="972.6816" Z="78.05296" />
+					<CustomBehavior File="InteractWith" QuestId="27042" WaitForNpcs="false" MobId="44886" Range="5"
                                     X="537.2458" Y="976.4224" Z="78.05692" />
 					<!-- Water -->
 				</While>

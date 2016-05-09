@@ -62,8 +62,8 @@ namespace Honorbuddy.Quest_Behaviors.Hooks
 
 
         // DON'T EDIT THESE--they are auto-populated by Subversion
-        public override string SubversionId { get { return ("$Id: MountHook.cs 2082 2015-07-10 16:32:19Z mainhaxor $"); } }
-        public override string SubversionRevision { get { return ("$Revision: 2082 $"); } }
+        public override string SubversionId { get { return ("$Id: MountHook.cs 2170 2016-04-22 09:55:59Z Dogan $"); } }
+        public override string SubversionRevision { get { return ("$Revision: 2170 $"); } }
 
 		private bool _state;
 
@@ -73,16 +73,6 @@ namespace Honorbuddy.Quest_Behaviors.Hooks
 		{
 			get { return (StyxWoW.Me); }
 		}
-
-
-        private const int SpellId_ApprenticeRiding = 33388;//20
-        private const int SpellId_JourneyManRiding = 33391;//40
-        private const int SpellId_ExpertRiding = 34090;//60
-        private const int SpellId_ArtisanRiding = 34091; // 70
-        private const int SpellId_MasterFlying = 90265;// 80
-
-		private const int ColdWeatherFlying = 54197;//68
-		private const int FlightMastersLic = 90267;//60
 
 		private readonly ProfileHelperFunctionsBase ProfileHelpers = new ProfileHelperFunctionsBase();
 
@@ -331,7 +321,9 @@ namespace Honorbuddy.Quest_Behaviors.Hooks
 			if (Me.HearthstoneAreaId != AreaId_StormwindInnkeeper)
 			{
 				TreeRoot.StatusText = "Moving to set hearth at SW Innkeeper";
-				await UtilityCoroutine.Gossip(MobId_InnkeeperAllison, _stormwindInnkeeperLoc);
+				await
+					UtilityCoroutine.Gossip(MobId_InnkeeperAllison, _stormwindInnkeeperLoc,
+					                        gossipEntryType: GossipEntry.GossipEntryType.Binder);
 				return true;
 			}
 			switch (Me.Race)
@@ -506,7 +498,8 @@ namespace Honorbuddy.Quest_Behaviors.Hooks
 			if (Me.HearthstoneAreaId != AreaId_OrgrimmarInnkeeper)
 			{
 				TreeRoot.StatusText = "Moving to set hearth at Org Innkeeper";
-				await UtilityCoroutine.Gossip(MobId_InnkeeperGryshka, _orgrimmarInnkeeperLoc);
+				await UtilityCoroutine.Gossip(MobId_InnkeeperGryshka, _orgrimmarInnkeeperLoc,
+				                              gossipEntryType: GossipEntry.GossipEntryType.Binder);
 				return true;
 			}
 

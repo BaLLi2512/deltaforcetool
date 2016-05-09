@@ -10,6 +10,7 @@
      *not* allow nesting comments.
      -->
 
+
 	<!-- ========== Harvests (alphabetically) ========== -->
 	<!-- Harvests: Cloth & Spider's Silk (ordered by level, then alphabetically) -->
 	<Item Name="Linen Cloth" Entry="2589" />
@@ -101,6 +102,10 @@
 	<Item Name="Spirit of Summer" Entry="76057" />
 	<Item Name="Spirit of Winter" Entry="76058" />
 	<Item Name="Splinter of Hate" Entry="90637" />
+	<Item Name="Sorcerous Air" Id="113264" />	
+	<Item Name="Sorcerous Earth" Id="113263" />	
+	<Item Name="Sorcerous Fire" Id="113261" />	
+	<Item Name="Sorcerous Water" Id="113262" />
 
 	<!-- Harvests: Gems (ordered by level, then alphabetically) -->
 	<Item Name="Blood Shard" Entry="5075" />
@@ -176,108 +181,206 @@
 	<Item Name="Roguestone" Entry="76135" />
 	<Item Name="Alexandrite" Entry="76137" />
 	<Item Name="Pandarian Garnet" Entry="76136" />
+	<!-- Warlords of Draenor -->
+	<Item Name="Stamina Taladite" Id="115808" />
+	<Item Name="Greater Stamina Taladite" Id="115815" />
+	<Item Name="Multistrike Taladite" Id="115806" />
+	<Item Name="Greater Multistrike Taladite" Id="115813" />
+	<Item Name="Critical Strike Taladite" Id="115803" />
+	<Item Name="Greater Critical Strike Taladite" Id="115809" />
+	<Item Name="Mastery Taladite" Id="115805" />
+	<Item Name="Greater Mastery Taladite" Id="115812" />
+	<Item Name="Versatility Taladite" Id="115807" />
+	<Item Name="Greater Versatility Taladite" Id="115814" />
+	<Item Name="Haste Taladite" Id="115804" />
+	<Item Name="Greater Haste Taladite" Id="115811" />
 
 	<!-- Harvests: Herbs (ordered by level) -->
-	<Item Name="Bloodthistle" Entry="22710" />
-	<Item Name="Peacebloom" Entry="2447" />
-	<Item Name="Silverleaf" Entry="765" />
-	<Item Name="Earthroot" Entry="2449" />
-	<Item Name="Mageroyal" Entry="785" />
-	<Item Name="Briarthorn" Entry="2450" />
-	<Item Name="Swiftthistle" Entry="2452" />
-	<Item Name="Bruiseweed" Entry="2453" />
-	<Item Name="Stranglekelp" Entry="3820" />
-	<Item Name="Grave Moss" Entry="3369" />
-	<Item Name="Wild Steelbloom" Entry="3355" />
-	<Item Name="Kingsblood" Entry="3356" />
-	<Item Name="Liferoot" Entry="3357" />
-	<Item Name="Fadeleaf" Entry="3818" />
-	<Item Name="Goldthorn" Entry="3821" />
-	<Item Name="Khadgar's Whisker" Entry="3358" />
-	<Item Name="Wintersbite" Entry="3819" />
-	<Item Name="Wildvine" Entry="8153" />
-	<Item Name="Firebloom" Entry="4625" />
-	<Item Name="Purple Lotus" Entry="8831" />
-	<Item Name="Arthas' Tears" Entry="8836" />
-	<Item Name="Sungrass" Entry="8838" />
-	<Item Name="Blindweed" Entry="8839" />
-	<Item Name="Ghost Mushroom" Entry="8845" />
-	<Item Name="Gromsblood" Entry="8846" />
-	<Item Name="Golden Sansam" Entry="13464" />
-	<Item Name="Dreamfoil" Entry="13463" />
-	<Item Name="Flame Cap" Entry="22788" />
-	<Item Name="Mountain Silversage" Entry="13465" />
-	<Item Name="Plaguebloom" Entry="13466" />
-	<Item Name="Icecap" Entry="13467" />
-	<Item Name="Black Lotus" Entry="13468" />
-	<Item Name="Bloodvine" Entry="19726" />
-	<Item Name="Dreaming Glory" Entry="22786" />
-	<Item Name="Felweed" Entry="22785" />
-	<Item Name="Nightmare Seed" Entry="22797" />
-	<Item Name="Terocone" Entry="22789" />
-	<Item Name="Ragveil" Entry="22787" />
-	<Item Name="Ancient Lichen" Entry="22790" />
-	<Item Name="Fel Lotus" Entry="22794" />
-	<Item Name="Mana Thistle" Entry="22793" />
-	<Item Name="Netherbloom" Entry="22791" />
-	<Item Name="Nightmare Vine" Entry="22792" />
-	<Item Name="Deadnettle" Entry="37921" />
-	<Item Name="Goldclover" Entry="36901" />
-	<Item Name="Talandra's Rose" Entry="36907" />
-	<Item Name="Tiger Lily" Entry="36904" />
-	<Item Name="Adder's Tongue" Entry="36903" />
-	<Item Name="Stormvine" Entry="202748" />
-	<Item Name="Lichbloom" Entry="36905" />
-	<Item Name="Cinderbloom" Entry="52983" />
-	<Item Name="Azshara's Veil" Entry="52985" />
-	<Item Name="Icethorn" Entry="36906" />
-	<Item Name="Frost Lotus" Entry="36908" />
-	<Item Name="Heartblossom" Entry="52986" />
-	<Item Name="Whiptail" Entry="52988" />
-	<Item Name="Twilight Jasmine" Entry="52987" />
-	<Item Name="Green Tea Leaf" Entry="72234" />
-	<Item Name="Rain Poppy" Entry="72237" />
-	<Item Name="Silkweed" Entry="72235" />
-	<Item Name="Golden Lotus" Entry="72238" />
-	<Item Name="Snow Lily" Entry="79010" />
+	<!-- Classic -->
+	<Item Name="Bloodthistle" Id="22710" />
+	<Item Name="Bloodthistle Petal" Id="23501" />
+	<Item Name="Peacebloom" Id="2447" />
+	<Item Name="Silverleaf" Id="765" />
+	<Item Name="Earthroot" Id="2449" />
+	<Item Name="Earthroot Stem" Id="108319" />
+	<Item Name="Mageroyal" Id="785" />
+	<Item Name="Mageroyal Petal" Id="108318" />
+	<Item Name="Briarthorn" Id="2450" />
+	<Item Name="Briarthorn Bramble" Id="108320" />
+	<Item Name="Swiftthistle" Id="2452" />
+	<Item Name="Swiftthistle Leaf" Id="108321" />
+	<Item Name="Bruiseweed" Id="2453" />
+	<Item Name="Bruiseweed Stem" Id="108322" />
+	<Item Name="Stranglekelp" Id="3820" />
+	<Item Name="Stranglekelp Blade" Id="108330" />
+	<Item Name="Grave Moss" Id="3369" />
+	<Item Name="Grave Moss Leaf" Id="108327" />
+	<Item Name="Wild Steelbloom" Id="3355" />
+	<Item Name="Wild Steelbloom Petal" Id="108323" />
+	<Item Name="Kingsblood" Id="3356" />
+	<Item Name="Kingsblood Petal" Id="108324" />
+	<Item Name="Liferoot" Id="3357" />
+	<Item Name="Liferoot Stem" Id="108325" />
+	<Item Name="Fadeleaf" Id="3818" />
+	<Item Name="Fadeleaf Petal" Id="108328" />
+	<Item Name="Goldthorn" Id="3821" />
+	<Item Name="Goldthorn Bramble" Id="108331" />
+	<Item Name="Khadgar's Whisker" Id="3358" />
+	<Item Name="Khadgar's Whisker Stem" Id="108326" />
+	<Item Name="Wintersbite" Id="3819" />
+	<Item Name="Wildvine" Id="8153" />
+	<Item Name="Firebloom" Id="4625" />
+	<Item Name="Firebloom Petal" Id="108332" />
+	<Item Name="Purple Lotus" Id="8831" />
+	<Item Name="Purple Lotus Petal" Id="108333" />
+	<Item Name="Arthas' Tears" Id="8836" />
+	<Item Name="Arthas' Tears Petal" Id="108334" />
+	<Item Name="Sungrass" Id="8838" />
+	<Item Name="Sungrass Stalk" Id="108335" />
+	<Item Name="Blindweed" Id="8839" />
+	<Item Name="Blindweed Stem" Id="108336" />
+	<Item Name="Ghost Mushroom" Id="8845" />
+	<Item Name="Ghost Mushroom Cap" Id="108337" />
+	<Item Name="Gromsblood" Id="8846" />
+	<Item Name="Gromsblood Leaf" Id="108338" />
+	<Item Name="Golden Sansam" Id="13464" />
+	<Item Name="Golden Sansam Leaf" Id="108340" />
+	<Item Name="Dreamfoil" Id="13463" />
+	<Item Name="Dreamfoil Blade" Id="108339" />
+	<Item Name="Flame Cap" Id="22788" />
+	<Item Name="Mountain Silversage" Id="13465" />
+	<Item Name="Mountain Silversage Stalk" Id="108341" />
+	<Item Name="Plaguebloom" Id="13466" />
+	<Item Name="Icecap" Id="13467" />
+	<Item Name="Icecap Petal" Id="108343" />
+	<Item Name="Black Lotus" Id="13468" />
+	<!-- Burning Crusade -->
+	<Item Name="Dreaming Glory" Id="22786" />
+	<Item Name="Dreaming Glory Petal" Id="108345" />
+	<Item Name="Felweed" Id="22785" />
+	<Item Name="Felweed Stalk" Id="108344" />
+	<Item Name="Nightmare Seed" Id="22797" />
+	<Item Name="Ragveil" Id="22787" />
+	<Item Name="Ragveil Cap" Id="108346" />
+	<Item Name="Terocone" Id="22789" />
+	<Item Name="Terocone Leaf" Id="108347" />
+	<Item Name="Ancient Lichen" Id="22790" />
+	<Item Name="Ancient Lichen Petal" Id="108348" />
+	<Item Name="Fel Lotus" Id="22794" />
+	<Item Name="Mana Thistle" Id="22793" />
+	<Item Name="Mana Thistle Leaf" Id="108351" />
+	<Item Name="Netherbloom" Id="22791" />
+	<Item Name="Netherbloom Leaf" Id="108349" />
+	<Item Name="Nightmare Vine" Id="22792" />
+	<Item Name="Nightmare Vine Stem" Id="108350" />
+	<Item Name="Deadnettle" Id="37921" />
+	<Item Name="Deadnettle Bramble" Id="108358" />
+	<Item Name="Goldclover" Id="36901" />
+	<Item Name="Goldclover Leaf" Id="108352" />
+	<Item Name="Talandra's Rose" Id="36907" />
+	<Item Name="Talandra's Rose Petal" Id="108357" />
+	<Item Name="Tiger Lily" Id="36904" />
+	<Item Name="Tiger Lily Petal" Id="108354" />
+	<Item Name="Adder's Tongue" Id="36903" />
+	<Item Name="Adder's Tongue Stem" Id="108353" />
+	<!-- Lich King -->
+	<Item Name="Fire Leaf" Id="39970" />
+	<Item Name="Fire Leaf Bramble" Id="108359" />
+	<Item Name="Stormvine" Id="52984" />
+	<Item Name="Stormvine Stalk" Id="108361" />
+	<Item Name="Lichbloom" Id="36905" />
+	<Item Name="Lichbloom Stalk" Id="108355" />
+	<Item Name="Cinderbloom" Id="52983" />
+	<Item Name="Cinderbloom Petal" Id="108360" />
+	<Item Name="Azshara's Veil" Id="52985" />
+	<Item Name="Azshara's Veil Stem" Id="108362" />
+	<Item Name="Icethorn" Id="36906" />
+	<Item Name="Icethorn Bramble" Id="108356" />
+	<Item Name="Frost Lotus" Id="36908" />
+	<Item Name="Heartblossom" Id="52986" />
+	<Item Name="Heartblossom Petal" Id="108363" />
+	<Item Name="Whiptail" Id="52988" />
+	<Item Name="Whiptail Stem" Id="108365" />
+	<Item Name="Twilight Jasmine" Id="52987" />
+	<Item Name="Twilight Jasmine Petal" Id="108364" />
+	<!-- Cataclysm / Mists of Panderia -->
+	<Item Name="Green Tea Leaf" Id="72234" />
+	<Item Name="Torn Green Tea Leaf" Id="97619" />
+	<Item Name="Rain Poppy" Id="72237" />
+	<Item Name="Rain Poppy Petal" Id="97620" />
+	<Item Name="Silkweed" Id="72235" />
+	<Item Name="Silkweed Stem" Id="97621" />
+	<Item Name="Golden Lotus" Id="72238" />
+	<Item Name="Snow Lily" Id="79010" />
 	<Item Name="Snow Lily Petal" Id="97622" />
-	<Item Name="Fool's Cap" Entry="79011" />
+	<Item Name="Fool's Cap" Id="79011" />
 	<Item Name="Fool's Cap Spores" Id="97623" />
 	<Item Name="Desecrated Herb" Entry="89639" />
 	<Item Name="Desecrated Herb Pod" Entry="97624" />
+	<!-- Warlords of Draenor -->
+	<Item Name="Frostweed" Id="109124" />
+	<Item Name="Broken Frostweed Stem" Id="109624" />
+	<Item Name="Fireweed" Id="109125" />	
+	<Item Name="Broken Fireweed Stem" Id="109625" />
+	<Item Name="Gorgrond Flytrap" Id="109126" />
+	<Item Name="Gorgrond Flytrap Ichor" Id="109626" />
+	<Item Name="Starflower" Id="109127" />
+	<Item Name="Starflower Petal" Id="109627" />
+	<Item Name="Nagrand Arrowbloom" Id="109128" />
+	<Item Name="Nagrand Arrowbloom Petal" Id="109628" />
+	<Item Name="Talador Orchid" Id="109129" />
+	<Item Name="Talador Orchid Petal" Id="109629" />
+	<Item Name="Chameleon Lotus" Id="109130" />
+
+	<Item Name="Draenic Seeds" Id="116053" />
 
 
 	<!-- Harvests: Leather & Pelts-mainstream (ordered by level) -->
-	<Item Name="Ruined Leather Scraps" Entry="2934" />
-	<Item Name="Light Hide" Entry="783" />
-	<Item Name="Light Leather" Entry="2318" />
-	<Item Name="Medium Hide" Entry="4232" />
-	<Item Name="Medium Leather" Entry="2319" />
-	<Item Name="Heavy Hide" Entry="4235" />
-	<Item Name="Heavy Leather" Entry="4234" />
-	<Item Name="Deeprock Salt" Entry="8150" />
-	<Item Name="Thick Hide" Entry="8169" />
-	<Item Name="Thick Leather" Entry="4304" />
-	<Item Name="Rugged Hide" Entry="8171" />
-	<Item Name="Rugged Leather" Entry="8170" />
-	<Item Name="Enchanted Leather" Entry="12810" />
-	<Item Name="Crystal Infused Leather" Entry="25699" />
-	<Item Name="Knothide Leather" Entry="21887" />
-	<Item Name="Knothide Leather Scraps" Entry="25649" />
-	<Item Name="Thick Clefthoof Leather" Entry="25708" />
-	<Item Name="Heavy Knothide Leather" Entry="23793" />
-	<Item Name="Borean Leather" Entry="33568" />
-	<Item Name="Borean Leather Scraps" Entry="33567" />
-	<Item Name="Arctic Fur" Entry="44128" />
-	<Item Name="Heavy Borean Leather" Entry="38425" />
-	<Item Name="Savage Leather" Entry="52976" />
+	<!-- Classic -->
+	<Item Name="Ruined Leather Scraps" Id="2934" />
+	<Item Name="Light Hide" Id="783" />
+	<Item Name="Light Leather" Id="2318" />
+	<Item Name="Medium Hide" Id="4232" />
+	<Item Name="Medium Leather" Id="2319" />
+	<Item Name="Heavy Hide" Id="4235" />
+	<Item Name="Heavy Leather" Id="4234" />
+	<Item Name="Deeprock Salt" Id="8150" />
+	<Item Name="Thick Hide" Id="8169" />
+	<Item Name="Thick Leather" Id="4304" />
+	<Item Name="Rugged Hide" Id="8171" />
+	<Item Name="Rugged Leather" Id="8170" />
+	<Item Name="Enchanted Leather" Id="12810" />
+	<Item Name="Crystal Infused Leather" Id="25699" />
+	<Item Name="Patch of Crystal Infused Leather" Id="112180" />
+	<!-- Burning Crusade -->
+	<Item Name="Knothide Leather" Id="21887" />
+	<Item Name="Knothide Leather Scraps" Id="25649" />
+	<Item Name="Thick Clefthoof Leather" Id="25708" />
+	<Item Name="Patch of Thick Clefthoof Leather" Id="112179" />
+	<Item Name="Heavy Knothide Leather" Id="23793" />
+	<!-- Lich King -->
+	<Item Name="Borean Leather" Id="33568" />
+	<Item Name="Borean Leather Scraps" Id="33567" />
+	<Item Name="Arctic Fur" Id="44128" />
+	<Item Name="Heavy Borean Leather" Id="38425" />
+	<!-- Cataclysm -->
+	<Item Name="Savage Leather" Id="52976" />
 	<Item Name="Savage Leather Scraps" Id="52977" />
-	<Item Name="Heavy Savage Leather" Entry="56516" />
-	<Item Name="Pristine Hide" Entry="52980" />
-	<Item Name="Heavy Exotic Leather" Entry="80221" />
-	<Item Name="Sha-Touched Leather" Entry="72162" />
-	<Item Name="Exotic Leather" Entry="72120" />
-	<Item Name="Magnificent Hide" Entry="72163" />
+	<Item Name="Heavy Savage Leather" Id="56516" />
+	<Item Name="Pristine Hide" Id="52980" />
+	<Item Name="Heavy Exotic Leather" Id="80221" />
+	<!-- Mists of Panderia -->
+	<Item Name="Sha-Touched Leather" Id="72162" />
+	<Item Name="Exotic Leather" Id="72120" />
+	<Item Name="Magnificent Hide" Id="72163" />
+	<Item Name="Hardened Magnificent Hide" Id="98617" />
+	<!-- Warlords of Draenor -->
+	<Item Name="Raw Beast Hide" Id="110609" />
+	<Item Name="Raw Beast Hide" Id="115002" />
+	<Item Name="Raw Beast Hide Scraps" Id="110610"/>
+	<Item Name="Raw Beast Hide Scraps" Id="159069"/>
+	<Item Name="Burnished Leather" Id="110611"/>
+	<Item Name="Sumptuous Fur" Id="111557" />
 
 	<!-- Harvests: Leather & Pelts-exotics (ordered by level) -->
 	<Item Name="Black Whelp Scale" Entry="7286" />
@@ -319,32 +422,67 @@
 	<Item Name="Deepsea Scale" Entry="52982" />
 	<Item Name="Prismatic Scale" Entry="79101" />
 
+	<!-- Harvests: Misc -->
+	<!-- Warlords of Draenor -->
+	<Item Name="Draenic Dust" Id="109693" />
+	<Item Name="Temporal Crystal" Id="113588" />
+	<Item Name="Fractured Temporal Crystal" Id="115504" />
+	<Item Name="Felblight" Id="127759" /> 
+
 	<!-- Harvests: Ore-mainstream (ordered by level) -->
-	<Item Name="Copper Ore" Entry="2770" />
-	<Item Name="Tin Ore" Entry="2771" />
-	<Item Name="Silver Ore" Entry="2775" />
-	<Item Name="Iron Ore" Entry="2772" />
-	<Item Name="Gold Ore" Entry="2776" />
-	<Item Name="Mithril Ore" Entry="3858" />
-	<Item Name="Truesilver Ore" Entry="7911" />
-	<Item Name="Thorium Ore" Entry="10620" />
-	<Item Name="Dark Iron Ore" Entry="11370" />
-	<Item Name="Fel Iron Ore" Entry="23424" />
-	<Item Name="Elementium Ore" Entry="18562" />
-	<Item Name="Adamantite Ore" Entry="23425" />
-	<Item Name="Eternium Ore" Entry="23427" />
-	<Item Name="Cobalt Ore" Entry="36909" />
-	<Item Name="Khorium Ore" Entry="23426" />
-	<Item Name="Saronite Ore" Entry="36912" />
-	<Item Name="Titanium Ore" Entry="36910" />
-	<Item Name="Obsidium Ore" Entry="53038" />
-	<Item Name="Elementium Ore" Entry="52185" />
-	<Item Name="Pyrite Ore" Entry="52183" />
-	<Item Name="Ghost Iron Ore" Entry="72092" />
-	<Item Name="Black Trillium Ore" Entry="72094" />
-	<Item Name="White Trillium Ore" Entry="72103" />
-	<Item Name="Kyparite" Entry="72093" />
+	<!-- Classic -->
+	<Item Name="Copper Ore" Id="2770" />
+	<Item Name="Tin Ore" Id="2771" />
+	<Item Name="Tin Ore Nugget" Id="108295" />
+	<Item Name="Silver Ore" Id="2775" />
+	<Item Name="Silver Ore Nugget" Id="108294" />
+	<Item Name="Iron Ore" Id="2772" />
+	<Item Name="Iron Ore Nugget" Id="108297" />
+	<Item Name="Gold Ore" Id="2776" />
+	<Item Name="Gold Ore Nugget" Id="108296" />
+	<Item Name="Mithril Ore" Id="3858" />
+	<Item Name="Mithril Ore Nugget" Id="108300" />
+	<Item Name="Truesilver Ore" Id="7911" />
+	<Item Name="Truesilver Ore Nugget" Id="108299" />
+	<Item Name="Thorium Ore" Id="10620" />
+	<Item Name="Thorium Ore Nugget" Id="108298" />
+	<Item Name="Dark Iron Ore" Id="11370" />
+	<Item Name="Elementium Ingot" Id="18562" />
+	<!-- Burning Crusade -->
+	<Item Name="Fel Iron Ore" Id="23424" />
+	<Item Name="Fel Iron Ore Nugget" Id="108301" />
+	<Item Name="Adamantite Ore" Id="23425" />
+	<Item Name="Adamantite Ore Nugget" Id="108302" />
+	<Item Name="Eternium Ore" Id="23427" />
+	<Item Name="Eternium Ore Nugget" Id="108303" />
+	<!-- Lich King -->
+	<Item Name="Cobalt Ore" Id="36909" />
+	<Item Name="Cobalt Ore Nugget" Id="108305" />
+	<Item Name="Khorium Ore" Id="23426" />
+	<Item Name="Khorium Ore Nugget" Id="108304" />
+	<Item Name="Saronite Ore" Id="36912" />
+	<Item Name="Saronite Ore Nugget" Id="108306" />
+	<Item Name="Titanium Ore" Id="36910" />
+	<Item Name="Titanium Ore Nugget" Id="108391" />
+	<!-- Cataclysm -->
+	<Item Name="Obsidium Ore" Id="53038" />
+	<Item Name="Obsidium Ore Nugget" Id="108307" />
+	<Item Name="Elementium Ore" Id="52185" />
+	<Item Name="Elementium Ore Nugget" Id="108308" />
+	<Item Name="Pyrite Ore" Id="52183" />
+	<Item Name="Pyrite Ore Nugget" Id="108309" />
+	<!-- Mists of Panderia -->
+	<Item Name="Ghost Iron Ore" Id="72092" />
+	<Item Name="Ghost Iron Nugget" Entry="97512" />
+	<Item Name="Black Trillium Ore" Id="72094" />
+	<Item Name="White Trillium Ore" Id="72103" />
+	<Item Name="Kyparite" Id="72093" />
 	<Item Name="Kyparite Fragment" Entry="97546" />
+	<!-- Warlords of Draenor -->
+	<Item Name="True Iron Ore" Id="109119" />
+	<Item Name="True Iron Nugget" Id="109991" />
+	<Item Name="Blackrock Ore" Id="109118" />
+	<Item Name="Blackrock Fragment" Id="109992" />
 
 	<!-- Harvests: Ore-mainstream bar-form (ordered by level) -->
 	<Item Name="Copper Bar" Entry="2840" />
@@ -390,6 +528,7 @@
 	<Item Name="Heavy Stone" Entry="2838" />
 	<Item Name="Solid Stone" Entry="7912" />
 	<Item Name="Dense Stone" Entry="12365" />
+	
 
 
 	<!-- ========== Reputation Items (alphabetical by Faction) ==========

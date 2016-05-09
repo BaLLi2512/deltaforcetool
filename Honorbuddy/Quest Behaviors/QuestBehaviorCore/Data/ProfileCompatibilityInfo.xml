@@ -4,8 +4,9 @@
 <ProfileCompatibilityInfo>
     <BosslandGmbHPlugIns>
         <PlugIn Name="Anti Drown" />
+        <PlugIn Name="BuddyControlPanel" />
         <PlugIn Name="DrinkPotions" />
-        <PlugIn Name="Questhelper - ItemForAura" />
+        <PlugIn Name="HBRelogHelper" />
         <PlugIn Name="Refreshment Detection" />
     </BosslandGmbHPlugIns>
 

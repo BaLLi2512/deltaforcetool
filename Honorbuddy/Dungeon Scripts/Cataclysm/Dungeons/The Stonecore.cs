@@ -363,8 +363,8 @@ namespace Bots.DungeonBuddy.Dungeons.Cataclysm
 		{
 			return async point =>
 			{
-				List<WoWUnit> trash = ScriptHelpers.GetUnfriendlyNpsAtLocation(point, 50);
-				return await ScriptHelpers.PullNpcToLocation(() => trash.Any(), trash.First(), Me.Location,0);
+				var trash = ScriptHelpers.GetUnfriendlyNpsAtLocation(point, 50).FirstOrDefault();
+				return await ScriptHelpers.PullNpcToLocation(() => trash != null && ScriptHelpers.IsViable(trash), trash, Me.Location,0);
 			};
 		}
 

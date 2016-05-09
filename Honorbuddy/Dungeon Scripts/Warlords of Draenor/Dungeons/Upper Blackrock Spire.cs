@@ -16,6 +16,7 @@ using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using Bots.DungeonBuddy.Attributes;
 using Bots.DungeonBuddy.Helpers;
+using Styx.WoWInternals.World;
 
 // ReSharper disable CheckNamespace
 
@@ -123,6 +124,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 				true);
 			DynamicBlackspotManager.AddBlackspot(_tharbeksDoorBlackspot);
 			Lua.Events.AttachEvent("RAID_BOSS_EMOTE", OnRaidBossEmote);
+			GameWorld.UnitSpellLineOfSightTest += GameWorld_UnitSpellLineOfSightTest;
 		}
 
 		public override void OnExit()
@@ -130,6 +132,7 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 			DynamicBlackspotManager.RemoveBlackspot(_tharbeksDoorBlackspot);
 			_tharbeksDoorBlackspot = null;
 			Lua.Events.DetachEvent("RAID_BOSS_EMOTE", OnRaidBossEmote);
+			GameWorld.UnitSpellLineOfSightTest -= GameWorld_UnitSpellLineOfSightTest;
 		}
 
 		public override async Task<bool> HandleMovement(WoWPoint location)
@@ -890,6 +893,16 @@ namespace Bots.DungeonBuddy.DungeonScripts.WarlordsOfDraenor
 				return;
 
 			_engulfingFireTimer.Reset();
+		}
+
+		private void GameWorld_UnitSpellLineOfSightTest(object sender, UnitSpellLineOfSightTestEventArgs e)
+		{
+			if (e.Unit.Entry != MobId_RagewingtheUntamed)
+				return;
+
+			var spellDist = e.Unit.CombatReach + 40;
+			e.InSpellLineOfSight = e.Unit.DistanceSqr < spellDist * spellDist;
+			e.Handled = true;
 		}
 
 		#endregion

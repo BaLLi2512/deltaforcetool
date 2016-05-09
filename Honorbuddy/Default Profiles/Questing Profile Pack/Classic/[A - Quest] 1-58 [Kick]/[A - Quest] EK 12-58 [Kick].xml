@@ -1251,6 +1251,8 @@
 		<Objective Type="CollectItem" ItemId="3879" ItemName="Paw of Sin'Dall" CollectCount="1">
 			<Hotspots>
 				<Hotspot X="-11904.52" Y="165.3114" Z="41.39998" />
+				<Hotspot X="-11977.62" Y="141.4784" Z="15.06236" />
+				<Hotspot X="-11827.56" Y="211.1699" Z="18.73873" />
 			</Hotspots>
 		</Objective>
 	</Quest>
@@ -1459,7 +1461,7 @@
 		</Objective>
 	</Quest>
 	<Quest Id="26818" Name="Plush Pelts">
-		<Objective Type="CollectItem" ItemId="58813" ItemName="Tigress Furs" CollectCount="4">
+		<Objective Type="CollectItem" ItemId="58813" ItemName="Velvety Panther Furs" CollectCount="4">
 			<Hotspots>
 				<Hotspot X="-13321.96" Y="479.2261" Z="6.007379" />
 				<Hotspot X="-13349.49" Y="535.2271" Z="7.660887" />
@@ -1474,19 +1476,12 @@
 				<Hotspot X="-13308.13" Y="429.4915" Z="8.250716" />
 			</Hotspots>
 		</Objective>
-		<Objective Type="CollectItem" ItemId="58812" ItemName="Velvety Panther Furs" CollectCount="4">
+		<Objective Type="CollectItem" ItemId="58812" ItemName="Supple Tigress Fur" CollectCount="4">
 			<Hotspots>
-				<Hotspot X="-13321.96" Y="479.2261" Z="6.007379" />
-				<Hotspot X="-13349.49" Y="535.2271" Z="7.660887" />
-				<Hotspot X="-13358.23" Y="585.6183" Z="7.092392" />
-				<Hotspot X="-13331.33" Y="602.6065" Z="3.945395" />
-				<Hotspot X="-13296.37" Y="536.8895" Z="3.30553" />
-				<Hotspot X="-13219.57" Y="479.8824" Z="4.699632" />
-				<Hotspot X="-13181.46" Y="426.1523" Z="14.84251" />
-				<Hotspot X="-13124.91" Y="392.5025" Z="16.26309" />
-				<Hotspot X="-13059.33" Y="388.8401" Z="16.8839" />
-				<Hotspot X="-13260.49" Y="454.335" Z="4.653341" />
-				<Hotspot X="-13308.13" Y="429.4915" Z="8.250716" />
+				<Hotspot X="-12981.54" Y="243.6971" Z="17.67817" />
+				<Hotspot X="-12922.56" Y="182.4561" Z="18.76062" />
+				<Hotspot X="-12840.75" Y="210.9735" Z="17.25163" />
+				<Hotspot X="-12763.62" Y="203.7886" Z="15.24327" />
 			</Hotspots>
 		</Objective>
 	</Quest>
@@ -3680,6 +3675,48 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+		<CustomBehavior File="RunCode" Type="Definition">
+			<![CDATA[ 
+		        IEnumerable<WoWItem> GetExtraConsumables()
+		        {
+		            uint foodCount = 0;
+		            uint drinkCount = 0;
+		            // Skip conjured and buff comsumables.
+		  
+		            var extraConsumables = (from item in Me.BagItems
+		                               where item != null && item.ItemInfo != null
+		                               let isFood = Consumable.IsFood(item.ItemInfo)
+		                               let isDrink = Consumable.IsDrink(item.ItemInfo)
+		                               where (isFood || isDrink) && item.ItemInfo.SellPrice > 0 && item.Effects.Count == 1 && item.ItemInfo.RequiredLevel < Me.Level - 10                    
+		                               select item).ToList();
+		  
+		  
+		            var extraPotions = Me.BagItems
+		                .Where(c => c != null && c.IsValid && c.ItemInfo != null && c.ItemInfo.SellPrice > 0 && c.Effects.Count == 1
+		                    && (c.ItemInfo.ConsumableClass == WoWItemConsumableClass.Potion
+		                    || c.ItemInfo.ConsumableClass == WoWItemConsumableClass.Elixir
+		                    || c.ItemInfo.ConsumableClass == WoWItemConsumableClass.Flask)
+		                    && c.ItemInfo.RequiredLevel < Me.Level - 20);
+		  
+		            extraConsumables.AddRange(extraPotions);
+		            return extraConsumables;
+		        }
+		         
+		        async Task SellExtraConsumables()
+		        {
+		            Logging.Write("Selling items in GetExtraConsumables()");
+		            foreach (var item in GetExtraConsumables())
+		            {
+		                Logging.Write("Selling {0}.", item.Name);                       
+		                item.UseContainerItem();
+		                await Coroutine.Sleep(1337);
+		            }
+		        }
+            ]]>
+		</CustomBehavior>
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -3787,6 +3824,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -4134,6 +4174,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -4291,6 +4334,7 @@
 			<Objective QuestName="They've Wised Up..." QuestId="26544" Type="CollectItem" ItemId="58936" CollectCount="1" />
 			<While Condition="HasQuest(26544)">
 				<CustomBehavior File="WaitTimer" WaitTime="10000" />
+				<CustomBehavior File="Misc\RunLua" Lua="QuestFrameAcceptButton:Click();" /> <!-- If quest frame is still visible due to client-side error, it will mess up our TurnIn. -->
 				<TurnIn QuestId="26544" />
 				<!-- Get 26545 -->
 				<CustomBehavior File="WaitTimer" WaitTime="5000" />
@@ -4309,8 +4353,8 @@
 			</If>
 			<PickUp QuestName="Saving Foreman Oslow" QuestId="26520" GiverName="Ettin Control Orb" GiverId="204351" X="-8831.982"
                     Y="-1939.935" Z="133.0036" />
-			<While Condition="HasQuest(26520) &amp;&amp; !IsQuestCompleted(26520)">
-				<!-- Aura 82558: Canyon Ettin Spawn Spell -->
+			<!--<While Condition="HasQuest(26520) &amp;&amp; !IsQuestCompleted(26520)">
+				 Aura 82558: Canyon Ettin Spawn Spell 
 				<CustomBehavior File="InteractWith" MobId="43094" MobState="Alive"
                                 ProactiveCombatStrategy="ClearMobsTargetingUs" InteractByUsingItemId="58895"
                                 TerminateWhen="Me.HasAura(82558)" >
@@ -4325,7 +4369,7 @@
                                 TerminateWhen="!Me.HasAura(82558)"
                                 X="-9274.12" Y="-2288.6" Z="68.15446" />
 			</While>
-			<TurnIn QuestName="Saving Foreman Oslow" QuestId="26520" TurnInName="Magistrate Solomon" TurnInId="344" />
+			<TurnIn QuestName="Saving Foreman Oslow" QuestId="26520" TurnInName="Magistrate Solomon" TurnInId="344" />-->
 			<TurnIn QuestName="Yowler Must Die!" QuestId="26545" TurnInName="Magistrate Solomon" TurnInId="344"
                     X="-9218.61" Y="-2221.804" Z="67.5397" />
 			<TurnIn QuestName="Like a Fart in the Wind" QuestId="26513" TurnInName="Marshal Marris" TurnInId="382"
@@ -4341,8 +4385,8 @@
 			<PickUp QuestName="In Search of Bravo Company" QuestId="26586" GiverName="Colonel Troteman" GiverId="43221" />
 			<PickUp QuestName="Render's Army" QuestId="26570" GiverName="Marshal Marris" GiverId="382"
                     X="-9283.36" Y="-2297.5" Z="67.4972" />
-			<PickUp QuestName="Surveying Equipment" QuestId="26569" GiverName="Foreman Oslow" GiverId="43194"
-                    X="-9277.43" Y="-2240.89" Z="64.03726" />
+			<!-- <PickUp QuestName="Surveying Equipment" QuestId="26569" GiverName="Foreman Oslow" GiverId="43194"
+                    X="-9277.43" Y="-2240.89" Z="64.03726" /> -->
 			<TurnIn QuestName="In Search of Bravo Company" QuestId="26586" TurnInName="Messner" TurnInId="43270" />
 			<PickUp QuestName="Breaking Out is Hard to Do" QuestId="26587" GiverName="Messner" GiverId="43270" />
 
@@ -4406,7 +4450,7 @@
                     X="-8805.089" Y="-2206.237" Z="130.9454" />
 			<PickUp QuestName="Return of the Bravo Company" QuestId="26563" GiverName="Danforth" GiverId="43302" X="-8806.528"
                     Y="-2204.096" Z="132.3716" />
-			<Objective QuestName="Surveying Equipment" QuestId="26569" Type="CollectItem" ItemId="58952" CollectCount="5" />
+			<!-- <Objective QuestName="Surveying Equipment" QuestId="26569" Type="CollectItem" ItemId="58952" CollectCount="5" /> -->
 			<Objective QuestName="Render's Army" QuestId="26570" Type="KillMob" MobId="615" KillCount="20" />
 			<TurnIn QuestName="Return of the Bravo Company" QuestId="26563" TurnInName="Colonel Troteman" TurnInId="43221" />
 			<If Condition="HasQuest(26573)">
@@ -4414,8 +4458,8 @@
                         X="-9212.22" Y="-2215.35" Z="66.18016" />
 			</If>
 			<PickUp QuestName="They Drew First Blood" QuestId="26607" GiverName="Colonel Troteman" GiverId="43221" />
-			<TurnIn QuestName="Surveying Equipment" QuestId="26569" TurnInName="Foreman Oslow" TurnInId="43194"
-                    X="-9277.43" Y="-2240.89" Z="64.03726" />
+			<!-- <TurnIn QuestName="Surveying Equipment" QuestId="26569" TurnInName="Foreman Oslow" TurnInId="43194"
+                    X="-9277.43" Y="-2240.89" Z="64.03726" /> -->
 			<If Condition="HasQuest(26571) &amp;&amp; IsQuestCompleted(26571)">
 				<TurnIn QuestName="Weapons of War" QuestId="26571" TurnInName="Colonel Troteman" TurnInId="43221"
                         X="-9212.22" Y="-2215.35" Z="66.18016" />
@@ -4652,6 +4696,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -5290,6 +5337,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -5582,7 +5632,10 @@
 				<CustomBehavior File="WaitTimer" WaitTime="5000" GoalText="Waiting for CLQ {TimeRemaining}" />
 			</While>
 			<If Condition="HasQuest(194) &amp;&amp; !IsQuestCompleted(194)">
+				<MoveTo Nav="Fly" X="-11775.8" Y="464.3105" Z="48.65083" />
+				<UseMount Value="false" />
 				<Objective QuestName="Raptor Hunting" QuestId="194" Type="KillMob" MobId="685" KillCount="10" />
+				<UseMount Value="true" />
 			</If>
 			<While Condition="HasQuest(194) &amp;&amp; IsQuestCompleted(194)">
 				<TurnIn QuestId="194" />
@@ -5922,6 +5975,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -6012,8 +6068,8 @@
 			<PickUp QuestName="If They're Just Going to Leave Them Lying Around..." QuestId="26820"
                     GiverName="Linzi Hewstrike" GiverId="44083" X="-13626.7" Y="-77.9288" Z="35.24041" />
 			<PickUp QuestName="Akiris by the Bundle" QuestId="26819" GiverName="Linzi Hewstrike" GiverId="44083" />
-			<Objective QuestName="Plush Pelts" QuestId="26818" Type="CollectItem" ItemId="58813" CollectCount="4" />
-			<Objective QuestName="Plush Pelts" QuestId="26818" Type="CollectItem" ItemId="58812" CollectCount="4" />
+			<Objective QuestName="Plush Pelts" QuestId="26818" QuestObjectiveIndex="2" Type="CollectItem" ItemId="58813" CollectCount="4" />
+			<Objective QuestName="Plush Pelts" QuestId="26818" QuestObjectiveIndex="1" Type="CollectItem" ItemId="58812" CollectCount="4" />
 			<TurnIn QuestName="Plush Pelts" QuestId="26818" TurnInName="Linzi Hewstrike" TurnInId="44083"
                     X="-13626.7" Y="-77.9288" Z="35.24041" />
 			<Objective QuestName="Perfectly Pure" QuestId="26817" Type="CollectItem" ItemId="60386" CollectCount="1" />
@@ -6144,7 +6200,7 @@
 				<CustomBehavior File="Misc\RunLua" Lua="CompleteQuest();" />
 				<CustomBehavior File="WaitTimer" WaitTime="2000" />
 				<CustomBehavior File="RunMacro" Macro="/click QuestFrameCompleteQuestButton" />
-				<CustomBehavior File="WaitTimer" WaitTime="45000" />
+				<CustomBehavior File="WaitTimer" WaitTime="45000" TerminateWhen="Unit(1514, u =&gt; u.IsAlive) != null" />
 				<CustomBehavior File="InteractWith" MobId="1514" WaitForNpcs="false" />
 
 				<!-- <Objective QuestName="Stranglethorn Fever" QuestId="26597" Type="CollectItem" ItemId="2797" -->
@@ -6223,7 +6279,7 @@
 					<Hotspot X="-14540.36" Y="-132.767" Z="3.468132" />
 				</HuntingGrounds>
 				<PursuitList>				
-					<PursueUnit Name="Jaguero Stalker" Id="2522" Priority="1" />
+					<PursueUnit Id="2522" Priority="1" /> <!-- Name="Jaguero Stalker" -->
 				</PursuitList>
 			</CustomBehavior>
 
@@ -6557,6 +6613,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -7088,6 +7147,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -7912,6 +7974,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -8234,6 +8299,8 @@
                     GiverName="Lead Prospector Durdin" GiverId="46760" />
 
 			<While Condition="HasQuest(27792) &amp;&amp; !IsQuestCompleted(27792)">
+        <UseMount Value="false" />
+        <CustomBehavior File="ForcedDismount" />
 				<MoveTo X="-7153.063" Y="-3425.21" Z="245.9636" />
 				<MoveTo X="-7098.117" Y="-3533.848" Z="242.6302" />
 				<MoveTo X="-7088.74" Y="-3676.783" Z="248.8668" />
@@ -8242,6 +8309,7 @@
 				<MoveTo X="-7098.117" Y="-3533.848" Z="242.6302" />
 				<MoveTo X="-7153.063" Y="-3425.21" Z="245.9636" />
 			</While>
+      <UseMount Value="true" />
 			<Objective QuestName="All's Fair in Love, War, and Archaeology" QuestId="27792" Type="CollectItem"
                        CollectCount="1" ItemId="62485" />
 			<Objective QuestName="All's Fair in Love, War, and Archaeology" QuestId="27792" Type="CollectItem"
@@ -8558,6 +8626,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -8678,8 +8749,8 @@
 					<Hotspot Name="Dark Iron Excavator" X="-6809.33" Y="-1625.19" Z="195.67" />
 				</HuntingGrounds>
 				<PursuitList>				
-					<PursueUnit Name="Dark Iron Footman" Id="47275" Priority="1" />
-					<PursueUnit Name="Dark Iron Excavator" Id="47276" Priority="1" />
+					<PursueUnit Id="47275" Priority="1" /> <!-- Name="Dark Iron Footman"  -->
+					<PursueUnit Id="47276" Priority="1" /> <!-- Name="Dark Iron Excavator"  -->
 				</PursuitList>
 			</CustomBehavior>
 			<Objective QuestName="Dig-Boss Dinwhisker" QuestId="27964" Type="CollectItem" ItemId="62806" CollectCount="1" />
@@ -8913,17 +8984,15 @@
 		<PickUp QuestName="Twisted Twilight Ties" QuestId="28060" GiverName="Taskmaster Scrange" GiverId="14626" />
 		<While Condition="HasQuest(28060) &amp;&amp; !IsQuestCompleted(28060)">
 			<MoveTo DestName="Hansel Heavyhands" QuestId="28060" X="-6613.067" Y="-1267.963" Z="208.7441" />
+            <CustomBehavior File="WaitTimer" WaitTime="20000" TerminateWhen="Unit(47460) != null || Unit(14621) != null" />
 			<CustomBehavior File="InteractWith" QuestId="28060" MobId="14627" InteractByGossipOptions="1"
                             X="-6613.067" Y="-1267.963" Z="208.7441" />
-			<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for Hansel {TimeRemaining}" />
-			<CustomBehavior File="InteractWith" QuestId="28060" MobId="14621" WaitForNpcs="false"
-                            MobState="Dead" X="-6632.53" Y="-1234.04" Z="209.8085" />
-			<CustomBehavior File="InteractWith" QuestId="28060" MobId="47460" WaitForNpcs="false"
-                            MobState="Dead" X="-6632.53" Y="-1234.04" Z="209.8085" />
-			<If Condition="!IsQuestCompleted(28060)">
-				<MoveTo DestName="Hansel Heavyhands" X="-6613.198" Y="-1268.928" Z="208.7448" />
-				<CustomBehavior File="WaitTimer" WaitTime="25000" GoalText="Waiting for bosses to spawn {TimeRemaining}" />
-			</If>
+			<CustomBehavior File="KillUntilComplete" QuestId="28060" >
+				<PursuitList>
+					<PursueUnit Id="47460" Priority="1000" PursueWhen="!IsObjectiveComplete(2, 28060)" />
+					<PursueUnit Id="14621" PursueWhen="!IsObjectiveComplete(1, 28060)" />
+				</PursuitList>
+			</CustomBehavior>
 		</While>
 		<TurnIn QuestName="Twisted Twilight Ties" QuestId="28060" TurnInName="Overseer Oilfist"
                 TurnInId="14625" X="-6680.89" Y="-1438.68" Z="168.4239" />
@@ -9010,6 +9079,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -9718,6 +9790,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -10059,6 +10134,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                             Text="You must be Alliance to run this profile" />
@@ -10152,8 +10230,9 @@
 			<While Condition="HasQuest(25709) &amp;&amp; !IsQuestCompleted(25709)">
 				<MoveTo X="-11418.44" Y="-3692.187" Z="2.534489" />
 				<CustomBehavior File="InteractWith" QuestId="25709" MobId="42235" InteractByUsingItemId="57119"
-                                MobState="Alive" NumOfTimes="50" WaitTime="2500" Range="100" CollectionDistance="500"
+                                MobState="Alive" NumOfTimes="50" WaitTime="2500" Range="150" CollectionDistance="500"
                                 X="-11418.44" Y="-3692.187" Z="2.534489" />
+				<MoveTo X="-11418.44" Y="-3692.187" Z="2.534489" />
 			</While>
 			<Objective QuestName="Our Fallen Friends" QuestId="25708" Type="KillMob" KillCount="13" MobId="42252" />
 			<TurnIn QuestName="Our Fallen Friends" TurnInName="Enohar Thunderbrew" QuestId="25708" TurnInId="9540"
@@ -10511,10 +10590,13 @@
 		<Checkpoint Level="58" />
 
 		<!-- BEGIN: Checkpoint Block
-     This code needs to be replicated after every checkpoint.
-     If you modify something in this block, don't forget to update the copy of this
-     block after each checkpoint, and the at the start of the <QuestOrder>, also.
--->
+	     This code needs to be replicated after every checkpoint.
+	     If you modify something in this block, don't forget to update the copy of this
+	     block after each checkpoint, and the at the start of the <QuestOrder>, also.
+		-->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="UserDialog" AllowBotStop="true" SoundCue="Asterisk" SoundCueInterval="2"
                     Text="You must be Alliance to run this profile" />

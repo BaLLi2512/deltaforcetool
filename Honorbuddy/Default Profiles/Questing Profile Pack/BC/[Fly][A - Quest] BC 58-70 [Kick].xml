@@ -2048,7 +2048,7 @@
 			</Hotspots>
 		</Objective>
 	</Quest>
-	
+
 	<Quest Id="9923" Name="HELP!">
 		<Objective Type="CollectItem" ItemId="25490" CollectCount="1">
 			<Hotspots>
@@ -2089,14 +2089,73 @@
 			</Hotspots>
 		</Objective>
 	</Quest>
+	<Quest Id="9804" Name="Agitated Spirits of Skysong">
+		<Objective Type="KillMob" MobId="17153" KillCount="8">
+			<Hotspots>
+				<Hotspot X="-917.6545" Y="7270.343" Z="29.41061" />
+				<Hotspot X="-908.2894" Y="7121.481" Z="28.08289" />
+				<Hotspot X="-1014.823" Y="6959.11" Z="28.37595" />
+				<Hotspot X="-1200.464" Y="6919.454" Z="29.53717" />
+				<Hotspot X="-1122.806" Y="7065.451" Z="29.44668" />
+				<Hotspot X="-1092.879" Y="7238.623" Z="28.41718" />
+				<Hotspot X="-952.3018" Y="7282.075" Z="28.34719" />
+				<Hotspot X="-1026.473" Y="7158.3" Z="27.68033" />
+			</Hotspots>
+		</Objective>
+	</Quest>
 	<!-- END: Quest Overrides -->
 
 
-	<QuestOrder IgnoreCheckpoints="false">
+	<QuestOrder IgnoreCheckpoints="false" >
 		<!-- CHECKPOINT BLOCK START: This code needs to be replicated after every checkpoint.
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
         -->
+		<CustomBehavior File="RunCode" Type="Definition">
+			<![CDATA[ 
+		        IEnumerable<WoWItem> GetExtraConsumables()
+		        {
+		            uint foodCount = 0;
+		            uint drinkCount = 0;
+		            // Skip conjured and buff comsumables.
+		  
+		            var extraConsumables = (from item in Me.BagItems
+		                               where item != null && item.ItemInfo != null
+		                               let isFood = Consumable.IsFood(item.ItemInfo)
+		                               let isDrink = Consumable.IsDrink(item.ItemInfo)
+		                               where (isFood || isDrink) && item.ItemInfo.SellPrice > 0 && item.Effects.Count == 1 && item.ItemInfo.RequiredLevel < Me.Level - 10                    
+		                               select item).ToList();
+		  
+		  
+		            var extraPotions = Me.BagItems
+		                .Where(c => c != null && c.IsValid && c.ItemInfo != null && c.ItemInfo.SellPrice > 0 && c.Effects.Count == 1
+		                    && (c.ItemInfo.ConsumableClass == WoWItemConsumableClass.Potion
+		                    || c.ItemInfo.ConsumableClass == WoWItemConsumableClass.Elixir
+		                    || c.ItemInfo.ConsumableClass == WoWItemConsumableClass.Flask)
+		                    && c.ItemInfo.RequiredLevel < Me.Level - 20);
+		  
+		            extraConsumables.AddRange(extraPotions);
+		            return extraConsumables;
+		        }
+		         
+		        async Task SellExtraConsumables()
+		        {
+		            Logging.Write("Selling items in GetExtraConsumables()");
+		            foreach (var item in GetExtraConsumables())
+		            {
+		                Logging.Write("Selling {0}.", item.Name);                       
+		                item.UseContainerItem();
+		                await Coroutine.Sleep(1337);
+		            }
+		        }
+            ]]>
+		</CustomBehavior>
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
+
+		<EnableBehavior Name="Combat,Pull,Vendor" /> <!-- Just to be safe since these are disabled in the Death Knight profile -->
+
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="LoadProfile" ProfileName="[Fly][H - Quest] BC 58-70 [Kick]" RememberProfile="true" />
 		</If>
@@ -3796,6 +3855,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
  -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="LoadProfile" ProfileName="[Fly][H - Quest] BC 58-70 [Kick]"
                             RememberProfile="true" />
@@ -3965,13 +4027,13 @@
                 X="-143.4519" Y="5533.816" Z="31.06601" />
 		<If Condition="HasQuest(9718) &amp;&amp; !IsQuestCompleted(9718)">
 			<MoveTo X="-147.7943" Y="5531.749" Z="30.71602" />
-				<!-- Remove Form: Cat, Travel, Bear, SWolf, Moonkin -->
-				<CustomBehavior File="RunCode" QuestId="9718">
-					<![CDATA[ 
+			<!-- Remove Form: Cat, Travel, Bear, SWolf, Moonkin -->
+			<CustomBehavior File="RunCode" QuestId="9718">
+				<![CDATA[ 
 						foreach (var aura in new[]{768,783,5487,2645,24858}.Select(id =>Me.GetAuraById(id)).Where(a => a != null)) 
 						aura.TryCancelAura();
 					]]>
-				</CustomBehavior>
+			</CustomBehavior>
 			<UseItem QuestName="As the Crow Flies" QuestId="9718" ItemId="25465" ItemName="Stormcrow Amulet"
                      X="-147.7943" Y="5531.749" Z="30.71602" />
 		</If>
@@ -4032,7 +4094,7 @@
 		<If Condition="HasItem(24330)">
 			<PickUp QuestName="Drain Schematics" QuestId="9731" GiverType="Item" GiverId="24330" />
 		</If>
-		<While Condition="HasQuest(9731) &amp;&amp; !IsQuestCompleted(9731)">
+		<While Condition="HasQuest(9731) &amp;&amp; !IsQuestCompleted(9731)" >
 			<CustomBehavior File="FlyTo" X="563.6907" Y="6945.234" Z="26.44246" />
 			<CustomBehavior File="ForcedDismount" />
 			<MoveTo X="563.6907" Y="6945.234" Z="16.44246" />
@@ -4820,6 +4882,9 @@
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
  -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="LoadProfile" ProfileName="[Fly][H - Quest] BC 58-70 [Kick]"
                             RememberProfile="true" />
@@ -4954,7 +5019,6 @@
 			<CustomBehavior File="WaitTimer" WaitTime="3000" />
 		</If>
 
-
 		<While Condition="!IsQuestCompleted(10211)" >
 			<If Condition="HasQuest(10211)" >
 				<UseMount Value="false"/>
@@ -4978,10 +5042,10 @@
                                     EscortCompleteWhen="QuestCompleteOrFails" EscortMaxFollowDistance="10" />
 				<CustomBehavior File="WaitTimer" QuestId="10211" WaitTime="30000"
                                     GoalText="Waiting for City of Light to complete: {TimeRemaining}" />
+			</If>
+			<If Condition="IsQuestCompleted(10211)" >
 				<TurnIn Nav="Fly" QuestName="City of Light" QuestId="10211" TurnInName="Khadgar" TurnInId="18166" />
 			</If>
-
-
 		</While>
 		<UseMount Value="true" />
 		<!-- Template for all escort quests -->
@@ -5404,7 +5468,7 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 		</If>
 		<UseMount Value="false" />
 		<While Condition="HasQuest(10852) &amp;&amp; !IsQuestCompleted(10852)">
-			<Objective QuestName="Missing Friends" QuestId="10852" Type="CollectItem" ItemId="31655"
+			<Objective QuestName="Missing Friends" QuestId="10852" QuestObjectiveIndex="1" Type="CollectItem" ItemId="31655"
                        CollectCount="4" />
 			<CustomBehavior File="InteractWith" MobId="185202" MobId2="185203" MobId3="185204" MobId4="185205"
                             PreInteractMountStrategy="Dismount" NumOfTimes="4" NonCompeteDistance="10"
@@ -5736,6 +5800,9 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
  -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="LoadProfile" ProfileName="[Fly][H - Quest] BC 58-70 [Kick]" RememberProfile="true" />
 		</If>
@@ -6023,8 +6090,13 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 
 			<CustomBehavior File="FlyTo" DestName="Talbuk Mastery" QuestId="9859"
                             X="-1177.466" Y="8594.914" Z="37.26402" />
-			<Objective Nav="Fly" QuestName="Talbuk Mastery" QuestId="9859" Type="CollectItem" ItemId="24523"
-                       CollectCount="1" />
+			<CustomBehavior File="InteractWith" QuestId="9859" MobId="18258" NumOfTimes="20" Range="8" MobState="Alive" InteractByLooting="True"  >
+				<HuntingGrounds>
+					<Hotspot Name="The Small Lake" X="-1952.997" Y="8909.007" Z="39.9353" />
+					<Hotspot Name="Altrius" X="-1177.466" Y="8594.914" Z="37.26402" />
+				</HuntingGrounds>
+			</CustomBehavior>
+
 
 			<CustomBehavior File="FlyTo" DestName="Clefthoof Mastery" QuestId="9851"
                             X="-2132.072" Y="8243.842" Z="-20.71958" />
@@ -6259,8 +6331,21 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 			<If Condition="HasQuest(9804) &amp;&amp; !IsQuestCompleted(9804)">
 				<CustomBehavior File="FlyTo" X="-914.5394" Y="7081.891" Z="37.47732" />
 				<CustomBehavior File="ForcedDismount" />
+				<!--
 				<Objective QuestName="Agitated Spirits of Skysong" QuestId="9804" Type="KillMob" KillCount="8"
                            MobName="Lake Spirit" MobId="17153" />
+				-->
+				<CustomBehavior File="CollectThings" CollectUntil="QuestComplete" QuestId="9804" MobId="17153">
+					<Hotspot X="-917.6545" Y="7270.343" Z="29.41061" />
+					<Hotspot X="-908.2894" Y="7121.481" Z="28.08289" />
+					<Hotspot X="-1014.823" Y="6959.11" Z="28.37595" />
+					<Hotspot X="-1200.464" Y="6919.454" Z="29.53717" />
+					<Hotspot X="-1122.806" Y="7065.451" Z="29.44668" />
+					<Hotspot X="-1092.879" Y="7238.623" Z="28.41718" />
+					<Hotspot X="-952.3018" Y="7282.075" Z="28.34719" />
+					<Hotspot X="-1026.473" Y="7158.3" Z="27.68033" />
+				</CustomBehavior>
+
 			</If>
 			<If Condition="HasQuest(9821) &amp;&amp; IsQuestCompleted(9821)">
 				<CustomBehavior File="FlyTo" X="-787.2865" Y="6952.185" Z="32.25396" />
@@ -6434,9 +6519,12 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 
 			<Objective QuestName="Matters of Security" QuestId="9925" Type="KillMob" KillCount="8" MobName="Voidspawn"
                        MobId="17981" />
-			<CustomBehavior File="FlyTo" DestName="Gava'xi" QuestId="9900" X="-2359.303" Y="7850.584" Z="-4.383435" />
-			<Objective Nav="Fly" QuestName="Gava'xi" QuestId="9900" Type="KillMob" KillCount="1" MobName="Gava'xi"
-                       MobId="18298" />
+			<If Condition="HasQuest(9900) &amp;&amp; !IsQuestCompleted(9900)" >
+				<MoveTo Nav="Fly" X="-2359.303" Y="7850.584" Z="-4.383435" />
+				<CustomBehavior File="ForcedDismount" />
+				<Objective QuestName="Gava'xi" QuestId="9900" Type="KillMob" KillCount="1" MobName="Gava'xi"
+	                       MobId="18298" />
+	        </If>
 
 			<If Condition="HasQuest(9900) &amp;&amp; IsQuestCompleted(9900)">
 				<CustomBehavior File="FlyTo" X="-2067.637" Y="8557.913" Z="23.62497" />
@@ -6489,7 +6577,7 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 				<CustomBehavior File="FlyTo" X="-2716.035" Y="6413.419" Z="39.82007" />
 				<CustomBehavior File="ForcedDismount" />
 				<While Condition="HasQuest(9927) &amp;&amp; !IsQuestCompleted(9927)">
-					<CustomBehavior File="InteractWith" QuestId="9927" MobId="17146" MobId2="17147" MobId3="17148"
+					<CustomBehavior File="InteractWith" QuestId="9927" MobId1="17146" MobId2="17147" MobId3="17148"
                                     MobState="Dead" InteractByUsingItemId="25552"
                                     PreInteractMountStrategy="DismountOrCancelShapeshift" NumOfTimes="10" WaitTime="5000"
                                     CollectionDistance="300" X="-2855.058" Y="6393.893" Z="79.41189" />
@@ -7168,6 +7256,9 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
              If you modify something in this block, don't forget to update the copy of this
              block after each checkpoint, and the at the start of the <QuestOrder>, also.
  -->
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<If Condition="Me.IsHorde">
 			<CustomBehavior File="LoadProfile" ProfileName="[Fly][H - Quest] BC 58-70 [Kick]"
                             RememberProfile="true" />
@@ -7742,7 +7833,7 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
                        MobId="19707" />
 			<Objective QuestName="Unlocking the Compendium" QuestId="10301" Type="CollectItem" CollectCount="1"
                        ItemId="28475" />
-					   
+
 			<While Condition="HasQuest(10301) &amp;&amp; IsQuestCompleted(10301)" >
 				<CustomBehavior File="FlyTo" X="2400.195" Y="2225.911" Z="111.0966" />
 				<CustomBehavior File="ForcedDismount" />
@@ -8117,11 +8208,11 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 			<PickUp QuestName="Retrieving the Goods" GiverName="Audi the Needle" QuestId="10435" GiverId="20205" />
 			<TurnIn QuestName="An Audience with the Prince" TurnInName="Image of Nexus-Prince Haramad" QuestId="10268"
                     TurnInId="20084" />
-			   
-		<If Condition="Me.Level &gt;= 69 &amp;&amp; Me.Level &lt; 80" >
-			<CustomBehavior File="LoadProfile" ProfileName="[Fly][A - Quest] BC 58-70 [Kick]" />
-		</If>
-					
+
+			<If Condition="Me.Level &gt;= 69 &amp;&amp; Me.Level &lt; 80" >
+				<CustomBehavior File="LoadProfile" ProfileName="[Fly][A - Quest] BC 58-70 [Kick]" />
+			</If>
+
 			<If Condition="!HasQuest(10269) &amp;&amp; !IsQuestCompleted(10269)">
 				<PickUp QuestName="Triangulation Point One" GiverName="Image of Nexus-Prince Haramad" QuestId="10269"
                         GiverId="20084" />
@@ -8140,14 +8231,14 @@ X="-1945.773" Y="4687.774" Z="-2.231679" />
 					<CustomBehavior File="ForcedDismount" QuestId="10855" />
 					<Objective QuestName="Fel Reavers, No Thanks!" QuestId="10855" Type="CollectItem" ItemId="31653" CollectCount="5" />
 				</If>
-					<MoveTo X="4501.383" Y="3367.621" Z="156.7108" />
-					<CustomBehavior File="WaitTimer" WaitTime="2000" />
-					<MoveTo X="4501.383" Y="3367.621" Z="156.7108" />
-					<CustomBehavior File="InteractWith" MobId="22293" CollectionDistance="100" X="4501.383" Y="3367.621" Z="156.7108" />
-					<CustomBehavior File="Misc\RunLua" Lua="CompleteQuest();" />
-					<CustomBehavior File="WaitTimer" WaitTime="2000" />
-					<CustomBehavior File="RunMacro" Macro="/click QuestFrameCompleteQuestButton" />
-					<CustomBehavior File="WaitTimer" WaitTime="5000" />
+				<MoveTo X="4501.383" Y="3367.621" Z="156.7108" />
+				<CustomBehavior File="WaitTimer" WaitTime="2000" />
+				<MoveTo X="4501.383" Y="3367.621" Z="156.7108" />
+				<CustomBehavior File="InteractWith" MobId="22293" CollectionDistance="100" X="4501.383" Y="3367.621" Z="156.7108" />
+				<CustomBehavior File="Misc\RunLua" Lua="CompleteQuest();" />
+				<CustomBehavior File="WaitTimer" WaitTime="2000" />
+				<CustomBehavior File="RunMacro" Macro="/click QuestFrameCompleteQuestButton" />
+				<CustomBehavior File="WaitTimer" WaitTime="5000" />
 			</While>
 			<If Condition="HasQuest(10435) &amp;&amp; !IsQuestCompleted(10435)">
 				<CustomBehavior File="FlyTo" X="4936.661" Y="3035.986" Z="98.94111" />

@@ -271,20 +271,6 @@ namespace BuddyControlPanel
 			action();
 		}
 
-
-		public static bool IsFactionCompatible(NpcResult npcResult)
-		{
-			var npcFaction = FactionTemplate.FromId(npcResult.Faction);
-			var myFaction = StyxWoW.Me.FactionTemplate;
-
-			// N.B.: WoWUnitReactions are not necessarily reciprocal.  So, we must check 'both sides'.
-			return
-				(npcFaction != null)
-				&& (npcFaction.GetReactionTowards(StyxWoW.Me) >= WoWUnitReaction.Neutral)
-				&& (myFaction.GetReactionTowards(npcFaction) >= WoWUnitReaction.Neutral);
-		}
-
-
 		public static bool IsQuestProfile(Profile profile)
 		{
 			return (profile != null) && (profile.QuestOrder != null) &&  (profile.QuestOrder.Count > 0);

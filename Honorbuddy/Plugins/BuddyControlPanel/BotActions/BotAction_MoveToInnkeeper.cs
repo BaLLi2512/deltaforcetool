@@ -335,7 +335,7 @@ namespace BuddyControlPanel
 					return false;
 
 				// If Innkeep is not faction compatible, we're done...
-				if (!Utility.IsFactionCompatible(npcResult))
+				if (npcResult.IsHostile)
 					return false;
 
 				// If we do yet have a candidate, we do now...

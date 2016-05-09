@@ -231,8 +231,11 @@
         <UseMount Value="true" />
         <!-- END: Checkpoint Block -->
 
-
-        <PickUp QuestName="Fresh out of the Grave" QuestId="24959" GiverName="Agatha" GiverId="49044"/>
+        <If Condition="!HasQuest(24959) &amp;&amp; !IsQuestCompleted(24959)" >
+            <PickUp QuestName="Fresh out of the Grave" QuestId="24959" GiverName="Agatha" GiverId="49044"/>
+            <CustomBehavior File="WaitTimer" WaitTime="2500" />
+            <CustomBehavior File="Misc\RunLua" Lua="QuestFrameAcceptButton:Click();" /> <!-- Rigor Mortis buff won't remove unless we actually click Accept. -->
+        </If>
         <TurnIn QuestName="Fresh out of the Grave" QuestId="24959" TurnInName="Undertaker Mordo" TurnInId="1568"/>
         <PickUp QuestName="the Shadow Grave" QuestId="28608" GiverName="Undertaker Mordo" GiverId="1568"/>
         <Objective QuestName="The Shadow Grave" QuestId="28608" Type="CollectItem" ItemId="64582" CollectCount="1"/>
@@ -287,14 +290,17 @@
                     TurnInId="63272" X="1857.422" Y="1568.047" Z="94.31378" />
             <PickUp QuestName="Tiger Palm" QuestId="31147" GiverName="Ting, Strong of Stomach"
                     GiverId="63272" X="1857.422" Y="1568.047" Z="94.31378" />
-            <While Condition="( HasQuest(31147) &amp;&amp; !IsQuestCompleted(31147) )" >
-                <CustomBehavior File="InteractWith" InteractByCastingSpellId="100780" MobId="44794"
-                                MinRange="5" X="1833.443" Y="1605.362" Z="95.69714" />
-                <CustomBehavior File="InteractWith" InteractByCastingSpellId="100787" MobId="44794"
-                                MinRange="5" X="1833.443" Y="1605.362" Z="95.69714" />
+            <While Condition="HasQuest(31147) &amp;&amp; !IsQuestCompleted(31147)" >
+                <CustomBehavior File="InteractWith" QuestId="31147" InteractByCastingSpellId="100780" MobId="44794" Range="3" 
+                                NumOfTimes="2" X="1833.443" Y="1605.362" Z="95.69714" />
+                <CustomBehavior File="InteractWith" InteractByCastingSpellId="100787" MobId="44794" Range="3" 
+                                X="1833.443" Y="1605.362" Z="95.69714" />
+				<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for agro to clear {TimeRemaining}" />
             </While>
             <TurnIn QuestName="Tiger Palm" QuestId="31147" TurnInName="Ting, Strong of Stomach"
                     TurnInId="63272" X="1857.422" Y="1568.047" Z="94.31378" />
+			<!--
+			-->
         </If>
 
         <If Condition="Me.Class == WoWClass.Hunter">

@@ -202,6 +202,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Bots.Quest.QuestOrder;
 using Buddy.Coroutines;
 using CommonBehaviors.Actions;
 using Honorbuddy.QuestBehaviorCore;
@@ -371,8 +372,8 @@ namespace Honorbuddy.Quest_Behaviors.GetOutOfGroundEffectAndAuras
 		private MovementByType MovementBy { get; set; }
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: GetOutOfGroundEffectAndAuras.cs 2005 2015-03-17 16:45:59Z mainhaxor $"; } }
-		public override string SubversionRevision { get { return "$Rev: 2005 $"; } }
+		public override string SubversionId { get { return "$Id: GetOutOfGroundEffectAndAuras.cs 2150 2015-12-11 01:22:56Z mainhaxor $"; } }
+		public override string SubversionRevision { get { return "$Rev: 2150 $"; } }
 		#endregion
 
 
@@ -588,7 +589,7 @@ namespace Honorbuddy.Quest_Behaviors.GetOutOfGroundEffectAndAuras
 						new Action(preferredUnitContext =>
 						{
                             QBCLog.Info("Reprioritizing target to '{0}'", ((WoWUnit)preferredUnitContext).SafeName);
-							BotPoi.Current = new BotPoi((WoWUnit)preferredUnitContext, PoiType.Kill);
+							BotPoi.Current = new BotPoi((WoWUnit)preferredUnitContext, PoiType.Kill, QuestOrder.Instance.NavType);
 						}))
 					)
 				);

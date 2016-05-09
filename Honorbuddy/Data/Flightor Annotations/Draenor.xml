@@ -1,0 +1,18 @@
+<FlightorAnnotations  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FlightorAnnotations.xsd" >
+  <IndoorAreas>
+    <PolygonIndoorArea Name="Lake Area, Horde Garrison" MinZ="117" MaxZ="190" >
+      <Entrance Dismount="False" Radius="1" X="5515.317" Y="4559.989" Z="133.743" />
+      <Points>
+        <Point X="5489.954" Y="4572.47" />
+        <Point X="5465.516" Y="4526.424" />
+        <Point X="5432.134" Y="4368.009" />
+        <Point X="5397.001" Y="4372.289" />
+        <Point X="5368.445" Y="4526.68" />
+        <Point X="5363" Y="4624.104" />
+        <Point X="5513.085" Y="4681.965" />
+        <Point X="5519.827" Y="4588.04" />
+      </Points>
+    </PolygonIndoorArea>
+  </IndoorAreas>
+</FlightorAnnotations>
+

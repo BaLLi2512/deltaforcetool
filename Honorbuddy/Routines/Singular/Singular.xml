@@ -28,7 +28,7 @@
     <File Hash="43827" Name="ClassSpecific\Monk\Common.cs" />
     <File Hash="1799" Name="ClassSpecific\Monk\Lowbie.cs" />
     <File Hash="85633" Name="ClassSpecific\Monk\Mistweaver.cs" />
-    <File Hash="28086" Name="ClassSpecific\Monk\Windwalker.cs" />
+    <File Hash="29156" Name="ClassSpecific\Monk\Windwalker.cs" />
     <File Hash="18526" Name="ClassSpecific\Paladin\Common.cs" />
     <File Hash="10718" Name="ClassSpecific\Paladin\Holy.cs" />
     <File Hash="2254" Name="ClassSpecific\Paladin\Lowbie.cs" />
@@ -62,7 +62,7 @@
     <File Hash="2369" Name="ClassSpecific\Warrior\Lowbie.cs" />
     <File Hash="44029" Name="ClassSpecific\Warrior\Protection.cs" />
     <File Hash="1275" Name="Dynamics\Attributes.cs" />
-    <File Hash="10726" Name="Dynamics\CompositeBuilder.cs" />
+    <File Hash="8710" Name="Dynamics\CompositeBuilder.cs" />
     <File Hash="837" Name="Dynamics\SessionState.cs" />
     <File Hash="11136" Name="Extensions.cs" />
     <File Hash="35911" Name="GUI\ConfigurationForm.cs" />
@@ -92,7 +92,7 @@
     <File Hash="21582" Name="Managers\PetManager.cs" />
     <File Hash="3010" Name="Managers\SoulstoneManager.cs" />
     <File Hash="816" Name="Managers\SpellImmunityManager.cs" />
-    <File Hash="9859" Name="Managers\TalentManager.cs" />
+    <File Hash="9761" Name="Managers\TalentManager.cs" />
     <File Hash="4748" Name="Managers\TankManager.cs" />
     <File Hash="0" Name="obj\Bobby53\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <File Hash="0" Name="obj\Bobby53\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
@@ -120,14 +120,14 @@
     <File Hash="4804" Name="Settings\WarriorSettings.cs" />
     <File Hash="94010" Name="SingularRoutine.Behaviors.cs" />
     <File Hash="1809" Name="SingularRoutine.BotEvents.cs" />
-    <File Hash="22042" Name="SingularRoutine.Context.cs" />
-    <File Hash="33437" Name="SingularRoutine.cs" />
+    <File Hash="22483" Name="SingularRoutine.Context.cs" />
+    <File Hash="33500" Name="SingularRoutine.cs" />
     <File Hash="5742" Name="SingularRoutine.Test.cs" />
     <File Hash="2705" Name="SingularRoutine.Version.cs" />
     <File Hash="3033" Name="Utilities\CombatLog.cs" />
     <File Hash="2024" Name="Utilities\Enumeration.cs" />
-    <File Hash="39899" Name="Utilities\EventHandlers.cs" />
+    <File Hash="40072" Name="Utilities\EventHandlers.cs" />
     <File Hash="3579" Name="Utilities\FileModCheck.cs" />
-    <File Hash="15747" Name="Utilities\Logger.cs" />
+    <File Hash="16253" Name="Utilities\Logger.cs" />
   </FileList>
 </FileCheckData>

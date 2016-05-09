@@ -73,29 +73,40 @@ namespace Bots.FishingBuddy
 				return false;
 			}
 
-			if (BotPoi.Current.Type == PoiType.None && LootTargeting.Instance.FirstObject != null)
-				SetLootPoi(LootTargeting.Instance.FirstObject);
-
-			// Fishing Logic
-
-			if (await DoFishing())
-				return true;
-
 			var poiGameObject = BotPoi.Current.AsObject as WoWGameObject;
-
-			// only loot when POI is not set to a fishing pool.
-			if (!StyxWoW.Me.IsFlying 
-				&& (BotPoi.Current.Type != PoiType.Harvest 
+			// FishingBuddy uses PoiType.Harvest for fishing pools so we only run LevelBot.LootBehavior when it's not set to a pool
+			if (!StyxWoW.Me.IsFlying
+				&& (BotPoi.Current.Type != PoiType.Harvest
 				|| (poiGameObject != null && poiGameObject.SubType != WoWGameObjectType.FishingHole))
 				&& await LootBehavior.ExecuteCoroutine())
 			{
 				return true;
 			}
+			// Fishing Logic
 
-			return await FollowPath();
+			if (await DoFishing())
+				return true;
+
+			return await FindNewPool() || await FollowPath();
 		}
 
-	    private static WoWPoint _lastMoveTo;
+		private static async Task<bool> FindNewPool()
+		{
+			if (BotPoi.Current.Type != PoiType.None || !FishingBuddySettings.Instance.Poolfishing)
+				return false;
+
+			var lootTarget = LootTargeting.Instance.FirstObject as WoWGameObject;
+			if (lootTarget == null || lootTarget.SubType != WoWGameObjectType.FishingHole
+				|| Blacklist.Contains(lootTarget, BlacklistFlags.Node))
+			{
+				return false;
+			}
+
+			BotPoi.Current = new BotPoi(lootTarget, PoiType.Harvest);
+			return true;
+		}
+
+		private static WoWPoint _lastMoveTo;
 	    private static readonly WaitTimer MoveToLogTimer = WaitTimer.OneSecond;
 
 	    public async static Task<bool> MoveTo(WoWPoint destination, string destinationName = null)
@@ -191,28 +202,6 @@ namespace Bots.FishingBuddy
 					pulseTime.TotalSeconds);
 			}
 			_pulseTimestamp = DateTime.Now;
-		}
-
-		static void SetLootPoi(WoWObject lootObj)
-		{
-			if (BotPoi.Current.Type != PoiType.None || lootObj == null || !lootObj.IsValid)
-				return;
-
-			if (lootObj is WoWGameObject)
-			{
-				BotPoi.Current = new BotPoi(lootObj, PoiType.Harvest);
-			}
-			else
-			{
-				var unit = lootObj as WoWUnit;
-				if (unit != null)
-				{
-					if (unit.CanLoot)
-						BotPoi.Current = new BotPoi(lootObj, PoiType.Loot);
-					else if (unit.CanSkin)
-						BotPoi.Current = new BotPoi(lootObj, PoiType.Skin);
-				}
-			}
 		}
 
 		private static async Task<bool> CheckLootFrame()

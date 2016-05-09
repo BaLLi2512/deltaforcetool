@@ -1323,6 +1323,7 @@
 	<!-- Trade: Alchemy Tools (alphabetical) -->
 	<Item Name="Alchemical Catayst" Id="108996" />
 	<Item Name="Cracked Potion Vial" Id="113295" />
+	<Item Name="Crystal Vial" Id="3371" />
 	<Item Name="Living Steel" Id="72104" />
 	<Item Name="Philsopher's Stone" Id="9149" />
 	<Item Name="Pyrium-Laced Crystalline Vial" Id="65892" />
@@ -1935,10 +1936,11 @@
 	<Item Name="Herbalist's Spade" Id="85663" />
 
 	<!-- Trade: Inscription Tools (alphabetical) -->
+	<Item Name="Draenic Mortar" Id="114942" />
 	<Item Name="Light Parchment" Id="39354" />
 	<Item Name="Rough Parchment" Id="34647" />
 	<Item Name="Secret of Draenor Inscription" Id="119297" />
-	<Item Name="Virtuoso Inking Set" Id="39505" />
+	<Item Name="Virtuoso Inking Set" Id="39505" />	
 	
 	<Item Name="Ashen Pigment" Id="61979" />
 	<Item Name="Alabaster Pigment" Id="39151" />

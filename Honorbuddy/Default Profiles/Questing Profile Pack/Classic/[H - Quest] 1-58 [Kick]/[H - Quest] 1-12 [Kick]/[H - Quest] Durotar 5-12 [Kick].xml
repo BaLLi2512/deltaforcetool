@@ -412,26 +412,32 @@
             <CustomBehavior File="WaitTimer" WaitTime="30000" />
         </While>
         <TurnIn QuestName="Lost in the Floods" QuestId="25187" TurnInName="Thonk" TurnInId="39323" />
-        <PickUp QuestName="Watershed Patrol" QuestId="25188" GiverName="Thonk" GiverId="39323" />
+        <If Condition="!(IsQuestCompleted(25193) || IsQuestCompleted(25190))" > <!-- || IsQuestCompleted(25189),  Spirits be Praised -->
+            <!-- We are only picking up this quest to unlock more quests. Since we are not doing Zen'taji's quest, we cannot complete this. -->
+           <PickUp QuestName="Watershed Patrol" QuestId="25188" GiverName="Thonk" GiverId="39323" /> 
+        </If>
         <PickUp QuestName="Lost But Not Forgotten" QuestId="25193" GiverName="Misha Tor'kren" GiverId="3193" />
         <Objective QuestName="Lost But Not Forgotten" QuestId="25193" Type="CollectItem" ItemId="60615"
                    CollectCount="250" />
         <TurnIn QuestName="Lost But Not Forgotten" QuestId="25193" TurnInName="Misha Tor'kren" TurnInId="3193" />
-        <!-- "Spirits Be Praised" Pickup & Objective -->
-        <While Condition="!IsQuestCompleted(25189)">
-            <If Condition="HasQuest(25189)">
-                <CustomBehavior File="AbandonQuest" QuestId="25189" Type="All" />
-            </If>
-            <!-- Not this NPC won't have quest if someone else started the escort event -->
-            <MoveTo X="562.0121" Y="-4103.38" Z="16.7572" />
-            <If Condition="Unit(39325, u =&gt; u.FactionId == 29) != null">
-                <PickUp QuestName="Spirits Be Praised" QuestId="25189" GiverName="Grandmatron Tekla"
-                        GiverId="39325" X="562.0121" Y="-4103.38" Z="16.7572" />
-            </If>
-            <CustomBehavior File="EscortGroup" QuestId="25189" EscortNpcId="39325"
-                            EscortCountMax="1" EscortCompleteWhen="QuestCompleteOrFails" />
-        </While>
-        <TurnIn QuestName="Spirits Be Praised" QuestId="25189" TurnInName="Raggaran" TurnInId="39326" />
+        <!--
+        "Spirits Be Praised" Pickup & Objective
+        Quest seems to have been removed from game.  ~EchoTiger
+            <While Condition="!IsQuestCompleted(25189)">
+                <If Condition="HasQuest(25189)">
+                    <CustomBehavior File="AbandonQuest" QuestId="25189" Type="All" />
+                </If>
+                Not this NPC won't have quest if someone else started the escort event
+                <MoveTo X="562.0121" Y="-4103.38" Z="16.7572" />
+                <If Condition="Unit(39325, u =&gt; u.FactionId == 29) != null">
+                    <PickUp QuestName="Spirits Be Praised" QuestId="25189" GiverName="Grandmatron Tekla"
+                            GiverId="39325" X="562.0121" Y="-4103.38" Z="16.7572" />
+                </If>
+                <CustomBehavior File="EscortGroup" QuestId="25189" EscortNpcId="39325"
+                                EscortCountMax="1" EscortCompleteWhen="QuestCompleteOrFails" />
+            </While>
+            <TurnIn QuestName="Spirits Be Praised" QuestId="25189" TurnInName="Raggaran" TurnInId="39326" />
+        -->
         <PickUp QuestName="Raggaran's Rage" QuestId="25190" GiverName="Raggaran" GiverId="39326" />
         <Objective QuestName="Raggaran's Rage" QuestId="25190" Type="KillMob" MobId="3111" KillCount="4" />
         <Objective QuestName="Raggaran's Rage" QuestId="25190" Type="KillMob" MobId="3112" KillCount="4" />
@@ -440,18 +446,19 @@
         <Objective QuestName="Raggaran's Fury" QuestId="25192" Type="KillMob" MobId="3113" KillCount="5" />
         <Objective QuestName="Raggaran's Fury" QuestId="25192" Type="KillMob" MobId="3114" KillCount="5" />
         <TurnIn QuestName="Raggaran's Fury" QuestId="25192" TurnInName="Raggaran" TurnInId="39326" />
+        <!-- This quest was commented due to people 1-hitting the mobs.  The mobs must be weakened to a very low % before they flee to The Barrens, but players always end up killing them.
         <PickUp QuestName="Unbidden Visitors" QuestId="25194" GiverName="Zen'Taji" GiverId="39324" />
-        <!-- interactwith isn't right clicking this mob for some reason -->
-        <!-- <While Condition="( HasQuest(25194) &amp;&amp; !IsQuestCompleted(25194) )" > -->
-        <!--     <CustomBehavior File="InteractWith" QuestId="25194" MobId="39337" NumOfTimes="100" -->
-        <!--                     WaitForNpcs="false" CollectionDistance="1000" Range="3" MobState="Alive" -->
-        <!--                     WaitTime="10000" X="287.1787" Y="-3812.052" Z="18.4396" /> -->
-        <!--     <CustomBehavior File="InteractWith" QuestId="25194" MobId="39337" NumOfTimes="100" -->
-        <!--                     WaitForNpcs="false" CollectionDistance="1000" Range="3" MobState="Alive" -->
-        <!--                     WaitTime="10000" X="441.242" Y="-3881.277" Z="17.20918" /> -->
-        <!--     <CustomBehavior File="KillUntilComplete" QuestId="25194" MobId="39337" -->
-        <!--                     X="287.1787" Y="-3812.052" Z="18.4396" /> -->
-        <!-- </While> -->
+         interactwith isn't right clicking this mob for some reason
+         <While Condition="( HasQuest(25194) &amp;&amp; !IsQuestCompleted(25194) )" >
+             <CustomBehavior File="InteractWith" QuestId="25194" MobId="39337" NumOfTimes="100"
+                             WaitForNpcs="false" CollectionDistance="1000" Range="3" MobState="Alive"
+                             WaitTime="10000" X="287.1787" Y="-3812.052" Z="18.4396" />
+             <CustomBehavior File="InteractWith" QuestId="25194" MobId="39337" NumOfTimes="100"
+                             WaitForNpcs="false" CollectionDistance="1000" Range="3" MobState="Alive"
+                             WaitTime="10000" X="441.242" Y="-3881.277" Z="17.20918" />
+             <CustomBehavior File="KillUntilComplete" QuestId="25194" MobId="39337"
+                             X="287.1787" Y="-3812.052" Z="18.4396" />
+         </While>
         <If Condition="( HasQuest(25194) &amp;&amp; !IsQuestCompleted(25194) )" >
             <SetGrindArea>
                 <GrindArea>
@@ -473,8 +480,9 @@
         <PickUp QuestName="That's the End of That Raptor" QuestId="25195" GiverName="Zen'Taji" GiverId="39324" />
         <Objective QuestName="That's the End of That Raptor" QuestId="25195" Type="KillMob" MobId="39385"
                    KillCount="1" />
-        <TurnIn QuestName="That's the End of That Raptor" QuestId="25195" TurnInName="Zen'Taji" TurnInId="39324" />
-        <TurnIn QuestName="Watershed Patrol" QuestId="25188" TurnInName="Thonk" TurnInId="39323" />
+        <TurnIn QuestName="That's the End of That Raptor" QuestId="25195" TurnInName="Zen'Taji" TurnInId="39324" /> -->
+        <!-- <TurnIn QuestName="Watershed Patrol" QuestId="25188" TurnInName="Thonk" TurnInId="39323" /> we are no longer doing Zen'Taji's quest. -->
+        <CustomBehavior File="AbandonQuest" QuestId="25188" Type="All" />
         <PickUp QuestName="The Burning Blade" QuestId="25232" GiverName="Orgnil Soulscar" GiverId="3142" />
         <Objective QuestName="The Burning Blade" QuestId="25232" Type="CollectItem" ItemId="52564" CollectCount="6" />
         <TurnIn QuestName="The Burning Blade" QuestId="25232" TurnInName="Orgnil Soulscar" TurnInId="3142" />

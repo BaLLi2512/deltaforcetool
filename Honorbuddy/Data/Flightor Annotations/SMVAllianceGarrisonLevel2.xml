@@ -1,0 +1,31 @@
+<FlightorAnnotations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="FlightorAnnotations.xsd">
+  <IndoorAreas>
+    <PolygonIndoorArea MinZ="80" MaxZ="100" Name="Town Hall, Alliance Garrison Level 3">
+      <Entrance Dismount="True" Radius="1" X="1923.404" Y="296.6196" Z="88.96597" />
+      <Points>
+        <Point X="1924.494" Y="309.86"/>
+        <Point X="1928.716" Y="312.5233" />
+        <Point X="1923.306" Y="321.5788" />
+        <Point X="1928.397" Y="325.3764" />
+        <Point X="1920.895" Y="344.2513" />
+        <Point X="1925.077" Y="353.8435" />
+        <Point X="1935.401" Y="357.9598" />
+        <Point X="1944.367" Y="354.3526" />
+        <Point X="1959.286" Y="333.061"  />
+        <Point X="1967.925" Y="337.2507" />
+        <Point X="1979.514" Y="318.4383" />
+        <Point X="1971.371" Y="313.2585" />
+        <Point X="1975.194" Y="307.0085" />
+        <Point X="1972.232" Y="304.7537" />
+        <Point X="1978.046" Y="297.5401"/>
+        <Point X="1961.351" Y="287.0891" />
+        <Point X="1955.921" Y="294.915"  />
+        <Point X="1950.791" Y="291.5707" />
+        <Point X="1944.709" Y="298.4236" />
+        <Point X="1935.817" Y="291.6941" />
+      </Points>
+    </PolygonIndoorArea>
+  </IndoorAreas>    
+</FlightorAnnotations>
+

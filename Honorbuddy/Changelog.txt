@@ -1,17 +1,8 @@
-New features:
---------------
-  * Core
-    - Honorbuddy's compiler now supports C# 6.0 features. (HB-2627)
-
 Bug fixes:
 --------------
-  * DungeonBuddy
-    - The number of deaths is now updated in the Info tab (HB-2637)
+  * Flightor
+    - Fixed a bug with Flightor where it might get in unstuck behavior loop after bot has been restarted. (HB-2818)
 
-    - ScriptHelpers.MoveInsideBossRoom has tank no longer wait for group members to enter room if they are busy dealing with aggro. (HB-2636)
-
-    - Fixed the boss step orders for all dungeons whose step order changed in WoW 6.2.2 (HB-2622)
-
-  * Questing
-    - Garrison Missive type repeatable quests' completion status are no longer cached. (HB-2630)
+  * Profile
+    - Bot should now interact with the vines from the correct location during the quest 'Shredder vs Saberon (33663 // 36439)' instead of going around to the side and getting stuck on a rock. (HB-2834)
 

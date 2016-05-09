@@ -38,7 +38,6 @@
   <While PulseSecondaryBot="True" Condition="true" IgnoreCanRun="True">
     <Custom Code="MiningLevel = (int)Mining.Level;" />
     <Custom Code="MiningMaxLevel = (int)Mining.MaxLevel;" />
-    <LoadProfile ProfileType="Honorbuddy" Path="HBProfiles\GB2 Herb and Mining profiles\Neutral\(GB2 500-575)(JadeForest.Neutral)Herb&amp;Mining.xml" IsLocalOrFromStore="True" />
     <Custom Code="HerbLevel = (int)Herbalism.Level;" />
     <Custom Code="HerbMaxLevel =  (int)Herbalism.MaxLevel;" />
     <!--disable gathering of mines-->

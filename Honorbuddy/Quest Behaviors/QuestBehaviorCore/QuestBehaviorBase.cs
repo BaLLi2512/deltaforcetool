@@ -281,7 +281,7 @@ namespace Honorbuddy.QuestBehaviorCore
 
 				// Tunables...
 				IgnoreMobsInBlackspots = GetAttributeAsNullable<bool>("IgnoreMobsInBlackspots", false, null, null) ?? true;
-				MovementBy = GetAttributeAsNullable<MovementByType>("MovementBy", false, null, null) ?? MovementByType.FlightorPreferred;
+                MovementBy = GetAttributeAsNullable<MovementByType>("MovementBy", false, null, null) ?? MovementByType.FlightorPreferred;
 				NonCompeteDistance = GetAttributeAsNullable<double>("NonCompeteDistance", false, new ConstrainTo.Domain<double>(0.0, 50.0), null) ?? 20.0;
 
 				TerminateAtMaxRunTimeSecs = GetAttributeAsNullable<int>("TerminateAtMaxRunTimeSecs", false, new ConstrainTo.Domain<int>(0, int.MaxValue), null) ?? int.MaxValue;
@@ -358,8 +358,8 @@ namespace Honorbuddy.QuestBehaviorCore
 		public readonly Stopwatch _behaviorRunTimer = new Stopwatch();
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return "$Id: QuestBehaviorBase.cs 2005 2015-03-17 16:45:59Z mainhaxor $"; } }
-		public override string SubversionRevision { get { return "$Rev: 2005 $"; } }
+		public override string SubversionId { get { return "$Id: QuestBehaviorBase.cs 2153 2015-12-11 14:58:31Z mainhaxor $"; } }
+		public override string SubversionRevision { get { return "$Rev: 2153 $"; } }
 		#endregion
 
 
@@ -381,6 +381,23 @@ namespace Honorbuddy.QuestBehaviorCore
 
 
 		#region Overrides of CustomForcedBehavior
+
+		public override NavType? NavType
+		{
+			get
+			{
+				switch (MovementBy)
+				{
+					case MovementByType.FlightorPreferred:
+						return Styx.NavType.Fly;
+					case MovementByType.NavigatorOnly:
+					case MovementByType.NavigatorPreferred:
+						return Styx.NavType.Run;
+					default:
+						return null;
+				}
+			}
+		}
 
 		protected sealed override Composite CreateBehavior()
 		{

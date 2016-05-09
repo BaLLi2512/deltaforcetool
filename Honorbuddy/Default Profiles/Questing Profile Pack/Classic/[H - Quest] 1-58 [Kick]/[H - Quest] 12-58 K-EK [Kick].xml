@@ -224,6 +224,17 @@
 	</Vendors>
 
 
+	<Quest Id="27186" Name="Jarl Needs a Blade">
+		<Objective Type="CollectItem" ItemId="33110" CollectCount="1">
+			<CollectFrom>
+				<Mob Name="Razorspine" Entry="23841" />
+			</CollectFrom>
+			<Hotspots>
+				<Hotspot X="-2655.534" Y="-4014.578" Z="0.7312824" />
+				<Hotspot X="-2655.534" Y="-4014.578" Z="0.7312824" />
+			</Hotspots>
+		</Objective>
+	</Quest>
 	<!--Kalimdor Main Overrides-->
 	<Quest Name="DummyKillMob" Id="123456">
 		<Objective Type="KillMob" MobId="1" MobName="Mob" KillCount="1">
@@ -3166,23 +3177,54 @@
 			</Hotspots>
 		</Objective>
 	</Quest>
-<Quest Id="27186" Name="Jarl Needs a Blade">
-	<Objective Type="CollectItem" ItemId="33110" CollectCount="1">
-		<CollectFrom>
-			<Mob Name="Razorspine" Entry="23841" />
-		</CollectFrom>
-		<Hotspots>
-			<Hotspot X="-2655.534" Y="-4014.578" Z="0.7312824" />
-		</Hotspots>
-	</Objective>
-</Quest>
 
 	<QuestOrder IgnoreCheckpoints="false">
 		<!-- CHECKPOINT BLOCK START: This code needs to be replicated after every checkpoint.
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+		<CustomBehavior File="RunCode" Type="Definition">
+			<![CDATA[ 
+		        IEnumerable<WoWItem> GetExtraConsumables()
+		        {
+		            uint foodCount = 0;
+		            uint drinkCount = 0;
+		            // Skip conjured and buff comsumables.
+		  
+		            var extraConsumables = (from item in Me.BagItems
+		                               where item != null && item.ItemInfo != null
+		                               let isFood = Consumable.IsFood(item.ItemInfo)
+		                               let isDrink = Consumable.IsDrink(item.ItemInfo)
+		                               where (isFood || isDrink) && item.ItemInfo.SellPrice > 0 && item.Effects.Count == 1 && item.ItemInfo.RequiredLevel < Me.Level - 10                    
+		                               select item).ToList();
+		  
+		  
+		            var extraPotions = Me.BagItems
+		                .Where(c => c != null && c.IsValid && c.ItemInfo != null && c.ItemInfo.SellPrice > 0 && c.Effects.Count == 1
+		                    && (c.ItemInfo.ConsumableClass == WoWItemConsumableClass.Potion
+		                    || c.ItemInfo.ConsumableClass == WoWItemConsumableClass.Elixir
+		                    || c.ItemInfo.ConsumableClass == WoWItemConsumableClass.Flask)
+		                    && c.ItemInfo.RequiredLevel < Me.Level - 20);
+		  
+		            extraConsumables.AddRange(extraPotions);
+		            return extraConsumables;
+		        }
+		         
+		        async Task SellExtraConsumables()
+		        {
+		            Logging.Write("Selling items in GetExtraConsumables()");
+		            foreach (var item in GetExtraConsumables())
+		            {
+		                Logging.Write("Selling {0}.", item.Name);                       
+		                item.UseContainerItem();
+		                await Coroutine.Sleep(1337);
+		            }
+		        }
+            ]]>
+		</CustomBehavior>
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -3513,7 +3555,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -3838,7 +3882,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -3880,11 +3926,14 @@
 			<PickUp QuestName="To Dinah, at Once!" QuestId="13620" GiverName="Kadrak" GiverId="8582" />
 			<TurnIn QuestName="To Dinah, at Once!" QuestId="13620" TurnInName="Dinah Halfmoon" TurnInId="33263" />
 			<PickUp QuestName="Gorat's Vengeance" QuestId="13621" GiverName="Dinah Halfmoon" GiverId="33263" />
-			<If Condition="HasQuest(13621) &amp;&amp; !IsQuestCompleted(13621)">
-				<UseItem ItemId="45023" QuestName="Gorat's Vengeance" QuestId="13621" X="1424.913" Y="-1999.623" Z="96.3291" />
+			<While Condition="HasQuest(13621) &amp;&amp; !IsQuestCompleted(13621)">
+				<While Condition="Unit(33304) == null" >
+					<UseItem ItemId="45023" QuestName="Gorat's Vengeance" QuestId="13621" X="1424.913" Y="-1999.623" Z="96.3291" />
+					<CustomBehavior File="WaitTimer" WaitTime="5000" TerminateWhen="Unit(33304) != null" />
+				</While>
 				<CustomBehavior File="WaitTimer" WaitTime="10000" GoalText="Waiting for npc {TimeRemaining}" />
-				<CustomBehavior File="EscortGroup" QuestId="13621" EscortNpcId="33304" />
-			</If>
+				<CustomBehavior File="EscortGroup" QuestId="13621" EscortNpcId="33304" TerminateWhen="Unit(33304) == null" />
+			</While>
 			<TurnIn QuestName="Gorat's Vengeance" QuestId="13621" TurnInName="Kadrak" TurnInId="8582" />
 			<PickUp QuestName="Got Wood?" QuestId="13628" GiverName="Truun" GiverId="33284" />
 			<If Condition="HasQuest(13628) &amp;&amp; !IsQuestCompleted(13628)">
@@ -4234,7 +4283,9 @@
                 If you modify something in this block, don't forget to update the copy of this
                 block after each checkpoint, and the at the start of the <QuestOrder>, also.
                 -->
-
+	        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+	            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+	        </CustomBehavior>
 			<CustomBehavior File="Misc\ProfileCompatibilityInfo"
                 AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 			<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -4772,7 +4823,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -5111,7 +5164,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -5300,7 +5355,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -5644,7 +5701,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -6004,7 +6063,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -6269,8 +6330,9 @@
 
 		<While Condition="HasQuest(25329) &amp;&amp; !IsQuestCompleted(25329)">
 			<MoveTo QuestId="25329" DestName="The Pit in Dire Maul" X="-3711.001" Y="1079.239" Z="131.9679" />
-			<CustomBehavior File="WaitTimer" WaitTime="120000" GoalText="Waiting for Cho'gall {TimeRemaining}" />
+			<CustomBehavior File="WaitTimer" WaitTime="120000" GoalText="Waiting for Cho'gall {TimeRemaining}" TerminateWhen="IsQuestCompleted(25329)" />
 			<CustomBehavior File="InteractWith" QuestId="25329" MobId="43932" PreInteractMountStrategy="Dismount" X="-3686.354" Y="1090.208" Z="131.9692" />
+      <!-- EchoTiger: IW may not be needed.  Quest completes on its own fairly quick. -->
 		</While>
 		<TurnIn QuestName="Might of the Stonemaul" QuestId="25329" TurnInName="Orhan Ogreblade" TurnInId="39656" />
 		<PickUp QuestName="To Camp Mojache" QuestId="25387" GiverName="Orhan Ogreblade" GiverId="39656" />
@@ -6303,12 +6365,22 @@
 		<PickUp QuestName="Faerie Dragon Muisek" QuestId="25345" GiverName="Witch Doctor Uzer'i" GiverId="8115" />
 
 		<!-- "Faerie Dragon Muisek" 25345 -->
-		<CustomBehavior File="InteractWith" QuestId="25345" InteractByUsingItemId="9620" MobState="Dead" MobId="5278" Range="5" NumOfTimes="100" PreInteractMountStrategy="Dismount" CollectionDistance="350">
-			<HuntingGrounds>
-				<Hotspot X="-4504.374" Y="438.5101" Z="47.05794" />
-				<Hotspot X="-4206.146" Y="253.1625" Z="54.42464" />
-			</HuntingGrounds>
-		</CustomBehavior>
+		<If Condition="HasQuest(25345) &amp;&amp; !IsQuestCompleted(25345)" >
+			<CustomBehavior File="RunCode" Type="Definition" Code="bool FaerieDragonMuisekReactivateSkinning = false;" />
+			<If Condition="CharacterSettings.Instance.SkinMobs" >
+				<CustomBehavior File="RunCode" Code="FaerieDragonMuisekReactivateSkinning = true;" />
+				<CustomBehavior File="RunCode" Code="CharacterSettings.Instance.SkinMobs = false;" />
+			</If>
+			<CustomBehavior File="InteractWith" QuestId="25345" InteractByUsingItemId="9620" MobState="Dead" MobId="5278" Range="5" NumOfTimes="100" PreInteractMountStrategy="Dismount" CollectionDistance="350">
+				<HuntingGrounds>
+					<Hotspot X="-4504.374" Y="438.5101" Z="47.05794" />
+					<Hotspot X="-4206.146" Y="253.1625" Z="54.42464" />
+				</HuntingGrounds>
+			</CustomBehavior>
+			<If Condition="FaerieDragonMuisekReactivateSkinning" >
+				<CustomBehavior File="RunCode" Code="CharacterSettings.Instance.SkinMobs = true;" />
+			</If>
+		</If>
 
 
 		<TurnIn QuestName="Faerie Dragon Muisek" QuestId="25345" TurnInName="Witch Doctor Uzer'i" TurnInId="8115" />
@@ -6487,7 +6559,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -6513,21 +6587,31 @@
 		<MoveTo QuestId="25112" X="-7922.329" Y="-3748.97" Z="50.77891" />
 
 		<!-- "Butcherbot" 25112 -->
-		<CustomBehavior File="InteractWith" QuestId="25112" InteractByUsingItemId="52715" MobState="Dead" MobId="5419" Range="5" NumOfTimes="150" PreInteractMountStrategy="Dismount" CollectionDistance="300">
-			<HuntingGrounds>
-				<Hotspot X="-7415.372" Y="-3751.087" Z="11.19266" />
-				<Hotspot X="-7763.371" Y="-3802.709" Z="29.44543" />
-				<Hotspot X="-7859.293" Y="-3681.476" Z="44.93718" />
-				<Hotspot X="-7922.329" Y="-3748.97" Z="50.77891" />
-				<Hotspot X="-7311.105" Y="-3549.135" Z="8.698274" />
-				<Hotspot X="-7437.441" Y="-3760.71" Z="9.384009" />
-				<Hotspot X="-7870.852" Y="-3865.849" Z="20.95782" />
-				<Hotspot X="-7861.789" Y="-3655.047" Z="51.61002" />
-				<Hotspot X="-7762.536" Y="-3497.85" Z="42.49944" />
-				<Hotspot X="-7607.863" Y="-3491.582" Z="23.88138" />
-				<Hotspot X="-7622.471" Y="-3672.566" Z="20.16784" />
-			</HuntingGrounds>
-		</CustomBehavior>
+		<If Condition="HasQuest(25112) &amp;&amp; !IsQuestCompleted(25112)" >
+			<CustomBehavior File="RunCode" Type="Definition" Code="bool ButcherbotReactivateSkinning = false;" />
+			<If Condition="CharacterSettings.Instance.SkinMobs" >
+				<CustomBehavior File="RunCode" Code="ButcherbotReactivateSkinning = true;" />
+				<CustomBehavior File="RunCode" Code="CharacterSettings.Instance.SkinMobs = false;" />
+			</If>
+			<CustomBehavior File="InteractWith" QuestId="25112" InteractByUsingItemId="52715" MobState="Dead" MobId="5419" Range="5" NumOfTimes="150" PreInteractMountStrategy="Dismount" CollectionDistance="300">
+				<HuntingGrounds>
+					<Hotspot X="-7415.372" Y="-3751.087" Z="11.19266" />
+					<Hotspot X="-7763.371" Y="-3802.709" Z="29.44543" />
+					<Hotspot X="-7859.293" Y="-3681.476" Z="44.93718" />
+					<Hotspot X="-7922.329" Y="-3748.97" Z="50.77891" />
+					<Hotspot X="-7311.105" Y="-3549.135" Z="8.698274" />
+					<Hotspot X="-7437.441" Y="-3760.71" Z="9.384009" />
+					<Hotspot X="-7870.852" Y="-3865.849" Z="20.95782" />
+					<Hotspot X="-7861.789" Y="-3655.047" Z="51.61002" />
+					<Hotspot X="-7762.536" Y="-3497.85" Z="42.49944" />
+					<Hotspot X="-7607.863" Y="-3491.582" Z="23.88138" />
+					<Hotspot X="-7622.471" Y="-3672.566" Z="20.16784" />
+				</HuntingGrounds>
+			</CustomBehavior>
+			<If Condition="ButcherbotReactivateSkinning" >
+				<CustomBehavior File="RunCode" Code="CharacterSettings.Instance.SkinMobs = true;" />
+			</If>
+		</If>
 
 		<TurnIn QuestName="Butcherbot" QuestId="25112" TurnInName="Driz Plunkbow" TurnInId="39178" />
 		<PickUp QuestName="Scavengers Scavenged" QuestId="25111" GiverName="Driz Plunkbow" GiverId="39178" />
@@ -6563,16 +6647,26 @@
 		<PickUp QuestName="Blisterpaw Butchery" QuestId="25115" GiverName="Driz Plunkbow" GiverId="39178" />
 
 		<!-- "Blisterpaw Butchery" 25115 -->
-		<CustomBehavior File="InteractWith" QuestId="25115" InteractByUsingItemId="52715" MobState="Dead" MobId="5426" Range="5" NumOfTimes="150" PreInteractMountStrategy="Dismount" CollectionDistance="300">
-			<HuntingGrounds>
-				<Hotspot X="-7098.866" Y="-3677.45" Z="10.83027" />
-				<Hotspot X="-6993.541" Y="-3391.235" Z="9.642881" />
-				<Hotspot X="-7100.68" Y="-3187.205" Z="8.879009" />
-				<Hotspot X="-7174.427" Y="-3330.734" Z="13.65397" />
-				<Hotspot X="-7208.878" Y="-3534.263" Z="10.59076" />
-				<Hotspot X="-7236.906" Y="-3615.529" Z="11.03862" />
-			</HuntingGrounds>
-		</CustomBehavior>
+		<If Condition="HasQuest(25115) &amp;&amp; !IsQuestCompleted(25115)" >
+			<CustomBehavior File="RunCode" Type="Definition" Code="bool BlisterpawButcheryReactivateSkinning = false;" />
+			<If Condition="CharacterSettings.Instance.SkinMobs" >
+				<CustomBehavior File="RunCode" Code="BlisterpawButcheryReactivateSkinning = true;" />
+				<CustomBehavior File="RunCode" Code="CharacterSettings.Instance.SkinMobs = false;" />
+			</If>
+			<CustomBehavior File="InteractWith" QuestId="25115" InteractByUsingItemId="52715" MobState="Dead" MobId="5426" Range="5" NumOfTimes="150" PreInteractMountStrategy="Dismount" CollectionDistance="300">
+				<HuntingGrounds>
+					<Hotspot X="-7098.866" Y="-3677.45" Z="10.83027" />
+					<Hotspot X="-6993.541" Y="-3391.235" Z="9.642881" />
+					<Hotspot X="-7100.68" Y="-3187.205" Z="8.879009" />
+					<Hotspot X="-7174.427" Y="-3330.734" Z="13.65397" />
+					<Hotspot X="-7208.878" Y="-3534.263" Z="10.59076" />
+					<Hotspot X="-7236.906" Y="-3615.529" Z="11.03862" />
+				</HuntingGrounds>
+			</CustomBehavior>
+			<If Condition="BlisterpawButcheryReactivateSkinning" >
+				<CustomBehavior File="RunCode" Code="CharacterSettings.Instance.SkinMobs = true;" />
+			</If>
+		</If>
 		<Objective QuestName="Blisterpaw Butchery" QuestId="25115" Type="KillMob" MobId="40509" KillCount="10" />
 
 		<TurnIn QuestName="Blisterpaw Butchery" QuestId="25115" TurnInName="Driz Plunkbow" TurnInId="39178" />
@@ -7479,7 +7573,9 @@
                 If you modify something in this block, don't forget to update the copy of this
                 block after each checkpoint, and the at the start of the <QuestOrder>, also.
                 -->
-
+	        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+	            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+	        </CustomBehavior>
 			<CustomBehavior File="Misc\ProfileCompatibilityInfo"
                 AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 			<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -8073,10 +8169,10 @@
 				<CustomBehavior File="UserSettings" UseFlightPaths="false" />
 				<LootMobs Value="true" />
 				<UseMount Value="true" />
-				<!--
+				<If Condition="Unit(43073) != null" >
                     <CustomBehavior File="InteractWith" MobId="43073" InteractByGossipOptions="2"
                     X="6077.286" Y="-845.2375" Z="412.2502" />
-                -->
+        </If>
 				<TurnIn QuestName="Back to Business" QuestId="28372" TurnInName="Darla Drilldozer" TurnInId="48127" />
 				<CustomBehavior File="UserSettings" UseFlightPaths="true" />
 				<LootMobs Value="true" />
@@ -8133,7 +8229,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -8457,7 +8555,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -9171,8 +9271,8 @@
 
 
 
-		<If Condition="Me.Level &lt; 56">
-			<CustomBehavior File="Message" Text="We are grinding to level 56 in Un'Goro" LogColor="Orange" />
+		<If Condition="Me.Level &lt; 55">
+			<CustomBehavior File="Message" Text="We are grinding to level 55 in Un'Goro" LogColor="Orange" />
 		</If>
 
 
@@ -9255,14 +9355,16 @@
 		</SetGrindArea>
 
 		<TargetingDistance Value="150" />
-		<GrindUntil Level="56" />
+		<GrindUntil Level="55" />
 		<TargetingDistance Value="null" /> <!-- back to Honorbuddy default -->
-		<Checkpoint Level="56" />
+		<Checkpoint Level="55" />
 		<!-- CHECKPOINT BLOCK START: This code needs to be replicated after every checkpoint.
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"
@@ -9612,7 +9714,9 @@
             If you modify something in this block, don't forget to update the copy of this
             block after each checkpoint, and the at the start of the <QuestOrder>, also.
             -->
-
+        <CustomBehavior File="Hooks\DoWhen" AllowExecutionWhileNotAlive="false"  AllowUseWhileMounted="true" ActivityName="SellExtraConsumables" UseWhen="MerchantFrame.Instance.IsVisible &amp;&amp; GetExtraConsumables().Any()" >
+            <CustomBehavior File="RunCode" Code="await SellExtraConsumables();"/>  
+        </CustomBehavior>
 		<CustomBehavior File="Misc\ProfileCompatibilityInfo"
             AllowBrokenAddOns="true" AllowBrokenPlugIns="true" />
 		<CustomBehavior File="UserSettings" UseFlightPaths="true" GroundMountFarmingMode="false"

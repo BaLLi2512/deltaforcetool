@@ -195,6 +195,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 
 		public override void OnEnter()
 		{
+			GameWorld.UnitSpellLineOfSightTest += GameWorld_UnitSpellLineOfSightTest;
 			if (!Me.IsTank())
 			{
 				TimeCachedValue<bool> firstTrashPackPulledOrGone = new TimeCachedValue<bool>(TimeSpan.FromMilliseconds(250),
@@ -228,6 +229,7 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 
 		public override void OnExit()
 		{
+			GameWorld.UnitSpellLineOfSightTest -= GameWorld_UnitSpellLineOfSightTest;
 			DynamicBlackspotManager.RemoveBlackspot(_trashBeforeLastBossBs);
 			_trashBeforeLastBossBs = null;
 		}
@@ -245,7 +247,17 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Mists_of_Pandaria
 	        }
 	    }
 
-	    #endregion
+		private void GameWorld_UnitSpellLineOfSightTest(object sender, UnitSpellLineOfSightTestEventArgs e)
+		{
+			if (e.Unit.Entry != AzureSerpentId)
+				return;
+
+			var spellDist = e.Unit.CombatReach + 40;
+			e.InSpellLineOfSight = e.Unit.DistanceSqr < spellDist*spellDist;
+			e.Handled = true;
+		}
+
+		#endregion
 
 		private const uint ShadoPanWardenId = 59751;
 		private const uint GuCloudstrikeId = 56747;

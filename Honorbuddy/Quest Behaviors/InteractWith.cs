@@ -717,12 +717,12 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 
 		public override string SubversionId
 		{
-			get { return ("$Id: InteractWith.cs 2106 2015-08-13 15:17:32Z Dogan $"); }
+			get { return ("$Id: InteractWith.cs 2156 2015-12-20 07:17:37Z Dogan $"); }
 		}
 
 		public override string SubversionRevision
 		{
-			get { return ("$Revision: 2106 $"); }
+			get { return ("$Revision: 2156 $"); }
 		}
 
 		private enum BindingEventStateType
@@ -1077,6 +1077,15 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
                     // 'CanLoot' may report 'false' when object is already interacted with.
                     var lootableObj = SelectedTarget as ILootableObject;
 				    var isLootable = Query.IsViable(SelectedTarget) && lootableObj != null && lootableObj.CanLoot;
+
+					// Fixes #HB-2729 (InteractWith stuck while bot is flying and trying to interact with a hostile mob)
+					var selectedUnit = SelectedTarget as WoWUnit;
+					if (selectedUnit != null && selectedUnit.IsAlive
+						&& (isLootable || selectedUnit.IsHostile) && Me.Mounted && Me.IsFlying)
+					{
+						return await CommonCoroutines.Dismount(
+							$"Dismounting before interacting with {(isLootable ? "lootable" : "hostile")} NPC");
+					}
 
 					if (!await UtilityCoroutine.Interact(SelectedTarget))
 						return false;
@@ -1461,11 +1470,11 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 				    {
                         var altCurrency = item.BuyPrice == 0;
                         if (altCurrency)
-				        {
+				        {							
                             QBCLog.ProfileError(
-                                "Toon does not have enough {0} to purchase {1} (qty: {2})",
-                                item.CurrencyInfo.Name,
-                                item.Name,
+                                "Toon does not have enough ({0}) to purchase {1} (qty: {2})",
+								string.Join(", ", item.ExtendedCost.RequiredCurrencyIds.Select(id => WoWCurrency.GetCurrencyById(id).Name)),
+								item.Name,
                                 BuyItemCount);
                         }
 				        else
@@ -1606,13 +1615,13 @@ namespace Honorbuddy.Quest_Behaviors.InteractWith
 
 		private void Targeting_RemoveTargetsFilter(List<WoWObject> units)
 		{
-			var removeViableTargets = (InteractAttemptCount == 0) || (Query.FindMobsAttackingMe().Count() <= 1);
-
 			// No need to clear a path while flying since we can fly right over them!
 			var clearMobsThatWillAggro = !Me.IsFlying && (ProactiveCombatStrategy == ProactiveCombatStrategyType.ClearAll
 										|| ProactiveCombatStrategy == ProactiveCombatStrategyType.ClearMobsThatWillAggro);
 
 			var isActuallyInCombat = Me.IsActuallyInCombat;
+			var removeViableTargets = (IgnoreCombat || !isActuallyInCombat)
+				&& (InteractAttemptCount == 0) || (Query.FindMobsAttackingMe().Count() <= 1);
 
 			units.RemoveAll(
 				o =>

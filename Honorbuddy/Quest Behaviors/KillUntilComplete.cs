@@ -106,6 +106,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Bots.DungeonBuddy.Helpers;
 using Bots.Grind;
+using Bots.Quest.QuestOrder;
 using CommonBehaviors.Actions;
 using Honorbuddy.QuestBehaviorCore;
 using Honorbuddy.QuestBehaviorCore.XmlElements;
@@ -182,8 +183,8 @@ namespace Honorbuddy.Quest_Behaviors.KillUntilComplete
         private UtilityCoroutine.NoMobsAtCurrentWaypoint _noMobsAtCurrentWaypoint;
 
 		// DON'T EDIT THESE--they are auto-populated by Subversion
-		public override string SubversionId { get { return ("$Id: KillUntilComplete.cs 2034 2015-04-15 03:58:20Z chinajade $"); } }
-		public override string SubversionRevision { get { return ("$Revision: 2034 $"); } }
+		public override string SubversionId { get { return ("$Id: KillUntilComplete.cs 2150 2015-12-11 01:22:56Z mainhaxor $"); } }
+		public override string SubversionRevision { get { return ("$Revision: 2150 $"); } }
 
         #region Overrides of QuestBehaviorBase
 
@@ -265,7 +266,7 @@ namespace Honorbuddy.Quest_Behaviors.KillUntilComplete
 
             if (firstUnit != BotPoi.Current.AsObject)
             {
-                BotPoi.Current = new BotPoi(firstUnit, PoiType.Kill);
+                BotPoi.Current = new BotPoi(firstUnit, PoiType.Kill, QuestOrder.Instance.NavType);
                 QBCLog.Info("Current POI is not the best target. Changing.");
                 _targetSwitchTimer.Reset();
             }

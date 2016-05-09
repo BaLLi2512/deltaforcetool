@@ -3,9 +3,9 @@
   <Name>Ahn'kahet - The Old Kingdom</Name>
   <DungeonId>218</DungeonId>
   <BossEncounters>
-    <Boss isFinal="false" entry="29309" name="Elder Nadox" step="1" killOrder="1" optional="true" X="679.892" Y="-905.4669" Z="25.61439" />
+    <Boss isFinal="false" entry="29309" name="Elder Nadox" step="1" killOrder="1" optional="false" X="679.892" Y="-905.4669" Z="25.61439" />
     <Boss isFinal="false" entry="29308" name="Prince Taldaram" step="2" killOrder="2" optional="false" X="528.8479" Y="-846.149" Z="11.16903" />
-    <Boss isFinal="false" entry="29310" name="Jedoga Shadowseeker" step="3" killOrder="3" optional="true" X="376.7172" Y="-705.337" Z="-16.17958" />
+    <Boss isFinal="false" entry="29310" name="Jedoga Shadowseeker" step="3" killOrder="3" optional="false" X="376.7172" Y="-705.337" Z="-16.17958" />
     <Boss isFinal="true" entry="29311" name="Herald Volazj" step="4" killOrder="4" optional="false" X="520.1063" Y="-454.2148" Z="26.35609" />
   </BossEncounters>
   <Blackspots>
