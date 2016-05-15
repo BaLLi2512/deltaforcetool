@@ -11,6 +11,7 @@ start vgsjn.exe
 cd ..
 cd Honorbuddy
 start Honorbuddy.exe
+exit
 
 :withoutvgsjn
 cd Honorbuddy

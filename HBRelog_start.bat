@@ -11,6 +11,7 @@ start vgsjn.exe
 cd ..
 cd HBRelog\bin\Release
 start HBRelog.exe
+exit
 
 :withoutvgsjn
 cd HBRelog\bin\Release
