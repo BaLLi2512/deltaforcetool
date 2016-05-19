@@ -1,8 +1,5 @@
-Bug fixes:
+Other changes:
 --------------
-  * Flightor
-    - Fixed a bug with Flightor where it might get in unstuck behavior loop after bot has been restarted. (HB-2818)
-
-  * Profile
-    - Bot should now interact with the vines from the correct location during the quest 'Shredder vs Saberon (33663 // 36439)' instead of going around to the side and getting stuck on a rock. (HB-2834)
+  * Core
+    - Updated for WoW Patch 6.2.4.21742 (HB-2841)
 

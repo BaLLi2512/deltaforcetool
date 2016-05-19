@@ -16,6 +16,9 @@ using Action = Styx.TreeSharp.Action;
 using Bots.DungeonBuddy.Profiles;
 using Bots.DungeonBuddy.Attributes;
 using Bots.DungeonBuddy.Helpers;
+using System.Threading.Tasks;
+using Styx.CommonBot.Coroutines;
+
 namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 {
 	public class Uldaman : Dungeon
@@ -180,24 +183,19 @@ namespace Bots.DungeonBuddy.Dungeon_Scripts.Classic
 
 
 		[ObjectHandler(130511, "Altar of The Keepers")]
-		public Composite AltarofTheKeepers()
+		public async Task<bool> AltarofTheKeepers(WoWGameObject altar)
 		{
-			WoWGameObject altar = null;
-			WoWGameObject door = null;
-			return new PrioritySelector(
-				ctx =>
-				{
-					door = HallOfCraftersDoor; // cache the door object.
-					return altar = ctx as WoWGameObject;
-				},
-				new Decorator(ctx => Targeting.Instance.IsEmpty() && door != null && door.State != WoWGameObjectState.Active,
-					new PrioritySelector(
-						new Decorator(ctx => !altar.WithinInteractRange, new Action(ctx => Navigator.MoveTo(altar.Location))),
-						new Decorator(ctx => altar.WithinInteractRange && !Me.ChannelObjectGuid.IsValid,
-							new Sequence(
-								new Action(ctx => altar.Interact()),
-								new WaitContinue(2, ctx => !Me.Combat && !Me.ChannelObjectGuid.IsValid, new ActionAlwaysSucceed())))
-						)));
+			var door = HallOfCraftersDoor; // cache the door object.
+
+			if (door == null || door.State == WoWGameObjectState.Active)
+				return false;
+			if (Targeting.Instance.TargetList.Any(u => u.ZDiff < 10 && u.Location.DistanceSqr(altar.Location) < 25*25))
+				return false;
+
+			if (altar.DistanceSqr > 5*5)
+				return (await CommonCoroutines.MoveTo(altar.Location, altar.SafeName)).IsSuccessful();
+
+			return await ScriptHelpers.InteractWithObject(altar, 6000);
 		}
 
 

@@ -9267,12 +9267,12 @@
 				<CustomBehavior File="ForcedDismount" />
 				<PickUp QuestName="Them or Us!" QuestId="12215" GiverName="Master Woodsman Anderhol" GiverId="27277" />
 			</If>
-			<If Condition="HasQuest(12292) &amp;&amp; !IsQuestCompleted(12292)">
+			<While Condition="HasQuest(12292) &amp;&amp; !IsQuestCompleted(12292)">
 				<CustomBehavior File="FlyTo" DestName="Objective" X="3225.973" Y="-1982.031" Z="88.04327" />
 				<CustomBehavior File="ForcedDismount" />
-				<Objective QuestName="Local Support" QuestId="12292" Type="CollectItem" ItemId="37572"
-                           ItemName="Cedar Chest" CollectCount="1" />
-			</If>
+				<CustomBehavior File="InteractWith" QuestId="12292" PreInteractMountStrategy="DismountOrCancelShapeshift" MobId="189298" CollectionDistance="2" Range="4" X="3232.32" Y="-1943.504" Z="94.01778" />
+				<CustomBehavior File="WaitTimer" QuestId="11993" WaitTime="10000" TerminateWhen="IsQuestCompleted(12292)" />
+			</While>
 			<If Condition="HasQuest(12212) &amp;&amp; !IsQuestCompleted(12212)">
 				<CustomBehavior File="FlyTo" DestName="Objective" X="3234.298" Y="-2012.97" Z="87.11752" />
 				<CustomBehavior File="ForcedDismount" />
@@ -10006,18 +10006,24 @@
 				<PickUp QuestName="Steady as a Rock?" QuestId="12014" GiverName="Surveyor Orlond" GiverId="26514" />
 				<CustomBehavior File="ForceSetVendor" DoSell="true" DoRepair="true" DoMail="true" />
 			</If>
-			<While Condition="HasQuest(11993) &amp;&amp; !IsQuestCompleted(11993)">
-				<CustomBehavior File="InteractWith" QuestId="11993" QuestObjectiveIndex="3" PreInteractMountStrategy="DismountOrCancelShapeshift" 
-                                MobId="188289" CollectionDistance="10" Range="6"
-                                X="4952.656" Y="-4705.741" Z="219.8488" />
-				<CustomBehavior File="InteractWith" QuestId="11993" QuestObjectiveIndex="1" PreInteractMountStrategy="DismountOrCancelShapeshift" 
-                                MobId="188264" CollectionDistance="10" Range="6"
-                                X="5007.675" Y="-4734.232" Z="219.4391" />
-				<CustomBehavior File="InteractWith" QuestId="11993" QuestObjectiveIndex="2" PreInteractMountStrategy="DismountOrCancelShapeshift" 
-                                MobId="188288" CollectionDistance="10" Range="6"
-                                X="5006.924" Y="-4790.667" Z="219.4593" />
-				<CustomBehavior File="WaitTimer" QuestId="11993" WaitTime="10000"
-                                GoalText="Waiting for quest to complete {TimeRemaining}" />
+			<While Condition="HasQuest(11993) &amp;&amp; !IsQuestCompleted(11993) &amp;&amp; HasItem(35746)">
+				<CustomBehavior File="FlyTo" DestName="Thor Modan" X="4952.656" Y="-4705.741" Z="219.8488" /> 
+				<If Condition="!IsObjectiveComplete(3,11993)">
+					<MoveTo DestName="Third Rune Plate" X="4950.338" Y="-4707.142" Z="219.6117" />
+					<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for agro to clear {TimeRemaining}" />
+					<CustomBehavior File="InteractWith" QuestId="11993" QuestObjectiveIndex="3" PreInteractMountStrategy="DismountOrCancelShapeshift" MobId="188289" Range="5" InteractByUsingItemId="35746" WaitTime="1000" X="4950.338" Y="-4707.142" Z="219.6117" />
+				</If>
+				<If Condition="!IsObjectiveComplete(1,11993)">
+					<MoveTo DestName="First Rune Plate" X="5010.351" Y="-4733.043" Z="219.6761" />
+					<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for agro to clear {TimeRemaining}" />
+					<CustomBehavior File="InteractWith" QuestId="11993" QuestObjectiveIndex="1" PreInteractMountStrategy="DismountOrCancelShapeshift" MobId="188264" Range="5" InteractByUsingItemId="35746" WaitTime="1000" X="5010.351" Y="-4733.043" Z="219.6761" />
+				</If>
+				<If Condition="!IsObjectiveComplete(2,11993)">
+					<MoveTo DestName="Second Rune Plate" X="5004.051" Y="-4793.851" Z="219.6285" />
+					<CustomBehavior File="WaitTimer" WaitTime="2000" GoalText="Waiting for agro to clear {TimeRemaining}" />
+					<CustomBehavior File="InteractWith" QuestId="11993" QuestObjectiveIndex="2" PreInteractMountStrategy="DismountOrCancelShapeshift" MobId="188288" Range="5" InteractByUsingItemId="35746" WaitTime="1000" X="5004.051" Y="-4793.851" Z="219.6285" />
+				</If>
+				<CustomBehavior File="WaitTimer" QuestId="11993" WaitTime="10000" TerminateWhen="IsQuestCompleted(11993)" />
 			</While>
 			<If Condition="HasQuest(12014) &amp;&amp; !IsQuestCompleted(12014)">
 				<CustomBehavior File="FlyTo" DestName="Objective" X="4968.709" Y="-4672.719" Z="221.4541" />
